@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14.5
+    container_name: hyper-postgres
+    volumes:
+      - ./docker/postgres:/data
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    networks:
+      - hyper
+
+networks:
+  hyper:
+    name: hyper
+    driver: bridge
+
+volumes:
+  postgres:

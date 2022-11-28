@@ -1,0 +1,36 @@
+{
+    "name": "hyper/types-dsl",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "hyper/types": "^1.0",
+        "hyper/types-repository": "^1.0",
+        "phplrt/lexer": "^3.2",
+        "phplrt/parser": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hyper\\Type\\DSL\\": "src"
+        }
+    },
+    "require-dev": {
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "phplrt/phplrt": "^3.2",
+        "phpunit/phpunit": "^9.5.20",
+        "vimeo/psalm": "^4.22"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hyper\\Type\\DSL\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

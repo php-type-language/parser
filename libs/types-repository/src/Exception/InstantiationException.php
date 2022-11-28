@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Hyper\Type\Repository\Exception;
+
+use Hyper\Type\TypeInterface;
+
+class InstantiationException extends \OutOfRangeException implements TypeExceptionInterface
+{
+    final protected const CODE_EMPTY_NAME = 0x01;
+    final protected const CODE_INVALID_NAME = 0x02;
+    final protected const CODE_INVALID_TYPE = 0x03;
+
+    protected const CODE_LAST = 0x03;
+
+    final public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * @return static
+     */
+    public static function fromEmptyName(): static
+    {
+        return new static('Type name may not be empty', self::CODE_EMPTY_NAME);
+    }
+
+
+    /**
+     * @param non-empty-string $name
+     * @param array<non-empty-string> $available
+     *
+     * @return static
+     */
+    public static function fromNonType(string $name, array $available): static
+    {
+        $message = \sprintf('%s class is not an instance of %s', $name, TypeInterface::class);
+
+        if ($similar = self::similar($name, $available)) {
+            $message .= \sprintf(', did you mean "%s"?', $similar);
+        }
+
+        throw new static($message, self::CODE_INVALID_NAME);
+    }
+
+    /**
+     * @param non-empty-string $name
+     * @param array<non-empty-string> $available
+     *
+     * @return static
+     */
+    public static function fromUndefinedType(string $name, array $available): static
+    {
+        $message = \sprintf('Type "%s" not a type class or not found', $name);
+
+        if ($similar = self::similar($name, $available)) {
+            $message .= \sprintf(', did you mean "%s"?', $similar);
+        }
+
+        throw new static($message, self::CODE_INVALID_NAME);
+    }
+
+    /**
+     * @param non-empty-string $name
+     * @param array<non-empty-string> $available
+     *
+     * @return non-empty-string|null
+     */
+    protected static function similar(string $name, array $available): ?string
+    {
+        $priorities = [];
+
+        if ($available === []) {
+            return null;
+        }
+
+        foreach ($available as $alias) {
+            $priorities[$alias] = \levenshtein($name, $alias);
+        }
+
+        \asort($priorities);
+
+        if ($priorities[$key = \array_key_first($priorities)] <= 5) {
+            return $key;
+        }
+
+        return null;
+    }
+}

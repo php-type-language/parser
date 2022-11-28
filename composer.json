@@ -1,0 +1,56 @@
+{
+    "name": "hyper/hyper",
+    "license": "MIT",
+    "type": "library",
+    "description": "PHP DataMapper Database Layer",
+    "homepage": "https://github.com/hyper-php",
+    "authors": [
+        {
+            "name": "Kirill Nesmeyanov",
+            "email": "nesk@xakep.ru",
+            "role": "maintainer"
+        }
+    ],
+    "repositories": [
+        {"type": "path", "url": "libs/hydrator"},
+        {"type": "path", "url": "libs/pool"},
+        {"type": "path", "url": "libs/pool-doctrine"},
+        {"type": "path", "url": "libs/types"},
+        {"type": "path", "url": "libs/types-dsl"},
+        {"type": "path", "url": "libs/types-repository"}
+    ],
+    "require": {
+        "php": "^8.1",
+        "hyper/pool": "^1.0",
+        "hyper/pool-doctrine": "^1.0",
+        "hyper/types": "^1.0",
+        "hyper/types-dsl": "^1.0",
+        "hyper/types-repository": "^1.0",
+        "hyper/hydrator": "^1.0"
+    },
+    "require-dev": {
+        "doctrine/dbal": "4.0.0-beta1 as 3.5.0",
+        "doctrine/orm": "^3.0",
+        "phplrt/phplrt": "^3.2",
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "phpunit/phpunit": "^9.5.20",
+        "symfony/var-dumper": "^5.4|^6.0",
+        "vimeo/psalm": "^4.22"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform-check": true
+    },
+    "scripts": {
+        "phpcs": "php-cs-fixer fix --config=.php-cs-fixer.php"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

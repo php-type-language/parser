@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <issueHandlers>
+        <!-- Useless checks -->
+        <LessSpecificReturnStatement errorLevel="suppress" />
+        <MoreSpecificReturnType errorLevel="suppress" />
+
+        <!-- It makes no sense to check for the mixed type -->
+        <MixedAssignment errorLevel="suppress" />
+        <MixedArgument errorLevel="suppress" />
+
+        <!-- Interferes with the work of invariants -->
+        <RedundantConditionGivenDocblockType errorLevel="suppress" />
+        <RedundantCastGivenDocblockType errorLevel="suppress" />
+        <RedundantCondition errorLevel="suppress" />
+        <RedundantCast errorLevel="suppress" />
+    </issueHandlers>
+    <projectFiles>
+        <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>
