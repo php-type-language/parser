@@ -10,7 +10,7 @@ use Phplrt\Contracts\Lexer\TokenInterface;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal Hyper\Parser
  */
-class BoolLiteralStmt extends Literal
+class BoolLiteralStmt extends LiteralStmt
 {
     public function __construct(
         public readonly bool $value

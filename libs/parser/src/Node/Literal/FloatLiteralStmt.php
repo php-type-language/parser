@@ -10,7 +10,7 @@ use Phplrt\Contracts\Lexer\TokenInterface;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal Hyper\Parser
  */
-class FloatLiteralStmt extends Literal
+class FloatLiteralStmt extends LiteralStmt
 {
     public function __construct(
         public readonly float $value,

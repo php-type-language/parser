@@ -17,8 +17,8 @@ return static function (RectorConfig $config): void {
         __DIR__ . '/libs/hydrator/src',
         __DIR__ . '/libs/parser/src',
         __DIR__ . '/libs/types/src',
-        __DIR__ . '/libs/types-dsl/src',
-        __DIR__ . '/libs/types-repository/src',
+        __DIR__ . '/libs/dsl/src',
+        __DIR__ . '/libs/repository/src',
     ]);
 
     $config->sets([

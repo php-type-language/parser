@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hyper\Parser\Tests;
 
-use Hyper\Parser\Node\Stmt\NamedType;
+use Hyper\Parser\Node\Stmt\NamedTypeStmt;
 use Hyper\Parser\Node\Template\Parameters;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -29,7 +29,7 @@ class GenericsTest extends TestCase
         $this->assertCount(1, $parameters);
 
         $first = $parameters[0]->value;
-        $this->assertInstanceOf(NamedType::class, $first);
+        $this->assertInstanceOf(NamedTypeStmt::class, $first);
         $this->assertSame('int', $first->name->name);
     }
 
@@ -43,11 +43,11 @@ class GenericsTest extends TestCase
         $this->assertCount(2, $parameters);
 
         $first = $parameters[0]->value;
-        $this->assertInstanceOf(NamedType::class, $first);
+        $this->assertInstanceOf(NamedTypeStmt::class, $first);
         $this->assertSame('int', $first->name->name);
 
         $second = $parameters[1]->value;
-        $this->assertInstanceOf(NamedType::class, $second);
+        $this->assertInstanceOf(NamedTypeStmt::class, $second);
         $this->assertSame('string', $second->name->name);
     }
 
@@ -61,18 +61,18 @@ class GenericsTest extends TestCase
         $this->assertCount(1, $rootParameters);
 
         $rootValue = $rootParameters[0]->value;
-        $this->assertInstanceOf(NamedType::class, $rootValue);
+        $this->assertInstanceOf(NamedTypeStmt::class, $rootValue);
         $this->assertSame('Some\Any', $rootValue->name->name);
 
         $nestedParameters = $rootValue->parameters->list;
         $this->assertCount(2, $nestedParameters);
 
         $nestedValue1 = $nestedParameters[0]->value;
-        $this->assertInstanceOf(NamedType::class, $nestedValue1);
+        $this->assertInstanceOf(NamedTypeStmt::class, $nestedValue1);
         $this->assertSame('int', $nestedValue1->name->name);
 
         $nestedValue2 = $nestedParameters[1]->value;
-        $this->assertInstanceOf(NamedType::class, $nestedValue2);
+        $this->assertInstanceOf(NamedTypeStmt::class, $nestedValue2);
         $this->assertSame('string', $nestedValue2->name->name);
     }
 }

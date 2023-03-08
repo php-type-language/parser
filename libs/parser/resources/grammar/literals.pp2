@@ -33,17 +33,17 @@ NullLiteral -> { return new Node\Literal\NullLiteralStmt(); }
 
 ClassConstLiteral -> {
     if (\count($children) === 3) {
-        return new Node\Stmt\ClassConstMask(
+        return new Node\Stmt\ClassConstMaskStmt(
             $children[0],
             $children[1]->getValue(),
         );
     }
 
     if ($children[1]->getName() === 'T_ASTERISK') {
-        return new Node\Stmt\ClassConstMask($children[0]);
+        return new Node\Stmt\ClassConstMaskStmt($children[0]);
     }
 
-    return new Node\Stmt\ClassConst(
+    return new Node\Stmt\ClassConstStmt(
         $children[0],
         $children[1]->getValue()
     );

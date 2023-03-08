@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hyper\Parser\Tests;
 
 use Hyper\Parser\Exception\ParseException;
-use Hyper\Parser\Node\Stmt\NamedType;
+use Hyper\Parser\Node\Stmt\NamedTypeStmt;
 use Hyper\Parser\Node\Stmt\Statement;
 use Hyper\Parser\Parser;
 use Phplrt\Compiler\Compiler;

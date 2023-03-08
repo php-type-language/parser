@@ -14,7 +14,9 @@ use Hyper\Parser\Node\Stmt\Statement;
 class Argument extends Node
 {
     public function __construct(
-        public readonly Statement $value
+        public readonly Statement $value,
+        public readonly ?string $name = null,
+        public readonly bool $optional = false,
     ) {
     }
 }

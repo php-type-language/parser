@@ -3,7 +3,9 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "ext-ctype": "*",
+        "hyper/bridge": "^1.0"
     },
     "autoload": {
         "psr-4": {

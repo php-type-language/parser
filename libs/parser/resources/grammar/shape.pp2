@@ -1,17 +1,17 @@
 
 ShapeArguments -> {
-    $isSealed = \end($children) instanceof Node\Shape\Argument;
+    $isSealed = \array_pop($children);
 
-    if ($isSealed) {
-        return new Node\Shape\Shape($children);
-    }
-
-    return new Node\Shape\UnsealedShape(\array_slice($children, 0, -1));
+    return new Node\Shape\Shape($children, $isSealed);
 }
   : ::T_BRACE_OPEN::
       ShapeArgument()? (::T_COMMA:: ShapeArgument())* ::T_COMMA::?
-      <T_ELLIPSIS>? ::T_COMMA::?
+      IsSealed() ::T_COMMA::?
     ::T_BRACE_CLOSE::
+  ;
+
+IsSealed -> { return $children === []; }
+  : <T_ELLIPSIS>?
   ;
 
 ShapeArgument
@@ -21,18 +21,19 @@ ShapeArgument
   ;
 
 OptionalNamedShapeArgument -> {
-    return new Node\Shape\OptionalNamedArgument(
-        $children[0]->getValue(),
+    return new Node\Shape\Argument(
         $children[1],
+        $children[0]->getValue(),
+        true,
     );
 }
   : ShapeKey() ::T_NULLABLE:: ::T_COLON:: ShapeValue()
   ;
 
 NamedShapeArgument -> {
-    return new Node\Shape\NamedArgument(
-        $children[0]->getValue(),
+    return new Node\Shape\Argument(
         $children[1],
+        $children[0]->getValue(),
     );
 }
   : ShapeKey() ::T_COLON:: ShapeValue()

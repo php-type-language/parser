@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hyper\Parser;
 
 use Hyper\Parser\Exception\ParseException;
-use Hyper\Parser\Node\Stmt\NamedType;
+use Hyper\Parser\Node\Stmt\NamedTypeStmt;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Parser\ParserInterface;
@@ -85,7 +85,7 @@ final class Parser implements ParserInterface
      * @param string $source
      * @param array $options
      *
-     * @return list<NamedType>
+     * @return list<NamedTypeStmt>
      * @throws ParseException
      */
     public function parse($source, array $options = []): iterable
