@@ -11,7 +11,7 @@ use Hyper\Parser\Node\Stmt\NamedType;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('parser')]
-class ShapeTypeTestCase extends TestCase
+class ShapesTest extends TestCase
 {
     public function testArguments(): void
     {

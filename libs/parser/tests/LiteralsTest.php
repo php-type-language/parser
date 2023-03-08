@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('parser')]
-class LiteralTestCase extends TestCase
+class LiteralsTest extends TestCase
 {
     #[DataProvider('floatLiteralsDataProvider')]
     public function testFloatLiteral(string $expr, float $value): void

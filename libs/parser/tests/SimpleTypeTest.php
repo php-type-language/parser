@@ -8,7 +8,7 @@ use Hyper\Parser\Node\FullQualifiedName;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('parser')]
-class SimpleTypeTestCase extends TestCase
+class SimpleTypeTest extends TestCase
 {
     public function testSimpleType(): void
     {

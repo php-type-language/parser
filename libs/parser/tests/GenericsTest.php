@@ -9,7 +9,7 @@ use Hyper\Parser\Node\Template\Parameters;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('parser')]
-class GenericTypeTestCase extends TestCase
+class GenericsTest extends TestCase
 {
     public function testParameters(): void
     {
