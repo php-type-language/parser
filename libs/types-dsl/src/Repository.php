@@ -29,9 +29,6 @@ final class Repository implements MutableRepositoryInterface
      */
     private array $types = [];
 
-    /**
-     * @param TypesRepository $parent
-     */
     public function __construct(
         private readonly TypesRepository $parent = new TypesRepository()
     ) {
@@ -39,10 +36,6 @@ final class Repository implements MutableRepositoryInterface
         $this->builder = new TypeBuilder($this->parent);
     }
 
-    /**
-     * @param string $alias
-     * @return void
-     */
     private function assertValidAlias(string $alias): void
     {
         $alias = \strtolower($alias);

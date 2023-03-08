@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\CodingStyle\Rector\ClassConst\VarConstantCommentRector;
+use Rector\CodingStyle\Rector\ClassMethod\UnSpreadOperatorRector;
 use Rector\CodingStyle\Rector\FuncCall\ConsistentPregDelimiterRector;
 use Rector\Config\RectorConfig;
 use Rector\EarlyReturn\Rector\If_\ChangeOrIfReturnToEarlyReturnRector;
@@ -21,7 +22,7 @@ return static function (RectorConfig $config): void {
     ]);
 
     $config->sets([
-        LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_81,
         SetList::TYPE_DECLARATION,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
@@ -53,7 +54,7 @@ return static function (RectorConfig $config): void {
         // This rector can break the Doctrine that replaces implementations
         // with proxies, like:
         //  - private Collection $relation;          // OK This can be replaced with a proxy
-        //  - private readonly Collection $relation; // FAIL
+        //  + private readonly Collection $relation; // FAIL
         //
         ReadOnlyPropertyRector::class,
 
@@ -62,5 +63,12 @@ return static function (RectorConfig $config): void {
         // expressions, which may not always be convenient and beautiful :3
         //
         ChangeOrIfReturnToEarlyReturnRector::class,
+
+        //
+        // This rector may break the code:
+        //  - public function __construct(Some ...$arg) { ... } // OK
+        //  + public function __construct(array $arg) { ... }   // BC FAIL
+        //
+        UnSpreadOperatorRector::class,
     ]);
 };

@@ -15,11 +15,6 @@ use Hyper\Parser\Node\Stmt\Statement;
  */
 class NamedType extends Statement
 {
-    /**
-     * @param Name $name
-     * @param Parameters|null $parameters
-     * @param Shape|null $arguments
-     */
     public function __construct(
         public readonly Name $name,
         public readonly ?Parameters $parameters = null,

@@ -10,9 +10,6 @@ namespace Hyper\Parser\Node\Literal;
  */
 class NullLiteralStmt extends Literal
 {
-    /**
-     * @return mixed
-     */
     public function getValue(): mixed
     {
         return null;

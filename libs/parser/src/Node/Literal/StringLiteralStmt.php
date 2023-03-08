@@ -35,17 +35,11 @@ class StringLiteralStmt extends Literal
         '\$' => "\$",
     ];
 
-    /**
-     * @param string $value
-     */
     final public function __construct(
         public readonly string $value,
     ) {
     }
 
-    /**
-     * @return self
-     */
     public static function parse(CompositeTokenInterface $token, bool $encoded = true): self
     {
         if ($encoded) {
@@ -62,9 +56,6 @@ class StringLiteralStmt extends Literal
         return new self($string);
     }
 
-    /**
-     * @return self
-     */
     public static function fromEncodedString(string $string): self
     {
         if (\str_contains($string, '\\')) {
@@ -110,9 +101,7 @@ class StringLiteralStmt extends Literal
      */
     private static function renderHexadecimalSequences(string $body): string
     {
-        $callee = static function (array $matches): string {
-            return \chr(\hexdec($matches[1]));
-        };
+        $callee = static fn(array $matches): string => \chr(\hexdec((string)$matches[1]));
 
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
@@ -126,7 +115,7 @@ class StringLiteralStmt extends Literal
     private static function renderUtfSequences(string $body): string
     {
         $callee = static function (array $matches): string {
-            $code = \hexdec($matches[1]);
+            $code = \hexdec((string)$matches[1]);
 
             if (\function_exists('\\mb_chr')) {
                 return \mb_chr($code);
@@ -134,10 +123,14 @@ class StringLiteralStmt extends Literal
 
             if (0x80 > $code %= 0x200000) {
                 return \chr($code);
-            } elseif (0x800 > $code) {
+            }
+
+            if (0x800 > $code) {
                 return \chr(0xC0 | $code >> 6)
                      . \chr(0x80 | $code & 0x3F);
-            } elseif (0x10000 > $code) {
+            }
+
+            if (0x10000 > $code) {
                 return \chr(0xE0 | $code >> 12)
                      . \chr(0x80 | $code >> 6 & 0x3F)
                      . \chr(0x80 | $code & 0x3F);
@@ -151,9 +144,7 @@ class StringLiteralStmt extends Literal
 
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
-    /**
-     * @return string
-     */
+
     public function getValue(): string
     {
         return $this->value;

@@ -7,6 +7,7 @@ namespace Hyper\Type\Repository\Exception;
 class InstantiationException extends \OutOfRangeException implements TypeExceptionInterface
 {
     final protected const CODE_EMPTY_NAME = 0x01;
+
     final protected const CODE_INVALID_NAME = 0x02;
 
     protected const CODE_LAST = self::CODE_INVALID_NAME;
@@ -34,7 +35,7 @@ class InstantiationException extends \OutOfRangeException implements TypeExcepti
     {
         $message = \sprintf('Type "%s" not a type class or not registered', $name);
 
-        if ($similar = self::similar($name, $available)) {
+        if (($similar = self::similar($name, $available)) !== null) {
             $message .= \sprintf(', did you mean "%s"?', $similar);
         }
 

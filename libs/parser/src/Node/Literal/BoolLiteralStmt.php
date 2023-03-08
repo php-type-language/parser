@@ -12,26 +12,16 @@ use Phplrt\Contracts\Lexer\TokenInterface;
  */
 class BoolLiteralStmt extends Literal
 {
-    /**
-     * @param bool $value
-     */
     public function __construct(
         public readonly bool $value
     ) {
     }
 
-    /**
-     * @param TokenInterface $token
-     * @return self
-     */
     public static function parse(TokenInterface $token): self
     {
         return new self(\strtolower($token->getValue()) === 'true');
     }
 
-    /**
-     * @return bool
-     */
     public function getValue(): bool
     {
         return $this->value;

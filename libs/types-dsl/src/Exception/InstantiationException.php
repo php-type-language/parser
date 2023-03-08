@@ -9,8 +9,11 @@ use Hyper\Type\Repository\Exception\InstantiationException as BaseInstantiationE
 class InstantiationException extends BaseInstantiationException implements DSLExceptionInterface
 {
     protected const CODE_UNEXPECTED_TOKEN = parent::CODE_LAST + 0x01;
+
     protected const CODE_UNRECOGNIZED_TOKEN = parent::CODE_LAST + 0x02;
+
     protected const CODE_UNEXPECTED_SYNTAX_ERROR = parent::CODE_LAST + 0x03;
+
     protected const CODE_INSTANTIATION_ERROR = parent::CODE_LAST + 0x04;
 
     protected const CODE_LAST = parent::CODE_LAST + 0x04;
@@ -33,7 +36,6 @@ class InstantiationException extends BaseInstantiationException implements DSLEx
     }
 
     /**
-     * @param string $char
      *
      * @return non-empty-string
      */
@@ -58,7 +60,6 @@ class InstantiationException extends BaseInstantiationException implements DSLEx
 
     /**
      * @param non-empty-string $char
-     * @param string $dsl
      * @param int<0, max> $offset
      *
      * @return static
@@ -75,7 +76,6 @@ class InstantiationException extends BaseInstantiationException implements DSLEx
     }
 
     /**
-     * @param string $dsl
      * @param int<0, max> $offset
      *
      * @return static
@@ -91,8 +91,6 @@ class InstantiationException extends BaseInstantiationException implements DSLEx
     }
 
     /**
-     * @param string $dsl
-     * @param \Throwable $e
      *
      * @return static
      */

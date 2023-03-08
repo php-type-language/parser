@@ -13,9 +13,6 @@ use Hyper\Parser\Node\Stmt\Statement;
  */
 class Parameter extends Node
 {
-    /**
-     * @param Statement $value
-     */
     public function __construct(
         public readonly Statement $value
     ) {

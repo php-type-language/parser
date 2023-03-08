@@ -32,9 +32,6 @@ use Hyper\Type\TypeInterface;
  */
 final class TypeBuilder
 {
-    /**
-     * @param RepositoryInterface $types
-     */
     public function __construct(
         private readonly RepositoryInterface $types,
     ) {
@@ -42,7 +39,6 @@ final class TypeBuilder
 
     /**
      * @param TypeStmt $type
-     * @return TypeInterface
      */
     public function make(TypeStmt $type): TypeInterface
     {
@@ -102,7 +98,6 @@ final class TypeBuilder
     /**
      * @param Argument $argument
      *
-     * @return mixed
      */
     private function getArgumentValue(Argument $argument): mixed
     {
@@ -128,7 +123,6 @@ final class TypeBuilder
 
     /**
      * @param TypeStmt $stmt
-     * @return bool
      */
     private function isNonTypeClass(TypeStmt $stmt): bool
     {

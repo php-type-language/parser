@@ -57,10 +57,8 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @param LexerInterface $lexer
      * @param GrammarConfigArray $grammar
      *
-     * @return ParserCombinator
      */
     private function createParser(LexerInterface $lexer, array $grammar): ParserCombinator
     {
@@ -77,7 +75,6 @@ final class Parser implements ParserInterface
     /**
      * @param GrammarConfigArray $grammar
      *
-     * @return Lexer
      */
     private function createLexer(array $grammar): Lexer
     {
@@ -101,28 +98,28 @@ final class Parser implements ParserInterface
 
         try {
             return $this->parser->parse($source, $options);
-        } catch (UnexpectedTokenException $e) {
-            $token = $e->getToken();
+        } catch (UnexpectedTokenException $unexpectedTokenException) {
+            $token = $unexpectedTokenException->getToken();
             throw ParseException::fromUnexpectedToken(
                 $token->getValue(),
                 $source->getContents(),
                 $token->getOffset(),
             );
-        } catch (UnrecognizedTokenException $e) {
-            $token = $e->getToken();
+        } catch (UnrecognizedTokenException $unrecognizedTokenException) {
+            $token = $unrecognizedTokenException->getToken();
             throw ParseException::fromUnrecognizedToken(
                 $token->getValue(),
                 $source->getContents(),
                 $token->getOffset(),
             );
-        } catch (RuntimeExceptionInterface $e) {
-            $token = $e->getToken();
+        } catch (RuntimeExceptionInterface $runtimeException) {
+            $token = $runtimeException->getToken();
             throw ParseException::fromUnrecognizedSyntaxError(
                 $source->getContents(),
                 $token->getOffset(),
             );
-        } catch (\Error $e) {
-            throw ParseException::fromTypeInstantiationError($source->getContents(), $e);
+        } catch (\Error $error) {
+            throw ParseException::fromTypeInstantiationError($source->getContents(), $error);
         }
     }
 }

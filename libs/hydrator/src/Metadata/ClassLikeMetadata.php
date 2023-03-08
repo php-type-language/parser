@@ -24,7 +24,6 @@ abstract class ClassLikeMetadata
 
     /**
      * @param non-empty-string $name
-     * @param FieldMetadata $field
      *
      * @return $this
      */

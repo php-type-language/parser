@@ -79,9 +79,7 @@ final class Repository implements MutableRepositoryInterface
 
     /**
      * @param non-empty-string $type
-     * @param array $parameters
      *
-     * @return TypeInterface
      * @throws \ReflectionException
      */
     private function new(string $type, array $parameters = []): TypeInterface

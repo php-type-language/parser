@@ -12,18 +12,11 @@ use Phplrt\Contracts\Lexer\TokenInterface;
  */
 class IntLiteralStmt extends Literal
 {
-    /**
-     * @param int $value
-     */
     final public function __construct(
         public readonly int $value,
     ) {
     }
 
-    /**
-     * @param TokenInterface $token
-     * @return self
-     */
     public static function parse(TokenInterface $token): self
     {
         return self::fromString($token->getValue());
@@ -32,7 +25,6 @@ class IntLiteralStmt extends Literal
     /**
      * @param numeric-string $expr
      *
-     * @return self
      */
     public static function fromString(string $expr): self
     {
@@ -71,9 +63,6 @@ class IntLiteralStmt extends Literal
         return [$isNegative, (int)$literal];
     }
 
-    /**
-     * @return int
-     */
     public function getValue(): int
     {
         return $this->value;

@@ -17,9 +17,6 @@ final class Hydrator implements HydratorInterface
      */
     public readonly Map $classes;
 
-    /**
-     * @param RepositoryInterface $types
-     */
     public function __construct(
         private readonly RepositoryInterface $types = new Repository(),
     ) {

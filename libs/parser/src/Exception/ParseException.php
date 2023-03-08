@@ -9,8 +9,11 @@ use Phplrt\Position\Position;
 class ParseException extends \LogicException implements ParserExceptionInterface
 {
     protected const CODE_UNEXPECTED_TOKEN = 0x01;
+
     protected const CODE_UNRECOGNIZED_TOKEN = 0x02;
+
     protected const CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
+
     protected const CODE_INSTANTIATION_ERROR = 0x04;
 
     final public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
@@ -19,7 +22,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param string $expression
      * @param int<0, max> $offset
      *
      * @return non-empty-string
@@ -37,10 +39,8 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param non-empty-string $char
-     * @param string $expression
      * @param int<0, max> $offset
      *
-     * @return self
      */
     public static function fromUnexpectedToken(string $char, string $expression, int $offset): self
     {
@@ -54,7 +54,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param string $char
      *
      * @return non-empty-string
      */
@@ -68,7 +67,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param string $expression
      *
      * @return non-empty-string
      */
@@ -85,7 +83,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
         }
 
         if (\strlen($expression) > 30) {
-            $expression = \substr($expression, 0, 27) . '...';
+            return \substr($expression, 0, 27) . '...';
         }
 
         return $expression;
@@ -93,7 +91,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param non-empty-string $char
-     * @param string $expression
      * @param int<0, max> $offset
      *
      * @return static
@@ -110,7 +107,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param string $expression
      * @param int<0, max> $offset
      *
      * @return static
@@ -126,8 +122,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param string $expression
-     * @param \Throwable $e
      *
      * @return static
      */

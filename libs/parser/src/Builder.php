@@ -40,12 +40,6 @@ final class Builder implements BuilderInterface
         return $result;
     }
 
-    /**
-     * @param Node $node
-     * @param ContextInterface $ctx
-     *
-     * @return void
-     */
     private function process(Node $node, ContextInterface $ctx): void
     {
         $token = $ctx->getToken();

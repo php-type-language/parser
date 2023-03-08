@@ -14,11 +14,6 @@ abstract class VariadicType implements VariadicTypeInterface
      */
     private readonly array $types;
 
-    /**
-     * @param TypeInterface $first
-     * @param TypeInterface $second
-     * @param TypeInterface ...$other
-     */
     public function __construct(
         TypeInterface $first,
         TypeInterface $second,
