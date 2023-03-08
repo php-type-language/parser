@@ -40,9 +40,8 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     /**
      * @param non-empty-string $char
      * @param int<0, max> $offset
-     *
      */
-    public static function fromUnexpectedToken(string $char, string $expression, int $offset): self
+    public static function fromUnexpectedToken(string $char, string $expression, int $offset): static
     {
         $message = \vsprintf('Syntax error, unexpected %s in "%s" %s', [
             self::escapeChar($char),
@@ -54,7 +53,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     *
      * @return non-empty-string
      */
     private static function escapeChar(string $char): string
@@ -67,7 +65,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     *
      * @return non-empty-string
      */
     private static function escapeSource(string $expression): string
@@ -92,10 +89,8 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     /**
      * @param non-empty-string $char
      * @param int<0, max> $offset
-     *
-     * @return static
      */
-    public static function fromUnrecognizedToken(string $char, string $expression, int $offset): self
+    public static function fromUnrecognizedToken(string $char, string $expression, int $offset): static
     {
         $message = \vsprintf('Syntax error, unrecognized %s in "%s" %s', [
             self::escapeChar($char),
@@ -108,10 +103,8 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param int<0, max> $offset
-     *
-     * @return static
      */
-    public static function fromUnrecognizedSyntaxError(string $expression, int $offset): self
+    public static function fromUnrecognizedSyntaxError(string $expression, int $offset): static
     {
         $message = \vsprintf('Unrecognized syntax error, in "%s" %s', [
             self::escapeSource($expression),
@@ -121,11 +114,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
         return new static($message, self::CODE_UNEXPECTED_SYNTAX_ERROR);
     }
 
-    /**
-     *
-     * @return static
-     */
-    public static function fromTypeInstantiationError(string $expression, \Throwable $e): self
+    public static function fromTypeInstantiationError(string $expression, \Throwable $e): static
     {
         $message = 'An internal error occurred while parsing "%s": %s';
         $message = \sprintf($message, self::escapeSource($expression), $e->getMessage());
