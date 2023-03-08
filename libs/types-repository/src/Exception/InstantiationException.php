@@ -17,9 +17,6 @@ class InstantiationException extends \OutOfRangeException implements TypeExcepti
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return static
-     */
     public static function fromEmptyName(): static
     {
         return new static('Type name may not be empty', self::CODE_EMPTY_NAME);
@@ -28,8 +25,6 @@ class InstantiationException extends \OutOfRangeException implements TypeExcepti
     /**
      * @param non-empty-string $name
      * @param array<non-empty-string> $available
-     *
-     * @return static
      */
     public static function fromUndefinedType(string $name, array $available = []): static
     {
