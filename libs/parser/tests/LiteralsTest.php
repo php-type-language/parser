@@ -59,7 +59,7 @@ class LiteralsTest extends TestCase
         $this->assertSame($value, $ast->value);
     }
 
-    protected function floatLiteralsDataProvider(): array
+    public static function floatLiteralsDataProvider(): array
     {
         return [
             '1.234'  => ['1.234', 1.234],
@@ -83,7 +83,7 @@ class LiteralsTest extends TestCase
         ];
     }
 
-    protected function intLiteralsDataProvider(): array
+    public static function intLiteralsDataProvider(): array
     {
         return [
             '1234'        => ['1234', 1234],
@@ -107,7 +107,7 @@ class LiteralsTest extends TestCase
         ];
     }
 
-    protected function boolLiteralsDataProvider(): array
+    public static function boolLiteralsDataProvider(): array
     {
         return [
             'true'  => ['true', true],
@@ -119,7 +119,7 @@ class LiteralsTest extends TestCase
         ];
     }
 
-    protected function nullLiteralsDataProvider(): array
+    public static function nullLiteralsDataProvider(): array
     {
         return [
             'null'  => ['null'],
@@ -128,7 +128,7 @@ class LiteralsTest extends TestCase
         ];
     }
 
-    protected function stringLiteralsDataProvider(): array
+    public static function stringLiteralsDataProvider(): array
     {
         $single  = static fn(string $value): string => "'" . \addcslashes($value, "'") . "'";
         $_single = static fn(string $value): string => 'single quoted ' . $single($value);
