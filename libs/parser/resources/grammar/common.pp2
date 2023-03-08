@@ -1,0 +1,17 @@
+
+Name
+  : FullQualifiedName()
+  | RelativeName()
+  ;
+
+FullQualifiedName  -> {
+    return Node\FullQualifiedName::parse($children);
+}
+  : ::T_NS_DELIMITER:: <T_NAME> (::T_NS_DELIMITER:: <T_NAME>)*
+  ;
+
+RelativeName -> {
+    return Node\Name::parse($children);
+}
+  : <T_NAME> (::T_NS_DELIMITER:: <T_NAME>)*
+  ;

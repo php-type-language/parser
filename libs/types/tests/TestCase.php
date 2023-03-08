@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Hyper\Type\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
-/**
- * @group type
- */
+#[Group('types')]
 abstract class TestCase extends BaseTestCase
 {
 }

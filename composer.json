@@ -2,7 +2,7 @@
     "name": "hyper/hyper",
     "license": "MIT",
     "type": "library",
-    "description": "PHP DataMapper Database Layer",
+    "description": "PHP DataMapper Layer",
     "homepage": "https://github.com/hyper-php",
     "authors": [
         {
@@ -13,30 +13,36 @@
     ],
     "repositories": [
         {"type": "path", "url": "libs/hydrator"},
-        {"type": "path", "url": "libs/pool"},
-        {"type": "path", "url": "libs/pool-doctrine"},
+        {"type": "path", "url": "libs/parser"},
         {"type": "path", "url": "libs/types"},
         {"type": "path", "url": "libs/types-dsl"},
         {"type": "path", "url": "libs/types-repository"}
     ],
     "require": {
         "php": "^8.1",
-        "hyper/pool": "^1.0",
-        "hyper/pool-doctrine": "^1.0",
+        "hyper/hydrator": "^1.0",
+        "hyper/parser": "^1.0",
         "hyper/types": "^1.0",
         "hyper/types-dsl": "^1.0",
-        "hyper/types-repository": "^1.0",
-        "hyper/hydrator": "^1.0"
+        "hyper/types-repository": "^1.0"
     },
     "require-dev": {
-        "doctrine/dbal": "4.0.0-beta1 as 3.5.0",
-        "doctrine/orm": "^3.0",
+        "extended-type-system/type": "^0.1",
         "phplrt/phplrt": "^3.2",
         "jetbrains/phpstorm-attributes": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.8",
-        "phpunit/phpunit": "^9.5.20",
-        "symfony/var-dumper": "^5.4|^6.0",
-        "vimeo/psalm": "^4.22"
+        "friendsofphp/php-cs-fixer": "^3.14",
+        "ffi/var-dumper": "^1.0",
+        "phpunit/phpunit": "^10.0",
+        "vimeo/psalm": "^5.7"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hyper\\Hydrator\\Tests\\": "libs/hydrator/tests",
+            "Hyper\\Parser\\Tests\\": "libs/parser/tests",
+            "Hyper\\Type\\Tests\\": "libs/types/tests",
+            "Hyper\\Type\\DSL\\Tests\\": "libs/types-dsl/tests",
+            "Hyper\\Type\\Repository\\Tests\\": "libs/types-repository/tests"
+        }
     },
     "extra": {
         "branch-alias": {

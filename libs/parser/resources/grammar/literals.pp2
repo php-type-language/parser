@@ -1,0 +1,52 @@
+
+Literal
+  : StringLiteral()
+  | FloatLiteral()
+  | IntLiteral()
+  | BoolLiteral()
+  | NullLiteral()
+  | ClassConstLiteral()
+  ;
+
+StringLiteral -> {
+    return Node\Literal\StringLiteralStmt::parse($token, $token->getName() === 'T_DQ_STRING_LITERAL');
+}
+  : <T_SQ_STRING_LITERAL>
+  | <T_DQ_STRING_LITERAL>
+  ;
+
+FloatLiteral -> { return Node\Literal\FloatLiteralStmt::parse($token); }
+  : <T_FLOAT_LITERAL>
+  ;
+
+IntLiteral -> { return Node\Literal\IntLiteralStmt::parse($token); }
+  : <T_INT_LITERAL>
+  ;
+
+BoolLiteral -> { return Node\Literal\BoolLiteralStmt::parse($token); }
+  : <T_BOOL_LITERAL>
+  ;
+
+NullLiteral -> { return new Node\Literal\NullLiteralStmt(); }
+  : <T_NULL_LITERAL>
+  ;
+
+ClassConstLiteral -> {
+    if (\count($children) === 3) {
+        return new Node\Stmt\ClassConstMask(
+            $children[0],
+            $children[1]->getValue(),
+        );
+    }
+
+    if ($children[1]->getName() === 'T_ASTERISK') {
+        return new Node\Stmt\ClassConstMask($children[0]);
+    }
+
+    return new Node\Stmt\ClassConst(
+        $children[0],
+        $children[1]->getValue()
+    );
+}
+  : Name() ::T_DOUBLE_COLON:: (<T_NAME><T_ASTERISK>|<T_NAME>|<T_ASTERISK>)
+  ;

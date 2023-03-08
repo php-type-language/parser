@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Hyper\Hydrator\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
-/**
- * @group hydrator
- */
+#[Group('hydrator')]
 abstract class TestCase extends BaseTestCase
 {
 }

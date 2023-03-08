@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Phplrt\Compiler\Compiler;
+
+if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    throw new \LogicException(
+        'Warning: The console should be invoked via the CLI '
+        . 'version of PHP, not the ' . PHP_SAPI . ' SAPI'
+    );
+}
+
+foreach ([
+    __DIR__ . '/../../../vendor/autoload.php',
+    __DIR__ . '/../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/vendor/autoload.php',
+] as $file) {
+    if (\is_file($file)) {
+        require_once $file;
+        break;
+    }
+}
+
+$grammar = (new Compiler())
+    ->load(new SplFileInfo(__DIR__ . '/../resources/grammar.pp2'))
+    ->build()
+        ->withClassUsage('Hyper\\Parser\\Node')
+;
+
+file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar->generate());

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
          colors="true"
          backupGlobals="true"
          stopOnFailure="false"
          processIsolation="false"
-         backupStaticAttributes="false"
          bootstrap="vendor/autoload.php"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
+         cacheDirectory="vendor/.phpunit.cache"
+         backupStaticProperties="false"
 >
     <coverage>
         <include>
@@ -17,7 +15,7 @@
         </include>
     </coverage>
     <testsuites>
-        <testsuite name="TestSuite">
+        <testsuite name="libs">
             <directory suffix="TestCase.php">tests</directory>
         </testsuite>
     </testsuites>

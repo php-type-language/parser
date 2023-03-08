@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Hyper\Type\Repository;
 
-use Hyper\Type\TypeInterface;
-
+/**
+ * @template TOut of object
+ */
 interface TypeInstantiatorInterface
 {
     /**
-     * @param class-string<TypeInterface> $type
-     * @param array $args
+     * @param class-string<TOut> $type
+     * @param array|(\ArrayAccess&\Countable&\Traversable) $args
      *
-     * @return TypeInterface
+     * @return TOut
      */
-    public function new(string $type, array $args = []): TypeInterface;
+    public function new(string $type, iterable $args = []): object;
 }

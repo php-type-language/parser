@@ -6,13 +6,13 @@ namespace Hyper\Type\DSL;
 
 use Hyper\Type\DSL\Exception\RegistrationException;
 use Hyper\Type\DSL\Runtime\TypeBuilder;
+use Hyper\Type\Repository\MutableRepositoryInterface;
 use Hyper\Type\Repository\Repository as TypesRepository;
-use Hyper\Type\Repository\RepositoryInterface;
 use Hyper\Type\TypeInterface;
 use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Parser\ParserInterface;
 
-final class Repository implements RepositoryInterface
+final class Repository implements MutableRepositoryInterface
 {
     /**
      * @var ParserInterface

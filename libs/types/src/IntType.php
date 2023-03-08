@@ -4,35 +4,20 @@ declare(strict_types=1);
 
 namespace Hyper\Type;
 
-use Hyper\Type\Exception\ParseException;
-use Hyper\Type\Exception\SerializeException;
-
 /**
- * @template-implements TypeInterface<int, int>
+ * @template TMin of int
+ * @template TMax of int
  */
-final class IntType implements TypeInterface
+class IntType extends Scalar
 {
     /**
-     * {@inheritDoc}
+     * @param TMin $min
+     * @param TMax $max
      */
-    public function parse(mixed $value): int
-    {
-        if (!\is_int($value)) {
-            throw ParseException::fromInvalidType('int', $value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function serialize(mixed $value): int
-    {
-        if (!\is_int($value)) {
-            throw SerializeException::fromInvalidType('int', $value);
-        }
-
-        return $value;
+    public function __construct(
+        public readonly int $min = \PHP_INT_MIN,
+        public readonly int $max = \PHP_INT_MAX,
+    ) {
+        assert($this->min <= $this->max, 'Min must be less or equal than max in range parameters');
     }
 }

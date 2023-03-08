@@ -1,0 +1,99 @@
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Language Syntax Summary
+ * -----------------------------------------------------------------------------
+ */
+
+%include grammar/lexemes
+%include grammar/literals
+%include grammar/template
+%include grammar/shape
+%include grammar/common
+
+%pragma root Statement
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Constant Statement
+ * -----------------------------------------------------------------------------
+ *
+ *  A constant statement can be evaluated during translation rather than
+ *  runtime, and accordingly may be used in any place that a constant may be.
+ *
+ */
+
+Statement
+  : BinaryStatement()
+  ;
+
+// Binary statements/expressions
+
+BinaryStatement
+  : UnionTypeStatement()
+  ;
+
+UnionTypeStatement -> {
+    if (\count($children) === 2) {
+        return new Node\Stmt\UnionType($children[0], $children[1]);
+    }
+
+    return $children;
+}
+  : IntersectionTypeStatement() (::T_OR:: UnionTypeStatement())?
+  ;
+
+IntersectionTypeStatement -> {
+    if (\count($children) === 2) {
+        return new Node\Stmt\IntersectionType($children[0], $children[1]);
+    }
+
+    return $children;
+}
+  : UnaryStatement() (::T_AND:: IntersectionTypeStatement())?
+  ;
+
+// Unary statements/expressions
+
+UnaryStatement
+  : NullableTypeStatement()
+  ;
+
+NullableTypeStatement -> {
+    if (\count($children) > 1) {
+        return new Node\Stmt\NullableType($children[0]);
+    }
+
+    return $children[0];
+}
+  : PrimaryStatement() <T_NULLABLE>?
+  ;
+
+// Primary
+
+PrimaryStatement
+  : ::T_PARENTHESIS_OPEN:: Statement() ::T_PARENTHESIS_CLOSE::
+  | NamedTypeStmt()
+  | Literal()
+  ;
+
+NamedTypeStmt -> {
+    $arguments = $parameters = null;
+
+    $options = \end($children);
+    if ($options instanceof Node\Shape\Shape) {
+        $arguments = $options;
+    } elseif ($options instanceof Node\Template\Parameters) {
+        $parameters = $options;
+    }
+
+    return new Node\Stmt\NamedType(
+        name: $children[0],
+        parameters: $parameters,
+        arguments: $arguments,
+    );
+}
+  : Name() (TemplateParameters() | ShapeArguments())?
+  ;
+
+

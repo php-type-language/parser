@@ -1,0 +1,34 @@
+{
+    "name": "hyper/parser",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "psr/log": "^1.0|^2.0|^3.0",
+        "phplrt/lexer": "^3.2",
+        "phplrt/parser": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hyper\\Parser\\": "src"
+        }
+    },
+    "require-dev": {
+        "phplrt/phplrt": "^3.2",
+        "phpunit/phpunit": "^10.0",
+        "vimeo/psalm": "^5.7"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hyper\\Parser\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

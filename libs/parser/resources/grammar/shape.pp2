@@ -1,0 +1,57 @@
+
+ShapeArguments -> {
+    $isSealed = \end($children) instanceof Node\Shape\Argument;
+
+    if ($isSealed) {
+        return new Node\Shape\Shape($children);
+    }
+
+    return new Node\Shape\UnsealedShape(\array_slice($children, 0, -1));
+}
+  : ::T_BRACE_OPEN::
+      ShapeArgument()? (::T_COMMA:: ShapeArgument())* ::T_COMMA::?
+      <T_ELLIPSIS>? ::T_COMMA::?
+    ::T_BRACE_CLOSE::
+  ;
+
+ShapeArgument
+  : OptionalNamedShapeArgument()
+  | NamedShapeArgument()
+  | AnonymousShapeArgument()
+  ;
+
+OptionalNamedShapeArgument -> {
+    return new Node\Shape\OptionalNamedArgument(
+        $children[0]->getValue(),
+        $children[1],
+    );
+}
+  : ShapeKey() ::T_NULLABLE:: ::T_COLON:: ShapeValue()
+  ;
+
+NamedShapeArgument -> {
+    return new Node\Shape\NamedArgument(
+        $children[0]->getValue(),
+        $children[1],
+    );
+}
+  : ShapeKey() ::T_COLON:: ShapeValue()
+  ;
+
+AnonymousShapeArgument -> {
+    return new Node\Shape\Argument($children[0]);
+}
+  : ShapeValue()
+  ;
+
+ShapeKey
+  : <T_NAME>
+  | <T_INT_LITERAL>
+  | <T_BOOL_LITERAL>
+  | <T_NULL_LITERAL>
+  ;
+
+ShapeValue -> { return \is_array($children) ? $children[0] : $children; }
+  : Statement()
+  ;
+

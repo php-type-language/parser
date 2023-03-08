@@ -4,43 +4,20 @@ declare(strict_types=1);
 
 namespace Hyper\Type;
 
-use Hyper\Type\Exception\ParseException;
-use Hyper\Type\Exception\SerializeException;
-
 /**
- * @template-implements TypeInterface<int|float, float>
+ * @template TMin of float
+ * @template TMax of float
  */
-final class FloatType implements TypeInterface
+class FloatType extends Scalar
 {
     /**
-     * {@inheritDoc}
+     * @param TMin $min
+     * @param TMax $max
      */
-    public function parse(mixed $value): float
-    {
-        if (\is_int($value)) {
-            return (float)$value;
-        }
-
-        if (!\is_float($value)) {
-            throw ParseException::fromInvalidType('float', $value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function serialize(mixed $value): float
-    {
-        if (\is_int($value)) {
-            return (float)$value;
-        }
-
-        if (!\is_float($value)) {
-            throw SerializeException::fromInvalidType('float', $value);
-        }
-
-        return $value;
+    public function __construct(
+        public readonly float $min = \PHP_FLOAT_MIN,
+        public readonly float $max = \PHP_FLOAT_MAX,
+    ) {
+        assert($this->min <= $this->max, 'Min must be less or equal than max in range parameters');
     }
 }
