@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.1' ]
+        php: [ '8.2' ]
         os: [ ubuntu-latest ]
 
     steps:
@@ -64,7 +64,7 @@ jobs:
 
       - name: Static Analysis
         continue-on-error: true
-        run: vendor/bin/psalm --no-cache
+        run: composer psalm
 
   coding-standards:
     name: Coding Standards
@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.1' ]
+        php: [ '8.2' ]
         os: [ ubuntu-latest ]
 
     steps:
@@ -93,7 +93,7 @@ jobs:
           command: composer update --ignore-platform-reqs --prefer-dist --no-interaction --no-progress
 
       - name: Check Coding Standards
-        run: vendor/bin/phpcs --standard=phpcs.xml
+        run: composer phpcs
 
   test:
     name: Build (${{matrix.php}}, ${{ matrix.os }}, ${{ matrix.stability }})
@@ -123,4 +123,4 @@ jobs:
           command: composer update --${{ matrix.stability }} --ignore-platform-reqs --prefer-dist --no-interaction --no-progress
 
       - name: Execute Tests
-        run: vendor/bin/phpunit
+        run: composer test
