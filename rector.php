@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\Assign\SplitDoubleAssignRector;
+use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\CodingStyle\Rector\ClassConst\VarConstantCommentRector;
 use Rector\CodingStyle\Rector\ClassMethod\UnSpreadOperatorRector;
 use Rector\CodingStyle\Rector\FuncCall\ConsistentPregDelimiterRector;
@@ -70,5 +72,9 @@ return static function (RectorConfig $config): void {
         //  + public function __construct(array $arg) { ... }   // BC FAIL
         //
         UnSpreadOperatorRector::class,
+
+        // Totally pointless "improvements"
+        CatchExceptionNameMatchingTypeRector::class,
+        SplitDoubleAssignRector::class,
     ]);
 };

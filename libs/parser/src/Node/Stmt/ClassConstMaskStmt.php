@@ -13,7 +13,6 @@ use Hyper\Parser\Node\Name;
 class ClassConstMaskStmt extends Statement
 {
     /**
-     * @param Name $class
      * @param non-empty-string|null $constant
      */
     public function __construct(

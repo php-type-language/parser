@@ -17,17 +17,11 @@ class RegistrationException extends \OutOfRangeException implements TypeExceptio
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return static
-     */
     public static function fromEmptyName(): static
     {
         return new static('Type name may not be empty', self::CODE_EMPTY_NAME);
     }
 
-    /**
-     * @return static
-     */
     public static function fromEmptyAliasName(): static
     {
         return new static('Type alias name may not be empty', self::CODE_EMPTY_ALIAS_NAME);

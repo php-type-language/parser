@@ -36,7 +36,7 @@ class ArrayType extends Type implements ComplexTypeInterface, GenericTypeInterfa
 
     /**
      * @param TKey|Struct $key
-     * @param TValue $value
+     * @param TValue|null $value
      */
     public function __construct(
         TypeInterface|Struct $key = null,

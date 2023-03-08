@@ -21,6 +21,7 @@ use Phplrt\Contracts\Parser\ParserInterface;
 final class Repository implements MutableRepositoryInterface, \IteratorAggregate
 {
     private readonly TypeBuilder $builder;
+
     private readonly TypesRepository $parent;
 
     /**

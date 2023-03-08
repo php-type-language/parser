@@ -17,11 +17,15 @@ use Hyper\Type\Variadic\UnionType;
 class Struct implements ComplexTypeInterface, \IteratorAggregate, \Countable, \ArrayAccess
 {
     private const MASK_NONE = 0x00;
+
     private const MASK_INT = 0x01;
+
     private const MASK_STRING = 0x02;
+
     private const MASK_ARRAY_KEY = self::MASK_INT | self::MASK_STRING;
 
     private static ?self $any = null;
+
     private static ?self $empty = null;
 
     private ?TypeInterface $key = null;
@@ -54,7 +58,7 @@ class Struct implements ComplexTypeInterface, \IteratorAggregate, \Countable, \A
 
         $types = self::MASK_NONE;
 
-        foreach ($this->fields as $key => $value) {
+        foreach (array_keys($this->fields) as $key) {
             $types |= \is_int($key) ? self::MASK_INT : self::MASK_STRING;
         }
 
@@ -93,14 +97,14 @@ class Struct implements ComplexTypeInterface, \IteratorAggregate, \Countable, \A
         return $this->fields[$offset] ?? throw new \OutOfBoundsException('Invalid struct key "' . $offset . '"');
     }
 
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(mixed $offset, mixed $value): never
     {
         assert(\is_int($offset) || \is_string($offset));
 
         throw new \LogicException(self::class . ' objects are immutable');
     }
 
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset(mixed $offset): never
     {
         assert(\is_int($offset) || \is_string($offset));
 
