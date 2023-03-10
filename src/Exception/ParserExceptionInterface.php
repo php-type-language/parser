@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Exception;
+namespace TypeLang\Parser\Exception;
 
 interface ParserExceptionInterface extends \Throwable
 {

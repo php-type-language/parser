@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Node\Literal;
+namespace TypeLang\Parser\Node\Literal;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser
+ * @psalm-internal TypeLang\Parser
  */
 class NullLiteralStmt extends LiteralStmt
 {

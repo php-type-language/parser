@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Node\Stmt\Shape;
+namespace TypeLang\Parser\Node\Stmt\Shape;
 
-use Hyper\Parser\Node\Literal\LiteralStmt;
-use Hyper\Parser\Node\Literal\StringLiteralStmt;
-use Hyper\Parser\Node\Node;
-use Hyper\Parser\Node\Stmt\Statement;
+use TypeLang\Parser\Node\Literal\LiteralStmt;
+use TypeLang\Parser\Node\Literal\StringLiteralStmt;
+use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\Stmt\Statement;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser
+ * @psalm-internal TypeLang\Parser
  */
 class Argument extends Node
 {

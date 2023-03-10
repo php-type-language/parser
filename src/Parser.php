@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser;
+namespace TypeLang\Parser;
 
-use Hyper\Parser\Exception\ParseException;
-use Hyper\Parser\Node\Stmt\NamedTypeStmt;
+use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Node\Stmt\NamedTypeStmt;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Parser\ParserInterface;

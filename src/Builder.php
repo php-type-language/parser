@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser;
+namespace TypeLang\Parser;
 
-use Hyper\Parser\Node\Node;
+use TypeLang\Parser\Node\Node;
 use Phplrt\Parser\BuilderInterface;
 use Phplrt\Parser\ContextInterface;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser
+ * @psalm-internal TypeLang\Parser
  */
 final class Builder implements BuilderInterface
 {

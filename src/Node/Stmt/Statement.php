@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Node\Stmt;
+namespace TypeLang\Parser\Node\Stmt;
 
-use Hyper\Parser\Node\Node;
+use TypeLang\Parser\Node\Node;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser
+ * @psalm-internal TypeLang\Parser
  */
 abstract class Statement extends Node
 {

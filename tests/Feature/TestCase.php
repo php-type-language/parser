@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests\Feature;
+namespace TypeLang\Parser\Tests\Feature;
 
-use Hyper\Parser\Tests\Concern\InteractWithDocBlocks;
-use Hyper\Parser\Tests\TestCase as BaseTestCase;
+use TypeLang\Parser\Tests\Concern\InteractWithDocBlocks;
+use TypeLang\Parser\Tests\TestCase as BaseTestCase;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Source\File;
 use PHPUnit\Framework\Attributes\Group;

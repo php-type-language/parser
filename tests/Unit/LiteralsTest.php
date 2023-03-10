@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests\Unit;
+namespace TypeLang\Parser\Tests\Unit;
 
-use Hyper\Parser\Node\Literal\BoolLiteralStmt;
-use Hyper\Parser\Node\Literal\FloatLiteralStmt;
-use Hyper\Parser\Node\Literal\IntLiteralStmt;
-use Hyper\Parser\Node\Literal\NullLiteralStmt;
-use Hyper\Parser\Node\Literal\StringLiteralStmt;
-use Hyper\Parser\Tests\TestCase;
+use TypeLang\Parser\Node\Literal\BoolLiteralStmt;
+use TypeLang\Parser\Node\Literal\FloatLiteralStmt;
+use TypeLang\Parser\Node\Literal\IntLiteralStmt;
+use TypeLang\Parser\Node\Literal\NullLiteralStmt;
+use TypeLang\Parser\Node\Literal\StringLiteralStmt;
+use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 

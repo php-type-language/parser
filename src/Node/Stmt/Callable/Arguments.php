@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Node\Stmt\Callable;
+namespace TypeLang\Parser\Node\Stmt\Callable;
 
-use Hyper\Parser\Node\Node;
+use TypeLang\Parser\Node\Node;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser
+ * @psalm-internal TypeLang\Parser
  */
 class Arguments extends Node
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests;
+namespace TypeLang\Parser\Tests;
 
-use Hyper\Parser\Tests\Concern\CompileGrammarIfPossible;
-use Hyper\Parser\Tests\Concern\InteractWithParser;
+use TypeLang\Parser\Tests\Concern\CompileGrammarIfPossible;
+use TypeLang\Parser\Tests\Concern\InteractWithParser;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 

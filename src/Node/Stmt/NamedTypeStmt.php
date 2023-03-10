@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Node\Stmt;
+namespace TypeLang\Parser\Node\Stmt;
 
-use Hyper\Parser\Node\Name;
-use Hyper\Parser\Node\Stmt\Shape\Arguments;
-use Hyper\Parser\Node\Stmt\Template\Parameters;
+use TypeLang\Parser\Node\Name;
+use TypeLang\Parser\Node\Stmt\Shape\Arguments;
+use TypeLang\Parser\Node\Stmt\Template\Parameters;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser
+ * @psalm-internal TypeLang\Parser
  */
 class NamedTypeStmt extends Statement
 {

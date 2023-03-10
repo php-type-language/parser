@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests\Concern;
+namespace TypeLang\Parser\Tests\Concern;
 
 use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;

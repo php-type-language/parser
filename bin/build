@@ -27,7 +27,7 @@ foreach ([
 $grammar = (new Compiler())
     ->load(new SplFileInfo(__DIR__ . '/../resources/grammar.pp2'))
     ->build()
-        ->withClassUsage('Hyper\\Parser\\Node')
+        ->withClassUsage('TypeLang\\Parser\\Node')
 ;
 
 file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar->generate());

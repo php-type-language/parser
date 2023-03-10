@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests\Feature;
+namespace TypeLang\Parser\Tests\Feature;
 
-use Hyper\Parser\Exception\ParseException;
+use TypeLang\Parser\Exception\ParseException;
 use Phplrt\Contracts\Position\PositionInterface;
 use Phplrt\Contracts\Source\FileInterface;
 use Phplrt\Contracts\Source\ReadableInterface;

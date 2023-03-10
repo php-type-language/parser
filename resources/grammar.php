@@ -1,6 +1,6 @@
 <?php
 
-use Hyper\Parser\Node;
+use TypeLang\Parser\Node;
 
 return [
     'initial' => 26,
@@ -39,7 +39,7 @@ return [
         'T_BLOCK_COMMENT',
     ],
     'transitions' => [
-        
+
     ],
     'grammar' => [
         0 => new \Phplrt\Parser\Grammar\Alternation([7, 8]),
@@ -178,11 +178,11 @@ return [
                 $children[1]->getValue(),
             );
         }
-    
+
         if ($children[1]->getName() === 'T_ASTERISK') {
             return new Node\Stmt\ClassConstMaskStmt($children[0]);
         }
-    
+
         return new Node\Stmt\ClassConstStmt(
             $children[0],
             $children[1]->getValue()
@@ -198,7 +198,7 @@ return [
         },
         39 => function (\Phplrt\Parser\Context $ctx, $children) {
             $isSealed = \array_pop($children);
-    
+
         return new Node\Stmt\Shape\Arguments($children, $isSealed);
         },
         31 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -240,11 +240,11 @@ return [
         },
         69 => function (\Phplrt\Parser\Context $ctx, $children) {
             $name = \array_shift($children);
-    
+
         $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\Arguments
             ? \array_shift($children)
             : new Node\Stmt\Callable\Arguments();
-    
+
         return new Node\Stmt\CallableTypeStmt(
             name: $name,
             arguments: $arguments,
@@ -263,7 +263,7 @@ return [
                 modifier: Node\Stmt\Callable\Modifier::VARIADIC,
             );
         }
-    
+
         return $children;
         },
         79 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -274,7 +274,7 @@ return [
                 : Node\Stmt\Callable\Modifier::VARIADIC
                 ;
         }
-    
+
         return new Node\Stmt\Callable\Argument(
             type: $children[0],
             modifier: $modifier,
@@ -282,14 +282,14 @@ return [
         },
         87 => function (\Phplrt\Parser\Context $ctx, $children) {
             $arguments = $parameters = null;
-    
+
         $options = \end($children);
         if ($options instanceof Node\Stmt\Shape\Arguments) {
             $arguments = $options;
         } elseif ($options instanceof Node\Stmt\Template\Parameters) {
             $parameters = $options;
         }
-    
+
         return new Node\Stmt\NamedTypeStmt(
             name: $children[0],
             parameters: $parameters,
@@ -300,14 +300,14 @@ return [
             if (\count($children) === 2) {
             return new Node\Stmt\UnionTypeStmt($children[0], $children[1]);
         }
-    
+
         return $children;
         },
         90 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 2) {
             return new Node\Stmt\IntersectionTypeStmt($children[0], $children[1]);
         }
-    
+
         return $children;
         },
         98 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -316,10 +316,10 @@ return [
                 ? $children[0]
                 : $children[1]
                 ;
-    
+
             return new Node\Stmt\NullableTypeStmt($statement);
         }
-    
+
         return $children[0];
         }
     ]

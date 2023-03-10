@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests\Concern;
+namespace TypeLang\Parser\Tests\Concern;
 
-use Hyper\Parser\Exception\ParseException;
-use Hyper\Parser\Node\Stmt\Statement;
-use Hyper\Parser\Parser;
+use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Node\Stmt\Statement;
+use TypeLang\Parser\Parser;
 use Phplrt\Contracts\Parser\ParserInterface;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\TestCase;
