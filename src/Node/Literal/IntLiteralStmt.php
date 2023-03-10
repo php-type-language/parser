@@ -32,7 +32,7 @@ class IntLiteralStmt extends LiteralStmt
     /**
      * @param numeric-string $literal
      *
-     * @return array{bool, int>
+     * @return array{bool, int}
      */
     private static function split(string $literal): array
     {

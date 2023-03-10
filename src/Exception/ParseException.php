@@ -14,7 +14,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     protected const CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
 
-    protected const CODE_INSTANTIATION_ERROR = 0x04;
+    protected const CODE_INTERNAL_ERROR = 0x04;
 
     final public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
     {
@@ -38,7 +38,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param non-empty-string $char
      * @param int<0, max> $offset
      */
     public static function fromUnexpectedToken(string $char, string $expression, int $offset): static
@@ -87,7 +86,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param non-empty-string $char
      * @param int<0, max> $offset
      */
     public static function fromUnrecognizedToken(string $char, string $expression, int $offset): static
@@ -114,11 +112,11 @@ class ParseException extends \LogicException implements ParserExceptionInterface
         return new static($message, self::CODE_UNEXPECTED_SYNTAX_ERROR);
     }
 
-    public static function fromTypeInstantiationError(string $expression, \Throwable $e): static
+    public static function fromInternalError(string $expression, \Throwable $e): static
     {
         $message = 'An internal error occurred while parsing "%s": %s';
         $message = \sprintf($message, self::escapeSource($expression), $e->getMessage());
 
-        return new static($message, self::CODE_INSTANTIATION_ERROR, $e);
+        return new static($message, self::CODE_INTERNAL_ERROR, $e);
     }
 }

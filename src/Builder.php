@@ -15,7 +15,7 @@ use Phplrt\Parser\ContextInterface;
 final class Builder implements BuilderInterface
 {
     /**
-     * @param array<non-empty-string|positive-int, callable(ContextInterface, mixed):mixed> $reducers
+     * @param array<int<0, max>|non-empty-string, callable(ContextInterface, mixed):mixed> $reducers
      */
     public function __construct(
         private readonly array $reducers,

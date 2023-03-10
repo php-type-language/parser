@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use Phplrt\Contracts\Source\ReadableInterface;
 use TypeLang\Parser\Exception\ParseException;
-use TypeLang\Parser\Node\Stmt\NamedTypeStmt;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Parser\ParserInterface;
@@ -17,6 +17,7 @@ use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
+use TypeLang\Parser\Node\Stmt\Statement;
 
 /**
  * @psalm-type GrammarConfigArray = array{
@@ -33,11 +34,6 @@ use Phplrt\Source\File;
 final class Parser implements ParserInterface
 {
     /**
-     * @var non-empty-string
-     */
-    private const GRAMMAR_PATHNAME = __DIR__ . '/../resources/grammar.php';
-
-    /**
      * @var ParserCombinator
      */
     private readonly ParserCombinator $parser;
@@ -49,16 +45,15 @@ final class Parser implements ParserInterface
 
     public function __construct()
     {
-        /** @var GrammarConfigArray $grammar */
-        $grammar = require self::GRAMMAR_PATHNAME;
+        /** @psalm-var GrammarConfigArray $grammar */
+        $grammar = require __DIR__ . '/../resources/grammar.php';
 
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
     }
 
     /**
-     * @param GrammarConfigArray $grammar
-     *
+     * @psalm-param GrammarConfigArray $grammar
      */
     private function createParser(LexerInterface $lexer, array $grammar): ParserCombinator
     {
@@ -73,8 +68,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @param GrammarConfigArray $grammar
-     *
+     * @psalm-param GrammarConfigArray $grammar
      */
     private function createLexer(array $grammar): Lexer
     {
@@ -82,13 +76,12 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @param string $source
-     * @param array $options
+     * @psalm-suppress ImplementedReturnTypeMismatch
      *
-     * @return list<NamedTypeStmt>
+     * @return list<Statement>
      * @throws ParseException
      */
-    public function parse($source, array $options = []): iterable
+    public function parse(mixed $source, array $options = []): iterable
     {
         if (\is_string($source)) {
             $source = \trim($source);
@@ -97,29 +90,53 @@ final class Parser implements ParserInterface
         $source = File::fromSources($source);
 
         try {
+            /** @var list<Statement> */
             return $this->parser->parse($source, $options);
-        } catch (UnexpectedTokenException $unexpectedTokenException) {
-            $token = $unexpectedTokenException->getToken();
-            throw ParseException::fromUnexpectedToken(
-                $token->getValue(),
-                $source->getContents(),
-                $token->getOffset(),
-            );
-        } catch (UnrecognizedTokenException $unrecognizedTokenException) {
-            $token = $unrecognizedTokenException->getToken();
-            throw ParseException::fromUnrecognizedToken(
-                $token->getValue(),
-                $source->getContents(),
-                $token->getOffset(),
-            );
-        } catch (RuntimeExceptionInterface $runtimeException) {
-            $token = $runtimeException->getToken();
-            throw ParseException::fromUnrecognizedSyntaxError(
-                $source->getContents(),
-                $token->getOffset(),
-            );
-        } catch (\Error $error) {
-            throw ParseException::fromTypeInstantiationError($source->getContents(), $error);
+        } catch (UnexpectedTokenException $e) {
+            throw $this->unexpectedTokenError($e, $source);
+        } catch (UnrecognizedTokenException $e) {
+            throw $this->unrecognizedTokenError($e, $source);
+        } catch (RuntimeExceptionInterface $e) {
+            throw $this->runtimeError($e, $source);
+        } catch (\Throwable $e) {
+            throw $this->internalError($e, $source);
         }
+    }
+
+    private function unexpectedTokenError(UnexpectedTokenException $e, ReadableInterface $source): ParseException
+    {
+        $token = $e->getToken();
+
+        throw ParseException::fromUnexpectedToken(
+            $token->getValue(),
+            $source->getContents(),
+            $token->getOffset(),
+        );
+    }
+
+    private function unrecognizedTokenError(UnrecognizedTokenException $e, ReadableInterface $source): ParseException
+    {
+        $token = $e->getToken();
+
+        throw ParseException::fromUnrecognizedToken(
+            $token->getValue(),
+            $source->getContents(),
+            $token->getOffset(),
+        );
+    }
+
+    private function runtimeError(RuntimeExceptionInterface $e, ReadableInterface $source): ParseException
+    {
+        $token = $e->getToken();
+
+        throw ParseException::fromUnrecognizedSyntaxError(
+            $source->getContents(),
+            $token->getOffset(),
+        );
+    }
+
+    private function internalError(\Throwable $e, ReadableInterface $source): ParseException
+    {
+        return ParseException::fromInternalError($source->getContents(), $e);
     }
 }
