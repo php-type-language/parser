@@ -83,10 +83,6 @@ final class Parser implements ParserInterface
      */
     public function parse(mixed $source, array $options = []): iterable
     {
-        if (\is_string($source)) {
-            $source = \trim($source);
-        }
-
         $source = File::fromSources($source);
 
         try {
