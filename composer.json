@@ -1,61 +1,28 @@
 {
-    "name": "hyper/hyper",
-    "license": "MIT",
+    "name": "hyper/parser",
     "type": "library",
-    "description": "PHP DataMapper Layer",
-    "homepage": "https://github.com/hyper-php",
-    "authors": [
-        {
-            "name": "Kirill Nesmeyanov",
-            "email": "nesk@xakep.ru",
-            "role": "maintainer"
-        }
-    ],
-    "repositories": [
-        {"type": "path", "url": "libs/bridge"},
-        {"type": "path", "url": "libs/dsl"},
-        {"type": "path", "url": "libs/hydrator"},
-        {"type": "path", "url": "libs/parser"},
-        {"type": "path", "url": "libs/repository"},
-        {"type": "path", "url": "libs/types"}
-    ],
+    "license": "MIT",
     "require": {
         "php": "^8.1",
-        "hyper/bridge": "^1.0",
-        "hyper/dsl": "^1.0",
-        "hyper/hydrator": "^1.0",
-        "hyper/parser": "^1.0",
-        "hyper/repository": "^1.0",
-        "hyper/types": "^1.0"
+        "psr/log": "^1.0|^2.0|^3.0",
+        "phplrt/lexer": "^3.2",
+        "phplrt/parser": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hyper\\Parser\\": "src"
+        }
     },
     "require-dev": {
-        "extended-type-system/type": "^0.1",
-        "jetbrains/phpstorm-attributes": "^1.0",
         "phplrt/phplrt": "^3.2",
-        "rector/rector": "^0.15",
-        "ffi/var-dumper": "^1.0",
         "phpunit/phpunit": "^10.0",
         "vimeo/psalm": "^5.8",
         "nikic/php-parser": "^4.15",
         "phpdocumentor/reflection-docblock": "^5.3"
     },
-    "replace": {
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php74": "*",
-        "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php81": "*"
-    },
     "autoload-dev": {
         "psr-4": {
-            "Hyper\\Bridge\\Tests\\": "libs/bridge/tests",
-            "Hyper\\DSL\\Tests\\": "libs/dsl/tests",
-            "Hyper\\Hydrator\\Tests\\": "libs/hydrator/tests",
-            "Hyper\\Parser\\Tests\\": "libs/parser/tests",
-            "Hyper\\Repository\\Tests\\": "libs/repository/tests",
-            "Hyper\\Type\\Tests\\": "libs/types/tests"
+            "Hyper\\Parser\\Tests\\": "tests"
         }
     },
     "extra": {

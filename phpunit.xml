@@ -11,12 +11,12 @@
 >
     <coverage>
         <include>
-            <directory suffix=".php">libs/*/src</directory>
+            <directory suffix=".php">src</directory>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="libs">
-            <directory>libs/*/tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <php>
