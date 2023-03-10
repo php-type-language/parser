@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
-use Phplrt\Lexer\Token\CompositeTokenInterface;
-
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
@@ -40,23 +38,31 @@ class StringLiteralStmt extends LiteralStmt
     ) {
     }
 
-    public static function parse(CompositeTokenInterface $token, bool $encoded = true): self
+    /**
+     * @param non-empty-string $value
+     */
+    public static function parse(string $value): self
     {
-        if ($encoded) {
-            $string = \str_replace('\"', '"', $token[0]->getValue());
-            return self::fromEncodedString($string);
+        assert(\strlen($value) >= 2);
+
+        $isDoubleQuoted = \str_starts_with($value, '"');
+
+        // Trim wrapping quotes
+        $value = \substr($value, 1, -1);
+
+        if ($isDoubleQuoted) {
+            return self::parseEncodedString(\str_replace('\"', '"', $value));
         }
 
-        $string = \str_replace("\'", "'", $token[0]->getValue());
-        return self::fromRawString($string);
+        return self::parseRawString(\str_replace("\'", "'", $value));
     }
 
-    public static function fromRawString(string $string): self
+    public static function parseRawString(string $string): self
     {
         return new self($string);
     }
 
-    public static function fromEncodedString(string $string): self
+    public static function parseEncodedString(string $string): self
     {
         if (\str_contains($string, '\\')) {
             // Replace double backslash to "\0"
@@ -75,7 +81,7 @@ class StringLiteralStmt extends LiteralStmt
             $string = \str_replace("\0", '\\\\', $string);
         }
 
-        return self::fromRawString($string);
+        return self::parseRawString($string);
     }
 
     /**
@@ -143,10 +149,5 @@ class StringLiteralStmt extends LiteralStmt
         };
 
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
-    }
-
-    public function getValue(): string
-    {
-        return $this->value;
     }
 }

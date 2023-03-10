@@ -4,14 +4,14 @@ Name
   | RelativeName()
   ;
 
-FullQualifiedName  -> {
-    return Node\FullQualifiedName::parse($children);
-}
-  : ::T_NS_DELIMITER:: <T_NAME> (::T_NS_DELIMITER:: <T_NAME>)*
+FullQualifiedName -> { return new Node\FullQualifiedName($children); }
+  : ::T_NS_DELIMITER:: NamePart() (::T_NS_DELIMITER:: NamePart())*
   ;
 
-RelativeName -> {
-    return Node\Name::parse($children);
-}
-  : <T_NAME> (::T_NS_DELIMITER:: <T_NAME>)*
+RelativeName -> { return new Node\Name($children); }
+  : NamePart() (::T_NS_DELIMITER:: NamePart())*
+  ;
+
+NamePart -> { return $children->getValue(); }
+  : <T_NAME>
   ;

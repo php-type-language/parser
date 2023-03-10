@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
-use Phplrt\Contracts\Lexer\TokenInterface;
-
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
@@ -22,15 +20,10 @@ class FloatLiteralStmt extends LiteralStmt
     }
 
     /**
-     * @return static
+     * @param numeric-string $value
      */
-    public static function parse(TokenInterface $token): self
+    public static function parse(string $value): self
     {
-        return new self((float)$token->getValue(), $token->getValue());
-    }
-
-    public function getValue(): float
-    {
-        return $this->value;
+        return new self((float)$value, $value);
     }
 }

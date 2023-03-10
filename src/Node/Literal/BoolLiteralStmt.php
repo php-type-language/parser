@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
-use Phplrt\Contracts\Lexer\TokenInterface;
-
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
@@ -21,16 +19,10 @@ class BoolLiteralStmt extends LiteralStmt
         $this->raw = $raw ?? ($this->value ? 'true' : 'false');
     }
 
-    public static function parse(TokenInterface $token): self
+    public static function parse(string $value): self
     {
-        return new self(
-            \strtolower($token->getValue()) === 'true',
-            $token->getValue(),
-        );
-    }
+        $evaluated = \strtolower($value) === 'true';
 
-    public function getValue(): bool
-    {
-        return $this->value;
+        return new self($evaluated, $value);
     }
 }

@@ -9,21 +9,21 @@ Literal
   ;
 
 StringLiteral -> {
-    return Node\Literal\StringLiteralStmt::parse($token, $token->getName() === 'T_DQ_STRING_LITERAL');
+    return Node\Literal\StringLiteralStmt::parse($token->getValue());
 }
   : <T_SQ_STRING_LITERAL>
   | <T_DQ_STRING_LITERAL>
   ;
 
-FloatLiteral -> { return Node\Literal\FloatLiteralStmt::parse($token); }
+FloatLiteral -> { return Node\Literal\FloatLiteralStmt::parse($token->getValue()); }
   : <T_FLOAT_LITERAL>
   ;
 
-IntLiteral -> { return Node\Literal\IntLiteralStmt::parse($token); }
+IntLiteral -> { return Node\Literal\IntLiteralStmt::parse($token->getValue()); }
   : <T_INT_LITERAL>
   ;
 
-BoolLiteral -> { return Node\Literal\BoolLiteralStmt::parse($token); }
+BoolLiteral -> { return Node\Literal\BoolLiteralStmt::parse($token->getValue()); }
   : <T_BOOL_LITERAL>
   ;
 

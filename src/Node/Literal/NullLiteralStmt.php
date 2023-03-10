@@ -16,9 +16,4 @@ class NullLiteralStmt extends LiteralStmt
     {
         $this->raw = $raw ?? 'null';
     }
-
-    public function getValue(): mixed
-    {
-        return null;
-    }
 }

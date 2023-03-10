@@ -12,8 +12,4 @@ use TypeLang\Parser\Node\Stmt\Statement;
  */
 abstract class LiteralStmt extends Statement
 {
-    /**
-     * @return mixed
-     */
-    abstract public function getValue(): mixed;
 }

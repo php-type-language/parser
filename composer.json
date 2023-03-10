@@ -19,6 +19,7 @@
         "phplrt/phplrt": "^3.2",
         "phpunit/phpunit": "^10.0",
         "rector/rector": "^0.15",
+        "symfony/var-dumper": "^6.2",
         "vimeo/psalm": "^5.8"
     },
     "autoload-dev": {
@@ -42,6 +43,7 @@
         }
     },
     "scripts": {
+        "build": "@php bin/build",
         "test": "phpunit --testdox",
         "psalm": "psalm --no-cache",
         "psalm:fix": "psalm --no-cache --alter",
