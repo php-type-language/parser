@@ -1,8 +1,13 @@
 {
     "name": "phptl/parser",
-    "description": "PHP Type Language reference implementation",
     "type": "library",
+    "description": "PHP Type Language reference implementation",
+    "keywords": ["parser", "language", "php", "phpdoc"],
     "license": "MIT",
+    "support": {
+        "source": "https://github.com/php-type-language/parser",
+        "issues": "https://github.com/php-type-language/parser/issues"
+    },
     "require": {
         "php": "^8.1",
         "phplrt/lexer": "^3.2",
@@ -14,12 +19,12 @@
         }
     },
     "require-dev": {
+        "ffi/var-dumper": "^1.0",
         "nikic/php-parser": "^4.15",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phplrt/phplrt": "^3.2",
         "phpunit/phpunit": "^10.0",
         "rector/rector": "^0.15",
-        "symfony/var-dumper": "^6.2",
         "vimeo/psalm": "^5.8"
     },
     "autoload-dev": {
