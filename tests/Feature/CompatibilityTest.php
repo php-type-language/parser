@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Feature;
 
-use TypeLang\Parser\Exception\ParseException;
 use Phplrt\Contracts\Position\PositionInterface;
 use Phplrt\Contracts\Source\FileInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
@@ -25,7 +24,7 @@ class CompatibilityTest extends TestCase
     {
         $result = [];
         $blocks = self::fetchDocTypesFromSources(
-            sources: self::getSources(__DIR__ . '/../../../../vendor', ['php']),
+            sources: self::getSources(__DIR__ . '/../../vendor', ['php']),
             tags: self::TAGS,
         );
 
