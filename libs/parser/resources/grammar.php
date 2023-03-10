@@ -23,6 +23,7 @@ return [
             'T_ELLIPSIS' => '\\.\\.\\.',
             'T_DOUBLE_COLON' => '::',
             'T_COLON' => ':',
+            'T_EQ' => '=',
             'T_NS_DELIMITER' => '\\\\',
             'T_NULLABLE' => '\\?',
             'T_NOT' => '\\!',
@@ -67,7 +68,7 @@ return [
         23 => new \Phplrt\Parser\Grammar\Optional(20),
         24 => new \Phplrt\Parser\Grammar\Lexeme('T_ANGLE_BRACKET_CLOSE', false),
         25 => new \Phplrt\Parser\Grammar\Concatenation([21, 17, 22, 23, 24]),
-        26 => new \Phplrt\Parser\Grammar\Concatenation([66]),
+        26 => new \Phplrt\Parser\Grammar\Concatenation([91]),
         27 => new \Phplrt\Parser\Grammar\Alternation([41, 42, 43]),
         28 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
         29 => new \Phplrt\Parser\Grammar\Concatenation([28, 27]),
@@ -107,26 +108,51 @@ return [
         63 => new \Phplrt\Parser\Grammar\Concatenation([61, 62]),
         64 => new \Phplrt\Parser\Grammar\Lexeme('T_NAME', true),
         65 => new \Phplrt\Parser\Grammar\Repetition(63, 0, INF),
-        66 => new \Phplrt\Parser\Grammar\Concatenation([67]),
-        67 => new \Phplrt\Parser\Grammar\Concatenation([68, 71]),
-        68 => new \Phplrt\Parser\Grammar\Concatenation([72, 75]),
-        69 => new \Phplrt\Parser\Grammar\Lexeme('T_OR', false),
-        70 => new \Phplrt\Parser\Grammar\Concatenation([69, 67]),
-        71 => new \Phplrt\Parser\Grammar\Optional(70),
-        72 => new \Phplrt\Parser\Grammar\Concatenation([76]),
-        73 => new \Phplrt\Parser\Grammar\Lexeme('T_AND', false),
-        74 => new \Phplrt\Parser\Grammar\Concatenation([73, 68]),
-        75 => new \Phplrt\Parser\Grammar\Optional(74),
-        76 => new \Phplrt\Parser\Grammar\Concatenation([77, 79]),
-        77 => new \Phplrt\Parser\Grammar\Alternation([82, 83, 6]),
-        78 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
-        79 => new \Phplrt\Parser\Grammar\Optional(78),
-        80 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
-        81 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
-        82 => new \Phplrt\Parser\Grammar\Concatenation([80, 26, 81]),
-        84 => new \Phplrt\Parser\Grammar\Alternation([25, 39]),
-        85 => new \Phplrt\Parser\Grammar\Optional(84),
-        83 => new \Phplrt\Parser\Grammar\Concatenation([9, 85])
+        66 => new \Phplrt\Parser\Grammar\Concatenation([73, 77, 78]),
+        67 => new \Phplrt\Parser\Grammar\Concatenation([87, 26]),
+        68 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
+        69 => new \Phplrt\Parser\Grammar\Optional(66),
+        70 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
+        71 => new \Phplrt\Parser\Grammar\Optional(67),
+        72 => new \Phplrt\Parser\Grammar\Concatenation([9, 68, 69, 70, 71]),
+        73 => new \Phplrt\Parser\Grammar\Concatenation([79]),
+        74 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        75 => new \Phplrt\Parser\Grammar\Concatenation([74, 73]),
+        76 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        77 => new \Phplrt\Parser\Grammar\Repetition(75, 0, INF),
+        78 => new \Phplrt\Parser\Grammar\Optional(76),
+        79 => new \Phplrt\Parser\Grammar\Alternation([81, 82]),
+        80 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
+        81 => new \Phplrt\Parser\Grammar\Concatenation([80, 26]),
+        82 => new \Phplrt\Parser\Grammar\Concatenation([26, 86]),
+        83 => new \Phplrt\Parser\Grammar\Lexeme('T_EQ', true),
+        84 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
+        85 => new \Phplrt\Parser\Grammar\Alternation([83, 84]),
+        86 => new \Phplrt\Parser\Grammar\Optional(85),
+        87 => new \Phplrt\Parser\Grammar\Lexeme('T_COLON', false),
+        88 => new \Phplrt\Parser\Grammar\Alternation([25, 39]),
+        89 => new \Phplrt\Parser\Grammar\Optional(88),
+        90 => new \Phplrt\Parser\Grammar\Concatenation([9, 89]),
+        91 => new \Phplrt\Parser\Grammar\Concatenation([92]),
+        92 => new \Phplrt\Parser\Grammar\Concatenation([93, 96]),
+        93 => new \Phplrt\Parser\Grammar\Concatenation([97, 100]),
+        94 => new \Phplrt\Parser\Grammar\Lexeme('T_OR', false),
+        95 => new \Phplrt\Parser\Grammar\Concatenation([94, 92]),
+        96 => new \Phplrt\Parser\Grammar\Optional(95),
+        97 => new \Phplrt\Parser\Grammar\Concatenation([101]),
+        98 => new \Phplrt\Parser\Grammar\Lexeme('T_AND', false),
+        99 => new \Phplrt\Parser\Grammar\Concatenation([98, 93]),
+        100 => new \Phplrt\Parser\Grammar\Optional(99),
+        101 => new \Phplrt\Parser\Grammar\Alternation([104, 107]),
+        103 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
+        104 => new \Phplrt\Parser\Grammar\Concatenation([103, 102]),
+        105 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
+        106 => new \Phplrt\Parser\Grammar\Optional(105),
+        107 => new \Phplrt\Parser\Grammar\Concatenation([102, 106]),
+        108 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
+        109 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
+        110 => new \Phplrt\Parser\Grammar\Concatenation([108, 26, 109]),
+        102 => new \Phplrt\Parser\Grammar\Alternation([110, 6, 72, 90])
     ],
     'reducers' => [
         0 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -166,37 +192,38 @@ return [
         );
         },
         25 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Template\Parameters($children);
+            return new Node\Stmt\Template\Parameters($children);
         },
         17 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Template\Parameter(\is_array($children) ? $children[0] : $children);
+            return new Node\Stmt\Template\Parameter(
+            \is_array($children) ? $children[0] : $children,
+        );
         },
         39 => function (\Phplrt\Parser\Context $ctx, $children) {
             $isSealed = \array_pop($children);
     
-        return new Node\Shape\Shape($children, $isSealed);
+        return new Node\Stmt\Shape\Arguments($children, $isSealed);
         },
         31 => function (\Phplrt\Parser\Context $ctx, $children) {
             return $children === [];
         },
         41 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Shape\Argument(
+            return new Node\Stmt\Shape\Argument(
             $children[1],
             $children[0]->getValue(),
             true,
         );
         },
         42 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Shape\Argument(
+            return new Node\Stmt\Shape\Argument(
             $children[1],
             $children[0]->getValue(),
         );
         },
         43 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Shape\Argument($children[0]);
-        },
-        45 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return \is_array($children) ? $children[0] : $children;
+            return new Node\Stmt\Shape\Argument(
+            $children[0],
+        );
         },
         53 => function (\Phplrt\Parser\Context $ctx, $children) {
             return Node\FullQualifiedName::parse($children);
@@ -204,34 +231,55 @@ return [
         54 => function (\Phplrt\Parser\Context $ctx, $children) {
             return Node\Name::parse($children);
         },
-        67 => function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) === 2) {
-            return new Node\Stmt\UnionTypeStmt($children[0], $children[1]);
+        72 => function (\Phplrt\Parser\Context $ctx, $children) {
+            $name = \array_shift($children);
+    
+        $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\Arguments
+            ? \array_shift($children)
+            : new Node\Stmt\Callable\Arguments();
+    
+        return new Node\Stmt\CallableTypeStmt(
+            name: $name,
+            arguments: $arguments,
+            type: isset($children[0]) ? $children[0] : null,
+        );
+        },
+        66 => function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\Stmt\Callable\Arguments(
+            list: $children,
+        );
+        },
+        79 => function (\Phplrt\Parser\Context $ctx, $children) {
+            if (\is_array($children)) {
+            return new Node\Stmt\Callable\Argument(
+                type: $children[1],
+                modifier: Node\Stmt\Callable\Modifier::VARIADIC,
+            );
         }
     
         return $children;
         },
-        68 => function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) === 2) {
-            return new Node\Stmt\IntersectionTypeStmt($children[0], $children[1]);
+        82 => function (\Phplrt\Parser\Context $ctx, $children) {
+            $modifier = null;
+        if (isset($children[1])) {
+            $modifier = $children[1]->getName() === 'T_EQ'
+                ? Node\Stmt\Callable\Modifier::OPTIONAL
+                : Node\Stmt\Callable\Modifier::VARIADIC
+                ;
         }
     
-        return $children;
+        return new Node\Stmt\Callable\Argument(
+            type: $children[0],
+            modifier: $modifier,
+        );
         },
-        76 => function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) > 1) {
-            return new Node\Stmt\NullableTypeStmt($children[0]);
-        }
-    
-        return $children[0];
-        },
-        83 => function (\Phplrt\Parser\Context $ctx, $children) {
+        90 => function (\Phplrt\Parser\Context $ctx, $children) {
             $arguments = $parameters = null;
     
         $options = \end($children);
-        if ($options instanceof Node\Shape\Shape) {
+        if ($options instanceof Node\Stmt\Shape\Arguments) {
             $arguments = $options;
-        } elseif ($options instanceof Node\Template\Parameters) {
+        } elseif ($options instanceof Node\Stmt\Template\Parameters) {
             $parameters = $options;
         }
     
@@ -240,6 +288,32 @@ return [
             parameters: $parameters,
             arguments: $arguments,
         );
+        },
+        92 => function (\Phplrt\Parser\Context $ctx, $children) {
+            if (\count($children) === 2) {
+            return new Node\Stmt\UnionTypeStmt($children[0], $children[1]);
+        }
+    
+        return $children;
+        },
+        93 => function (\Phplrt\Parser\Context $ctx, $children) {
+            if (\count($children) === 2) {
+            return new Node\Stmt\IntersectionTypeStmt($children[0], $children[1]);
+        }
+    
+        return $children;
+        },
+        101 => function (\Phplrt\Parser\Context $ctx, $children) {
+            if (\count($children) > 1) {
+            $statement = $children[0] instanceof Node\Stmt\Statement
+                ? $children[0]
+                : $children[1]
+                ;
+    
+            return new Node\Stmt\NullableTypeStmt($statement);
+        }
+    
+        return $children[0];
         }
     ]
 ];

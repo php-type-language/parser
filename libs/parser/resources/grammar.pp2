@@ -10,6 +10,8 @@
 %include grammar/template
 %include grammar/shape
 %include grammar/common
+%include grammar/callable
+%include grammar/typedef
 
 %pragma root Statement
 
@@ -61,39 +63,28 @@ UnaryStatement
 
 NullableTypeStatement -> {
     if (\count($children) > 1) {
-        return new Node\Stmt\NullableTypeStmt($children[0]);
+        $statement = $children[0] instanceof Node\Stmt\Statement
+            ? $children[0]
+            : $children[1]
+            ;
+
+        return new Node\Stmt\NullableTypeStmt($statement);
     }
 
     return $children[0];
 }
-  : PrimaryStatement() <T_NULLABLE>?
+  : <T_NULLABLE> PrimaryStatement()
+  | PrimaryStatement() <T_NULLABLE>?
   ;
 
 // Primary
 
 PrimaryStatement
   : ::T_PARENTHESIS_OPEN:: Statement() ::T_PARENTHESIS_CLOSE::
-  | NamedTypeStmt()
   | Literal()
+  | CallableTypeStmt()
+  | NamedTypeStmt()
   ;
 
-NamedTypeStmt -> {
-    $arguments = $parameters = null;
-
-    $options = \end($children);
-    if ($options instanceof Node\Shape\Shape) {
-        $arguments = $options;
-    } elseif ($options instanceof Node\Template\Parameters) {
-        $parameters = $options;
-    }
-
-    return new Node\Stmt\NamedTypeStmt(
-        name: $children[0],
-        parameters: $parameters,
-        arguments: $arguments,
-    );
-}
-  : Name() (TemplateParameters() | ShapeArguments())?
-  ;
 
 

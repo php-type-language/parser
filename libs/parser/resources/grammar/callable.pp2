@@ -1,0 +1,67 @@
+
+CallableTypeStmt -> {
+    $name = \array_shift($children);
+
+    $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\Arguments
+        ? \array_shift($children)
+        : new Node\Stmt\Callable\Arguments();
+
+    return new Node\Stmt\CallableTypeStmt(
+        name: $name,
+        arguments: $arguments,
+        type: isset($children[0]) ? $children[0] : null,
+    );
+}
+  : Name()
+    ::T_PARENTHESIS_OPEN::
+        CallableArguments()?
+    ::T_PARENTHESIS_CLOSE::
+    CallableReturnType()?
+  ;
+
+CallableArguments -> {
+    return new Node\Stmt\Callable\Arguments(
+        list: $children,
+    );
+}
+  : CallableArgument() (::T_COMMA:: CallableArgument())* ::T_COMMA::?
+  ;
+
+CallableArgument
+  : PrefixedVariadicCallableArgument()
+  ;
+
+PrefixedVariadicCallableArgument -> {
+    if (\is_array($children)) {
+        return new Node\Stmt\Callable\Argument(
+            type: $children[1],
+            modifier: Node\Stmt\Callable\Modifier::VARIADIC,
+        );
+    }
+
+    return $children;
+}
+  : <T_ELLIPSIS> Statement()
+  | SuffixedCallableArgument()
+  ;
+
+SuffixedCallableArgument -> {
+    $modifier = null;
+    if (isset($children[1])) {
+        $modifier = $children[1]->getName() === 'T_EQ'
+            ? Node\Stmt\Callable\Modifier::OPTIONAL
+            : Node\Stmt\Callable\Modifier::VARIADIC
+            ;
+    }
+
+    return new Node\Stmt\Callable\Argument(
+        type: $children[0],
+        modifier: $modifier,
+    );
+}
+  : Statement() (<T_EQ> | <T_ELLIPSIS>)?
+  ;
+
+CallableReturnType
+  : ::T_COLON:: Statement()
+  ;

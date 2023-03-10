@@ -13,7 +13,7 @@ use Phplrt\Contracts\Lexer\TokenInterface;
 class BoolLiteralStmt extends LiteralStmt
 {
     public function __construct(
-        public readonly bool $value
+        public readonly bool $value,
     ) {
     }
 

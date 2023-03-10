@@ -2,7 +2,7 @@
 ShapeArguments -> {
     $isSealed = \array_pop($children);
 
-    return new Node\Shape\Shape($children, $isSealed);
+    return new Node\Stmt\Shape\Arguments($children, $isSealed);
 }
   : ::T_BRACE_OPEN::
       ShapeArgument()? (::T_COMMA:: ShapeArgument())* ::T_COMMA::?
@@ -21,7 +21,7 @@ ShapeArgument
   ;
 
 OptionalNamedShapeArgument -> {
-    return new Node\Shape\Argument(
+    return new Node\Stmt\Shape\Argument(
         $children[1],
         $children[0]->getValue(),
         true,
@@ -31,7 +31,7 @@ OptionalNamedShapeArgument -> {
   ;
 
 NamedShapeArgument -> {
-    return new Node\Shape\Argument(
+    return new Node\Stmt\Shape\Argument(
         $children[1],
         $children[0]->getValue(),
     );
@@ -40,7 +40,9 @@ NamedShapeArgument -> {
   ;
 
 AnonymousShapeArgument -> {
-    return new Node\Shape\Argument($children[0]);
+    return new Node\Stmt\Shape\Argument(
+        $children[0],
+    );
 }
   : ShapeValue()
   ;
@@ -52,7 +54,7 @@ ShapeKey
   | <T_NULL_LITERAL>
   ;
 
-ShapeValue -> { return \is_array($children) ? $children[0] : $children; }
+ShapeValue
   : Statement()
   ;
 

@@ -8,7 +8,7 @@ use Hyper\Parser\Node\Node;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal Hyper\Parser\Node
+ * @psalm-internal Hyper\Parser
  */
 abstract class Statement extends Node
 {

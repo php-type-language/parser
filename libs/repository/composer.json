@@ -14,7 +14,7 @@
     "require-dev": {
         "jetbrains/phpstorm-attributes": "^1.0",
         "phpunit/phpunit": "^10.0",
-        "vimeo/psalm": "^5.7"
+        "vimeo/psalm": "^5.8"
     },
     "autoload-dev": {
         "psr-4": {

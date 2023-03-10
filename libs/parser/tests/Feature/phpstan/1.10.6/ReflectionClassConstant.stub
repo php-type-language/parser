@@ -1,0 +1,11 @@
+<?php
+
+class ReflectionClassConstant
+{
+    /**
+     * @return array<ReflectionAttribute<object>>
+     */
+    public function getAttributes(?string $name = null, int $flags = 0)
+    {
+    }
+}

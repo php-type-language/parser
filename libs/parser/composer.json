@@ -16,7 +16,9 @@
     "require-dev": {
         "phplrt/phplrt": "^3.2",
         "phpunit/phpunit": "^10.0",
-        "vimeo/psalm": "^5.7"
+        "vimeo/psalm": "^5.8",
+        "nikic/php-parser": "^4.15",
+        "phpdocumentor/reflection-docblock": "^5.3"
     },
     "autoload-dev": {
         "psr-4": {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests;
+namespace Hyper\Parser\Tests\Unit;
 
-use Hyper\Parser\Node\Shape\Argument;
-use Hyper\Parser\Node\Shape\NamedArgument;
-use Hyper\Parser\Node\Shape\Shape;
 use Hyper\Parser\Node\Stmt\NamedTypeStmt;
+use Hyper\Parser\Node\Stmt\Shape\Argument;
+use Hyper\Parser\Node\Stmt\Shape\Arguments;
+use Hyper\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser')]
+#[Group('parser'), Group('unit')]
 class ShapesTest extends TestCase
 {
     public function testArguments(): void
@@ -18,7 +18,7 @@ class ShapesTest extends TestCase
         /** @var NamedTypeStmt $type */
         $type = $this->parse('array{a,b,c}');
 
-        $this->assertInstanceOf(Shape::class, $type->arguments);
+        $this->assertInstanceOf(Arguments::class, $type->arguments);
         $this->assertTrue($type->arguments->sealed);
         $this->assertCount(3, $type->arguments->list);
     }
@@ -28,7 +28,7 @@ class ShapesTest extends TestCase
         /** @var NamedTypeStmt $type */
         $type = $this->parse('array{}');
 
-        $this->assertInstanceOf(Shape::class, $type->arguments);
+        $this->assertInstanceOf(Arguments::class, $type->arguments);
         $this->assertTrue($type->arguments->sealed);
         $this->assertCount(0, $type->arguments->list);
     }
@@ -38,7 +38,7 @@ class ShapesTest extends TestCase
         /** @var NamedTypeStmt $type */
         $type = $this->parse('array{a,b,c,...}');
 
-        $this->assertInstanceOf(Shape::class, $type->arguments);
+        $this->assertInstanceOf(Arguments::class, $type->arguments);
         $this->assertFalse($type->arguments->sealed);
         $this->assertCount(3, $type->arguments->list);
     }

@@ -57,7 +57,7 @@ final class TypeBuilder
 
     private function type(NamedTypeStmt $stmt): object
     {
-        // Template parameters and Shape arguments
+        // Template parameters and Arguments arguments
         $parameters = $arguments = [];
 
         if ($stmt->parameters !== null) {

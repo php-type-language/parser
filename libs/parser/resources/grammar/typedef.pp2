@@ -1,0 +1,19 @@
+
+NamedTypeStmt -> {
+    $arguments = $parameters = null;
+
+    $options = \end($children);
+    if ($options instanceof Node\Stmt\Shape\Arguments) {
+        $arguments = $options;
+    } elseif ($options instanceof Node\Stmt\Template\Parameters) {
+        $parameters = $options;
+    }
+
+    return new Node\Stmt\NamedTypeStmt(
+        name: $children[0],
+        parameters: $parameters,
+        arguments: $arguments,
+    );
+}
+  : Name() (TemplateParameters() | ShapeArguments())?
+  ;

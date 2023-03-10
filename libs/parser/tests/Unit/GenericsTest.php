@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests;
+namespace Hyper\Parser\Tests\Unit;
 
 use Hyper\Parser\Node\Stmt\NamedTypeStmt;
-use Hyper\Parser\Node\Template\Parameters;
+use Hyper\Parser\Node\Stmt\Template\Parameters;
+use Hyper\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser')]
+#[Group('parser'), Group('unit')]
 class GenericsTest extends TestCase
 {
     public function testParameters(): void

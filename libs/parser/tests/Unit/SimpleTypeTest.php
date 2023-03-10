@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests;
+namespace Hyper\Parser\Tests\Unit;
 
 use Hyper\Parser\Node\FullQualifiedName;
+use Hyper\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser')]
+#[Group('parser'), Group('unit')]
 class SimpleTypeTest extends TestCase
 {
     public function testSimpleType(): void

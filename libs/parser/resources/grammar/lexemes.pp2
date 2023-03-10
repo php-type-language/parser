@@ -24,6 +24,7 @@
 %token  T_ELLIPSIS              \.\.\.
 %token  T_DOUBLE_COLON          ::
 %token  T_COLON                 :
+%token  T_EQ                    =
 %token  T_NS_DELIMITER          \\
 %token  T_NULLABLE              \?
 %token  T_NOT                   \!

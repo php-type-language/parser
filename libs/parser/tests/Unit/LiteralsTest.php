@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Hyper\Parser\Tests;
+namespace Hyper\Parser\Tests\Unit;
 
 use Hyper\Parser\Node\Literal\BoolLiteralStmt;
 use Hyper\Parser\Node\Literal\FloatLiteralStmt;
 use Hyper\Parser\Node\Literal\IntLiteralStmt;
 use Hyper\Parser\Node\Literal\NullLiteralStmt;
 use Hyper\Parser\Node\Literal\StringLiteralStmt;
+use Hyper\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser')]
+#[Group('parser'), Group('unit')]
 class LiteralsTest extends TestCase
 {
     #[DataProvider('floatLiteralsDataProvider')]
