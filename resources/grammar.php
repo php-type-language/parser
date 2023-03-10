@@ -223,7 +223,7 @@ return [
             return match(true) {
             $children instanceof Node\Literal\StringLiteralStmt => $children,
             $children instanceof Node\Literal\IntLiteralStmt,
-            $children instanceof Node\Literal\BoolLiteral,
+            $children instanceof Node\Literal\BoolLiteralStmt,
             $children instanceof Node\Literal\NullLiteralStmt,
                 => new Node\Literal\StringLiteralStmt($children->raw),
             default => new Node\Literal\StringLiteralStmt($children->getValue()),
