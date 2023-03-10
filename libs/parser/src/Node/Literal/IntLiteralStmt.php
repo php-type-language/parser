@@ -12,9 +12,13 @@ use Phplrt\Contracts\Lexer\TokenInterface;
  */
 class IntLiteralStmt extends LiteralStmt
 {
+    public readonly string $raw;
+
     final public function __construct(
         public readonly int $value,
+        string $raw = null,
     ) {
+        $this->raw = $raw ?? (string)$this->value;
     }
 
     public static function parse(TokenInterface $token): self
@@ -30,7 +34,7 @@ class IntLiteralStmt extends LiteralStmt
     {
         [$isNegative, $decimal] = self::split($expr);
 
-        return new self($isNegative ? -$decimal : $decimal);
+        return new self($isNegative ? -$decimal : $decimal, $expr);
     }
 
     /**

@@ -116,7 +116,7 @@ final class DocBlockReader
             $char = $body[$i];
             $whitespace = \ctype_space($char);
 
-            if ($char === ':') {
+            if ($char === ':' || $char === '|' || $char === '&') {
                 $allowWhitespace = true;
             } elseif (!$whitespace) {
                 $allowWhitespace = false;

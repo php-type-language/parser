@@ -23,7 +23,7 @@ ShapeArgument
 OptionalNamedShapeArgument -> {
     return new Node\Stmt\Shape\Argument(
         $children[1],
-        $children[0]->getValue(),
+        $children[0],
         true,
     );
 }
@@ -33,7 +33,7 @@ OptionalNamedShapeArgument -> {
 NamedShapeArgument -> {
     return new Node\Stmt\Shape\Argument(
         $children[1],
-        $children[0]->getValue(),
+        $children[0],
     );
 }
   : ShapeKey() ::T_COLON:: ShapeValue()
@@ -47,11 +47,21 @@ AnonymousShapeArgument -> {
   : ShapeValue()
   ;
 
-ShapeKey
+ShapeKey -> {
+    return match(true) {
+        $children instanceof Node\Literal\StringLiteralStmt => $children,
+        $children instanceof Node\Literal\IntLiteralStmt,
+        $children instanceof Node\Literal\BoolLiteral,
+        $children instanceof Node\Literal\NullLiteralStmt,
+            => new Node\Literal\StringLiteralStmt($children->raw),
+        default => new Node\Literal\StringLiteralStmt($children->getValue()),
+    };
+}
   : <T_NAME>
-  | <T_INT_LITERAL>
-  | <T_BOOL_LITERAL>
-  | <T_NULL_LITERAL>
+  | IntLiteral()
+  | BoolLiteral()
+  | NullLiteral()
+  | StringLiteral()
   ;
 
 ShapeValue

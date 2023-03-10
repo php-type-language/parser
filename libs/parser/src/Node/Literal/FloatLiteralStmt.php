@@ -12,9 +12,13 @@ use Phplrt\Contracts\Lexer\TokenInterface;
  */
 class FloatLiteralStmt extends LiteralStmt
 {
+    public readonly string $raw;
+
     public function __construct(
         public readonly float $value,
+        string $raw = null,
     ) {
+        $this->raw = $raw ?? (string)$this->value;
     }
 
     /**
@@ -22,7 +26,7 @@ class FloatLiteralStmt extends LiteralStmt
      */
     public static function parse(TokenInterface $token): self
     {
-        return new self((float)$token->getValue());
+        return new self((float)$token->getValue(), $token->getValue());
     }
 
     public function getValue(): float

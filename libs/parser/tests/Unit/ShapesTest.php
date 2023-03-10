@@ -114,8 +114,9 @@ class ShapesTest extends TestCase
         $arguments = $type->arguments->list;
         $this->assertCount(1, $arguments);
 
+        /** @var Argument $first */
         $first = $arguments[0];
-        $this->assertSame('name', $first->name);
+        $this->assertSame('name', $first->name->value);
         $this->assertFalse($first->optional);
 
         $value = $first->value;
@@ -134,9 +135,9 @@ class ShapesTest extends TestCase
 
         $this->assertNull($arguments[0]->name);
         $this->assertFalse($arguments[0]->optional);
-        $this->assertSame('required', $arguments[1]->name);
+        $this->assertSame('required', $arguments[1]->name->value);
         $this->assertFalse($arguments[1]->optional);
-        $this->assertSame('optional', $arguments[2]->name);
+        $this->assertSame('optional', $arguments[2]->name->value);
         $this->assertTrue($arguments[2]->optional);
     }
 }

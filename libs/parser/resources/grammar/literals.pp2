@@ -27,7 +27,7 @@ BoolLiteral -> { return Node\Literal\BoolLiteralStmt::parse($token); }
   : <T_BOOL_LITERAL>
   ;
 
-NullLiteral -> { return new Node\Literal\NullLiteralStmt(); }
+NullLiteral -> { return new Node\Literal\NullLiteralStmt($children->getValue()); }
   : <T_NULL_LITERAL>
   ;
 
