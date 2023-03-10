@@ -107,7 +107,7 @@ final class Parser implements ParserInterface
     {
         $token = $e->getToken();
 
-        throw ParseException::fromUnexpectedToken(
+        return ParseException::fromUnexpectedToken(
             $token->getValue(),
             $source->getContents(),
             $token->getOffset(),
@@ -118,7 +118,7 @@ final class Parser implements ParserInterface
     {
         $token = $e->getToken();
 
-        throw ParseException::fromUnrecognizedToken(
+        return ParseException::fromUnrecognizedToken(
             $token->getValue(),
             $source->getContents(),
             $token->getOffset(),
@@ -129,7 +129,7 @@ final class Parser implements ParserInterface
     {
         $token = $e->getToken();
 
-        throw ParseException::fromUnrecognizedSyntaxError(
+        return ParseException::fromUnrecognizedSyntaxError(
             $source->getContents(),
             $token->getOffset(),
         );
