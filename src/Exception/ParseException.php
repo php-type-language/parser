@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
-use Phplrt\Position\Position;
-
 class ParseException extends \LogicException implements ParserExceptionInterface
 {
-    protected const CODE_UNEXPECTED_TOKEN = 0x01;
+    final protected const CODE_UNEXPECTED_TOKEN = 0x01;
 
-    protected const CODE_UNRECOGNIZED_TOKEN = 0x02;
+    final protected const CODE_UNRECOGNIZED_TOKEN = 0x02;
 
-    protected const CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
+    final protected const CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
 
-    protected const CODE_INTERNAL_ERROR = 0x04;
+    final protected const CODE_INTERNAL_ERROR = 0x04;
+
+    public const CODE_LAST = self::CODE_INTERNAL_ERROR;
 
     final public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
     {
@@ -22,78 +22,33 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param int<0, max> $offset
+     * This error occurs when a known token is found in an
+     * unexpected source location.
      *
-     * @return non-empty-string
-     */
-    private static function suffix(string $expression, int $offset): string
-    {
-        if (\str_contains($expression, "\n")) {
-            $position = Position::fromOffset($expression, $offset);
-
-            return \sprintf('on line %d at column %d', $position->getLine(), $position->getColumn());
-        }
-
-        return \sprintf('at column %d', $offset + 1);
-    }
-
-    /**
      * @param int<0, max> $offset
      */
-    public static function fromUnexpectedToken(string $char, string $expression, int $offset): static
+    public static function fromUnexpectedToken(string $char, string $statement, int $offset): static
     {
-        $message = \vsprintf('Syntax error, unexpected %s in "%s" %s', [
-            self::escapeChar($char),
-            self::escapeSource($expression),
-            self::suffix($expression, $offset),
+        $message = \vsprintf('Syntax error, unexpected %s in %s %s', [
+            Formatter::token($char),
+            Formatter::source($statement),
+            Formatter::suffix($statement, $offset),
         ]);
 
         return new static($message, self::CODE_UNEXPECTED_TOKEN);
     }
 
     /**
-     * @return non-empty-string
-     */
-    private static function escapeChar(string $char): string
-    {
-        return match ($char) {
-            "\0", '' => 'end of input',
-            '"' => 'quote (")',
-            default => \sprintf('"%s"', $char),
-        };
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    private static function escapeSource(string $expression): string
-    {
-        if ($expression === '') {
-            return '<empty expression>';
-        }
-
-        $expression = \str_replace(["\n", "\r", "\0"], ['\n', '\r', '\0'], $expression);
-
-        while (\str_contains($expression, '  ')) {
-            $expression = \str_replace('  ', ' ', $expression);
-        }
-
-        if (\strlen($expression) > 30) {
-            return \substr($expression, 0, 27) . '...';
-        }
-
-        return $expression;
-    }
-
-    /**
+     * This error occurs when unable to recognize tokens in source code.
+     *
      * @param int<0, max> $offset
      */
-    public static function fromUnrecognizedToken(string $char, string $expression, int $offset): static
+    public static function fromUnrecognizedToken(string $token, string $statement, int $offset): static
     {
-        $message = \vsprintf('Syntax error, unrecognized %s in "%s" %s', [
-            self::escapeChar($char),
-            self::escapeSource($expression),
-            self::suffix($expression, $offset),
+        $message = \vsprintf('Syntax error, unrecognized %s in %s %s', [
+            Formatter::token($token),
+            Formatter::source($statement),
+            Formatter::suffix($statement, $offset),
         ]);
 
         return new static($message, self::CODE_UNRECOGNIZED_TOKEN);
@@ -102,20 +57,20 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     /**
      * @param int<0, max> $offset
      */
-    public static function fromUnrecognizedSyntaxError(string $expression, int $offset): static
+    public static function fromUnrecognizedSyntaxError(string $statement, int $offset): static
     {
-        $message = \vsprintf('Unrecognized syntax error, in "%s" %s', [
-            self::escapeSource($expression),
-            self::suffix($expression, $offset),
+        $message = \vsprintf('Unrecognized syntax error, in %s %s', [
+            Formatter::source($statement),
+            Formatter::suffix($statement, $offset),
         ]);
 
         return new static($message, self::CODE_UNEXPECTED_SYNTAX_ERROR);
     }
 
-    public static function fromInternalError(string $expression, \Throwable $e): static
+    public static function fromInternalError(string $statement, \Throwable $e): static
     {
-        $message = 'An internal error occurred while parsing "%s": %s';
-        $message = \sprintf($message, self::escapeSource($expression), $e->getMessage());
+        $message = 'An internal error occurred while parsing %s: %s';
+        $message = \sprintf($message, Formatter::source($statement), $e->getMessage());
 
         return new static($message, self::CODE_INTERNAL_ERROR, $e);
     }
