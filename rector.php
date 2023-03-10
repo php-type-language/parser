@@ -15,7 +15,7 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $config): void {
-    $config->paths([__DIR__ . '/src', __DIR__ . '/resources']);
+    $config->paths([__DIR__ . '/src']);
 
     $config->sets([
         LevelSetList::UP_TO_PHP_81,
