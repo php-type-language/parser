@@ -14,14 +14,11 @@ interface VisitorInterface
     public function before(): void;
 
     /**
-     * @param Node $node
-     *
      * @return ?Command
      */
     public function enter(Node $node): ?Command;
 
     /**
-     * @param Node $node
      *
      * @return void
      */

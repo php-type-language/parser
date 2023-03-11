@@ -26,8 +26,6 @@ final class Traverser implements MutableTraverserInterface
 
     /**
      * @param list<VisitorInterface> $visitors
-     *
-     * @return self
      */
     public static function new(iterable $visitors = []): self
     {

@@ -127,7 +127,7 @@ class CompatibilityTest extends TestCase
             \str_contains($expr, '>>') ||
             // Psr\EventDispatcher\ListenerProviderInterface phpdoc bug
             \str_contains($expr, 'iterable[callable]') ||
-            // Non-const expression in typedef (will not supported)
+            // Non-const expression in typedef (will not support)
             \str_contains($expr, 'func_num_args() > ') ||
             // PHPDoc bug: https://github.com/phpDocumentor/ReflectionDocBlock/issues/351
             \str_ends_with($expr, 'string[]}>}|array}|null')
