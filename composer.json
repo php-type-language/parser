@@ -10,6 +10,7 @@
     },
     "require": {
         "php": "^8.1",
+        "psr/log": "^1.0|^2.0|^3.0",
         "phplrt/lexer": "^3.2",
         "phplrt/parser": "^3.2"
     },
@@ -23,6 +24,7 @@
         "nikic/php-parser": "^4.15",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phplrt/phplrt": "^3.2",
+        "phpstan/phpdoc-parser": "^1.16",
         "phpunit/phpunit": "^10.0",
         "rector/rector": "^0.15",
         "vimeo/psalm": "^5.8"

@@ -8,7 +8,6 @@ use Phplrt\Contracts\Source\ReadableInterface;
 use TypeLang\Parser\Exception\ParseException;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
-use Phplrt\Contracts\Parser\ParserInterface;
 use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\ContextInterface;
 use Phplrt\Parser\Exception\UnexpectedTokenException;
@@ -78,16 +77,20 @@ final class Parser implements ParserInterface
     /**
      * @psalm-suppress ImplementedReturnTypeMismatch
      *
-     * @return list<Statement>
+     * @return Statement|null
      * @throws ParseException
      */
-    public function parse(mixed $source, array $options = []): iterable
+    public function parse(mixed $source): ?Statement
     {
         $source = File::fromSources($source);
 
         try {
-            /** @var list<Statement> */
-            return $this->parser->parse($source, $options);
+            foreach ($this->parser->parse($source) as $node) {
+                /** @var Statement */
+                return $node;
+            }
+
+            return null;
         } catch (UnexpectedTokenException $e) {
             throw $this->unexpectedTokenError($e, $source);
         } catch (UnrecognizedTokenException $e) {

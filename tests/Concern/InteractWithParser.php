@@ -7,7 +7,6 @@ namespace TypeLang\Parser\Tests\Concern;
 use TypeLang\Parser\Exception\ParseException;
 use TypeLang\Parser\Node\Stmt\Statement;
 use TypeLang\Parser\Parser;
-use Phplrt\Contracts\Parser\ParserInterface;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 trait InteractWithParser
 {
-    protected readonly ParserInterface $parser;
+    protected readonly Parser $parser;
 
     #[Before]
     public function setUpParser(): void
@@ -26,11 +25,7 @@ trait InteractWithParser
 
     protected function parse(string $expr): ?Statement
     {
-        foreach ($this->parser->parse($expr) as $node) {
-            return $node;
-        }
-
-        return null;
+        return $this->parser->parse($expr);
     }
 
     protected function expectParseError(string $message = null): void
