@@ -37,7 +37,7 @@ BinaryStatement
 
 UnionTypeStatement -> {
     if (\count($children) === 2) {
-        return new Node\Stmt\UnionTypeStmt($children[0], $children[1]);
+        return new Node\Stmt\UnionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -47,7 +47,7 @@ UnionTypeStatement -> {
 
 IntersectionTypeStatement -> {
     if (\count($children) === 2) {
-        return new Node\Stmt\IntersectionTypeStmt($children[0], $children[1]);
+        return new Node\Stmt\IntersectionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -68,7 +68,7 @@ NullableTypeStatement -> {
             : $children[1]
             ;
 
-        return new Node\Stmt\NullableTypeStmt($statement);
+        return new Node\Stmt\NullableTypeNode($statement);
     }
 
     return $children[0];

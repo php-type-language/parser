@@ -9,41 +9,41 @@ Literal
   ;
 
 StringLiteral -> {
-    return Node\Literal\StringLiteralStmt::parse($token->getValue());
+    return Node\Literal\StringLiteralNode::parse($token->getValue());
 }
   : <T_SQ_STRING_LITERAL>
   | <T_DQ_STRING_LITERAL>
   ;
 
-FloatLiteral -> { return Node\Literal\FloatLiteralStmt::parse($token->getValue()); }
+FloatLiteral -> { return Node\Literal\FloatLiteralNode::parse($token->getValue()); }
   : <T_FLOAT_LITERAL>
   ;
 
-IntLiteral -> { return Node\Literal\IntLiteralStmt::parse($token->getValue()); }
+IntLiteral -> { return Node\Literal\IntLiteralNode::parse($token->getValue()); }
   : <T_INT_LITERAL>
   ;
 
-BoolLiteral -> { return Node\Literal\BoolLiteralStmt::parse($token->getValue()); }
+BoolLiteral -> { return Node\Literal\BoolLiteralNode::parse($token->getValue()); }
   : <T_BOOL_LITERAL>
   ;
 
-NullLiteral -> { return new Node\Literal\NullLiteralStmt($children->getValue()); }
+NullLiteral -> { return new Node\Literal\NullLiteralNode($children->getValue()); }
   : <T_NULL_LITERAL>
   ;
 
 ClassConstLiteral -> {
     if (\count($children) === 3) {
-        return new Node\Stmt\ClassConstMaskStmt(
+        return new Node\Stmt\ClassConstMaskNode(
             $children[0],
             $children[1]->getValue(),
         );
     }
 
     if ($children[1]->getName() === 'T_ASTERISK') {
-        return new Node\Stmt\ClassConstMaskStmt($children[0]);
+        return new Node\Stmt\ClassConstMaskNode($children[0]);
     }
 
-    return new Node\Stmt\ClassConstStmt(
+    return new Node\Stmt\ClassConstNode(
         $children[0],
         $children[1]->getValue()
     );

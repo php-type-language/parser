@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Unit;
 
-use TypeLang\Parser\Node\Literal\BoolLiteralStmt;
-use TypeLang\Parser\Node\Literal\FloatLiteralStmt;
-use TypeLang\Parser\Node\Literal\IntLiteralStmt;
-use TypeLang\Parser\Node\Literal\NullLiteralStmt;
-use TypeLang\Parser\Node\Literal\StringLiteralStmt;
+use TypeLang\Parser\Node\Literal\BoolLiteralNode;
+use TypeLang\Parser\Node\Literal\FloatLiteralNode;
+use TypeLang\Parser\Node\Literal\IntLiteralNode;
+use TypeLang\Parser\Node\Literal\NullLiteralNode;
+use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -21,7 +21,7 @@ class LiteralsTest extends TestCase
     {
         $ast = $this->parse($expr);
 
-        $this->assertInstanceOf(FloatLiteralStmt::class, $ast);
+        $this->assertInstanceOf(FloatLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
     }
 
@@ -30,7 +30,7 @@ class LiteralsTest extends TestCase
     {
         $ast = $this->parse($expr);
 
-        $this->assertInstanceOf(IntLiteralStmt::class, $ast);
+        $this->assertInstanceOf(IntLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
     }
 
@@ -39,7 +39,7 @@ class LiteralsTest extends TestCase
     {
         $ast = $this->parse($expr);
 
-        $this->assertInstanceOf(BoolLiteralStmt::class, $ast);
+        $this->assertInstanceOf(BoolLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
     }
 
@@ -48,7 +48,7 @@ class LiteralsTest extends TestCase
     {
         $ast = $this->parse($expr);
 
-        $this->assertInstanceOf(NullLiteralStmt::class, $ast);
+        $this->assertInstanceOf(NullLiteralNode::class, $ast);
     }
 
     #[DataProvider('stringLiteralsDataProvider')]
@@ -56,7 +56,7 @@ class LiteralsTest extends TestCase
     {
         $ast = $this->parse($expr);
 
-        $this->assertInstanceOf(StringLiteralStmt::class, $ast);
+        $this->assertInstanceOf(StringLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
     }
 

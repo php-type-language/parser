@@ -2,11 +2,11 @@
 CallableTypeStmt -> {
     $name = \array_shift($children);
 
-    $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\Arguments
+    $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ArgumentsListNode
         ? \array_shift($children)
-        : new Node\Stmt\Callable\Arguments();
+        : new Node\Stmt\Callable\ArgumentsListNode();
 
-    return new Node\Stmt\CallableTypeStmt(
+    return new Node\Stmt\CallableTypeNode(
         name: $name,
         arguments: $arguments,
         type: isset($children[0]) ? $children[0] : null,
@@ -20,7 +20,7 @@ CallableTypeStmt -> {
   ;
 
 CallableArguments -> {
-    return new Node\Stmt\Callable\Arguments(
+    return new Node\Stmt\Callable\ArgumentsListNode(
         list: $children,
     );
 }
@@ -33,7 +33,7 @@ CallableArgument
 
 PrefixedVariadicCallableArgument -> {
     if (\is_array($children)) {
-        return new Node\Stmt\Callable\Argument(
+        return new Node\Stmt\Callable\ArgumentNode(
             type: $children[1],
             modifier: Node\Stmt\Callable\Modifier::VARIADIC,
         );
@@ -54,7 +54,7 @@ SuffixedCallableArgument -> {
             ;
     }
 
-    return new Node\Stmt\Callable\Argument(
+    return new Node\Stmt\Callable\ArgumentNode(
         type: $children[0],
         modifier: $modifier,
     );

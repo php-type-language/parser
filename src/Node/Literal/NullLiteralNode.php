@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
-use TypeLang\Parser\Node\Stmt\Statement;
-
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-abstract class LiteralStmt extends Statement
+class NullLiteralNode extends LiteralNode
 {
+    public readonly string $raw;
+
+    public function __construct(string $raw = null)
+    {
+        $this->raw = $raw ?? 'null';
+    }
 }

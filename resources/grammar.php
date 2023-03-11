@@ -151,82 +151,82 @@ return [
     'reducers' => [
         0 => static function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Literal\StringLiteralStmt::parse($token->getValue());
+            return Node\Literal\StringLiteralNode::parse($token->getValue());
         },
         1 => static function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Literal\FloatLiteralStmt::parse($token->getValue());
+            return Node\Literal\FloatLiteralNode::parse($token->getValue());
         },
         2 => static function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Literal\IntLiteralStmt::parse($token->getValue());
+            return Node\Literal\IntLiteralNode::parse($token->getValue());
         },
         3 => static function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Literal\BoolLiteralStmt::parse($token->getValue());
+            return Node\Literal\BoolLiteralNode::parse($token->getValue());
         },
         4 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Literal\NullLiteralStmt($children->getValue());
+            return new Node\Literal\NullLiteralNode($children->getValue());
         },
         5 => static function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 3) {
-            return new Node\Stmt\ClassConstMaskStmt(
+            return new Node\Stmt\ClassConstMaskNode(
                 $children[0],
                 $children[1]->getValue(),
             );
         }
     
         if ($children[1]->getName() === 'T_ASTERISK') {
-            return new Node\Stmt\ClassConstMaskStmt($children[0]);
+            return new Node\Stmt\ClassConstMaskNode($children[0]);
         }
     
-        return new Node\Stmt\ClassConstStmt(
+        return new Node\Stmt\ClassConstNode(
             $children[0],
             $children[1]->getValue()
         );
         },
         25 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Template\Parameters($children);
+            return new Node\Stmt\Template\ParametersListNode($children);
         },
         17 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Template\Parameter(
+            return new Node\Stmt\Template\ParameterNode(
             \is_array($children) ? $children[0] : $children,
         );
         },
         39 => static function (\Phplrt\Parser\Context $ctx, $children) {
             $isSealed = \array_pop($children);
     
-        return new Node\Stmt\Shape\Arguments($children, $isSealed);
+        return new Node\Stmt\Shape\ArgumentsListNode($children, $isSealed);
         },
         31 => static function (\Phplrt\Parser\Context $ctx, $children) {
             return $children === [];
         },
         41 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Shape\Argument(
+            return new Node\Stmt\Shape\ArgumentNode(
             $children[1],
             $children[0],
             true,
         );
         },
         42 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Shape\Argument(
+            return new Node\Stmt\Shape\ArgumentNode(
             $children[1],
             $children[0],
         );
         },
         43 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Shape\Argument(
+            return new Node\Stmt\Shape\ArgumentNode(
             $children[0],
         );
         },
         44 => static function (\Phplrt\Parser\Context $ctx, $children) {
             return match(true) {
-            $children instanceof Node\Literal\StringLiteralStmt => $children,
-            $children instanceof Node\Literal\IntLiteralStmt,
-            $children instanceof Node\Literal\BoolLiteralStmt,
-            $children instanceof Node\Literal\NullLiteralStmt,
-                => new Node\Literal\StringLiteralStmt($children->raw),
-            default => new Node\Literal\StringLiteralStmt($children->getValue()),
+            $children instanceof Node\Literal\StringLiteralNode => $children,
+            $children instanceof Node\Literal\IntLiteralNode,
+            $children instanceof Node\Literal\BoolLiteralNode,
+            $children instanceof Node\Literal\NullLiteralNode,
+                => new Node\Literal\StringLiteralNode($children->raw),
+            default => new Node\Literal\StringLiteralNode($children->getValue()),
         };
         },
         50 => static function (\Phplrt\Parser\Context $ctx, $children) {
@@ -241,24 +241,24 @@ return [
         66 => static function (\Phplrt\Parser\Context $ctx, $children) {
             $name = \array_shift($children);
     
-        $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\Arguments
+        $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ArgumentsListNode
             ? \array_shift($children)
-            : new Node\Stmt\Callable\Arguments();
+            : new Node\Stmt\Callable\ArgumentsListNode();
     
-        return new Node\Stmt\CallableTypeStmt(
+        return new Node\Stmt\CallableTypeNode(
             name: $name,
             arguments: $arguments,
             type: isset($children[0]) ? $children[0] : null,
         );
         },
         60 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Callable\Arguments(
+            return new Node\Stmt\Callable\ArgumentsListNode(
             list: $children,
         );
         },
         73 => static function (\Phplrt\Parser\Context $ctx, $children) {
             if (\is_array($children)) {
-            return new Node\Stmt\Callable\Argument(
+            return new Node\Stmt\Callable\ArgumentNode(
                 type: $children[1],
                 modifier: Node\Stmt\Callable\Modifier::VARIADIC,
             );
@@ -275,7 +275,7 @@ return [
                 ;
         }
     
-        return new Node\Stmt\Callable\Argument(
+        return new Node\Stmt\Callable\ArgumentNode(
             type: $children[0],
             modifier: $modifier,
         );
@@ -284,28 +284,28 @@ return [
             $arguments = $parameters = null;
     
         $options = \end($children);
-        if ($options instanceof Node\Stmt\Shape\Arguments) {
+        if ($options instanceof Node\Stmt\Shape\ArgumentsListNode) {
             $arguments = $options;
-        } elseif ($options instanceof Node\Stmt\Template\Parameters) {
+        } elseif ($options instanceof Node\Stmt\Template\ParametersListNode) {
             $parameters = $options;
         }
     
-        return new Node\Stmt\NamedTypeStmt(
-            name: $children[0],
-            parameters: $parameters,
-            arguments: $arguments,
+        return new Node\Stmt\NamedTypeNode(
+            $children[0],
+            $parameters,
+            $arguments,
         );
         },
         86 => static function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 2) {
-            return new Node\Stmt\UnionTypeStmt($children[0], $children[1]);
+            return new Node\Stmt\UnionTypeNode($children[0], $children[1]);
         }
     
         return $children;
         },
         87 => static function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 2) {
-            return new Node\Stmt\IntersectionTypeStmt($children[0], $children[1]);
+            return new Node\Stmt\IntersectionTypeNode($children[0], $children[1]);
         }
     
         return $children;
@@ -317,7 +317,7 @@ return [
                 : $children[1]
                 ;
     
-            return new Node\Stmt\NullableTypeStmt($statement);
+            return new Node\Stmt\NullableTypeNode($statement);
         }
     
         return $children[0];

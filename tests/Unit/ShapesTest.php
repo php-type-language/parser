@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Unit;
 
-use TypeLang\Parser\Node\Stmt\NamedTypeStmt;
-use TypeLang\Parser\Node\Stmt\Shape\Argument;
-use TypeLang\Parser\Node\Stmt\Shape\Arguments;
+use TypeLang\Parser\Node\Stmt\NamedTypeNode;
+use TypeLang\Parser\Node\Stmt\Shape\ArgumentNode;
+use TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -15,30 +15,30 @@ class ShapesTest extends TestCase
 {
     public function testArguments(): void
     {
-        /** @var NamedTypeStmt $type */
+        /** @var NamedTypeNode $type */
         $type = $this->parse('array{a,b,c}');
 
-        $this->assertInstanceOf(Arguments::class, $type->arguments);
+        $this->assertInstanceOf(ArgumentsListNode::class, $type->arguments);
         $this->assertTrue($type->arguments->sealed);
         $this->assertCount(3, $type->arguments->list);
     }
 
     public function testEmptyShape(): void
     {
-        /** @var NamedTypeStmt $type */
+        /** @var NamedTypeNode $type */
         $type = $this->parse('array{}');
 
-        $this->assertInstanceOf(Arguments::class, $type->arguments);
+        $this->assertInstanceOf(ArgumentsListNode::class, $type->arguments);
         $this->assertTrue($type->arguments->sealed);
         $this->assertCount(0, $type->arguments->list);
     }
 
     public function testUnsealedArguments(): void
     {
-        /** @var NamedTypeStmt $type */
+        /** @var NamedTypeNode $type */
         $type = $this->parse('array{a,b,c,...}');
 
-        $this->assertInstanceOf(Arguments::class, $type->arguments);
+        $this->assertInstanceOf(ArgumentsListNode::class, $type->arguments);
         $this->assertFalse($type->arguments->sealed);
         $this->assertCount(3, $type->arguments->list);
     }
@@ -52,13 +52,13 @@ class ShapesTest extends TestCase
         $arguments = $type->arguments->list;
         $this->assertCount(1, $arguments);
 
-        /** @var Argument $first */
+        /** @var ArgumentNode $first */
         $first = $arguments[0];
         $this->assertNull($first->name);
         $this->assertFalse($first->optional);
 
         $value = $first->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $value);
+        $this->assertInstanceOf(NamedTypeNode::class, $value);
         $this->assertSame('int', $value->name->name);
     }
 
@@ -72,11 +72,11 @@ class ShapesTest extends TestCase
         $this->assertCount(2, $arguments);
 
         $first = $arguments[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $first);
+        $this->assertInstanceOf(NamedTypeNode::class, $first);
         $this->assertSame('int', $first->name->name);
 
         $second = $arguments[1]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $second);
+        $this->assertInstanceOf(NamedTypeNode::class, $second);
         $this->assertSame('string', $second->name->name);
     }
 
@@ -90,18 +90,18 @@ class ShapesTest extends TestCase
         $this->assertCount(1, $rootArguments);
 
         $rootValue = $rootArguments[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $rootValue);
+        $this->assertInstanceOf(NamedTypeNode::class, $rootValue);
         $this->assertSame('Some\Any', $rootValue->name->name);
 
         $nestedArguments = $rootValue->arguments->list;
         $this->assertCount(2, $nestedArguments);
 
         $nestedValue1 = $nestedArguments[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $nestedValue1);
+        $this->assertInstanceOf(NamedTypeNode::class, $nestedValue1);
         $this->assertSame('int', $nestedValue1->name->name);
 
         $nestedValue2 = $nestedArguments[1]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $nestedValue2);
+        $this->assertInstanceOf(NamedTypeNode::class, $nestedValue2);
         $this->assertSame('string', $nestedValue2->name->name);
     }
 
@@ -114,13 +114,13 @@ class ShapesTest extends TestCase
         $arguments = $type->arguments->list;
         $this->assertCount(1, $arguments);
 
-        /** @var Argument $first */
+        /** @var ArgumentNode $first */
         $first = $arguments[0];
         $this->assertSame('name', $first->name->value);
         $this->assertFalse($first->optional);
 
         $value = $first->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $value);
+        $this->assertInstanceOf(NamedTypeNode::class, $value);
         $this->assertSame('int', $value->name->name);
     }
 

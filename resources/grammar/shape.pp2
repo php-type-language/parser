@@ -2,7 +2,7 @@
 ShapeArguments -> {
     $isSealed = \array_pop($children);
 
-    return new Node\Stmt\Shape\Arguments($children, $isSealed);
+    return new Node\Stmt\Shape\ArgumentsListNode($children, $isSealed);
 }
   : ::T_BRACE_OPEN::
       ShapeArgument()? (::T_COMMA:: ShapeArgument())* ::T_COMMA::?
@@ -21,7 +21,7 @@ ShapeArgument
   ;
 
 OptionalNamedShapeArgument -> {
-    return new Node\Stmt\Shape\Argument(
+    return new Node\Stmt\Shape\ArgumentNode(
         $children[1],
         $children[0],
         true,
@@ -31,7 +31,7 @@ OptionalNamedShapeArgument -> {
   ;
 
 NamedShapeArgument -> {
-    return new Node\Stmt\Shape\Argument(
+    return new Node\Stmt\Shape\ArgumentNode(
         $children[1],
         $children[0],
     );
@@ -40,7 +40,7 @@ NamedShapeArgument -> {
   ;
 
 AnonymousShapeArgument -> {
-    return new Node\Stmt\Shape\Argument(
+    return new Node\Stmt\Shape\ArgumentNode(
         $children[0],
     );
 }
@@ -49,12 +49,12 @@ AnonymousShapeArgument -> {
 
 ShapeKey -> {
     return match(true) {
-        $children instanceof Node\Literal\StringLiteralStmt => $children,
-        $children instanceof Node\Literal\IntLiteralStmt,
-        $children instanceof Node\Literal\BoolLiteralStmt,
-        $children instanceof Node\Literal\NullLiteralStmt,
-            => new Node\Literal\StringLiteralStmt($children->raw),
-        default => new Node\Literal\StringLiteralStmt($children->getValue()),
+        $children instanceof Node\Literal\StringLiteralNode => $children,
+        $children instanceof Node\Literal\IntLiteralNode,
+        $children instanceof Node\Literal\BoolLiteralNode,
+        $children instanceof Node\Literal\NullLiteralNode,
+            => new Node\Literal\StringLiteralNode($children->raw),
+        default => new Node\Literal\StringLiteralNode($children->getValue()),
     };
 }
   : <T_NAME>

@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Node\Stmt\Template;
+namespace TypeLang\Parser\Node\Stmt\Callable;
 
 use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\Stmt\Statement;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class Parameters extends Node
+final class ArgumentNode extends Node
 {
-    /**
-     * @param array<Parameter> $list
-     */
     public function __construct(
-        public readonly array $list = [],
+        public readonly Statement $type,
+        public readonly ?Modifier $modifier = null,
     ) {
     }
 }

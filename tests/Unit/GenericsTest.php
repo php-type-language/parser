@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Unit;
 
-use TypeLang\Parser\Node\Stmt\NamedTypeStmt;
-use TypeLang\Parser\Node\Stmt\Template\Parameters;
+use TypeLang\Parser\Node\Stmt\NamedTypeNode;
+use TypeLang\Parser\Node\Stmt\Template\ParametersListNode;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -16,7 +16,7 @@ class GenericsTest extends TestCase
     {
         $type = $this->parse('array<a,b,c>');
 
-        $this->assertInstanceOf(Parameters::class, $type->parameters);
+        $this->assertInstanceOf(ParametersListNode::class, $type->parameters);
         $this->assertCount(3, $type->parameters->list);
     }
 
@@ -30,7 +30,7 @@ class GenericsTest extends TestCase
         $this->assertCount(1, $parameters);
 
         $first = $parameters[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $first);
+        $this->assertInstanceOf(NamedTypeNode::class, $first);
         $this->assertSame('int', $first->name->name);
     }
 
@@ -44,11 +44,11 @@ class GenericsTest extends TestCase
         $this->assertCount(2, $parameters);
 
         $first = $parameters[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $first);
+        $this->assertInstanceOf(NamedTypeNode::class, $first);
         $this->assertSame('int', $first->name->name);
 
         $second = $parameters[1]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $second);
+        $this->assertInstanceOf(NamedTypeNode::class, $second);
         $this->assertSame('string', $second->name->name);
     }
 
@@ -62,18 +62,18 @@ class GenericsTest extends TestCase
         $this->assertCount(1, $rootParameters);
 
         $rootValue = $rootParameters[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $rootValue);
+        $this->assertInstanceOf(NamedTypeNode::class, $rootValue);
         $this->assertSame('Some\Any', $rootValue->name->name);
 
         $nestedParameters = $rootValue->parameters->list;
         $this->assertCount(2, $nestedParameters);
 
         $nestedValue1 = $nestedParameters[0]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $nestedValue1);
+        $this->assertInstanceOf(NamedTypeNode::class, $nestedValue1);
         $this->assertSame('int', $nestedValue1->name->name);
 
         $nestedValue2 = $nestedParameters[1]->value;
-        $this->assertInstanceOf(NamedTypeStmt::class, $nestedValue2);
+        $this->assertInstanceOf(NamedTypeNode::class, $nestedValue2);
         $this->assertSame('string', $nestedValue2->name->name);
     }
 }

@@ -8,22 +8,21 @@ namespace TypeLang\Parser\Node\Literal;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class FloatLiteralStmt extends LiteralStmt
+class BoolLiteralNode extends LiteralNode
 {
     public readonly string $raw;
 
     public function __construct(
-        public readonly float $value,
+        public readonly bool $value,
         string $raw = null,
     ) {
-        $this->raw = $raw ?? (string)$this->value;
+        $this->raw = $raw ?? ($this->value ? 'true' : 'false');
     }
 
-    /**
-     * @param numeric-string $value
-     */
     public static function parse(string $value): self
     {
-        return new self((float)$value, $value);
+        $evaluated = \strtolower($value) === 'true';
+
+        return new self($evaluated, $value);
     }
 }

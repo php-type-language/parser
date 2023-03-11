@@ -8,7 +8,7 @@ namespace TypeLang\Parser\Node\Literal;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class StringLiteralStmt extends LiteralStmt
+class StringLiteralNode extends LiteralNode
 {
     /**
      * @var non-empty-string

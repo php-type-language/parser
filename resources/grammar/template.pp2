@@ -1,6 +1,6 @@
 
 TemplateParameters -> {
-    return new Node\Stmt\Template\Parameters($children);
+    return new Node\Stmt\Template\ParametersListNode($children);
 }
   : ::T_ANGLE_BRACKET_OPEN::
       TemplateParameter() (::T_COMMA:: TemplateParameter())* ::T_COMMA::?
@@ -8,7 +8,7 @@ TemplateParameters -> {
   ;
 
 TemplateParameter -> {
-    return new Node\Stmt\Template\Parameter(
+    return new Node\Stmt\Template\ParameterNode(
         \is_array($children) ? $children[0] : $children,
     );
 }

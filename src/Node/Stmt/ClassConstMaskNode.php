@@ -10,16 +10,14 @@ use TypeLang\Parser\Node\Name;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class ClassConstStmt extends ClassConstMaskStmt
+class ClassConstMaskNode extends Statement
 {
     /**
-     * @param Name $class
-     * @param non-empty-string $constant
+     * @param non-empty-string|null $constant
      */
     public function __construct(
-        Name $class,
-        string $constant,
+        public readonly Name $class,
+        public readonly ?string $constant = null,
     ) {
-        parent::__construct($class, $constant);
     }
 }
