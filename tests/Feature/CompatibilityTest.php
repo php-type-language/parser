@@ -130,7 +130,10 @@ class CompatibilityTest extends TestCase
             // Non-const expression in typedef (will not support)
             \str_contains($expr, 'func_num_args() > ') ||
             // PHPDoc bug: https://github.com/phpDocumentor/ReflectionDocBlock/issues/351
-            \str_ends_with($expr, 'string[]}>}|array}|null')
+            \str_ends_with($expr, 'string[]}>}|array}|null') ||
+            // Invalid stmts
+            \str_contains($expr, 'array[string]') ||
+            \str_contains($expr, 'ArrayObject[')
         ) {
             $this->markTestIncomplete("Test is flagged as false-positive:\n" . $message);
         }
