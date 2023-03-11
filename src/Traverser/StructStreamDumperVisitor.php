@@ -45,6 +45,7 @@ final class StructStreamDumperVisitor extends Visitor
 
     public function leave(Node $node): void
     {
+        /** @psalm-suppress InvalidPropertyAssignmentValue : enter() has been executed before */
         --$this->depth;
     }
 }
