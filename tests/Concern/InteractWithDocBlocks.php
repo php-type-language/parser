@@ -18,7 +18,7 @@ trait InteractWithDocBlocks
     {
         $reader = new DocBlockReader();
 
-        return $reader->readOrFail($source, $tags);
+        return $reader->read($source, $tags);
     }
 
     /**

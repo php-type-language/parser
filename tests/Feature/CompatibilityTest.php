@@ -128,7 +128,9 @@ class CompatibilityTest extends TestCase
             // Psr\EventDispatcher\ListenerProviderInterface phpdoc bug
             \str_contains($expr, 'iterable[callable]') ||
             // Non-const expression in typedef (will not supported)
-            \str_contains($expr, 'func_num_args() > ')
+            \str_contains($expr, 'func_num_args() > ') ||
+            // PHPDoc bug: https://github.com/phpDocumentor/ReflectionDocBlock/issues/351
+            \str_ends_with($expr, 'string[]}>}|array}|null')
         ) {
             $this->markTestIncomplete("Test is flagged as false-positive:\n" . $message);
         }
@@ -137,8 +139,6 @@ class CompatibilityTest extends TestCase
         // Known issues
         //
         if (
-            // DocBlock with "Some[]", "Some[][]" (etc) expressions
-            \str_starts_with($e->getMessage(), 'Syntax error, unrecognized "[]') ||
             // Ternary with "Type is X ? Y : Z" expression
             \str_starts_with($e->getMessage(), 'Syntax error, unexpected "is"') ||
             // Variables not supported

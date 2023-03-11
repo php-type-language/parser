@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Concern;
 
-use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
+use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
+use phpDocumentor\Reflection\DocBlock\StandardTagFactory;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\FqsenResolver;
+use phpDocumentor\Reflection\TypeResolver;
 use Phplrt\Contracts\Position\PositionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Position\Position;
 use PhpParser\Comment\Doc;
-use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\Parser;
@@ -35,10 +37,19 @@ final class DocBlockReader
      */
     private function getDocBlockFactory(array $tags): DocBlockFactory
     {
-        $factory = DocBlockFactory::createInstance();
+        $fqsenResolver      = new FqsenResolver();
+        $tagFactory         = new StandardTagFactory($fqsenResolver);
+        $descriptionFactory = new DescriptionFactory($tagFactory);
+
+        $tagFactory->addService($descriptionFactory);
+        $tagFactory->addService(new TypeResolver($fqsenResolver));
+
+        $factory = new DocBlockFactory($descriptionFactory, $tagFactory);
+
         foreach ($tags as $tag) {
             $factory->registerTagHandler($tag, Generic::class);
         }
+
         return $factory;
     }
 
