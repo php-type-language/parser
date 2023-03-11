@@ -20,6 +20,8 @@
 %token  T_PARENTHESIS_CLOSE     \)
 %token  T_BRACE_OPEN            \{
 %token  T_BRACE_CLOSE           \}
+%token  T_SQUARE_BRACKET_OPEN   \[
+%token  T_SQUARE_BRACKET_CLOSE  \]
 %token  T_COMMA                 ,
 %token  T_ELLIPSIS              \.\.\.
 %token  T_DOUBLE_COLON          ::

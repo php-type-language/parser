@@ -11,7 +11,7 @@ use TypeLang\Parser\Node\Stmt\Statement;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-final class ArgumentNode extends Node
+class ArgumentNode extends Node
 {
     public function __construct(
         public readonly Statement $type,

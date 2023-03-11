@@ -45,5 +45,6 @@ final class Builder implements BuilderInterface
         $token = $ctx->getToken();
 
         $node->offset = $token->getOffset();
+        unset($node->offset);
     }
 }

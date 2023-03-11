@@ -61,6 +61,9 @@ UnaryStatement
   : NullableTypeStatement()
   ;
 
+// stmt = ?Type
+//  - or
+// stmt = Type?
 NullableTypeStatement -> {
     if (\count($children) > 1) {
         $statement = $children[0] instanceof Node\Stmt\Statement
@@ -73,8 +76,21 @@ NullableTypeStatement -> {
 
     return $children[0];
 }
-  : <T_NULLABLE> PrimaryStatement()
-  | PrimaryStatement() <T_NULLABLE>?
+  : <T_NULLABLE> TypesListStatement()
+  | TypesListStatement() <T_NULLABLE>?
+  ;
+
+TypesListStatement -> {
+    if (\count($children) > 1) {
+        return new Node\Stmt\TypesListNode($children[0]);
+    }
+
+    return $children;
+}
+  : PrimaryStatement() (
+      <T_SQUARE_BRACKET_OPEN>
+      ::T_SQUARE_BRACKET_CLOSE::
+    )?
   ;
 
 // Primary

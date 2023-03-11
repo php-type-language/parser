@@ -19,6 +19,8 @@ return [
             'T_PARENTHESIS_CLOSE' => '\\)',
             'T_BRACE_OPEN' => '\\{',
             'T_BRACE_CLOSE' => '\\}',
+            'T_SQUARE_BRACKET_OPEN' => '\\[',
+            'T_SQUARE_BRACKET_CLOSE' => '\\]',
             'T_COMMA' => ',',
             'T_ELLIPSIS' => '\\.\\.\\.',
             'T_DOUBLE_COLON' => '::',
@@ -138,15 +140,20 @@ return [
         93 => new \Phplrt\Parser\Grammar\Concatenation([92, 87]),
         94 => new \Phplrt\Parser\Grammar\Optional(93),
         95 => new \Phplrt\Parser\Grammar\Alternation([98, 101]),
+        96 => new \Phplrt\Parser\Grammar\Concatenation([102, 106]),
         97 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
         98 => new \Phplrt\Parser\Grammar\Concatenation([97, 96]),
         99 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
         100 => new \Phplrt\Parser\Grammar\Optional(99),
         101 => new \Phplrt\Parser\Grammar\Concatenation([96, 100]),
-        102 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
-        103 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
-        104 => new \Phplrt\Parser\Grammar\Concatenation([102, 26, 103]),
-        96 => new \Phplrt\Parser\Grammar\Alternation([104, 6, 66, 84])
+        103 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_OPEN', true),
+        104 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
+        105 => new \Phplrt\Parser\Grammar\Concatenation([103, 104]),
+        106 => new \Phplrt\Parser\Grammar\Optional(105),
+        107 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
+        108 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
+        109 => new \Phplrt\Parser\Grammar\Concatenation([107, 26, 108]),
+        102 => new \Phplrt\Parser\Grammar\Alternation([109, 6, 66, 84])
     ],
     'reducers' => [
         0 => static function (\Phplrt\Parser\Context $ctx, $children) {
@@ -321,6 +328,13 @@ return [
         }
     
         return $children[0];
+        },
+        96 => static function (\Phplrt\Parser\Context $ctx, $children) {
+            if (\count($children) > 1) {
+            return new Node\Stmt\TypesListNode($children[0]);
+        }
+    
+        return $children;
         }
     ]
 ];
