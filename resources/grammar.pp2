@@ -58,39 +58,49 @@ IntersectionTypeStatement -> {
 // Unary statements/expressions
 
 UnaryStatement
-  : NullableTypeStatement()
+  : PrefixedNullableTypeStatement()
   ;
 
 // stmt = ?Type
-//  - or
-// stmt = Type?
-NullableTypeStatement -> {
-    if (\count($children) > 1) {
-        $statement = $children[0] instanceof Node\Stmt\Statement
-            ? $children[0]
-            : $children[1]
-            ;
-
-        return new Node\Stmt\NullableTypeNode($statement);
-    }
-
-    return $children[0];
-}
-  : <T_NULLABLE> TypesListStatement()
-  | TypesListStatement() <T_NULLABLE>?
-  ;
-
-TypesListStatement -> {
-    if (\count($children) > 1) {
-        return new Node\Stmt\TypesListNode($children[0]);
+PrefixedNullableTypeStatement -> {
+    if (\is_array($children)) {
+        return new Node\Stmt\NullableTypeNode($children[1]);
     }
 
     return $children;
 }
+  : <T_NULLABLE> TypesListStatement()
+  | SuffixedNullableTypeStatement()
+  ;
+
+// stmt = Type?
+SuffixedNullableTypeStatement -> {
+    if (\count($children) > 1) {
+        $result = new Node\Stmt\NullableTypeNode($children[0]);
+        $result->offset = $children[1]->getOffset();
+
+        return $result;
+    }
+
+    return $children[0];
+}
+  : TypesListStatement() <T_NULLABLE>?
+  ;
+
+TypesListStatement -> {
+    $statement = \array_shift($children);
+
+    for ($i = 0, $length = \count($children); $i < $length; ++$i) {
+        $statement = new Node\Stmt\TypesListNode($statement);
+        $statement->offset = $children[$i]->getOffset();
+    }
+
+    return $statement;
+}
   : PrimaryStatement() (
       <T_SQUARE_BRACKET_OPEN>
       ::T_SQUARE_BRACKET_CLOSE::
-    )?
+    )*
   ;
 
 // Primary

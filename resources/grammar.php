@@ -139,17 +139,17 @@ return [
         92 => new \Phplrt\Parser\Grammar\Lexeme('T_AND', false),
         93 => new \Phplrt\Parser\Grammar\Concatenation([92, 87]),
         94 => new \Phplrt\Parser\Grammar\Optional(93),
-        95 => new \Phplrt\Parser\Grammar\Alternation([98, 101]),
+        95 => new \Phplrt\Parser\Grammar\Alternation([98, 99]),
         96 => new \Phplrt\Parser\Grammar\Concatenation([102, 106]),
         97 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
         98 => new \Phplrt\Parser\Grammar\Concatenation([97, 96]),
-        99 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
-        100 => new \Phplrt\Parser\Grammar\Optional(99),
-        101 => new \Phplrt\Parser\Grammar\Concatenation([96, 100]),
+        99 => new \Phplrt\Parser\Grammar\Concatenation([96, 101]),
+        100 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
+        101 => new \Phplrt\Parser\Grammar\Optional(100),
         103 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_OPEN', true),
         104 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
         105 => new \Phplrt\Parser\Grammar\Concatenation([103, 104]),
-        106 => new \Phplrt\Parser\Grammar\Optional(105),
+        106 => new \Phplrt\Parser\Grammar\Repetition(105, 0, INF),
         107 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
         108 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
         109 => new \Phplrt\Parser\Grammar\Concatenation([107, 26, 108]),
@@ -318,23 +318,31 @@ return [
         return $children;
         },
         95 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) > 1) {
-            $statement = $children[0] instanceof Node\Stmt\Statement
-                ? $children[0]
-                : $children[1]
-                ;
+            if (\is_array($children)) {
+            return new Node\Stmt\NullableTypeNode($children[1]);
+        }
     
-            return new Node\Stmt\NullableTypeNode($statement);
+        return $children;
+        },
+        99 => static function (\Phplrt\Parser\Context $ctx, $children) {
+            if (\count($children) > 1) {
+            $result = new Node\Stmt\NullableTypeNode($children[0]);
+            $result->offset = $children[1]->getOffset();
+    
+            return $result;
         }
     
         return $children[0];
         },
         96 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) > 1) {
-            return new Node\Stmt\TypesListNode($children[0]);
+            $statement = \array_shift($children);
+    
+        for ($i = 0, $length = \count($children); $i < $length; ++$i) {
+            $statement = new Node\Stmt\TypesListNode($statement);
+            $statement->offset = $children[$i]->getOffset();
         }
     
-        return $children;
+        return $statement;
         }
     ]
 ];

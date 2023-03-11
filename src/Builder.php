@@ -32,19 +32,12 @@ final class Builder implements BuilderInterface
         if (isset($this->reducers[$state])) {
             $result = ($this->reducers[$state])($context, $result);
 
-            if ($result instanceof Node) {
-                $this->process($result, $context);
+            if ($result instanceof Node && $result->offset === 0) {
+                $token = $context->getToken();
+                $result->offset = $token->getOffset();
             }
         }
 
         return $result;
-    }
-
-    private function process(Node $node, ContextInterface $ctx): void
-    {
-        $token = $ctx->getToken();
-
-        $node->offset = $token->getOffset();
-        unset($node->offset);
     }
 }
