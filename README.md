@@ -60,9 +60,9 @@ PHP);
 Expected Output:
 
 ```php
-TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
+TypeLang\Parser\Node\Stmt\NamedTypeNode {
   +offset: 4
-  +name: TypeLang\Parser\Node\Name {#576
+  +name: TypeLang\Parser\Node\Name {
     +offset: 4
     +name: "array"
     +isSimple: true
@@ -71,14 +71,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
     ]
   }
   +parameters: null
-  +arguments: TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode {#575
+  +arguments: TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode {
     +offset: 9
     +list: array:4 [
-      0 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#578
+      0 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {
         +offset: 19
-        +value: TypeLang\Parser\Node\Stmt\CallableTypeNode {#370
+        +value: TypeLang\Parser\Node\Stmt\CallableTypeNode {
           +offset: 27
-          +name: TypeLang\Parser\Node\Name {#359
+          +name: TypeLang\Parser\Node\Name {
             +offset: 27
             +name: "callable"
             +isSimple: true
@@ -86,14 +86,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
               0 => "callable"
             ]
           }
-          +arguments: TypeLang\Parser\Node\Stmt\Callable\ArgumentsListNode {#358
+          +arguments: TypeLang\Parser\Node\Stmt\Callable\ArgumentsListNode {
             +offset: 36
             +list: array:2 [
-              0 => TypeLang\Parser\Node\Stmt\Callable\ArgumentNode {#268
+              0 => TypeLang\Parser\Node\Stmt\Callable\ArgumentNode {
                 +offset: 36
-                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#192
+                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 36
-                  +name: TypeLang\Parser\Node\Name {#143
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 36
                     +name: "Example"
                     +isSimple: true
@@ -106,11 +106,11 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
                 }
                 +modifier: null
               }
-              1 => TypeLang\Parser\Node\Stmt\Callable\ArgumentNode {#276
+              1 => TypeLang\Parser\Node\Stmt\Callable\ArgumentNode {
                 +offset: 45
-                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#482
+                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 45
-                  +name: TypeLang\Parser\Node\Name {#483
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 45
                     +name: "int"
                     +isSimple: true
@@ -125,9 +125,9 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
               }
             ]
           }
-          +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#154
+          +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
             +offset: 50
-            +name: TypeLang\Parser\Node\Name {#126
+            +name: TypeLang\Parser\Node\Name {
               +offset: 50
               +name: "mixed"
               +isSimple: true
@@ -139,17 +139,17 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
             +arguments: null
           }
         }
-        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#555
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {
           +offset: 19
           +value: "field1"
         }
         +optional: false
       }
-      1 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#556
+      1 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {
         +offset: 65
-        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#275
+        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
           +offset: 73
-          +name: TypeLang\Parser\Node\Name {#274
+          +name: TypeLang\Parser\Node\Name {
             +offset: 73
             +name: "list"
             +isSimple: true
@@ -157,14 +157,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
               0 => "list"
             ]
           }
-          +parameters: TypeLang\Parser\Node\Stmt\Template\ParametersListNode {#267
+          +parameters: TypeLang\Parser\Node\Stmt\Template\ParametersListNode {
             +offset: 77
             +list: array:1 [
-              0 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {#280
+              0 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {
                 +offset: 78
-                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#142
+                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 78
-                  +name: TypeLang\Parser\Node\Name {#165
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 78
                     +name: "Some"
                     +isSimple: true
@@ -180,17 +180,17 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
           }
           +arguments: null
         }
-        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#566
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {
           +offset: 65
           +value: "field2"
         }
         +optional: false
       }
-      2 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#574
+      2 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {
         +offset: 93
-        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#270
+        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
           +offset: 101
-          +name: TypeLang\Parser\Node\Name {#115
+          +name: TypeLang\Parser\Node\Name {
             +offset: 101
             +name: "iterable"
             +isSimple: true
@@ -198,14 +198,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
               0 => "iterable"
             ]
           }
-          +parameters: TypeLang\Parser\Node\Stmt\Template\ParametersListNode {#474
+          +parameters: TypeLang\Parser\Node\Stmt\Template\ParametersListNode {
             +offset: 109
             +list: array:2 [
-              0 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {#120
+              0 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {
                 +offset: 110
-                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#172
+                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 110
-                  +name: TypeLang\Parser\Node\Name {#168
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 110
                     +name: "array-key"
                     +isSimple: true
@@ -217,11 +217,11 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
                   +arguments: null
                 }
               }
-              1 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {#125
+              1 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {
                 +offset: 121
-                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#171
+                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 121
-                  +name: TypeLang\Parser\Node\Name {#170
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 121
                     +name: "array"
                     +isSimple: true
@@ -230,14 +230,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
                     ]
                   }
                   +parameters: null
-                  +arguments: TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode {#157
+                  +arguments: TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode {
                     +offset: 126
                     +list: array:2 [
-                      0 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#174
+                      0 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {
                         +offset: 127
-                        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#97
+                        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                           +offset: 127
-                          +name: TypeLang\Parser\Node\Name {#337
+                          +name: TypeLang\Parser\Node\Name {
                             +offset: 127
                             +name: "int"
                             +isSimple: true
@@ -251,11 +251,11 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
                         +name: null
                         +optional: false
                       }
-                      1 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#155
+                      1 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {
                         +offset: 132
-                        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#339
+                        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                           +offset: 132
-                          +name: TypeLang\Parser\Node\Name {#341
+                          +name: TypeLang\Parser\Node\Name {
                             +offset: 132
                             +name: "non-empty-string"
                             +isSimple: true
@@ -278,17 +278,17 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
           }
           +arguments: null
         }
-        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#545
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {
           +offset: 93
           +value: "field3"
         }
         +optional: false
       }
-      3 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#544
+      3 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {
         +offset: 160
-        +value: TypeLang\Parser\Node\Stmt\ClassConstMaskNode {#137
+        +value: TypeLang\Parser\Node\Stmt\ClassConstMaskNode {
           +offset: 160
-          +class: TypeLang\Parser\Node\Name {#139
+          +class: TypeLang\Parser\Node\Name {
             +offset: 160
             +name: "Some"
             +isSimple: true
