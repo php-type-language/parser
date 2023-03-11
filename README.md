@@ -60,251 +60,249 @@ PHP);
 Expected Output:
 
 ```php
-array:1 [
-  0 => TypeLang\Parser\Node\Stmt\NamedTypeStmt {#562
-    +offset: 0
-    +name: TypeLang\Parser\Node\Name {#561
-      +offset: 0
-      +name: "array"
-      +isSimple: true
-      +parts: array:1 [
-        0 => "array"
-      ]
-    }
-    +parameters: null
-    +arguments: TypeLang\Parser\Node\Stmt\Shape\Arguments {#545
-      +offset: 5
-      +list: array:4 [
-        0 => TypeLang\Parser\Node\Stmt\Shape\Argument {#552
-          +offset: 15
-          +value: TypeLang\Parser\Node\Stmt\CallableTypeStmt {#235
-            +offset: 23
-            +name: TypeLang\Parser\Node\Name {#133
-              +offset: 23
-              +name: "callable"
-              +isSimple: true
-              +parts: array:1 [
-                0 => "callable"
-              ]
-            }
-            +arguments: TypeLang\Parser\Node\Stmt\Callable\Arguments {#131
-              +offset: 32
-              +list: array:2 [
-                0 => TypeLang\Parser\Node\Stmt\Callable\Argument {#146
-                  +offset: 32
-                  +type: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#443
-                    +offset: 32
-                    +name: TypeLang\Parser\Node\Name {#480
-                      +offset: 32
-                      +name: "Example"
-                      +isSimple: true
-                      +parts: array:1 [
-                        0 => "Example"
-                      ]
-                    }
-                    +parameters: null
-                    +arguments: null
-                  }
-                  +modifier: null
-                }
-                1 => TypeLang\Parser\Node\Stmt\Callable\Argument {#145
-                  +offset: 41
-                  +type: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#351
-                    +offset: 41
-                    +name: TypeLang\Parser\Node\Name {#343
-                      +offset: 41
-                      +name: "int"
-                      +isSimple: true
-                      +parts: array:1 [
-                        0 => "int"
-                      ]
-                    }
-                    +parameters: null
-                    +arguments: null
-                  }
-                  +modifier: null
-                }
-              ]
-            }
-            +type: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#522
-              +offset: 46
-              +name: TypeLang\Parser\Node\Name {#491
-                +offset: 46
-                +name: "mixed"
-                +isSimple: true
-                +parts: array:1 [
-                  0 => "mixed"
-                ]
-              }
-              +parameters: null
-              +arguments: null
-            }
-          }
-          +name: TypeLang\Parser\Node\Literal\StringLiteralStmt {#547
-            +offset: 15
-            +value: "field1"
-          }
-          +optional: false
-        }
-        1 => TypeLang\Parser\Node\Stmt\Shape\Argument {#560
-          +offset: 61
-          +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#147
-            +offset: 69
-            +name: TypeLang\Parser\Node\Name {#136
-              +offset: 69
-              +name: "list"
-              +isSimple: true
-              +parts: array:1 [
-                0 => "list"
-              ]
-            }
-            +parameters: TypeLang\Parser\Node\Stmt\Template\Parameters {#150
-              +offset: 73
-              +list: array:1 [
-                0 => TypeLang\Parser\Node\Stmt\Template\Parameter {#141
-                  +offset: 74
-                  +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#492
-                    +offset: 74
-                    +name: TypeLang\Parser\Node\Name {#475
-                      +offset: 74
-                      +name: "Some"
-                      +isSimple: true
-                      +parts: array:1 [
-                        0 => "Some"
-                      ]
-                    }
-                    +parameters: null
-                    +arguments: null
-                  }
-                }
-              ]
-            }
-            +arguments: null
-          }
-          +name: TypeLang\Parser\Node\Literal\StringLiteralStmt {#543
-            +offset: 61
-            +value: "field2"
-          }
-          +optional: false
-        }
-        2 => TypeLang\Parser\Node\Stmt\Shape\Argument {#546
-          +offset: 89
-          +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#137
-            +offset: 97
-            +name: TypeLang\Parser\Node\Name {#517
-              +offset: 97
-              +name: "iterable"
-              +isSimple: true
-              +parts: array:1 [
-                0 => "iterable"
-              ]
-            }
-            +parameters: TypeLang\Parser\Node\Stmt\Template\Parameters {#497
-              +offset: 105
-              +list: array:2 [
-                0 => TypeLang\Parser\Node\Stmt\Template\Parameter {#513
-                  +offset: 106
-                  +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#462
-                    +offset: 106
-                    +name: TypeLang\Parser\Node\Name {#482
-                      +offset: 106
-                      +name: "array-key"
-                      +isSimple: true
-                      +parts: array:1 [
-                        0 => "array-key"
-                      ]
-                    }
-                    +parameters: null
-                    +arguments: null
-                  }
-                }
-                1 => TypeLang\Parser\Node\Stmt\Template\Parameter {#490
-                  +offset: 117
-                  +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#463
-                    +offset: 117
-                    +name: TypeLang\Parser\Node\Name {#458
-                      +offset: 117
-                      +name: "array"
-                      +isSimple: true
-                      +parts: array:1 [
-                        0 => "array"
-                      ]
-                    }
-                    +parameters: null
-                    +arguments: TypeLang\Parser\Node\Stmt\Shape\Arguments {#470
-                      +offset: 122
-                      +list: array:2 [
-                        0 => TypeLang\Parser\Node\Stmt\Shape\Argument {#461
-                          +offset: 123
-                          +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#350
-                            +offset: 123
-                            +name: TypeLang\Parser\Node\Name {#97
-                              +offset: 123
-                              +name: "int"
-                              +isSimple: true
-                              +parts: array:1 [
-                                0 => "int"
-                              ]
-                            }
-                            +parameters: null
-                            +arguments: null
-                          }
-                          +name: null
-                          +optional: false
-                        }
-                        1 => TypeLang\Parser\Node\Stmt\Shape\Argument {#478
-                          +offset: 128
-                          +value: TypeLang\Parser\Node\Stmt\NamedTypeStmt {#217
-                            +offset: 128
-                            +name: TypeLang\Parser\Node\Name {#218
-                              +offset: 128
-                              +name: "non-empty-string"
-                              +isSimple: true
-                              +parts: array:1 [
-                                0 => "non-empty-string"
-                              ]
-                            }
-                            +parameters: null
-                            +arguments: null
-                          }
-                          +name: null
-                          +optional: false
-                        }
-                      ]
-                      +sealed: true
-                    }
-                  }
-                }
-              ]
-            }
-            +arguments: null
-          }
-          +name: TypeLang\Parser\Node\Literal\StringLiteralStmt {#122
-            +offset: 89
-            +value: "field3"
-          }
-          +optional: false
-        }
-        3 => TypeLang\Parser\Node\Stmt\Shape\Argument {#126
-          +offset: 156
-          +value: TypeLang\Parser\Node\Stmt\ClassConstMaskStmt {#512
-            +offset: 156
-            +class: TypeLang\Parser\Node\Name {#469
-              +offset: 156
-              +name: "Some"
-              +isSimple: true
-              +parts: array:1 [
-                0 => "Some"
-              ]
-            }
-            +constant: "CONST_"
-          }
-          +name: null
-          +optional: false
-        }
-      ]
-      +sealed: false
-    }
+TypeLang\Parser\Node\Stmt\NamedTypeNode {#582
+  +offset: 4
+  +name: TypeLang\Parser\Node\Name {#576
+    +offset: 4
+    +name: "array"
+    +isSimple: true
+    +parts: array:1 [
+      0 => "array"
+    ]
   }
-]
+  +parameters: null
+  +arguments: TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode {#575
+    +offset: 9
+    +list: array:4 [
+      0 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#578
+        +offset: 19
+        +value: TypeLang\Parser\Node\Stmt\CallableTypeNode {#370
+          +offset: 27
+          +name: TypeLang\Parser\Node\Name {#359
+            +offset: 27
+            +name: "callable"
+            +isSimple: true
+            +parts: array:1 [
+              0 => "callable"
+            ]
+          }
+          +arguments: TypeLang\Parser\Node\Stmt\Callable\ArgumentsListNode {#358
+            +offset: 36
+            +list: array:2 [
+              0 => TypeLang\Parser\Node\Stmt\Callable\ArgumentNode {#268
+                +offset: 36
+                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#192
+                  +offset: 36
+                  +name: TypeLang\Parser\Node\Name {#143
+                    +offset: 36
+                    +name: "Example"
+                    +isSimple: true
+                    +parts: array:1 [
+                      0 => "Example"
+                    ]
+                  }
+                  +parameters: null
+                  +arguments: null
+                }
+                +modifier: null
+              }
+              1 => TypeLang\Parser\Node\Stmt\Callable\ArgumentNode {#276
+                +offset: 45
+                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#482
+                  +offset: 45
+                  +name: TypeLang\Parser\Node\Name {#483
+                    +offset: 45
+                    +name: "int"
+                    +isSimple: true
+                    +parts: array:1 [
+                      0 => "int"
+                    ]
+                  }
+                  +parameters: null
+                  +arguments: null
+                }
+                +modifier: null
+              }
+            ]
+          }
+          +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#154
+            +offset: 50
+            +name: TypeLang\Parser\Node\Name {#126
+              +offset: 50
+              +name: "mixed"
+              +isSimple: true
+              +parts: array:1 [
+                0 => "mixed"
+              ]
+            }
+            +parameters: null
+            +arguments: null
+          }
+        }
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#555
+          +offset: 19
+          +value: "field1"
+        }
+        +optional: false
+      }
+      1 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#556
+        +offset: 65
+        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#275
+          +offset: 73
+          +name: TypeLang\Parser\Node\Name {#274
+            +offset: 73
+            +name: "list"
+            +isSimple: true
+            +parts: array:1 [
+              0 => "list"
+            ]
+          }
+          +parameters: TypeLang\Parser\Node\Stmt\Template\ParametersListNode {#267
+            +offset: 77
+            +list: array:1 [
+              0 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {#280
+                +offset: 78
+                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#142
+                  +offset: 78
+                  +name: TypeLang\Parser\Node\Name {#165
+                    +offset: 78
+                    +name: "Some"
+                    +isSimple: true
+                    +parts: array:1 [
+                      0 => "Some"
+                    ]
+                  }
+                  +parameters: null
+                  +arguments: null
+                }
+              }
+            ]
+          }
+          +arguments: null
+        }
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#566
+          +offset: 65
+          +value: "field2"
+        }
+        +optional: false
+      }
+      2 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#574
+        +offset: 93
+        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#270
+          +offset: 101
+          +name: TypeLang\Parser\Node\Name {#115
+            +offset: 101
+            +name: "iterable"
+            +isSimple: true
+            +parts: array:1 [
+              0 => "iterable"
+            ]
+          }
+          +parameters: TypeLang\Parser\Node\Stmt\Template\ParametersListNode {#474
+            +offset: 109
+            +list: array:2 [
+              0 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {#120
+                +offset: 110
+                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#172
+                  +offset: 110
+                  +name: TypeLang\Parser\Node\Name {#168
+                    +offset: 110
+                    +name: "array-key"
+                    +isSimple: true
+                    +parts: array:1 [
+                      0 => "array-key"
+                    ]
+                  }
+                  +parameters: null
+                  +arguments: null
+                }
+              }
+              1 => TypeLang\Parser\Node\Stmt\Template\ParameterNode {#125
+                +offset: 121
+                +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#171
+                  +offset: 121
+                  +name: TypeLang\Parser\Node\Name {#170
+                    +offset: 121
+                    +name: "array"
+                    +isSimple: true
+                    +parts: array:1 [
+                      0 => "array"
+                    ]
+                  }
+                  +parameters: null
+                  +arguments: TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode {#157
+                    +offset: 126
+                    +list: array:2 [
+                      0 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#174
+                        +offset: 127
+                        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#97
+                          +offset: 127
+                          +name: TypeLang\Parser\Node\Name {#337
+                            +offset: 127
+                            +name: "int"
+                            +isSimple: true
+                            +parts: array:1 [
+                              0 => "int"
+                            ]
+                          }
+                          +parameters: null
+                          +arguments: null
+                        }
+                        +name: null
+                        +optional: false
+                      }
+                      1 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#155
+                        +offset: 132
+                        +value: TypeLang\Parser\Node\Stmt\NamedTypeNode {#339
+                          +offset: 132
+                          +name: TypeLang\Parser\Node\Name {#341
+                            +offset: 132
+                            +name: "non-empty-string"
+                            +isSimple: true
+                            +parts: array:1 [
+                              0 => "non-empty-string"
+                            ]
+                          }
+                          +parameters: null
+                          +arguments: null
+                        }
+                        +name: null
+                        +optional: false
+                      }
+                    ]
+                    +sealed: true
+                  }
+                }
+              }
+            ]
+          }
+          +arguments: null
+        }
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#545
+          +offset: 93
+          +value: "field3"
+        }
+        +optional: false
+      }
+      3 => TypeLang\Parser\Node\Stmt\Shape\ArgumentNode {#544
+        +offset: 160
+        +value: TypeLang\Parser\Node\Stmt\ClassConstMaskNode {#137
+          +offset: 160
+          +class: TypeLang\Parser\Node\Name {#139
+            +offset: 160
+            +name: "Some"
+            +isSimple: true
+            +parts: array:1 [
+              0 => "Some"
+            ]
+          }
+          +constant: "CONST_"
+        }
+        +name: null
+        +optional: false
+      }
+    ]
+    +sealed: false
+  }
+}
 ```
