@@ -51,7 +51,7 @@
     },
     "scripts": {
         "build": "@php bin/build",
-        "test": "phpunit --testdox",
+        "test": "phpunit",
         "psalm": "psalm --no-cache",
         "psalm:fix": "psalm --no-cache --alter",
         "phpcs": "rector --dry-run --config=rector.php",
