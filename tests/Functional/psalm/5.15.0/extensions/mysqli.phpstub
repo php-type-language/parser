@@ -1,0 +1,84 @@
+<?php
+
+class mysqli
+{
+    /**
+     * @var int<-1, max>|numeric-string
+     */
+    public int|string $affected_rows;
+}
+
+/**
+ * @template TValue
+ *
+ * @template-implements Traversable<int, TValue>
+ */
+class mysqli_result implements Traversable
+{
+    /**
+     * @var int<0, max>|numeric-string
+     */
+    public int|string $num_rows;
+
+    /**
+     * @psalm-taint-sink callable $class
+     *
+     * @template T of object
+     * @param class-string<T> $class
+     * @param array $constructor_args
+     * @return T|null|false
+     */
+    function fetch_object(string $class = stdClass::class, array $constructor_args = []): object|false|null {}
+}
+
+class mysqli_stmt
+{
+    /**
+     * @var int<-1, max>|numeric-string
+     */
+    public int|string $affected_rows;
+
+    public int $errno;
+
+    /**
+     * @var list<array{errno: int, sqlstate: string, error: string}>
+     */
+    public $error_list;
+
+    public string $error;
+
+    /**
+     * @var 0|positive-int
+     */
+    public int $field_count;
+
+    public int|string $insert_id;
+
+    /**
+     * @var int<0,max>|numeric-string
+     */
+    public int|string $num_rows;
+
+    /**
+     * @var 0|positive-int
+     */
+    public int $param_count;
+
+    /**
+     * @var non-empty-string
+     */
+    public string $sqlstate;
+}
+
+/**
+ * @psalm-taint-sink callable $class
+ *
+ * @template T of object
+ * @template TValue
+ *
+ * @param mysqli_result<TValue> $result
+ * @param class-string<T> $class
+ * @param array $constructor_args
+ * @return T|null|false
+ */
+function mysqli_fetch_object(mysqli_result $result, string $class = stdClass::class, array $constructor_args = []): object|false|null {}

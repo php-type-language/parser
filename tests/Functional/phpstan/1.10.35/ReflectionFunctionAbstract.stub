@@ -1,0 +1,17 @@
+<?php
+
+abstract class ReflectionFunctionAbstract
+{
+
+	/**
+	 * @return string|false
+	 */
+	public function getFileName () {}
+
+    /**
+     * @return array<ReflectionAttribute<object>>
+     */
+    public function getAttributes(?string $name = null, int $flags = 0)
+    {
+    }
+}

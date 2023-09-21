@@ -1,0 +1,145 @@
+<?php
+
+interface Throwable
+{
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	public function getMessage();
+
+	/**
+	 * @return mixed
+	 * @throws void
+	 */
+	public function getCode();
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	public function getFile();
+
+	/**
+	 * @return int
+	 * @throws void
+	 */
+	public function getLine();
+
+	/**
+	 * @return list<array{function:string,line?:int,file?:string,class?:class-string,type?:'::'|'->',args?:mixed[],object?:object}>
+	 * @throws void
+	 */
+	public function getTrace();
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	public function getTraceAsString();
+
+	/**
+	 * @return null|Throwable
+	 * @throws void
+	 */
+	public function getPrevious();
+
+	/**
+	 * @return string
+	 */
+	public function __toString();
+}
+
+class Exception implements Throwable
+{
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	final public function getMessage(): string {}
+
+	/**
+	 * @return mixed
+	 * @throws void
+	 */
+	final public function getCode() {}
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	final public function getFile(): string {}
+
+	/**
+	 * @return int
+	 * @throws void
+	 */
+	final public function getLine(): int {}
+
+	/**
+	 * @return list<array{function:string,line?:int,file?:string,class?:class-string,type?:'::'|'->',args?:mixed[],object?:object}>
+	 * @throws void
+	 */
+	final public function getTrace(): array {}
+
+	/**
+	 * @return null|Throwable
+	 * @throws void
+	 */
+	final public function getPrevious(): ?Throwable {}
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	final public function getTraceAsString(): string {}
+
+}
+
+class Error implements Throwable
+{
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	final public function getMessage(): string {}
+
+	/**
+	 * @return mixed
+	 * @throws void
+	 */
+	final public function getCode() {}
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	final public function getFile(): string {}
+
+	/**
+	 * @return int
+	 * @throws void
+	 */
+	final public function getLine(): int {}
+
+	/**
+	 * @return list<array{function:string,line?:int,file?:string,class?:class-string,type?:'::'|'->',args?:mixed[],object?:object}>
+	 * @throws void
+	 */
+	final public function getTrace(): array {}
+
+	/**
+	 * @return null|Throwable
+	 * @throws void
+	 */
+	final public function getPrevious(): ?Throwable {}
+
+	/**
+	 * @return string
+	 * @throws void
+	 */
+	final public function getTraceAsString(): string {}
+
+}
