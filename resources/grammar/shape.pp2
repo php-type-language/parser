@@ -1,11 +1,11 @@
 
-ShapeArguments -> {
+ShapeFields -> {
     $isSealed = \array_pop($children);
 
-    return new Node\Stmt\Shape\ArgumentsListNode($children, $isSealed);
+    return new Node\Stmt\Shape\FieldsListNode($children, $isSealed);
 }
   : ::T_BRACE_OPEN::
-      ShapeArgument()? (::T_COMMA:: ShapeArgument())* ::T_COMMA::?
+      ShapeField()? (::T_COMMA:: ShapeField())* ::T_COMMA::?
       IsSealed() ::T_COMMA::?
     ::T_BRACE_CLOSE::
   ;
@@ -14,35 +14,30 @@ IsSealed -> { return $children === []; }
   : <T_ELLIPSIS>?
   ;
 
-ShapeArgument
-  : OptionalNamedShapeArgument()
-  | NamedShapeArgument()
-  | AnonymousShapeArgument()
+ShapeField
+  : NamedShapeField()
   ;
 
-OptionalNamedShapeArgument -> {
-    return new Node\Stmt\Shape\ArgumentNode(
-        $children[1],
-        $children[0],
-        true,
-    );
+NamedShapeField -> {
+    if (\is_array($children)) {
+        // In case of "nullable" suffix defined
+        if (\count($children) === 3) {
+            return new Node\Stmt\Shape\OptionalFieldNode(
+                new Node\Stmt\Shape\NamedFieldNode($children[0], $children[2])
+            );
+        }
+
+        return new Node\Stmt\Shape\NamedFieldNode($children[0], $children[1]);
+    }
+
+    return $children;
 }
-  : ShapeKey() ::T_NULLABLE:: ::T_COLON:: ShapeValue()
+  : ShapeKey() (<T_NULLABLE>)? ::T_COLON:: AnonymousShapeField()
+  | AnonymousShapeField()
   ;
 
-NamedShapeArgument -> {
-    return new Node\Stmt\Shape\ArgumentNode(
-        $children[1],
-        $children[0],
-    );
-}
-  : ShapeKey() ::T_COLON:: ShapeValue()
-  ;
-
-AnonymousShapeArgument -> {
-    return new Node\Stmt\Shape\ArgumentNode(
-        $children[0],
-    );
+AnonymousShapeField -> {
+    return new Node\Stmt\Shape\FieldNode($children[0]);
 }
   : ShapeValue()
   ;
@@ -57,7 +52,7 @@ ShapeKey -> {
         default => new Node\Literal\StringLiteralNode($children->getValue()),
     };
 }
-  : <T_NAME>
+  : Identifier()
   | IntLiteral()
   | BoolLiteral()
   | NullLiteral()

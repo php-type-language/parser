@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Shape;
 
-use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Stmt\Statement;
 
@@ -12,11 +11,19 @@ use TypeLang\Parser\Node\Stmt\Statement;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class ArgumentNode extends Node
+final class FieldNode extends Node implements FieldNodeInterface
 {
     public function __construct(
         public readonly Statement $value,
-        public readonly ?StringLiteralNode $name = null,
-        public readonly bool $optional = false,
     ) {}
+
+    public function is(string $class): bool
+    {
+        return $this instanceof $class;
+    }
+
+    public function getValue(): Statement
+    {
+        return $this->value;
+    }
 }

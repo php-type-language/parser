@@ -48,5 +48,9 @@ ClassConstLiteral -> {
         $children[1]->getValue()
     );
 }
-  : Name() ::T_DOUBLE_COLON:: (<T_NAME><T_ASTERISK>|<T_NAME>|<T_ASTERISK>)
+  : Name() ::T_DOUBLE_COLON::
+    ( Identifier() <T_ASTERISK>
+    | Identifier()
+    | <T_ASTERISK>
+    )
   ;

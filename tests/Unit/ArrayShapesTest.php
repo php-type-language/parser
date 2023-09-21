@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Unit;
 
 use TypeLang\Parser\Node\Stmt\NamedTypeNode;
-use TypeLang\Parser\Node\Stmt\Shape\ArgumentNode;
-use TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode;
+use TypeLang\Parser\Node\Stmt\Shape\FieldNode;
+use TypeLang\Parser\Node\Stmt\Shape\FieldsListNode;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -18,9 +18,9 @@ class ArrayShapesTest extends TestCase
         /** @var NamedTypeNode $type */
         $type = $this->parse('array{a,b,c}');
 
-        $this->assertInstanceOf(ArgumentsListNode::class, $type->arguments);
-        $this->assertTrue($type->arguments->sealed);
-        $this->assertCount(3, $type->arguments->list);
+        $this->assertInstanceOf(FieldsListNode::class, $type->fields);
+        $this->assertTrue($type->fields->sealed);
+        $this->assertCount(3, $type->fields->list);
     }
 
     public function testEmptyShape(): void
@@ -28,9 +28,9 @@ class ArrayShapesTest extends TestCase
         /** @var NamedTypeNode $type */
         $type = $this->parse('array{}');
 
-        $this->assertInstanceOf(ArgumentsListNode::class, $type->arguments);
-        $this->assertTrue($type->arguments->sealed);
-        $this->assertCount(0, $type->arguments->list);
+        $this->assertInstanceOf(FieldsListNode::class, $type->fields);
+        $this->assertTrue($type->fields->sealed);
+        $this->assertCount(0, $type->fields->list);
     }
 
     public function testUnsealedArguments(): void
@@ -38,21 +38,21 @@ class ArrayShapesTest extends TestCase
         /** @var NamedTypeNode $type */
         $type = $this->parse('array{a,b,c,...}');
 
-        $this->assertInstanceOf(ArgumentsListNode::class, $type->arguments);
-        $this->assertFalse($type->arguments->sealed);
-        $this->assertCount(3, $type->arguments->list);
+        $this->assertInstanceOf(FieldsListNode::class, $type->fields);
+        $this->assertFalse($type->fields->sealed);
+        $this->assertCount(3, $type->fields->list);
     }
 
     public function testOneAnonymousArgument(): void
     {
         $type = $this->parse('array{int}');
 
-        $this->assertNotNull($type->arguments);
+        $this->assertNotNull($type->fields);
 
-        $arguments = $type->arguments->list;
+        $arguments = $type->fields->list;
         $this->assertCount(1, $arguments);
 
-        /** @var ArgumentNode $first */
+        /** @var FieldNode $first */
         $first = $arguments[0];
         $this->assertNull($first->name);
         $this->assertFalse($first->optional);
@@ -66,9 +66,9 @@ class ArrayShapesTest extends TestCase
     {
         $type = $this->parse('array{int, string}');
 
-        $this->assertNotNull($type->arguments);
+        $this->assertNotNull($type->fields);
 
-        $arguments = $type->arguments->list;
+        $arguments = $type->fields->list;
         $this->assertCount(2, $arguments);
 
         $first = $arguments[0]->value;
@@ -84,16 +84,16 @@ class ArrayShapesTest extends TestCase
     {
         $type = $this->parse('array{Some\Any{int, string}}');
 
-        $this->assertNotNull($type->arguments);
+        $this->assertNotNull($type->fields);
 
-        $rootArguments = $type->arguments->list;
+        $rootArguments = $type->fields->list;
         $this->assertCount(1, $rootArguments);
 
         $rootValue = $rootArguments[0]->value;
         $this->assertInstanceOf(NamedTypeNode::class, $rootValue);
         $this->assertSame('Some\Any', $rootValue->name->name);
 
-        $nestedArguments = $rootValue->arguments->list;
+        $nestedArguments = $rootValue->fields->list;
         $this->assertCount(2, $nestedArguments);
 
         $nestedValue1 = $nestedArguments[0]->value;
@@ -109,12 +109,12 @@ class ArrayShapesTest extends TestCase
     {
         $type = $this->parse('array{name:int}');
 
-        $this->assertNotNull($type->arguments);
+        $this->assertNotNull($type->fields);
 
-        $arguments = $type->arguments->list;
+        $arguments = $type->fields->list;
         $this->assertCount(1, $arguments);
 
-        /** @var ArgumentNode $first */
+        /** @var FieldNode $first */
         $first = $arguments[0];
         $this->assertSame('name', $first->name->value);
         $this->assertFalse($first->optional);
@@ -128,9 +128,9 @@ class ArrayShapesTest extends TestCase
     {
         $type = $this->parse('array{some, required:a, optional?:b}');
 
-        $this->assertNotNull($type->arguments);
+        $this->assertNotNull($type->fields);
 
-        $arguments = $type->arguments->list;
+        $arguments = $type->fields->list;
         $this->assertCount(3, $arguments);
 
         $this->assertNull($arguments[0]->name);

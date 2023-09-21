@@ -15,14 +15,25 @@ class Name extends Node
      */
     public readonly string $name;
 
-    public readonly bool $isSimple;
-
     /**
-     * @param non-empty-array<string> $parts
+     * @param non-empty-list<non-empty-string> $parts
      */
     final public function __construct(public readonly array $parts)
     {
+        assert($this->parts !== [], new \InvalidArgumentException(
+            'Name parts count can not be empty',
+        ));
+
         $this->name = \implode('\\', $this->parts);
-        $this->isSimple = \count($this->parts) === 1;
+    }
+
+    public function isSimple(): bool
+    {
+        return \count($this->parts) === 1;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

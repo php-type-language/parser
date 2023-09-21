@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Traverser;
 
 use TypeLang\Parser\Node\Node;
 
-final class StructStreamDumperVisitor extends Visitor
+final class DumperVisitor extends Visitor
 {
     /**
      * @var int<0, max>
@@ -36,9 +36,13 @@ final class StructStreamDumperVisitor extends Visitor
     public function enter(Node $node): ?Command
     {
         $prefix = \str_repeat('  ', ++$this->depth);
-        $class = \str_replace($this->prefix, '', $node::class);
+        $suffix = \str_replace($this->prefix, '', $node::class);
 
-        \fwrite($this->stream, $prefix . $class . "\n");
+        if ($node instanceof \Stringable) {
+            $suffix .= \sprintf('(%s)', (string)$node);
+        }
+
+        \fwrite($this->stream, $prefix . $suffix . "\n");
 
         return null;
     }

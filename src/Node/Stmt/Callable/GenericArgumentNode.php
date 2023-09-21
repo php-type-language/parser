@@ -11,19 +11,20 @@ use TypeLang\Parser\Node\Stmt\Statement;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-final class ArgumentNode extends Node implements ArgumentNodeInterface
+abstract class GenericArgumentNode extends Node implements ArgumentNodeInterface
 {
     public function __construct(
-        public readonly Statement $type,
-    ) {}
+        public readonly ArgumentNodeInterface $of,
+    ) {
+    }
 
     public function is(string $class): bool
     {
-        return $this instanceof $class;
+        return $this instanceof $class || $this->of->is($class);
     }
 
     public function getType(): Statement
     {
-        return $this->type;
+        return $this->of->getType();
     }
 }

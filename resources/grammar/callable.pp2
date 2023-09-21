@@ -20,9 +20,7 @@ CallableTypeStmt -> {
   ;
 
 CallableArguments -> {
-    return new Node\Stmt\Callable\ArgumentsListNode(
-        list: $children,
-    );
+    return new Node\Stmt\Callable\ArgumentsListNode($children);
 }
   : CallableArgument() (::T_COMMA:: CallableArgument())* ::T_COMMA::?
   ;
@@ -33,9 +31,8 @@ CallableArgument
 
 PrefixedVariadicCallableArgument -> {
     if (\is_array($children)) {
-        return new Node\Stmt\Callable\ArgumentNode(
-            type: $children[1],
-            modifier: Node\Stmt\Callable\Modifier::VARIADIC,
+        return new Node\Stmt\Callable\VariadicArgumentNode(
+            new Node\Stmt\Callable\ArgumentNode($children[1]),
         );
     }
 
@@ -46,18 +43,17 @@ PrefixedVariadicCallableArgument -> {
   ;
 
 SuffixedCallableArgument -> {
-    $modifier = null;
-    if (isset($children[1])) {
-        $modifier = $children[1]->getName() === 'T_EQ'
-            ? Node\Stmt\Callable\Modifier::OPTIONAL
-            : Node\Stmt\Callable\Modifier::VARIADIC
-            ;
+    $argument = new Node\Stmt\Callable\ArgumentNode($children[0]);
+
+    if (!isset($children[1])) {
+        return $argument;
     }
 
-    return new Node\Stmt\Callable\ArgumentNode(
-        type: $children[0],
-        modifier: $modifier,
-    );
+    if ($children[1]->getName() === 'T_EQ') {
+        return new Node\Stmt\Callable\OptionalArgumentNode($argument);
+    }
+
+    return new Node\Stmt\Callable\VariadicArgumentNode($argument);
 }
   : Statement() (<T_EQ> | <T_ELLIPSIS>)?
   ;

@@ -8,7 +8,7 @@
 %token  T_BOOL_LITERAL          \b(?i)(?:true|false)\b
 %token  T_NULL_LITERAL          \b(?i)(?:null)\b
 
-// Name
+// Identifier
 
 %token  T_NAME                  [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
 

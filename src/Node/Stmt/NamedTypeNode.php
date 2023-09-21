@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Stmt;
 
 use TypeLang\Parser\Node\Name;
-use TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode;
+use TypeLang\Parser\Node\Stmt\Shape\FieldsListNode;
 use TypeLang\Parser\Node\Stmt\Template\ParametersListNode;
 
 /**
@@ -17,6 +17,6 @@ class NamedTypeNode extends Statement
     public function __construct(
         public readonly Name $name,
         public readonly ?ParametersListNode $parameters = null,
-        public readonly ?ArgumentsListNode $arguments = null,
+        public readonly ?FieldsListNode $fields = null,
     ) {}
 }

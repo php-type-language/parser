@@ -59,7 +59,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      */
     public static function fromUnrecognizedSyntaxError(string $statement, int $offset): static
     {
-        $message = \vsprintf('Unrecognized syntax error, in %s %s', [
+        $message = \vsprintf('Internal syntax error, in %s %s', [
             Formatter::source($statement),
             Formatter::suffix($statement, $offset),
         ]);

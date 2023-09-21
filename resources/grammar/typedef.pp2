@@ -1,19 +1,22 @@
 
 NamedTypeStmt -> {
-    $arguments = $parameters = null;
+    $fields = $parameters = null;
 
-    $options = \end($children);
-    if ($options instanceof Node\Stmt\Shape\ArgumentsListNode) {
-        $arguments = $options;
-    } elseif ($options instanceof Node\Stmt\Template\ParametersListNode) {
-        $parameters = $options;
+    // Shape fields
+    if (\end($children) instanceof Node\Stmt\Shape\FieldsListNode) {
+        $fields = \array_pop($children);
+    }
+
+    // Template parameters
+    if (\end($children) instanceof Node\Stmt\Template\ParametersListNode) {
+        $parameters = \array_pop($children);
     }
 
     return new Node\Stmt\NamedTypeNode(
         $children[0],
         $parameters,
-        $arguments,
+        $fields,
     );
 }
-  : Name() (TemplateParameters() | ShapeArguments())?
+  : Name() TemplateParameters()? ShapeFields()?
   ;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Node\Stmt\Callable;
+namespace TypeLang\Parser\Node\Stmt\Shape;
 
 use TypeLang\Parser\Node\Node;
 
@@ -10,15 +10,16 @@ use TypeLang\Parser\Node\Node;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  *
- * @template-implements \IteratorAggregate<array-key, ArgumentNodeInterface>
+ * @template-implements \IteratorAggregate<array-key, FieldNodeInterface>
  */
-class ArgumentsListNode extends Node implements \IteratorAggregate, \Countable
+class FieldsListNode extends Node implements \IteratorAggregate, \Countable
 {
     /**
-     * @param list<ArgumentNodeInterface> $list
+     * @param list<FieldNodeInterface> $list
      */
     public function __construct(
         public readonly array $list = [],
+        public readonly bool $sealed = true,
     ) {}
 
     public function getIterator(): \Traversable

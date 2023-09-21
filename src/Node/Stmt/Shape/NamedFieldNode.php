@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Shape;
 
-use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\Literal\StringLiteralNode;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class ArgumentsListNode extends Node
+final class NamedFieldNode extends GenericFieldNode
 {
-    /**
-     * @param array<ArgumentNode> $list
-     */
     public function __construct(
-        public readonly array $list = [],
-        public readonly bool $sealed = true,
-    ) {}
+        public readonly StringLiteralNode $name,
+        FieldNodeInterface $of,
+    ) {
+        parent::__construct($of);
+    }
 }
