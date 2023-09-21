@@ -13,7 +13,7 @@ use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser'), Group('unit')]
+#[Group('unit')]
 class LiteralsTest extends TestCase
 {
     #[DataProvider('floatLiteralsDataProvider')]

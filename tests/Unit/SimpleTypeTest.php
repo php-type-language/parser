@@ -8,7 +8,7 @@ use TypeLang\Parser\Node\FullQualifiedName;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser'), Group('unit')]
+#[Group('unit')]
 class SimpleTypeTest extends TestCase
 {
     public function testSimpleType(): void

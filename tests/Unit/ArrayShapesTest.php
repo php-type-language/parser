@@ -10,8 +10,8 @@ use TypeLang\Parser\Node\Stmt\Shape\ArgumentsListNode;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser'), Group('unit')]
-class ShapesTest extends TestCase
+#[Group('unit')]
+class ArrayShapesTest extends TestCase
 {
     public function testArguments(): void
     {

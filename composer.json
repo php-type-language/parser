@@ -51,7 +51,10 @@
     },
     "scripts": {
         "build": "@php bin/build",
-        "test": "phpunit",
+
+        "test": ["@test:unit", "@test:functional"],
+        "test:unit": "phpunit --testdox --group=unit",
+        "test:functional": "phpunit --testdox --group=functional",
 
         "linter": "@linter:check",
         "linter:check": "psalm --no-cache",

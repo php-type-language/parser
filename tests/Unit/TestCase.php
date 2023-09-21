@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Tests\Unit;
 use TypeLang\Parser\Tests\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser'), Group('unit')]
+#[Group('unit')]
 abstract class TestCase extends BaseTestCase
 {
 }

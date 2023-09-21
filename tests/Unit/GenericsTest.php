@@ -9,7 +9,7 @@ use TypeLang\Parser\Node\Stmt\Template\ParametersListNode;
 use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('parser'), Group('unit')]
+#[Group('unit')]
 class GenericsTest extends TestCase
 {
     public function testParameters(): void
