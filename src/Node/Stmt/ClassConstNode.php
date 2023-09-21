@@ -13,13 +13,15 @@ use TypeLang\Parser\Node\Name;
 class ClassConstNode extends ClassConstMaskNode
 {
     /**
-     * @param Name $class
      * @param non-empty-string $constant
      */
-    public function __construct(
-        Name $class,
-        string $constant,
-    ) {
+    public function __construct(Name $class, string $constant)
+    {
         parent::__construct($class, $constant);
+    }
+
+    public function __toString(): string
+    {
+        return $this->constant;
     }
 }

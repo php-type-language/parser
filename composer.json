@@ -53,8 +53,8 @@
         "build": "@php bin/build",
 
         "test": ["@test:unit", "@test:functional"],
-        "test:unit": "phpunit --testdox --group=unit",
-        "test:functional": "phpunit --testdox --group=functional",
+        "test:unit": "phpunit --testdox --testsuite=unit",
+        "test:functional": "phpunit --testdox --testsuite=functional",
 
         "linter": "@linter:check",
         "linter:check": "psalm --no-cache",

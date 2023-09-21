@@ -19,4 +19,9 @@ class ClassConstMaskNode extends Statement
         public readonly Name $class,
         public readonly ?string $constant = null,
     ) {}
+
+    public function __toString(): string
+    {
+        return (string)$this->constant . '*';
+    }
 }

@@ -2,67 +2,77 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Tests\Functional;
+namespace TypeLang\Parser\Tests\Functional\LinterStubs;
 
 use Phplrt\Contracts\Position\PositionInterface;
 use Phplrt\Contracts\Source\FileInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Position\Position;
+use Phplrt\Source\File;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
+use TypeLang\Parser\Tests\Concern\InteractWithDocBlocks;
+use TypeLang\Parser\Tests\Functional\TestCase;
 
-#[Group('functional')]
-class CompatibilityTest extends TestCase
+abstract class LinterStubsTestCase extends TestCase
 {
-    private const TAGS = [
+    use InteractWithDocBlocks;
+
+    protected const TAGS = [
         'param', 'var', 'return',
         'phpstan-param', 'phpstan-var', 'phpstan-return',
         'psalm-param', 'psalm-var', 'psalm-return',
     ];
 
-    public static function vendorDataProvider(): array
+    /**
+     * @psalm-taint-sink file $directory
+     * @param non-empty-string $directory
+     *
+     * @return iterable<array-key, ReadableInterface>
+     */
+    protected static function getSources(string $directory, array $ext = ['php', 'stub', 'phpstub', 'stubphp']): iterable
     {
-        $result = [];
-        $blocks = self::fetchDocTypesFromSources(
-            sources: self::getSources(__DIR__ . '/../../vendor', ['php']),
-            tags: self::TAGS,
+        $result = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
         );
 
-        foreach ($blocks as $phpdoc => [$file, $position]) {
-            $result[$phpdoc] = [$phpdoc, self::location($file, $position)];
-        }
+        /** @var \SplFileInfo $file */
+        foreach ($result as $file) {
+            if (!\in_array(\strtolower($file->getExtension()), $ext, true)) {
+                continue;
+            }
 
-        return $result;
+            yield File::fromSplFileInfo($file);
+        }
     }
 
-    public static function psalmDataProvider(): array
-    {
-        $result = [];
-        $blocks = self::getDocTypesFromSources(
-            sources: self::getSources(__DIR__ . '/psalm/5.15.0'),
-            tags: self::TAGS,
-        );
+    abstract protected static function getCachePathname(): string;
 
-        foreach ($blocks as $phpdoc => [$file, $position]) {
-            $result[$phpdoc] = [$phpdoc, self::location($file, $position)];
+    abstract protected static function getFilesDirectory(): string;
+
+    /**
+     * @return array<array-key, array{non-empty-string, non-empty-string}>
+     */
+    public static function dataProvider(): array
+    {
+        if (!\is_file(static::getCachePathname())) {
+            $result = [];
+
+            $blocks = self::getDocTypesFromSources(
+                sources: self::getSources(static::getFilesDirectory()),
+                tags: self::TAGS,
+            );
+
+            foreach ($blocks as $phpdoc => [$file, $position]) {
+                $result[$phpdoc] = [$phpdoc, self::location($file, $position)];
+            }
+
+            \file_put_contents(
+                filename: static::getCachePathname(),
+                data: '<?php return ' . \var_export($result, true) . ';',
+            );
         }
 
-        return $result;
-    }
-
-    public static function phpStanDataProvider(): array
-    {
-        $result = [];
-        $blocks = self::getDocTypesFromSources(
-            sources: self::getSources(__DIR__ . '/phpstan/1.10.35'),
-            tags: self::TAGS,
-        );
-
-        foreach ($blocks as $phpdoc => [$file, $position]) {
-            $result[$phpdoc] = [$phpdoc, self::location($file, $position)];
-        }
-
-        return $result;
+        return require static::getCachePathname();
     }
 
     protected static function location(ReadableInterface $src, PositionInterface $pos = null): string
@@ -76,31 +86,7 @@ class CompatibilityTest extends TestCase
         return $name . ':' . ($pos ?? Position::start())->getLine();
     }
 
-    #[DataProvider('vendorDataProvider')]
-    public function testVendorCode(string $type, string $location): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        try {
-            $this->parse($type);
-        } catch (\Throwable $e) {
-            $this->onFail($e, $type, $location);
-        }
-    }
-
-    #[DataProvider('phpstanDataProvider')]
-    public function testPhpStanStubs(string $type, string $location): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        try {
-            $this->parse($type);
-        } catch (\Throwable $e) {
-            $this->onFail($e, $type, $location);
-        }
-    }
-
-    #[DataProvider('psalmDataProvider')]
+    #[DataProvider('dataProvider')]
     public function testPsalmStubs(string $type, string $location): void
     {
         $this->expectNotToPerformAssertions();

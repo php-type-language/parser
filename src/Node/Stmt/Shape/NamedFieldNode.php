@@ -18,4 +18,9 @@ final class NamedFieldNode extends GenericFieldNode
     ) {
         parent::__construct($of);
     }
+
+    public function __toString(): string
+    {
+        return \sprintf('%s', $this->name->value);
+    }
 }

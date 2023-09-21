@@ -4,140 +4,135 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Unit;
 
-use TypeLang\Parser\Node\Stmt\NamedTypeNode;
-use TypeLang\Parser\Node\Stmt\Shape\FieldNode;
-use TypeLang\Parser\Node\Stmt\Shape\FieldsListNode;
 use TypeLang\Parser\Tests\TestCase;
-use PHPUnit\Framework\Attributes\Group;
 
-#[Group('unit')]
 class ArrayShapesTest extends TestCase
 {
-    public function testArguments(): void
+    public function testFields(): void
     {
-        /** @var NamedTypeNode $type */
-        $type = $this->parse('array{a,b,c}');
-
-        $this->assertInstanceOf(FieldsListNode::class, $type->fields);
-        $this->assertTrue($type->fields->sealed);
-        $this->assertCount(3, $type->fields->list);
+        $this->assertStatementSame('array{a,b,c}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(a)
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(b)
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(c)
+            OUTPUT);
     }
 
     public function testEmptyShape(): void
     {
-        /** @var NamedTypeNode $type */
-        $type = $this->parse('array{}');
-
-        $this->assertInstanceOf(FieldsListNode::class, $type->fields);
-        $this->assertTrue($type->fields->sealed);
-        $this->assertCount(0, $type->fields->list);
+        $this->assertStatementSame('array{}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+            OUTPUT);
     }
 
-    public function testUnsealedArguments(): void
+    public function testUnsealedFields(): void
     {
-        /** @var NamedTypeNode $type */
-        $type = $this->parse('array{a,b,c,...}');
-
-        $this->assertInstanceOf(FieldsListNode::class, $type->fields);
-        $this->assertFalse($type->fields->sealed);
-        $this->assertCount(3, $type->fields->list);
+        $this->assertStatementSame('array{a,b,c,...}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(a)
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(b)
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(c)
+            OUTPUT);
     }
 
     public function testOneAnonymousArgument(): void
     {
-        $type = $this->parse('array{int}');
-
-        $this->assertNotNull($type->fields);
-
-        $arguments = $type->fields->list;
-        $this->assertCount(1, $arguments);
-
-        /** @var FieldNode $first */
-        $first = $arguments[0];
-        $this->assertNull($first->name);
-        $this->assertFalse($first->optional);
-
-        $value = $first->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $value);
-        $this->assertSame('int', $value->name->name);
+        $this->assertStatementSame('array{int}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(int)
+            OUTPUT);
     }
 
-    public function testManyAnonymousArguments(): void
+    public function testManyAnonymousFields(): void
     {
-        $type = $this->parse('array{int, string}');
-
-        $this->assertNotNull($type->fields);
-
-        $arguments = $type->fields->list;
-        $this->assertCount(2, $arguments);
-
-        $first = $arguments[0]->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $first);
-        $this->assertSame('int', $first->name->name);
-
-        $second = $arguments[1]->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $second);
-        $this->assertSame('string', $second->name->name);
+        $this->assertStatementSame('array{int, string}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(int)
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(string)
+            OUTPUT);
     }
 
-    public function testNestedAnonymousArguments(): void
+    public function testNestedAnonymousFields(): void
     {
-        $type = $this->parse('array{Some\Any{int, string}}');
-
-        $this->assertNotNull($type->fields);
-
-        $rootArguments = $type->fields->list;
-        $this->assertCount(1, $rootArguments);
-
-        $rootValue = $rootArguments[0]->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $rootValue);
-        $this->assertSame('Some\Any', $rootValue->name->name);
-
-        $nestedArguments = $rootValue->fields->list;
-        $this->assertCount(2, $nestedArguments);
-
-        $nestedValue1 = $nestedArguments[0]->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $nestedValue1);
-        $this->assertSame('int', $nestedValue1->name->name);
-
-        $nestedValue2 = $nestedArguments[1]->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $nestedValue2);
-        $this->assertSame('string', $nestedValue2->name->name);
+        $this->assertStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(Some\Any)
+                    Stmt\Shape\FieldsListNode
+                      Stmt\Shape\FieldNode
+                        Stmt\NamedTypeNode
+                          Name(int)
+                      Stmt\Shape\FieldNode
+                        Stmt\NamedTypeNode
+                          Name(string)
+            OUTPUT);
     }
 
     public function testNamedArgument(): void
     {
-        $type = $this->parse('array{name:int}');
-
-        $this->assertNotNull($type->fields);
-
-        $arguments = $type->fields->list;
-        $this->assertCount(1, $arguments);
-
-        /** @var FieldNode $first */
-        $first = $arguments[0];
-        $this->assertSame('name', $first->name->value);
-        $this->assertFalse($first->optional);
-
-        $value = $first->value;
-        $this->assertInstanceOf(NamedTypeNode::class, $value);
-        $this->assertSame('int', $value->name->name);
+        $this->assertStatementSame('array{name:int}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\NamedFieldNode(name)
+                  Stmt\Shape\FieldNode
+                    Stmt\NamedTypeNode
+                      Name(int)
+                  Literal\StringLiteralNode
+            OUTPUT);
     }
 
-    public function testMixedArguments(): void
+    public function testMixedFields(): void
     {
-        $type = $this->parse('array{some, required:a, optional?:b}');
-
-        $this->assertNotNull($type->fields);
-
-        $arguments = $type->fields->list;
-        $this->assertCount(3, $arguments);
-
-        $this->assertNull($arguments[0]->name);
-        $this->assertFalse($arguments[0]->optional);
-        $this->assertSame('required', $arguments[1]->name->value);
-        $this->assertFalse($arguments[1]->optional);
-        $this->assertSame('optional', $arguments[2]->name->value);
-        $this->assertTrue($arguments[2]->optional);
+        $this->assertStatementSame('array{some, required:a, optional?:b}', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Shape\FieldsListNode
+                Stmt\Shape\FieldNode
+                  Stmt\NamedTypeNode
+                    Name(some)
+                Stmt\Shape\NamedFieldNode(required)
+                  Stmt\Shape\FieldNode
+                    Stmt\NamedTypeNode
+                      Name(a)
+                  Literal\StringLiteralNode
+                Stmt\Shape\OptionalFieldNode
+                  Stmt\Shape\NamedFieldNode(optional)
+                    Stmt\Shape\FieldNode
+                      Stmt\NamedTypeNode
+                        Name(b)
+                    Literal\StringLiteralNode
+            OUTPUT);
     }
 }

@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Traverser;
 
 use TypeLang\Parser\Node\Node;
 
-final class DumperVisitor extends Visitor
+abstract class DumperVisitor extends Visitor
 {
     /**
      * @var int<0, max>
@@ -15,18 +15,12 @@ final class DumperVisitor extends Visitor
 
     private readonly string $prefix;
 
-    /**
-     * @var resource
-     */
-    private readonly mixed $stream;
-
-    public function __construct(
-        bool $simplifyNames = true,
-        string $stream = 'php://stderr',
-    ) {
+    public function __construct(bool $simplifyNames = true)
+    {
         $this->prefix = $simplifyNames ? 'TypeLang\\Parser\\Node\\' : '';
-        $this->stream = \fopen($stream, 'ab+');
     }
+
+    abstract protected function write(string $data): void;
 
     public function before(): void
     {
@@ -35,14 +29,14 @@ final class DumperVisitor extends Visitor
 
     public function enter(Node $node): ?Command
     {
-        $prefix = \str_repeat('  ', ++$this->depth);
+        $prefix = \str_repeat('  ', $this->depth++);
         $suffix = \str_replace($this->prefix, '', $node::class);
 
         if ($node instanceof \Stringable) {
             $suffix .= \sprintf('(%s)', (string)$node);
         }
 
-        \fwrite($this->stream, $prefix . $suffix . "\n");
+        $this->write($prefix . $suffix . "\n");
 
         return null;
     }
