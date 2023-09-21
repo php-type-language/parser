@@ -39,7 +39,7 @@ class CompatibilityTest extends TestCase
     {
         $result = [];
         $blocks = self::getDocTypesFromSources(
-            sources: self::getSources(__DIR__ . '/psalm/5.8.0'),
+            sources: self::getSources(__DIR__ . '/psalm/5.15.0'),
             tags: self::TAGS,
         );
 
@@ -54,7 +54,7 @@ class CompatibilityTest extends TestCase
     {
         $result = [];
         $blocks = self::getDocTypesFromSources(
-            sources: self::getSources(__DIR__ . '/phpstan/1.10.6'),
+            sources: self::getSources(__DIR__ . '/phpstan/1.10.35'),
             tags: self::TAGS,
         );
 
@@ -134,7 +134,10 @@ class CompatibilityTest extends TestCase
             // Invalid stmts
             \str_contains($expr, 'array[string]') ||
             \str_contains($expr, 'ArrayObject[') ||
-            \str_contains($expr, 'model\UserList[')
+            \str_contains($expr, 'model\UserList[') ||
+            // phpstan bug in PHPUnit\Framework\Constraint\IsType:124
+            // Cannot extract 'resource'|'resource (closed)' expressions.
+            \str_ends_with($expr, "'resource'|'resource")
         ) {
             $this->markTestIncomplete("Test is flagged as false-positive:\n" . $message);
         }

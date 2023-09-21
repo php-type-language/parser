@@ -77,28 +77,35 @@ final class Parser implements ParserInterface
     /**
      * @psalm-suppress ImplementedReturnTypeMismatch
      *
-     * @return Statement|null
      * @throws ParseException
      */
     public function parse(mixed $source): ?Statement
     {
         $source = File::fromSources($source);
 
-        try {
-            foreach ($this->parser->parse($source) as $node) {
-                /** @var Statement */
-                return $node;
-            }
+        $allowedNestingLevel = (int)\ini_get('xdebug.max_nesting_level');
 
-            return null;
-        } catch (UnexpectedTokenException $e) {
-            throw $this->unexpectedTokenError($e, $source);
-        } catch (UnrecognizedTokenException $e) {
-            throw $this->unrecognizedTokenError($e, $source);
-        } catch (RuntimeExceptionInterface $e) {
-            throw $this->runtimeError($e, $source);
-        } catch (\Throwable $e) {
-            throw $this->internalError($e, $source);
+        try {
+            \ini_set('xdebug.max_nesting_level', -1);
+
+            try {
+                foreach ($this->parser->parse($source) as $node) {
+                    /** @var Statement */
+                    return $node;
+                }
+
+                return null;
+            } catch (UnexpectedTokenException $e) {
+                throw $this->unexpectedTokenError($e, $source);
+            } catch (UnrecognizedTokenException $e) {
+                throw $this->unrecognizedTokenError($e, $source);
+            } catch (RuntimeExceptionInterface $e) {
+                throw $this->runtimeError($e, $source);
+            } catch (\Throwable $e) {
+                throw $this->internalError($e, $source);
+            }
+        } finally {
+            \ini_set('xdebug.max_nesting_level', $allowedNestingLevel);
         }
     }
 
