@@ -18,6 +18,5 @@ class ClassConstMaskNode extends Statement
     public function __construct(
         public readonly Name $class,
         public readonly ?string $constant = null,
-    ) {
-    }
+    ) {}
 }

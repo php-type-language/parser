@@ -18,6 +18,5 @@ class ArgumentsListNode extends Node
     public function __construct(
         public readonly array $list = [],
         public readonly bool $sealed = true,
-    ) {
-    }
+    ) {}
 }

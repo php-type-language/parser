@@ -8,6 +8,5 @@ class TypesListNode extends Statement
 {
     public function __construct(
         public readonly Statement $type,
-    ) {
-    }
+    ) {}
 }

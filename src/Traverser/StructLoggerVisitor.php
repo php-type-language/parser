@@ -15,8 +15,7 @@ final class StructLoggerVisitor extends Visitor
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly string $level = LogLevel::DEBUG,
-    ) {
-    }
+    ) {}
 
     public function before(): void
     {

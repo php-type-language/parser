@@ -15,6 +15,5 @@ class ParameterNode extends Node
 {
     public function __construct(
         public readonly Statement $value
-    ) {
-    }
+    ) {}
 }

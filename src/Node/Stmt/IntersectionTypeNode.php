@@ -8,6 +8,4 @@ namespace TypeLang\Parser\Node\Stmt;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class IntersectionTypeNode extends BinaryStmt
-{
-}
+class IntersectionTypeNode extends BinaryStmt {}

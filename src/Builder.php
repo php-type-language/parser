@@ -19,8 +19,7 @@ final class Builder implements BuilderInterface
      */
     public function __construct(
         private readonly array $reducers,
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritDoc}

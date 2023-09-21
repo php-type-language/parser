@@ -17,6 +17,5 @@ class ParametersListNode extends Node
      */
     public function __construct(
         public readonly array $list = [],
-    ) {
-    }
+    ) {}
 }

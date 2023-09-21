@@ -15,9 +15,6 @@ class Name extends Node
      */
     public readonly string $name;
 
-    /**
-     * @var bool
-     */
     public readonly bool $isSimple;
 
     /**

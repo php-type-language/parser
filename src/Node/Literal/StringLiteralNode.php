@@ -35,8 +35,7 @@ class StringLiteralNode extends LiteralNode
 
     final public function __construct(
         public readonly string $value,
-    ) {
-    }
+    ) {}
 
     /**
      * @param non-empty-string $value
@@ -107,7 +106,7 @@ class StringLiteralNode extends LiteralNode
      */
     private static function renderHexadecimalSequences(string $body): string
     {
-        $callee = static fn(array $matches): string => \chr(\hexdec((string)$matches[1]));
+        $callee = static fn (array $matches): string => \chr(\hexdec((string)$matches[1]));
 
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }

@@ -18,6 +18,5 @@ class NamedTypeNode extends Statement
         public readonly Name $name,
         public readonly ?ParametersListNode $parameters = null,
         public readonly ?ArgumentsListNode $arguments = null,
-    ) {
-    }
+    ) {}
 }

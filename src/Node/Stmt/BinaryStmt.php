@@ -13,6 +13,5 @@ abstract class BinaryStmt extends Statement
     public function __construct(
         public readonly Statement $a,
         public readonly Statement $b,
-    ) {
-    }
+    ) {}
 }

@@ -17,6 +17,5 @@ class CallableTypeNode extends Statement
         public readonly Name $name,
         public readonly ArgumentsListNode $arguments,
         public readonly ?Statement $type = null,
-    ) {
-    }
+    ) {}
 }

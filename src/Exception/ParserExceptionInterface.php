@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
-interface ParserExceptionInterface extends \Throwable
-{
-}
+interface ParserExceptionInterface extends \Throwable {}

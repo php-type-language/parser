@@ -18,6 +18,5 @@ class ArgumentNode extends Node
         public readonly Statement $value,
         public readonly ?StringLiteralNode $name = null,
         public readonly bool $optional = false,
-    ) {
-    }
+    ) {}
 }

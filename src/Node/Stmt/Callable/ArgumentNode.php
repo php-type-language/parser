@@ -16,6 +16,5 @@ class ArgumentNode extends Node
     public function __construct(
         public readonly Statement $type,
         public readonly ?Modifier $modifier = null,
-    ) {
-    }
+    ) {}
 }

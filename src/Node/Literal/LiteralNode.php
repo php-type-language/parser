@@ -10,6 +10,4 @@ use TypeLang\Parser\Node\Stmt\Statement;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-abstract class LiteralNode extends Statement
-{
-}
+abstract class LiteralNode extends Statement {}
