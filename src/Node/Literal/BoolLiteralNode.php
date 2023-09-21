@@ -25,4 +25,9 @@ class BoolLiteralNode extends LiteralNode
 
         return new self($evaluated, $value);
     }
+
+    public function __toString(): string
+    {
+        return $this->raw;
+    }
 }

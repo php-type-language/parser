@@ -92,7 +92,7 @@ abstract class LinterStubsTestCase extends TestCase
         $this->expectNotToPerformAssertions();
 
         try {
-            $this->parse($type);
+            $this->getStatementResult($type);
         } catch (\Throwable $e) {
             $this->onFail($e, $type, $location);
         }

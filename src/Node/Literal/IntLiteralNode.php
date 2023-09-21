@@ -58,4 +58,9 @@ class IntLiteralNode extends LiteralNode
 
         return [$isNegative, (int)$literal];
     }
+
+    public function __toString(): string
+    {
+        return $this->raw;
+    }
 }

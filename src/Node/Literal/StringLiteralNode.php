@@ -32,10 +32,14 @@ class StringLiteralNode extends LiteralNode
         '\f' => "\f",
         '\$' => "\$",
     ];
+    public readonly string $raw;
 
     final public function __construct(
         public readonly string $value,
-    ) {}
+        string $raw = null,
+    ) {
+        $this->raw = $raw ?? $this->value;
+    }
 
     /**
      * @param non-empty-string $value
@@ -63,6 +67,8 @@ class StringLiteralNode extends LiteralNode
 
     public static function parseEncodedString(string $string): self
     {
+        $raw = $string;
+
         if (\str_contains($string, '\\')) {
             // Replace double backslash to "\0"
             $string = \str_replace('\\\\', "\0", $string);
@@ -80,7 +86,7 @@ class StringLiteralNode extends LiteralNode
             $string = \str_replace("\0", '\\\\', $string);
         }
 
-        return self::parseRawString($string);
+        return new self($string, $raw);
     }
 
     /**
@@ -148,5 +154,10 @@ class StringLiteralNode extends LiteralNode
         };
 
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
+    }
+
+    public function __toString(): string
+    {
+        return $this->raw;
     }
 }

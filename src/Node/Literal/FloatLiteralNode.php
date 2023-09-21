@@ -26,4 +26,9 @@ class FloatLiteralNode extends LiteralNode
     {
         return new self((float)$value, $value);
     }
+
+    public function __toString(): string
+    {
+        return $this->raw;
+    }
 }

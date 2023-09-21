@@ -109,7 +109,7 @@ class ArrayShapesTest extends TestCase
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
                       Name(int)
-                  Literal\StringLiteralNode
+                  Literal\StringLiteralNode(name)
             OUTPUT);
     }
 
@@ -126,13 +126,13 @@ class ArrayShapesTest extends TestCase
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
                       Name(a)
-                  Literal\StringLiteralNode
+                  Literal\StringLiteralNode(required)
                 Stmt\Shape\OptionalFieldNode
                   Stmt\Shape\NamedFieldNode(optional)
                     Stmt\Shape\FieldNode
                       Stmt\NamedTypeNode
                         Name(b)
-                    Literal\StringLiteralNode
+                    Literal\StringLiteralNode(optional)
             OUTPUT);
     }
 }

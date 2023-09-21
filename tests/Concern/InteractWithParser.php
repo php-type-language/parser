@@ -25,9 +25,23 @@ trait InteractWithParser
         $this->parser = new Parser();
     }
 
-    protected function parse(string $statement): ?Statement
+    protected function getStatementResult(string $statement): ?Statement
     {
         return $this->parser->parse($statement);
+    }
+
+    protected function getStatementAsString(string $statement): ?string
+    {
+        $result = $this->getStatementResult($statement);
+
+        if ($result === null) {
+            return null;
+        }
+
+        Traverser::new([$visitor = new Traverser\StringDumperVisitor()])
+            ->traverse([$result]);
+
+        return \trim($visitor->getOutput());
     }
 
     protected function expectParseError(string $message = null): void
@@ -39,33 +53,31 @@ trait InteractWithParser
         }
     }
 
-    protected function parseToString(string $statement): ?string
+    protected function assertStatementCompilable(string $statement): void
     {
-        $result = $this->parse($statement);
+        $this->expectNotToPerformAssertions();
 
-        if ($result === null) {
-            return null;
-        }
-
-        Traverser::new([$visitor = new Traverser\StringDumperVisitor()])
-            ->traverse([$result]);
-
-        return $visitor->getOutput();
+        $this->getStatementResult($statement);
     }
 
     protected function assertStatementSame(string $statement, string $expected, string $message = ''): void
     {
-        Assert::assertSame(
-            \trim($expected),
-            \trim($this->parseToString($statement)),
-            $message,
-        );
+        $actual = \trim($this->getStatementAsString($statement));
+
+        Assert::assertSame(\trim($expected), $actual, $message);
+    }
+
+    protected function assertStatementNotSame(string $statement, string $expected, string $message = ''): void
+    {
+        $actual = \trim($this->getStatementAsString($statement));
+
+        Assert::assertNotSame(\trim($expected), $actual, $message);
     }
 
     protected function assertStatementFails(string $statement, string $error): void
     {
         $this->expectParseError($error);
 
-        $this->parse($statement);
+        $this->getStatementResult($statement);
     }
 }

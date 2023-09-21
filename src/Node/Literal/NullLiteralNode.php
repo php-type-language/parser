@@ -16,4 +16,9 @@ class NullLiteralNode extends LiteralNode
     {
         $this->raw = $raw ?? 'null';
     }
+
+    public function __toString(): string
+    {
+        return $this->raw;
+    }
 }
