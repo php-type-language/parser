@@ -34,4 +34,9 @@ class FieldsListNode extends Node implements \IteratorAggregate, \Countable
     {
         return \count($this->list);
     }
+
+    public function __toString(): string
+    {
+        return $this->sealed ? 'sealed' : 'unsealed';
+    }
 }

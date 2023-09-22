@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TypeLang\Parser;
 
 use Phplrt\Contracts\Source\ReadableInterface;
+use TypeLang\Parser\Exception\LogicException;
 use TypeLang\Parser\Exception\ParseException;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
@@ -101,6 +102,8 @@ final class Parser implements ParserInterface
                 throw $this->unrecognizedTokenError($e, $source);
             } catch (RuntimeExceptionInterface $e) {
                 throw $this->runtimeError($e, $source);
+            } catch (LogicException $e) {
+                throw $this->logicError($e, $source);
             } catch (\Throwable $e) {
                 throw $this->internalError($e, $source);
             }
@@ -128,6 +131,15 @@ final class Parser implements ParserInterface
             $token->getValue(),
             $source->getContents(),
             $token->getOffset(),
+        );
+    }
+
+    private function logicError(LogicException $e, ReadableInterface $source): ParseException
+    {
+        return ParseException::fromLogicError(
+            $e->getMessage(),
+            $source->getContents(),
+            $e->getOffset(),
         );
     }
 

@@ -22,11 +22,27 @@ CallableTypeStmt -> {
 CallableArguments -> {
     return new Node\Stmt\Callable\ArgumentsListNode($children);
 }
-  : CallableArgument() (::T_COMMA:: CallableArgument())* ::T_COMMA::?
+  : NamedCallableArgument() (::T_COMMA:: NamedCallableArgument())* ::T_COMMA::?
   ;
 
-CallableArgument
-  : PrefixedVariadicCallableArgument()
+NamedCallableArgument -> {
+    if (\count($children) === 1) {
+        return $children[0];
+    }
+
+    return new Node\Stmt\Callable\NamedArgumentNode($children[1], $children[0]);
+}
+  : OutputCallableArgument() VariableLiteral()?
+  ;
+
+OutputCallableArgument -> {
+    if (\count($children) === 1) {
+        return $children[0];
+    }
+
+    return new Node\Stmt\Callable\OutArgumentNode($children[0]);
+}
+  : PrefixedVariadicCallableArgument() <T_AMP>?
   ;
 
 PrefixedVariadicCallableArgument -> {
@@ -39,10 +55,10 @@ PrefixedVariadicCallableArgument -> {
     return $children;
 }
   : <T_ELLIPSIS> Statement()
-  | SuffixedCallableArgument()
+  | VariadicOrOptionalCallableArgument()
   ;
 
-SuffixedCallableArgument -> {
+VariadicOrOptionalCallableArgument -> {
     $argument = new Node\Stmt\Callable\ArgumentNode($children[0]);
 
     if (!isset($children[1])) {

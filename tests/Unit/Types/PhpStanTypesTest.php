@@ -392,13 +392,49 @@ final class PhpStanTypesTest extends TypesTestCase
                 Name(string)
             AST];
         yield 'callable(int $foo, string $bar): void' => ['callable(int $foo, string $bar): void', <<<'AST'
-
+            Stmt\CallableTypeNode
+              Name(callable)
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\NamedArgumentNode($foo)
+                  Stmt\Callable\ArgumentNode
+                    Stmt\NamedTypeNode
+                      Name(int)
+                  Literal\VariableLiteralNode(foo)
+                Stmt\Callable\NamedArgumentNode($bar)
+                  Stmt\Callable\ArgumentNode
+                    Stmt\NamedTypeNode
+                      Name(string)
+                  Literal\VariableLiteralNode(bar)
+              Stmt\NamedTypeNode
+                Name(void)
             AST];
         yield 'callable(string &$bar): mixed' => ['callable(string &$bar): mixed', <<<'AST'
-
+            Stmt\CallableTypeNode
+              Name(callable)
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\NamedArgumentNode($bar)
+                  Stmt\Callable\OutArgumentNode
+                    Stmt\Callable\ArgumentNode
+                      Stmt\NamedTypeNode
+                        Name(string)
+                  Literal\VariableLiteralNode(bar)
+              Stmt\NamedTypeNode
+                Name(mixed)
             AST];
         yield 'callable(float ...$floats): (int|null)' => ['callable(float ...$floats): (int|null)', <<<'AST'
-
+            Stmt\CallableTypeNode
+              Name(callable)
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\NamedArgumentNode($floats)
+                  Stmt\Callable\VariadicArgumentNode
+                    Stmt\Callable\ArgumentNode
+                      Stmt\NamedTypeNode
+                        Name(float)
+                  Literal\VariableLiteralNode(floats)
+              Stmt\UnionTypeNode
+                Stmt\NamedTypeNode
+                  Name(int)
+                Literal\NullLiteralNode(null)
             AST];
         yield 'callable(float...): (int|null)' => ['callable(float...): (int|null)', <<<'AST'
             Stmt\CallableTypeNode

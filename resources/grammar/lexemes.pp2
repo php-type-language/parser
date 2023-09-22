@@ -10,6 +10,7 @@
 
 // Identifier
 
+%token  T_VARIABLE              \$[a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
 %token  T_NAME                  [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
 
 // Special Chars
@@ -31,7 +32,7 @@
 %token  T_NULLABLE              \?
 %token  T_NOT                   \!
 %token  T_OR                    \|
-%token  T_AND                   &
+%token  T_AMP                   &
 %token  T_ASTERISK              \*
 
 // Other

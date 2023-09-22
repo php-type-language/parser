@@ -12,7 +12,9 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     final protected const CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
 
-    final protected const CODE_INTERNAL_ERROR = 0x04;
+    final protected const CODE_LOGIC_ERROR = 0x04;
+
+    final protected const CODE_INTERNAL_ERROR = 0x05;
 
     public const CODE_LAST = self::CODE_INTERNAL_ERROR;
 
@@ -65,6 +67,20 @@ class ParseException extends \LogicException implements ParserExceptionInterface
         ]);
 
         return new static($message, self::CODE_UNEXPECTED_SYNTAX_ERROR);
+    }
+
+    /**
+     * @param int<0, max> $offset
+     */
+    public static function fromLogicError(string $message, string $statement, int $offset): static
+    {
+        $message = \vsprintf('Syntax error, %s in %s %s', [
+            \lcfirst($message),
+            Formatter::source($statement),
+            Formatter::suffix($statement, $offset),
+        ]);
+
+        return new static($message, self::CODE_LOGIC_ERROR);
     }
 
     public static function fromInternalError(string $statement, \Throwable $e): static

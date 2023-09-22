@@ -30,6 +30,7 @@ $grammar = (new Compiler())
     ->load(new SplFileInfo(__DIR__ . '/../resources/grammar.pp2'))
     ->build()
         ->withClassUsage('TypeLang\\Parser\\Node')
+        ->withClassUsage('TypeLang\\Parser\\Exception')
 ;
 
 file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar->generate());

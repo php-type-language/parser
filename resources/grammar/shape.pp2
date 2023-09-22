@@ -2,10 +2,14 @@
 ShapeFields -> {
     $isSealed = \array_pop($children);
 
+    if ($children === [] && $isSealed) {
+        throw new Exception\LogicException('A shape without fields cannot be sealed', $offset);
+    }
+
     return new Node\Stmt\Shape\FieldsListNode($children, $isSealed);
 }
   : ::T_BRACE_OPEN::
-      ShapeField()? (::T_COMMA:: ShapeField())* ::T_COMMA::?
+      (ShapeField() (::T_COMMA:: ShapeField())* ::T_COMMA::)?
       IsSealed() ::T_COMMA::?
     ::T_BRACE_CLOSE::
   ;
@@ -20,14 +24,18 @@ ShapeField
 
 NamedShapeField -> {
     if (\is_array($children)) {
+        $value = \array_pop($children);
+        $field = $children[0] instanceof Node\Literal\IntLiteralNode
+            ? new Node\Stmt\Shape\NumericFieldNode($children[0], $value)
+            : new Node\Stmt\Shape\NamedFieldNode($children[0], $value)
+        ;
+
         // In case of "nullable" suffix defined
-        if (\count($children) === 3) {
-            return new Node\Stmt\Shape\OptionalFieldNode(
-                new Node\Stmt\Shape\NamedFieldNode($children[0], $children[2])
-            );
+        if (\count($children) === 2) {
+            return new Node\Stmt\Shape\OptionalFieldNode($field);
         }
 
-        return new Node\Stmt\Shape\NamedFieldNode($children[0], $children[1]);
+        return $field;
     }
 
     return $children;
@@ -44,8 +52,8 @@ AnonymousShapeField -> {
 
 ShapeKey -> {
     return match(true) {
-        $children instanceof Node\Literal\StringLiteralNode => $children,
         $children instanceof Node\Literal\IntLiteralNode,
+        $children instanceof Node\Literal\StringLiteralNode => $children,
         $children instanceof Node\Literal\BoolLiteralNode,
         $children instanceof Node\Literal\NullLiteralNode,
             => new Node\Literal\StringLiteralNode($children->raw),

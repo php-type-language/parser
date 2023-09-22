@@ -32,6 +32,7 @@ class StringLiteralNode extends LiteralNode
         '\f' => "\f",
         '\$' => "\$",
     ];
+
     public readonly string $raw;
 
     final public function __construct(
@@ -44,28 +45,47 @@ class StringLiteralNode extends LiteralNode
     /**
      * @param non-empty-string $value
      */
-    public static function parse(string $value): self
+    public static function parse(string $value): static
     {
         assert(\strlen($value) >= 2);
 
-        $isDoubleQuoted = \str_starts_with($value, '"');
-
-        // Trim wrapping quotes
-        $value = \substr($value, 1, -1);
-
-        if ($isDoubleQuoted) {
-            return self::parseEncodedString(\str_replace('\"', '"', $value));
+        if ($value[0] === '"') {
+            return static::createFromDoubleQuotedString($value);
         }
 
-        return self::parseRawString(\str_replace("\'", "'", $value));
+        return static::createFromSingleQuotedString($value);
     }
 
-    public static function parseRawString(string $string): self
+    /**
+     * @param non-empty-string $value
+     */
+    public static function createFromDoubleQuotedString(string $value): static
     {
-        return new self($string);
+        assert(\strlen($value) >= 2);
+
+        $body = \substr($value, 1, -1);
+
+        return static::parseEncodedValue(\str_replace('\"', '"', $body));
     }
 
-    public static function parseEncodedString(string $string): self
+    /**
+     * @param non-empty-string $value
+     */
+    public static function createFromSingleQuotedString(string $value): static
+    {
+        assert(\strlen($value) >= 2);
+
+        $body = \substr($value, 1, -1);
+
+        return static::createFromLiteralValue(\str_replace("\'", "'", $body));
+    }
+
+    public static function createFromLiteralValue(string $string): static
+    {
+        return new static($string);
+    }
+
+    private static function parseEncodedValue(string $string): static
     {
         $raw = $string;
 
@@ -86,7 +106,7 @@ class StringLiteralNode extends LiteralNode
             $string = \str_replace("\0", '\\\\', $string);
         }
 
-        return new self($string, $raw);
+        return new static($string, $raw);
     }
 
     /**

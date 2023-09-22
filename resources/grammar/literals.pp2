@@ -8,11 +8,27 @@ Literal
   | ClassConstLiteral()
   ;
 
-StringLiteral -> {
-    return Node\Literal\StringLiteralNode::parse($token->getValue());
+VariableLiteral -> {
+    return Node\Literal\VariableLiteralNode::parse($token->getValue());
+}
+  : <T_VARIABLE>
+  ;
+
+StringLiteral
+  : DoubleQuotedStringLiteral()
+  | SingleQuotedStringLiteral()
+  ;
+
+DoubleQuotedStringLiteral -> {
+    return Node\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
+}
+  : <T_DQ_STRING_LITERAL>
+  ;
+
+SingleQuotedStringLiteral -> {
+    return Node\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
 }
   : <T_SQ_STRING_LITERAL>
-  | <T_DQ_STRING_LITERAL>
   ;
 
 FloatLiteral -> { return Node\Literal\FloatLiteralNode::parse($token->getValue()); }

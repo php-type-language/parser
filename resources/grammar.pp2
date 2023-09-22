@@ -52,7 +52,7 @@ IntersectionTypeStatement -> {
 
     return $children;
 }
-  : UnaryStatement() (::T_AND:: IntersectionTypeStatement())?
+  : UnaryStatement() (::T_AMP:: IntersectionTypeStatement())?
   ;
 
 // Unary statements/expressions
