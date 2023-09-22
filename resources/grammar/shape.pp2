@@ -1,21 +1,32 @@
 
 ShapeFields -> {
-    $isSealed = \array_pop($children);
-
-    if ($children === [] && $isSealed) {
+    if ($children === []) {
         throw new Exception\LogicException('A shape without fields cannot be sealed', $offset);
     }
 
-    return new Node\Stmt\Shape\FieldsListNode($children, $isSealed);
+    if (!$children[0] instanceof \ArrayObject) {
+        return new Node\Stmt\Shape\FieldsListNode([], false);
+    }
+
+    return new Node\Stmt\Shape\FieldsListNode(
+        $children[0]->getArrayCopy(),
+        \count($children) !== 2
+    );
 }
   : ::T_BRACE_OPEN::
-      (ShapeField() (::T_COMMA:: ShapeField())* ::T_COMMA::)?
-      IsSealed() ::T_COMMA::?
+      ( (ShapeFieldsList() (::T_COMMA:: <T_ELLIPSIS>)? ::T_COMMA::?)
+      | <T_ELLIPSIS> ::T_COMMA::? )?
     ::T_BRACE_CLOSE::
   ;
 
 IsSealed -> { return $children === []; }
   : <T_ELLIPSIS>?
+  ;
+
+ShapeFieldsList -> {
+    return new \ArrayObject($children);
+}
+  : ShapeField() (::T_COMMA:: ShapeField())*
   ;
 
 ShapeField
