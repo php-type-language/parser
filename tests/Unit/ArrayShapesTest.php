@@ -13,7 +13,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{a,b,c}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(a)
@@ -31,7 +31,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
             OUTPUT);
     }
 
@@ -40,7 +40,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{a,b,c,...}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(unsealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(a)
@@ -58,7 +58,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{int}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(int)
@@ -70,7 +70,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{int, string}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(int)
@@ -85,11 +85,11 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(Some\Any)
-                    Stmt\Shape\FieldsListNode
+                    Stmt\Shape\FieldsListNode(sealed)
                       Stmt\Shape\FieldNode
                         Stmt\NamedTypeNode
                           Name(int)
@@ -104,7 +104,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{name:int}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\NamedFieldNode(name)
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
@@ -118,7 +118,7 @@ class ArrayShapesTest extends TestCase
         $this->assertStatementSame('array{some, required:a, optional?:b}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(some)
