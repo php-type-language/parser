@@ -14,7 +14,7 @@ VariableLiteral -> {
   : <T_VARIABLE>
   ;
 
-StringLiteral
+StringLiteral -> { return $this->stringPool[$token] ??= $children; }
   : DoubleQuotedStringLiteral()
   | SingleQuotedStringLiteral()
   ;
@@ -31,19 +31,27 @@ SingleQuotedStringLiteral -> {
   : <T_SQ_STRING_LITERAL>
   ;
 
-FloatLiteral -> { return Node\Literal\FloatLiteralNode::parse($token->getValue()); }
+FloatLiteral -> {
+    return Node\Literal\FloatLiteralNode::parse($token->getValue());
+}
   : <T_FLOAT_LITERAL>
   ;
 
-IntLiteral -> { return Node\Literal\IntLiteralNode::parse($token->getValue()); }
+IntLiteral -> {
+    return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
+}
   : <T_INT_LITERAL>
   ;
 
-BoolLiteral -> { return Node\Literal\BoolLiteralNode::parse($token->getValue()); }
+BoolLiteral -> {
+    return Node\Literal\BoolLiteralNode::parse($token->getValue());
+}
   : <T_BOOL_LITERAL>
   ;
 
-NullLiteral -> { return new Node\Literal\NullLiteralNode($children->getValue()); }
+NullLiteral -> {
+    return new Node\Literal\NullLiteralNode($children->getValue());
+}
   : <T_NULL_LITERAL>
   ;
 

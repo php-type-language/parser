@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use Phplrt\Contracts\Lexer\TokenInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use TypeLang\Parser\Exception\LogicException;
 use TypeLang\Parser\Exception\ParseException;
@@ -17,6 +18,8 @@ use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
+use TypeLang\Parser\Node\Literal\IntLiteralNode;
+use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Stmt\Statement;
 
 /**
@@ -33,20 +36,31 @@ use TypeLang\Parser\Node\Stmt\Statement;
  */
 final class Parser implements ParserInterface
 {
-    /**
-     * @var ParserCombinator
-     */
     private readonly ParserCombinator $parser;
 
-    /**
-     * @var Lexer
-     */
     private readonly Lexer $lexer;
+
+    /**
+     * In-memory string literal pool.
+     *
+     * @var \WeakMap<TokenInterface, StringLiteralNode>
+     */
+    private readonly \WeakMap $stringPool;
+
+    /**
+     * In-memory integer literal pool.
+     *
+     * @var \WeakMap<TokenInterface, IntLiteralNode>
+     */
+    private readonly \WeakMap $integerPool;
 
     public function __construct()
     {
         /** @psalm-var GrammarConfigArray $grammar */
         $grammar = require __DIR__ . '/../resources/grammar.php';
+
+        $this->stringPool = new \WeakMap();
+        $this->integerPool = new \WeakMap();
 
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
