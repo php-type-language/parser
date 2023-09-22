@@ -251,7 +251,7 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'array{\'foo\': int, "bar": string}' => ['array{\'foo\': int, "bar": string}', <<<'AST'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\NamedFieldNode(foo)
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
@@ -266,7 +266,7 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'array{\'foo\': int, "bar"?: string}' => ['array{\'foo\': int, "bar"?: string}', <<<'AST'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\NamedFieldNode(foo)
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
@@ -282,7 +282,7 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'array{int, int}' => ['array{int, int}', <<<'AST'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\FieldNode
                   Stmt\NamedTypeNode
                     Name(int)
@@ -293,23 +293,23 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'array{0: int, 1?: int}' => ['array{0: int, 1?: int}', <<<'AST'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
-                Stmt\Shape\NamedFieldNode(0)
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\NumericFieldNode(0)
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
                       Name(int)
-                  Literal\StringLiteralNode(0)
+                  Literal\IntLiteralNode(0)
                 Stmt\Shape\OptionalFieldNode
-                  Stmt\Shape\NamedFieldNode(1)
+                  Stmt\Shape\NumericFieldNode(1)
                     Stmt\Shape\FieldNode
                       Stmt\NamedTypeNode
                         Name(int)
-                    Literal\StringLiteralNode(1)
+                    Literal\IntLiteralNode(1)
             AST];
         yield 'array{foo: int, bar: string}' => ['array{foo: int, bar: string}', <<<'AST'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Shape\FieldsListNode
+              Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\NamedFieldNode(foo)
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
