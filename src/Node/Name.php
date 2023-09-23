@@ -174,7 +174,7 @@ class Name extends Node implements \IteratorAggregate, \Countable
      */
     public function getFirstPart(): string
     {
-        return \reset($this->parts);
+        return $this->parts[\array_key_first($this->parts)];
     }
 
     /**
@@ -182,7 +182,7 @@ class Name extends Node implements \IteratorAggregate, \Countable
      */
     public function getLastPart(): string
     {
-        return \end($this->parts);
+        return $this->parts[\array_key_last($this->parts)];
     }
 
     /**
