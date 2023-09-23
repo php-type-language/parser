@@ -34,8 +34,12 @@ trait InteractWithDocBlocks
         $reader = new DocBlockReader();
 
         foreach ($sources as $source) {
-            foreach ($reader->read($source, $tags) as $type => $position) {
-                yield $type => [$source, $position];
+            try {
+                foreach ($reader->read($source, $tags) as $type => $position) {
+                    yield $type => [$source, $position];
+                }
+            } catch (\Throwable) {
+                continue;
             }
         }
     }

@@ -87,7 +87,7 @@ abstract class LinterStubsTestCase extends TestCase
     }
 
     #[DataProvider('dataProvider')]
-    public function testPsalmStubs(string $type, string $location): void
+    public function testStubs(string $type, string $location): void
     {
         $this->expectNotToPerformAssertions();
 
@@ -132,10 +132,10 @@ abstract class LinterStubsTestCase extends TestCase
         // Known issues
         //
         if (
-            // Ternary with "Type is X ? Y : Z" expression
-            \str_starts_with($e->getMessage(), 'Syntax error, unexpected "is"') ||
-            // Variables not supported
-            \str_starts_with($e->getMessage(), 'Syntax error, unrecognized "$"')
+            // Conditional types with variables not supported
+            \str_starts_with($e->getMessage(), 'Syntax error, unexpected "$') ||
+            // Conditional types with template params not supported
+            \str_starts_with($e->getMessage(), 'Syntax error, unexpected "is"')
         ) {
             $this->markTestIncomplete("Test is flagged as a known issue:\n" . $message);
         }

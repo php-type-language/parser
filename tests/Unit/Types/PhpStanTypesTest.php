@@ -256,12 +256,12 @@ final class PhpStanTypesTest extends TypesTestCase
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
                       Name(int)
-                  Literal\StringLiteralNode(foo)
+                  Literal\StringLiteralNode('foo')
                 Stmt\Shape\NamedFieldNode(bar)
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
                       Name(string)
-                  Literal\StringLiteralNode(bar)
+                  Literal\StringLiteralNode("bar")
             AST];
         yield 'array{\'foo\': int, "bar"?: string}' => ['array{\'foo\': int, "bar"?: string}', <<<'AST'
             Stmt\NamedTypeNode
@@ -271,13 +271,13 @@ final class PhpStanTypesTest extends TypesTestCase
                   Stmt\Shape\FieldNode
                     Stmt\NamedTypeNode
                       Name(int)
-                  Literal\StringLiteralNode(foo)
+                  Literal\StringLiteralNode('foo')
                 Stmt\Shape\OptionalFieldNode
                   Stmt\Shape\NamedFieldNode(bar)
                     Stmt\Shape\FieldNode
                       Stmt\NamedTypeNode
                         Name(string)
-                    Literal\StringLiteralNode(bar)
+                    Literal\StringLiteralNode("bar")
             AST];
         yield 'array{int, int}' => ['array{int, int}', <<<'AST'
             Stmt\NamedTypeNode
@@ -327,8 +327,8 @@ final class PhpStanTypesTest extends TypesTestCase
         yield ' 1.0' => ['1.0', 'Literal\FloatLiteralNode(1.0)'];
         yield '\'foo\'|\'bar\'' => ['\'foo\'|\'bar\'', <<<'AST'
             Stmt\UnionTypeNode
-              Literal\StringLiteralNode(foo)
-              Literal\StringLiteralNode(bar)
+              Literal\StringLiteralNode('foo')
+              Literal\StringLiteralNode('bar')
             AST];
         yield 'Foo::SOME_CONSTANT' => ['Foo::SOME_CONSTANT', <<<'AST'
             Stmt\ClassConstNode(SOME_CONSTANT)
@@ -399,12 +399,12 @@ final class PhpStanTypesTest extends TypesTestCase
                   Stmt\Callable\ArgumentNode
                     Stmt\NamedTypeNode
                       Name(int)
-                  Literal\VariableLiteralNode(foo)
+                  Literal\VariableLiteralNode($foo)
                 Stmt\Callable\NamedArgumentNode($bar)
                   Stmt\Callable\ArgumentNode
                     Stmt\NamedTypeNode
                       Name(string)
-                  Literal\VariableLiteralNode(bar)
+                  Literal\VariableLiteralNode($bar)
               Stmt\NamedTypeNode
                 Name(void)
             AST];
@@ -417,7 +417,7 @@ final class PhpStanTypesTest extends TypesTestCase
                     Stmt\Callable\ArgumentNode
                       Stmt\NamedTypeNode
                         Name(string)
-                  Literal\VariableLiteralNode(bar)
+                  Literal\VariableLiteralNode($bar)
               Stmt\NamedTypeNode
                 Name(mixed)
             AST];
@@ -430,7 +430,7 @@ final class PhpStanTypesTest extends TypesTestCase
                     Stmt\Callable\ArgumentNode
                       Stmt\NamedTypeNode
                         Name(float)
-                  Literal\VariableLiteralNode(floats)
+                  Literal\VariableLiteralNode($floats)
               Stmt\UnionTypeNode
                 Stmt\NamedTypeNode
                   Name(int)

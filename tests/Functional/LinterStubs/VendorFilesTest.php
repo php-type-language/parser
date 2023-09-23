@@ -8,7 +8,7 @@ class VendorFilesTest extends LinterStubsTestCase
 {
     protected static function getCachePathname(): string
     {
-        return __DIR__ . '/../../../.vendor.cache.php';
+        return __DIR__ . '/../../../vendor/.vendor.cache.php';
     }
 
     protected static function getFilesDirectory(): string
