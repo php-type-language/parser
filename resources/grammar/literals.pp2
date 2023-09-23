@@ -5,6 +5,7 @@ Literal
   | IntLiteral()
   | BoolLiteral()
   | NullLiteral()
+  | ConstMaskLiteral()
   | ClassConstLiteral()
   ;
 
@@ -53,6 +54,12 @@ NullLiteral -> {
     return new Node\Literal\NullLiteralNode($children->getValue());
 }
   : <T_NULL_LITERAL>
+  ;
+
+ConstMaskLiteral -> {
+    return new Node\Stmt\ConstMaskNode($children[0]);
+}
+  : Name() ::T_ASTERISK::
   ;
 
 ClassConstLiteral -> {
