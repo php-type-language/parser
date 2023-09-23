@@ -119,6 +119,15 @@ abstract class LinterStubsTestCase extends TestCase
             \str_ends_with($expr, 'string[]}>}|array}|null') ||
             // Invalid stmts
             \str_contains($expr, 'array[string]') ||
+            // Syntax errors in:
+            // - netresearch\jsonmapper\tests\JsonMapperTest\Array.php:69
+            // - netresearch\jsonmapper\tests\JsonMapperTest\Array.php:75
+            // - netresearch\jsonmapper\tests\JsonMapperTest\Broken.php:25
+            // - netresearch\jsonmapper\tests\namespacetest\UnitData.php:6
+            \str_contains($expr, 'ArrayObject[') ||
+            // Syntax error in:
+            // - netresearch\jsonmapper\tests\namespacetest\UnitData.php:31
+            \str_contains($expr, 'model\UserList[') ||
             // phpstan bug in PHPUnit\Framework\Constraint\IsType:124
             // Cannot extract 'resource'|'resource (closed)' expressions.
             \str_ends_with($expr, "'resource'|'resource")
