@@ -50,9 +50,14 @@ VariadicCallableArgument -> {
         return $children[0];
     }
 
-    return new Node\Stmt\Callable\VariadicArgumentNode($children[0]);
+    if ($children[0] instanceof Node\Stmt\Callable\ArgumentNodeInterface) {
+        return new Node\Stmt\Callable\VariadicArgumentNode($children[0]);
+    }
+
+    return new Node\Stmt\Callable\VariadicArgumentNode($children[1]);
 }
-  : OutputCallableArgument() <T_ELLIPSIS>?
+  : <T_ELLIPSIS> OutputCallableArgument()   // Prefixed variadic argument (Psalm format)
+  | OutputCallableArgument() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
   ;
 
 OutputCallableArgument -> {
