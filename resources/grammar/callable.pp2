@@ -22,7 +22,17 @@ CallableTypeStmt -> {
 CallableArguments -> {
     return new Node\Stmt\Callable\ArgumentsListNode($children);
 }
-  : NamedCallableArgument() (::T_COMMA:: NamedCallableArgument())* ::T_COMMA::?
+  : OptionalCallableArgument() (::T_COMMA:: OptionalCallableArgument())* ::T_COMMA::?
+  ;
+
+OptionalCallableArgument -> {
+    if (!isset($children[1])) {
+        return $children[0];
+    }
+
+    return new Node\Stmt\Callable\OptionalArgumentNode($children[0]);
+}
+  : NamedCallableArgument() <T_EQ>?
   ;
 
 NamedCallableArgument -> {
@@ -32,46 +42,29 @@ NamedCallableArgument -> {
 
     return new Node\Stmt\Callable\NamedArgumentNode($children[1], $children[0]);
 }
-  : OutputCallableArgument() VariableLiteral()?
+  : VariadicCallableArgument() VariableLiteral()?
   ;
 
-OutputCallableArgument -> {
-    if (\count($children) === 1) {
+VariadicCallableArgument -> {
+    if (!isset($children[1])) {
         return $children[0];
     }
 
-    return new Node\Stmt\Callable\OutArgumentNode($children[0]);
+    return new Node\Stmt\Callable\VariadicArgumentNode($children[0]);
 }
-  : PrefixedVariadicCallableArgument() <T_AMP>?
+  : OutputCallableArgument() <T_ELLIPSIS>?
   ;
 
-PrefixedVariadicCallableArgument -> {
-    if (\is_array($children)) {
-        return new Node\Stmt\Callable\VariadicArgumentNode(
-            new Node\Stmt\Callable\ArgumentNode($children[1]),
-        );
-    }
-
-    return $children;
-}
-  : <T_ELLIPSIS> Statement()
-  | VariadicOrOptionalCallableArgument()
-  ;
-
-VariadicOrOptionalCallableArgument -> {
+OutputCallableArgument -> {
     $argument = new Node\Stmt\Callable\ArgumentNode($children[0]);
 
-    if (!isset($children[1])) {
+    if (\count($children) === 1) {
         return $argument;
     }
 
-    if ($children[1]->getName() === 'T_EQ') {
-        return new Node\Stmt\Callable\OptionalArgumentNode($argument);
-    }
-
-    return new Node\Stmt\Callable\VariadicArgumentNode($argument);
+    return new Node\Stmt\Callable\OutArgumentNode($argument);
 }
-  : Statement() (<T_EQ> | <T_ELLIPSIS>)?
+  : Statement() <T_AMP>?
   ;
 
 CallableReturnType
