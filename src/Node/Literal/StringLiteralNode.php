@@ -174,4 +174,9 @@ class StringLiteralNode extends LiteralNode
 
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
+
+    public function getValue(): string
+    {
+        return $this->value;
+    }
 }

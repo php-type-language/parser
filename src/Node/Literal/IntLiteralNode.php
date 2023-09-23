@@ -56,4 +56,9 @@ class IntLiteralNode extends LiteralNode
 
         return [$isNegative, (int)$literal];
     }
+
+    public function getValue(): int
+    {
+        return $this->value;
+    }
 }

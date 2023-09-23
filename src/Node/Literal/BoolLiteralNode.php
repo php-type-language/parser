@@ -19,8 +19,11 @@ class BoolLiteralNode extends LiteralNode
 
     public static function parse(string $value): self
     {
-        $evaluated = \strtolower($value) === 'true';
+        return new self(\strtolower($value) === 'true', $value);
+    }
 
-        return new self($evaluated, $value);
+    public function getValue(): bool
+    {
+        return $this->value;
     }
 }

@@ -20,7 +20,12 @@ abstract class LiteralNode extends Statement implements \Stringable
     }
 
     /**
-     * Return raw literal value string representation.
+     * Returns parsed literal value.
+     */
+    abstract public function getValue(): mixed;
+
+    /**
+     * Returns raw literal value string representation.
      */
     public function getRawValue(): string
     {

@@ -11,15 +11,25 @@ namespace TypeLang\Parser\Node;
 class FullQualifiedName extends Name
 {
     /**
+     * Returns {@see true} in case of name must be prefixed
+     * by leading namespace separator.
+     */
+    public function isPrefixedByLeadingBackslash(): bool
+    {
+        return !$this->isSimple()
+            || !$this->isBuiltin()
+            || !$this->isSpecial();
+    }
+
+    /**
      * @return non-empty-string
      */
     public function toString(): string
     {
-        return '\\' . parent::toString();
-    }
+        if ($this->isPrefixedByLeadingBackslash()) {
+            return '\\' . parent::toString();
+        }
 
-    public function __toString(): string
-    {
-        return $this->toString();
+        return parent::toString();
     }
 }

@@ -14,4 +14,9 @@ class NullLiteralNode extends LiteralNode
     {
         parent::__construct($raw ?? 'null');
     }
+
+    public function getValue(): null
+    {
+        return null;
+    }
 }
