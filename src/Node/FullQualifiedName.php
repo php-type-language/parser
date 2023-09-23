@@ -10,8 +10,16 @@ namespace TypeLang\Parser\Node;
  */
 class FullQualifiedName extends Name
 {
+    /**
+     * @return non-empty-string
+     */
+    public function toString(): string
+    {
+        return '\\' . parent::toString();
+    }
+
     public function __toString(): string
     {
-        return '\\' . parent::__toString();
+        return $this->toString();
     }
 }

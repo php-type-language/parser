@@ -32,8 +32,16 @@ class Name extends Node
         return \count($this->parts) === 1;
     }
 
-    public function __toString(): string
+    /**
+     * @return non-empty-string
+     */
+    public function toString(): string
     {
         return $this->name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }
