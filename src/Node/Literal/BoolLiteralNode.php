@@ -10,13 +10,11 @@ namespace TypeLang\Parser\Node\Literal;
  */
 class BoolLiteralNode extends LiteralNode
 {
-    public readonly string $raw;
-
     public function __construct(
         public readonly bool $value,
         string $raw = null,
     ) {
-        $this->raw = $raw ?? ($this->value ? 'true' : 'false');
+        parent::__construct($raw ?? ($value ? 'true' : 'false'));
     }
 
     public static function parse(string $value): self
@@ -24,10 +22,5 @@ class BoolLiteralNode extends LiteralNode
         $evaluated = \strtolower($value) === 'true';
 
         return new self($evaluated, $value);
-    }
-
-    public function __toString(): string
-    {
-        return $this->raw;
     }
 }

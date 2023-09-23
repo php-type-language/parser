@@ -10,15 +10,8 @@ namespace TypeLang\Parser\Node\Literal;
  */
 class NullLiteralNode extends LiteralNode
 {
-    public readonly string $raw;
-
     public function __construct(string $raw = null)
     {
-        $this->raw = $raw ?? 'null';
-    }
-
-    public function __toString(): string
-    {
-        return $this->raw;
+        parent::__construct($raw ?? 'null');
     }
 }

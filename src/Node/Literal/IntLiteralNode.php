@@ -10,13 +10,11 @@ namespace TypeLang\Parser\Node\Literal;
  */
 class IntLiteralNode extends LiteralNode
 {
-    public readonly string $raw;
-
     final public function __construct(
         public readonly int $value,
         string $raw = null,
     ) {
-        $this->raw = $raw ?? (string)$this->value;
+        parent::__construct($raw ?? (string)$this->value);
     }
 
     /**
@@ -57,10 +55,5 @@ class IntLiteralNode extends LiteralNode
         }
 
         return [$isNegative, (int)$literal];
-    }
-
-    public function __toString(): string
-    {
-        return $this->raw;
     }
 }

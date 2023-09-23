@@ -33,13 +33,11 @@ class StringLiteralNode extends LiteralNode
         '\$' => "\$",
     ];
 
-    public readonly string $raw;
-
     final public function __construct(
         public readonly string $value,
         string $raw = null,
     ) {
-        $this->raw = $raw ?? $this->value;
+        parent::__construct($raw ?? $this->value);
     }
 
     /**
@@ -65,7 +63,10 @@ class StringLiteralNode extends LiteralNode
 
         $body = \substr($value, 1, -1);
 
-        return static::parseEncodedValue(\str_replace('\"', '"', $body));
+        return static::parseEncodedValue(
+            string: \str_replace('\"', '"', $body),
+            raw: $value,
+        );
     }
 
     /**
@@ -77,17 +78,15 @@ class StringLiteralNode extends LiteralNode
 
         $body = \substr($value, 1, -1);
 
-        return static::createFromLiteralValue(\str_replace("\'", "'", $body));
+        return new static(
+            value: \str_replace("\'", "'", $body),
+            raw: $value,
+        );
     }
 
-    public static function createFromLiteralValue(string $string): static
+    private static function parseEncodedValue(string $string, string $raw = null): static
     {
-        return new static($string);
-    }
-
-    private static function parseEncodedValue(string $string): static
-    {
-        $raw = $string;
+        $raw ??= $string;
 
         if (\str_contains($string, '\\')) {
             // Replace double backslash to "\0"
@@ -174,10 +173,5 @@ class StringLiteralNode extends LiteralNode
         };
 
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
-    }
-
-    public function __toString(): string
-    {
-        return $this->raw;
     }
 }

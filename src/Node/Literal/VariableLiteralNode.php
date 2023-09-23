@@ -13,6 +13,6 @@ class VariableLiteralNode extends StringLiteralNode
     {
         assert(\strlen($value) >= 1);
 
-        return static::createFromLiteralValue(\substr($value, 1));
+        return new static(\substr($value, 1), $value);
     }
 }
