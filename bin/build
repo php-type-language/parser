@@ -12,18 +12,16 @@ if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
     );
 }
 
-$composer = [
-    __DIR__ . '/../../../vendor/autoload.php',
-    __DIR__ . '/../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/vendor/autoload.php',
-];
-
-foreach ($composer as $file) {
-    if (is_file($file)) {
-        require_once $file;
-        break;
+$directory = __DIR__;
+while (dirname($directory) !== $directory) {
+    foreach ([$directory . '/autoload.php', $directory . '/vendor/autoload.php'] as $pathname) {
+        if (is_file($pathname)) {
+            require $pathname;
+            break;
+        }
     }
+
+    $directory = dirname($directory);
 }
 
 $grammar = (new Compiler())
