@@ -23,7 +23,19 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         TypeStatement $b,
         TypeStatement ...$other,
     ) {
-        $this->statements = [$a, $b, ...$other];
+        $this->statements = [...$this->unwrap([$a, $b, ...$other])];
+    }
+
+    /**
+     * @param list<TypeStatement> $statements
+     *
+     * @return iterable<array-key, TypeStatement>
+     */
+    private function unwrap(array $statements): iterable
+    {
+        foreach ($statements as $statement) {
+            yield from $statement instanceof static ? $this->unwrap($statement->statements) : [$statement];
+        }
     }
 
     public function getIterator(): \Traversable

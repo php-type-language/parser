@@ -81,6 +81,6 @@ ShapeKey -> {
   ;
 
 ShapeValue
-  : Statement()
+  : TypeStatement()
   ;
 

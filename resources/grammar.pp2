@@ -17,21 +17,21 @@
 
 /**
  * -----------------------------------------------------------------------------
- *  Constant Statement
+ *  Type Statement
  * -----------------------------------------------------------------------------
  *
- *  A constant statement can be evaluated during translation rather than
- *  runtime, and accordingly may be used in any place that a constant may be.
+ *  Constant references to external definitions or
+ *  describe the type in some way.
  *
  */
 
-#Statement
-  : BinaryStatement()
+#TypeStatement
+  : LogicalTypeStatement()
   ;
 
 // Binary statements/expressions
 
-BinaryStatement
+LogicalTypeStatement
   : UnionTypeStatement()
   ;
 
@@ -52,12 +52,12 @@ IntersectionTypeStatement -> {
 
     return $children;
 }
-  : UnaryStatement() (::T_AMP:: IntersectionTypeStatement())?
+  : UnaryTypeStatement() (::T_AMP:: IntersectionTypeStatement())?
   ;
 
 // Unary statements/expressions
 
-UnaryStatement
+UnaryTypeStatement
   : PrefixedNullableTypeStatement()
   ;
 
@@ -97,7 +97,7 @@ TypesListStatement -> {
 
     return $statement;
 }
-  : PrimaryStatement() (
+  : PrimaryTypeStatement() (
       <T_SQUARE_BRACKET_OPEN>
       ::T_SQUARE_BRACKET_CLOSE::
     )*
@@ -105,8 +105,8 @@ TypesListStatement -> {
 
 // Primary
 
-PrimaryStatement
-  : ::T_PARENTHESIS_OPEN:: Statement() ::T_PARENTHESIS_CLOSE::
+PrimaryTypeStatement
+  : ::T_PARENTHESIS_OPEN:: TypeStatement() ::T_PARENTHESIS_CLOSE::
   | Literal()
   | CallableTypeStmt()
   | NamedTypeStmt()

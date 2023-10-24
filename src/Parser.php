@@ -97,7 +97,7 @@ final class Parser implements ParserInterface
     {
         $source = File::fromSources($source);
 
-        return $this->executeAndHandleErrors($source, 'Statement');
+        return $this->executeAndHandleErrors($source, 'TypeStatement');
     }
 
     /**
