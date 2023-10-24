@@ -25,6 +25,22 @@ final class Traverser implements MutableTraverserInterface
     }
 
     /**
+     * @template TArgVisitor of VisitorInterface
+     *
+     * @param TArgVisitor $visitor
+     * @param iterable<array-key, Node> $nodes
+     *
+     * @return TArgVisitor
+     */
+    public static function through(VisitorInterface $visitor, iterable $nodes): VisitorInterface
+    {
+        $instance = self::new([$visitor]);
+        $instance->traverse($nodes);
+
+        return $visitor;
+    }
+
+    /**
      * @param list<VisitorInterface> $visitors
      */
     public static function new(iterable $visitors = []): self
