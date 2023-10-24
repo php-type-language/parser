@@ -2,11 +2,11 @@
 CallableTypeStmt -> {
     $name = \array_shift($children);
 
-    $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ArgumentsListNode
+    $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Type\Callable\ArgumentsListNode
         ? \array_shift($children)
-        : new Node\Stmt\Callable\ArgumentsListNode();
+        : new Node\Stmt\Type\Callable\ArgumentsListNode();
 
-    return new Node\Stmt\CallableTypeNode(
+    return new Node\Stmt\Type\CallableTypeNode(
         name: $name,
         arguments: $arguments,
         type: isset($children[0]) ? $children[0] : null,
@@ -20,7 +20,7 @@ CallableTypeStmt -> {
   ;
 
 CallableArguments -> {
-    return new Node\Stmt\Callable\ArgumentsListNode($children);
+    return new Node\Stmt\Type\Callable\ArgumentsListNode($children);
 }
   : OptionalCallableArgument() (::T_COMMA:: OptionalCallableArgument())* ::T_COMMA::?
   ;
@@ -30,7 +30,7 @@ OptionalCallableArgument -> {
         return $children[0];
     }
 
-    return new Node\Stmt\Callable\OptionalArgumentNode($children[0]);
+    return new Node\Stmt\Type\Callable\OptionalArgumentNode($children[0]);
 }
   : NamedCallableArgument() <T_EQ>?
   ;
@@ -40,7 +40,7 @@ NamedCallableArgument -> {
         return $children[0];
     }
 
-    return new Node\Stmt\Callable\NamedArgumentNode($children[1], $children[0]);
+    return new Node\Stmt\Type\Callable\NamedArgumentNode($children[1], $children[0]);
 }
   : VariadicCallableArgument() VariableLiteral()?
   ;
@@ -50,24 +50,24 @@ VariadicCallableArgument -> {
         return $children[0];
     }
 
-    if ($children[0] instanceof Node\Stmt\Callable\ArgumentNodeInterface) {
-        return new Node\Stmt\Callable\VariadicArgumentNode($children[0]);
+    if ($children[0] instanceof Node\Stmt\Type\Callable\ArgumentNodeInterface) {
+        return new Node\Stmt\Type\Callable\VariadicArgumentNode($children[0]);
     }
 
-    return new Node\Stmt\Callable\VariadicArgumentNode($children[1]);
+    return new Node\Stmt\Type\Callable\VariadicArgumentNode($children[1]);
 }
   : <T_ELLIPSIS> OutputCallableArgument()   // Prefixed variadic argument (Psalm format)
   | OutputCallableArgument() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
   ;
 
 OutputCallableArgument -> {
-    $argument = new Node\Stmt\Callable\ArgumentNode($children[0]);
+    $argument = new Node\Stmt\Type\Callable\ArgumentNode($children[0]);
 
     if (\count($children) === 1) {
         return $argument;
     }
 
-    return new Node\Stmt\Callable\OutArgumentNode($argument);
+    return new Node\Stmt\Type\Callable\OutArgumentNode($argument);
 }
   : Statement() <T_AMP>?
   ;

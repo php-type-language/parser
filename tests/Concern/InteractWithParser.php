@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Concern;
 
 use PHPUnit\Framework\Assert;
-use TypeLang\Parser\Exception\ParseException;
-use TypeLang\Parser\Node\Stmt\Statement;
-use TypeLang\Parser\Parser;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\TestCase;
+use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
+use TypeLang\Parser\Parser;
 use TypeLang\Parser\Traverser;
 
 /**
@@ -25,7 +25,7 @@ trait InteractWithParser
         $this->parser = new Parser();
     }
 
-    protected function getStatementResult(string $statement): ?Statement
+    protected function getStatementResult(string $statement): ?TypeStatement
     {
         return $this->parser->parse($statement);
     }

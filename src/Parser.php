@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
-use Phplrt\Contracts\Lexer\TokenInterface;
-use Phplrt\Contracts\Source\ReadableInterface;
-use TypeLang\Parser\Exception\LogicException;
-use TypeLang\Parser\Exception\ParseException;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
+use Phplrt\Contracts\Lexer\TokenInterface;
+use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\ContextInterface;
 use Phplrt\Parser\Exception\UnexpectedTokenException;
@@ -18,9 +16,11 @@ use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
-use TypeLang\Parser\Node\Literal\IntLiteralNode;
-use TypeLang\Parser\Node\Literal\StringLiteralNode;
-use TypeLang\Parser\Node\Stmt\Statement;
+use TypeLang\Parser\Exception\LogicException;
+use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Node\Stmt\Literal\IntLiteralNode;
+use TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode;
+use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
 
 /**
  * @psalm-type GrammarConfigArray = array{
@@ -75,7 +75,6 @@ final class Parser implements ParserInterface
             lexer: $lexer,
             grammar: $grammar['grammar'],
             options: [
-                ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
                 ParserConfigsInterface::CONFIG_AST_BUILDER  => new Builder($grammar['reducers']),
             ]
         );
@@ -94,22 +93,27 @@ final class Parser implements ParserInterface
      *
      * @throws ParseException
      */
-    public function parse(mixed $source): ?Statement
+    public function parse(mixed $source): ?TypeStatement
     {
         $source = File::fromSources($source);
 
+        return $this->executeAndHandleErrors($source, 'Statement');
+    }
+
+    /**
+     * @param non-empty-string $initial
+     *
+     * @throws ParseException
+     */
+    private function executeAndHandleErrors(ReadableInterface $source, string $initial): ?TypeStatement
+    {
         $allowedNestingLevel = (int)\ini_get('xdebug.max_nesting_level');
 
         try {
             \ini_set('xdebug.max_nesting_level', -1);
 
             try {
-                foreach ($this->parser->parse($source) as $node) {
-                    /** @var Statement */
-                    return $node;
-                }
-
-                return null;
+                return $this->execute($source, $initial);
             } catch (UnexpectedTokenException $e) {
                 throw $this->unexpectedTokenError($e, $source);
             } catch (UnrecognizedTokenException $e) {
@@ -124,6 +128,23 @@ final class Parser implements ParserInterface
         } finally {
             \ini_set('xdebug.max_nesting_level', $allowedNestingLevel);
         }
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    private function execute(ReadableInterface $source, string $initial): ?TypeStatement
+    {
+        $result = $this->parser
+            ->startsAt($initial)
+            ->parse($source);
+
+        foreach ($result as $node) {
+            /** @var TypeStatement */
+            return $node;
+        }
+
+        return null;
     }
 
     private function unexpectedTokenError(UnexpectedTokenException $e, ReadableInterface $source): ParseException

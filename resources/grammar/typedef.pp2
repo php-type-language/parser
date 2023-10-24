@@ -3,16 +3,16 @@ NamedTypeStmt -> {
     $fields = $parameters = null;
 
     // Shape fields
-    if (\end($children) instanceof Node\Stmt\Shape\FieldsListNode) {
+    if (\end($children) instanceof Node\Stmt\Type\Shape\FieldsListNode) {
         $fields = \array_pop($children);
     }
 
     // Template parameters
-    if (\end($children) instanceof Node\Stmt\Template\ParametersListNode) {
+    if (\end($children) instanceof Node\Stmt\Type\Template\ParametersListNode) {
         $parameters = \array_pop($children);
     }
 
-    return new Node\Stmt\NamedTypeNode(
+    return new Node\Stmt\Type\NamedTypeNode(
         $children[0],
         $parameters,
         $fields,

@@ -21,9 +21,6 @@ final class Builder implements BuilderInterface
         private readonly array $reducers,
     ) {}
 
-    /**
-     * {@inheritDoc}
-     */
     public function build(ContextInterface $context, mixed $result): mixed
     {
         $state = $context->getState();

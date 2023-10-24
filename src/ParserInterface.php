@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
-use TypeLang\Parser\Node\Stmt\Statement;
+use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
 
 interface ParserInterface
 {
     /**
      * @param resource|string|\SplFileInfo $source
      *
-     * @return Statement|null
+     * @return TypeStatement|null
      */
-    public function parse(mixed $source): ?Statement;
+    public function parse(mixed $source): ?TypeStatement;
 }

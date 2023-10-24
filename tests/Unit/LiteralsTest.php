@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Unit;
 
-use TypeLang\Parser\Node\Literal\BoolLiteralNode;
-use TypeLang\Parser\Node\Literal\FloatLiteralNode;
-use TypeLang\Parser\Node\Literal\IntLiteralNode;
-use TypeLang\Parser\Node\Literal\NullLiteralNode;
-use TypeLang\Parser\Node\Literal\StringLiteralNode;
-use TypeLang\Parser\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use TypeLang\Parser\Node\Stmt\Literal\BoolLiteralNode;
+use TypeLang\Parser\Node\Stmt\Literal\FloatLiteralNode;
+use TypeLang\Parser\Node\Stmt\Literal\IntLiteralNode;
+use TypeLang\Parser\Node\Stmt\Literal\NullLiteralNode;
+use TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode;
+use TypeLang\Parser\Tests\TestCase;
 
 class LiteralsTest extends TestCase
 {

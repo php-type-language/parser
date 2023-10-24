@@ -6,10 +6,8 @@ declare(strict_types=1);
 use Phplrt\Compiler\Compiler;
 
 if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
-    throw new LogicException(
-        'Warning: The console should be invoked via the CLI '
-        . 'version of PHP, not the ' . PHP_SAPI . ' SAPI'
-    );
+    trigger_error('The console should be invoked via the CLI '
+        . 'version of PHP, not the ' . PHP_SAPI . ' SAPI.', E_USER_WARNING);
 }
 
 $directory = __DIR__;
@@ -22,6 +20,15 @@ while (dirname($directory) !== $directory) {
     }
 
     $directory = dirname($directory);
+}
+
+if (!class_exists(Compiler::class)) {
+    file_put_contents(
+        filename: 'php://stderr',
+        data: 'Composer "phplrt/compiler" dependency required to execute this script.' . PHP_EOL,
+    );
+
+    exit(-1);
 }
 
 $grammar = (new Compiler())

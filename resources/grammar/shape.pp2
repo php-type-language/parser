@@ -1,14 +1,14 @@
 
 ShapeFields -> {
     if ($children === []) {
-        return new Node\Stmt\Shape\FieldsListNode();
+        return new Node\Stmt\Type\Shape\FieldsListNode();
     }
 
     if (!$children[0] instanceof \ArrayObject) {
-        return new Node\Stmt\Shape\FieldsListNode([], false);
+        return new Node\Stmt\Type\Shape\FieldsListNode([], false);
     }
 
-    return new Node\Stmt\Shape\FieldsListNode(
+    return new Node\Stmt\Type\Shape\FieldsListNode(
         $children[0]->getArrayCopy(),
         \count($children) !== 2,
     );
@@ -36,14 +36,14 @@ ShapeField
 NamedShapeField -> {
     if (\is_array($children)) {
         $value = \array_pop($children);
-        $field = $children[0] instanceof Node\Literal\IntLiteralNode
-            ? new Node\Stmt\Shape\NumericFieldNode($children[0], $value)
-            : new Node\Stmt\Shape\NamedFieldNode($children[0], $value)
+        $field = $children[0] instanceof Node\Stmt\Literal\IntLiteralNode
+            ? new Node\Stmt\Type\Shape\NumericFieldNode($children[0], $value)
+            : new Node\Stmt\Type\Shape\NamedFieldNode($children[0], $value)
         ;
 
         // In case of "nullable" suffix defined
         if (\count($children) === 2) {
-            return new Node\Stmt\Shape\OptionalFieldNode($field);
+            return new Node\Stmt\Type\Shape\OptionalFieldNode($field);
         }
 
         return $field;
@@ -56,19 +56,19 @@ NamedShapeField -> {
   ;
 
 AnonymousShapeField -> {
-    return new Node\Stmt\Shape\FieldNode($children[0]);
+    return new Node\Stmt\Type\Shape\FieldNode($children[0]);
 }
   : ShapeValue()
   ;
 
 ShapeKey -> {
     return match(true) {
-        $children instanceof Node\Literal\IntLiteralNode,
-        $children instanceof Node\Literal\StringLiteralNode => $children,
-        $children instanceof Node\Literal\BoolLiteralNode,
-        $children instanceof Node\Literal\NullLiteralNode,
-            => new Node\Literal\StringLiteralNode($children->raw),
-        default => new Node\Literal\StringLiteralNode($children->getValue()),
+        $children instanceof Node\Stmt\Literal\IntLiteralNode,
+        $children instanceof Node\Stmt\Literal\StringLiteralNode => $children,
+        $children instanceof Node\Stmt\Literal\BoolLiteralNode,
+        $children instanceof Node\Stmt\Literal\NullLiteralNode,
+            => new Node\Stmt\Literal\StringLiteralNode($children->raw),
+        default => new Node\Stmt\Literal\StringLiteralNode($children->getValue()),
     };
 }
   : Identifier()

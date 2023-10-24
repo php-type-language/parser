@@ -11,7 +11,7 @@ class NamesTypeTest extends TestCase
     public function testSimpleType(): void
     {
         $this->assertStatementSame('ExampleName', <<<'OUTPUT'
-            Stmt\NamedTypeNode
+            Stmt\Type\NamedTypeNode
               Name(ExampleName)
             OUTPUT);
     }
@@ -19,7 +19,7 @@ class NamesTypeTest extends TestCase
     public function testAllowsDash(): void
     {
         $this->assertStatementSame('example-name', <<<'OUTPUT'
-            Stmt\NamedTypeNode
+            Stmt\Type\NamedTypeNode
               Name(example-name)
             OUTPUT);
     }
@@ -34,7 +34,7 @@ class NamesTypeTest extends TestCase
     public function testAllowsDashAtEnd(): void
     {
         $this->assertStatementSame('example-', <<<'OUTPUT'
-            Stmt\NamedTypeNode
+            Stmt\Type\NamedTypeNode
               Name(example-)
             OUTPUT);
     }
@@ -42,7 +42,7 @@ class NamesTypeTest extends TestCase
     public function testRelativeNamespacedName(): void
     {
         $this->assertStatementSame('Some\\Any', <<<'OUTPUT'
-            Stmt\NamedTypeNode
+            Stmt\Type\NamedTypeNode
               Name(Some\Any)
             OUTPUT);
     }
@@ -50,7 +50,7 @@ class NamesTypeTest extends TestCase
     public function testAbsoluteNamespacedName(): void
     {
         $this->assertStatementSame('\\Some\\Any', <<<'OUTPUT'
-            Stmt\NamedTypeNode
+            Stmt\Type\NamedTypeNode
               FullQualifiedName(\Some\Any)
             OUTPUT);
     }
@@ -58,7 +58,7 @@ class NamesTypeTest extends TestCase
     public function testNamespacedNameWithDash(): void
     {
         $this->assertStatementSame('Some-Any\\Any', <<<'OUTPUT'
-            Stmt\NamedTypeNode
+            Stmt\Type\NamedTypeNode
               Name(Some-Any\Any)
             OUTPUT);
     }
