@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Type;
 
+use TypeLang\Parser\Node\Identifier;
 use TypeLang\Parser\Node\Name;
 
 /**
@@ -12,16 +13,8 @@ use TypeLang\Parser\Node\Name;
  */
 class ClassConstNode extends ClassConstMaskNode
 {
-    /**
-     * @param non-empty-string $constant
-     */
-    public function __construct(Name $class, string $constant)
+    public function __construct(Name $class, Identifier $constant)
     {
         parent::__construct($class, $constant);
-    }
-
-    public function __toString(): string
-    {
-        return $this->constant;
     }
 }

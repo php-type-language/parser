@@ -68,6 +68,8 @@ ShapeKey -> {
         $children instanceof Node\Stmt\Literal\BoolLiteralNode,
         $children instanceof Node\Stmt\Literal\NullLiteralNode,
             => new Node\Stmt\Literal\StringLiteralNode($children->raw),
+        $children instanceof Node\Identifier
+            => new Node\Stmt\Literal\StringLiteralNode($children->toString()),
         default => new Node\Stmt\Literal\StringLiteralNode($children->getValue()),
     };
 }

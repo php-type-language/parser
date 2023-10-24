@@ -8,7 +8,7 @@ class PsalmStubsTest extends LinterStubsTestCase
 {
     protected static function getCachePathname(): string
     {
-        return __DIR__ . '/../../../vendor/.psalm-5.15.0.cache.php';
+        return self::getVendorDirectory() . '/.psalm-5.15.0.cache.php';
     }
 
     protected static function getFilesDirectory(): string

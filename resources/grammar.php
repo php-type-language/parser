@@ -210,21 +210,24 @@ return [
             return new Node\Stmt\Type\ConstMaskNode($children[0]);
         },
         6 => function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) === 3) {
+            // <ClassName> :: <ConstPrefix> "*"
+        if (\count($children) === 3) {
             return new Node\Stmt\Type\ClassConstMaskNode(
                 $children[0],
-                $children[1]->getValue(),
+                $children[1],
             );
         }
     
-        if ($children[1]->getName() === 'T_ASTERISK') {
-            return new Node\Stmt\Type\ClassConstMaskNode($children[0]);
+        // <ClassName> :: <ConstName>
+        if ($children[1] instanceof Node\Identifier) {
+            return new Node\Stmt\Type\ClassConstNode(
+                $children[0],
+                $children[1],
+            );
         }
     
-        return new Node\Stmt\Type\ClassConstNode(
-            $children[0],
-            $children[1]->getValue()
-        );
+        // <ClassName> :: "*"
+        return new Node\Stmt\Type\ClassConstMaskNode($children[0]);
         },
         27 => function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Stmt\Type\Template\ParametersListNode($children);
@@ -282,26 +285,19 @@ return [
             $children instanceof Node\Stmt\Literal\BoolLiteralNode,
             $children instanceof Node\Stmt\Literal\NullLiteralNode,
                 => new Node\Stmt\Literal\StringLiteralNode($children->raw),
+            $children instanceof Node\Identifier
+                => new Node\Stmt\Literal\StringLiteralNode($children->toString()),
             default => new Node\Stmt\Literal\StringLiteralNode($children->getValue()),
         };
         },
         59 => function (\Phplrt\Parser\Context $ctx, $children) {
-            $parts = [];
-    
-        foreach ($children as $child) {
-            $parts[] = $child->getValue();
-        }
-    
-        return new Node\FullQualifiedName($parts);
+            return new Node\FullQualifiedName($children);
         },
         60 => function (\Phplrt\Parser\Context $ctx, $children) {
-            $parts = [];
-    
-        foreach ($children as $child) {
-            $parts[] = $child->getValue();
-        }
-    
-        return new Node\Name($parts);
+            return new Node\Name($children);
+        },
+        13 => function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\Identifier($children->getValue());
         },
         77 => function (\Phplrt\Parser\Context $ctx, $children) {
             $name = \array_shift($children);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Functional\LinterStubs;
 
+use Composer\Autoload\ClassLoader;
 use Phplrt\Contracts\Position\PositionInterface;
 use Phplrt\Contracts\Source\FileInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
@@ -22,6 +23,16 @@ abstract class LinterStubsTestCase extends TestCase
         'phpstan-param', 'phpstan-var', 'phpstan-return',
         'psalm-param', 'psalm-var', 'psalm-return',
     ];
+
+    /**
+     * @return non-empty-string
+     */
+    protected static function getVendorDirectory(): string
+    {
+        $classLoader = new \ReflectionClass(ClassLoader::class);
+
+        return \dirname($classLoader->getFileName(), 2);
+    }
 
     /**
      * @psalm-taint-sink file $directory

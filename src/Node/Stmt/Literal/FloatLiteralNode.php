@@ -8,7 +8,7 @@ namespace TypeLang\Parser\Node\Stmt\Literal;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class FloatLiteralNode extends LiteralNodeNode
+class FloatLiteralNode extends LiteralNode
 {
     public function __construct(
         public readonly float $value,

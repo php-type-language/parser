@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Literal;
 
-class VariableLiteralNode extends LiteralNodeNode
+class VariableLiteralNode extends LiteralNode
 {
     /**
      * @var non-empty-string

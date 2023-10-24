@@ -11,4 +11,4 @@
 /vendor/
 
 # Testing
-test.php
+../../test.php

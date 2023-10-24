@@ -61,59 +61,67 @@ $ast = $parser->parse(<<<'PHP'
 Expected Output:
 
 ```php
-TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#737
+TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
   +offset: 0
-  +name: TypeLang\Parser\Node\Name {#752
+  +name: TypeLang\Parser\Node\Name {#778
     +offset: 0
-    +name: "array"
-    +parts: array:1 [
-      0 => "array"
+    -parts: array:1 [
+      0 => TypeLang\Parser\Node\Identifier {#771
+        +offset: 0
+        +value: "array"
+      }
     ]
   }
   +parameters: null
-  +fields: TypeLang\Parser\Node\Stmt\Type\Shape\FieldsListNode {#723
+  +fields: TypeLang\Parser\Node\Stmt\Type\Shape\FieldsListNode {#742
     +offset: 5
     +list: array:5 [
-      0 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#143
+      0 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#153
         +offset: 11
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#364
+        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#356
           +offset: 19
-          +value: TypeLang\Parser\Node\Stmt\Type\CallableTypeNode {#169
+          +value: TypeLang\Parser\Node\Stmt\Type\CallableTypeNode {#167
             +offset: 19
-            +name: TypeLang\Parser\Node\Name {#175
+            +name: TypeLang\Parser\Node\Name {#166
               +offset: 19
-              +name: "callable"
-              +parts: array:1 [
-                0 => "callable"
+              -parts: array:1 [
+                0 => TypeLang\Parser\Node\Identifier {#179
+                  +offset: 19
+                  +value: "callable"
+                }
               ]
             }
-            +arguments: TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentsListNode {#174
+            +arguments: TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentsListNode {#170
               +offset: 28
               +list: array:2 [
-                0 => TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentNode {#616
+                0 => TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentNode {#640
                   +offset: 28
-                  +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#648
+                  +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#606
                     +offset: 28
-                    +name: TypeLang\Parser\Node\Name {#632
+                    +name: TypeLang\Parser\Node\Name {#616
                       +offset: 28
-                      +name: "Example"
-                      +parts: array:1 [
-                        0 => "Example"
+                      -parts: array:1 [
+                        0 => TypeLang\Parser\Node\Identifier {#607
+                          +offset: 28
+                          +value: "Example"
+                        }
                       ]
                     }
                     +parameters: null
                     +fields: null
                   }
                 }
-                1 => TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentNode {#646
+                1 => TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentNode {#484
                   +offset: 37
-                  +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#622
+                  +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#603
                     +offset: 37
-                    +name: TypeLang\Parser\Node\Name {#626
+                    +name: TypeLang\Parser\Node\Name {#602
                       +offset: 37
-                      +name: "int"
-                      +parts: array:1 [
-                        0 => "int"
+                      -parts: array:1 [
+                        0 => TypeLang\Parser\Node\Identifier {#615
+                          +offset: 37
+                          +value: "int"
+                        }
                       ]
                     }
                     +parameters: null
@@ -122,13 +130,15 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#737
                 }
               ]
             }
-            +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#649
+            +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#626
               +offset: 42
-              +name: TypeLang\Parser\Node\Name {#631
+              +name: TypeLang\Parser\Node\Name {#617
                 +offset: 42
-                +name: "mixed"
-                +parts: array:1 [
-                  0 => "mixed"
+                -parts: array:1 [
+                  0 => TypeLang\Parser\Node\Identifier {#625
+                    +offset: 42
+                    +value: "mixed"
+                  }
                 ]
               }
               +parameters: null
@@ -136,37 +146,41 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#737
             }
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#167
+        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#364
           +offset: 11
           +raw: "field1"
           +value: "field1"
         }
       }
-      1 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#355
+      1 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#154
         +offset: 53
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#154
+        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#168
           +offset: 61
-          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#658
+          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#475
             +offset: 61
-            +name: TypeLang\Parser\Node\Name {#475
+            +name: TypeLang\Parser\Node\Name {#647
               +offset: 61
-              +name: "list"
-              +parts: array:1 [
-                0 => "list"
+              -parts: array:1 [
+                0 => TypeLang\Parser\Node\Identifier {#483
+                  +offset: 61
+                  +value: "list"
+                }
               ]
             }
-            +parameters: TypeLang\Parser\Node\Stmt\Type\Template\ParametersListNode {#484
+            +parameters: TypeLang\Parser\Node\Stmt\Type\Template\ParametersListNode {#627
               +offset: 65
               +list: array:1 [
-                0 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#653
+                0 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#642
                   +offset: 66
-                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#618
+                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#605
                     +offset: 66
-                    +name: TypeLang\Parser\Node\Name {#605
+                    +name: TypeLang\Parser\Node\Name {#579
                       +offset: 66
-                      +name: "Some"
-                      +parts: array:1 [
-                        0 => "Some"
+                      -parts: array:1 [
+                        0 => TypeLang\Parser\Node\Identifier {#590
+                          +offset: 66
+                          +value: "Some"
+                        }
                       ]
                     }
                     +parameters: null
@@ -178,82 +192,92 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#737
             +fields: null
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#153
+        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#159
           +offset: 53
           +raw: "field2"
           +value: "field2"
         }
       }
-      2 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#149
+      2 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#158
         +offset: 77
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#170
+        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#176
           +offset: 85
-          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#613
+          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#612
             +offset: 85
-            +name: TypeLang\Parser\Node\Name {#623
+            +name: TypeLang\Parser\Node\Name {#599
               +offset: 85
-              +name: "iterable"
-              +parts: array:1 [
-                0 => "iterable"
+              -parts: array:1 [
+                0 => TypeLang\Parser\Node\Identifier {#597
+                  +offset: 85
+                  +value: "iterable"
+                }
               ]
             }
-            +parameters: TypeLang\Parser\Node\Stmt\Type\Template\ParametersListNode {#609
+            +parameters: TypeLang\Parser\Node\Stmt\Type\Template\ParametersListNode {#586
               +offset: 93
               +list: array:2 [
-                0 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#621
+                0 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#592
                   +offset: 94
-                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#606
+                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#585
                     +offset: 94
-                    +name: TypeLang\Parser\Node\Name {#593
+                    +name: TypeLang\Parser\Node\Name {#552
                       +offset: 94
-                      +name: "array-key"
-                      +parts: array:1 [
-                        0 => "array-key"
+                      -parts: array:1 [
+                        0 => TypeLang\Parser\Node\Identifier {#578
+                          +offset: 94
+                          +value: "array-key"
+                        }
                       ]
                     }
                     +parameters: null
                     +fields: null
                   }
                 }
-                1 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#592
+                1 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#600
                   +offset: 105
-                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#546
+                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#576
                     +offset: 105
-                    +name: TypeLang\Parser\Node\Name {#589
+                    +name: TypeLang\Parser\Node\Name {#594
                       +offset: 105
-                      +name: "array"
-                      +parts: array:1 [
-                        0 => "array"
+                      -parts: array:1 [
+                        0 => TypeLang\Parser\Node\Identifier {#595
+                          +offset: 105
+                          +value: "array"
+                        }
                       ]
                     }
                     +parameters: null
-                    +fields: TypeLang\Parser\Node\Stmt\Type\Shape\FieldsListNode {#591
+                    +fields: TypeLang\Parser\Node\Stmt\Type\Shape\FieldsListNode {#593
                       +offset: 110
                       +list: array:2 [
-                        0 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#601
+                        0 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#482
                           +offset: 111
-                          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#98
+                          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#341
                             +offset: 111
-                            +name: TypeLang\Parser\Node\Name {#332
+                            +name: TypeLang\Parser\Node\Name {#343
                               +offset: 111
-                              +name: "int"
-                              +parts: array:1 [
-                                0 => "int"
+                              -parts: array:1 [
+                                0 => TypeLang\Parser\Node\Identifier {#342
+                                  +offset: 111
+                                  +value: "int"
+                                }
                               ]
                             }
                             +parameters: null
                             +fields: null
                           }
                         }
-                        1 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#597
+                        1 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#333
                           +offset: 116
-                          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#336
+                          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#347
                             +offset: 116
-                            +name: TypeLang\Parser\Node\Name {#337
+                            +name: TypeLang\Parser\Node\Name {#349
                               +offset: 116
-                              +name: "non-empty-string"
-                              +parts: array:1 [
-                                0 => "non-empty-string"
+                              -parts: array:1 [
+                                0 => TypeLang\Parser\Node\Identifier {#348
+                                  +offset: 116
+                                  +value: "non-empty-string"
+                                }
                               ]
                             }
                             +parameters: null
@@ -270,42 +294,49 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#737
             +fields: null
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#160
+        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#175
           +offset: 77
           +raw: "field3"
           +value: "field3"
         }
       }
-      3 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#171
+      3 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#164
         +offset: 140
-        +value: TypeLang\Parser\Node\Stmt\Type\ClassConstMaskNode {#603
+        +value: TypeLang\Parser\Node\Stmt\Type\ClassConstMaskNode {#587
           +offset: 140
-          +class: TypeLang\Parser\Node\Name {#615
+          +class: TypeLang\Parser\Node\Name {#580
             +offset: 140
-            +name: "Some"
-            +parts: array:1 [
-              0 => "Some"
+            -parts: array:1 [
+              0 => TypeLang\Parser\Node\Identifier {#577
+                +offset: 140
+                +value: "Some"
+              }
             ]
           }
-          +constant: "CONST_"
+          +constant: TypeLang\Parser\Node\Identifier {#583
+            +offset: 146
+            +value: "CONST_"
+          }
         }
       }
-      4 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#163
+      4 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#165
         +offset: 159
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#162
+        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#180
           +offset: 175
-          +value: TypeLang\Parser\Node\Stmt\Type\ConstMaskNode {#596
+          +value: TypeLang\Parser\Node\Stmt\Type\ConstMaskNode {#574
             +offset: 175
-            +name: TypeLang\Parser\Node\FullQualifiedName {#583
+            +name: TypeLang\Parser\Node\FullQualifiedName {#575
               +offset: 175
-              +name: "JSON_"
-              +parts: array:1 [
-                0 => "JSON_"
+              -parts: array:1 [
+                0 => TypeLang\Parser\Node\Identifier {#591
+                  +offset: 176
+                  +value: "JSON_"
+                }
               ]
             }
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#161
+        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#610
           +offset: 159
           +raw: ""\njson_flags""
           +value: """

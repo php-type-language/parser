@@ -63,21 +63,24 @@ ConstMaskLiteral -> {
   ;
 
 ClassConstLiteral -> {
+    // <ClassName> :: <ConstPrefix> "*"
     if (\count($children) === 3) {
         return new Node\Stmt\Type\ClassConstMaskNode(
             $children[0],
-            $children[1]->getValue(),
+            $children[1],
         );
     }
 
-    if ($children[1]->getName() === 'T_ASTERISK') {
-        return new Node\Stmt\Type\ClassConstMaskNode($children[0]);
+    // <ClassName> :: <ConstName>
+    if ($children[1] instanceof Node\Identifier) {
+        return new Node\Stmt\Type\ClassConstNode(
+            $children[0],
+            $children[1],
+        );
     }
 
-    return new Node\Stmt\Type\ClassConstNode(
-        $children[0],
-        $children[1]->getValue()
-    );
+    // <ClassName> :: "*"
+    return new Node\Stmt\Type\ClassConstMaskNode($children[0]);
 }
   : Name() ::T_DOUBLE_COLON::
     ( Identifier() <T_ASTERISK>

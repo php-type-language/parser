@@ -7,11 +7,15 @@ namespace TypeLang\Parser\Node\Stmt\Type;
 /**
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
+ *
+ * @template T of TypeStatement
  */
-abstract class BinaryStmt extends TypeStatement
+abstract class GenericTypeStmt extends TypeStatement
 {
+    /**
+     * @param T $type
+     */
     public function __construct(
-        public readonly TypeStatement $a,
-        public readonly TypeStatement $b,
+        public readonly TypeStatement $type,
     ) {}
 }

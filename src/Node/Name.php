@@ -8,55 +8,26 @@ namespace TypeLang\Parser\Node;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  *
- * @template-extends \IteratorAggregate<array-key, non-empty-string>
+ * @template-extends \IteratorAggregate<array-key, Identifier>
  */
 class Name extends Node implements \IteratorAggregate, \Countable
 {
-    /**
-     * @var list<non-empty-string>
-     */
-    private const SPECIAL_CLASS_NAME = [
-        'self',
-        'parent',
-        'static',
-    ];
-
-    /**
-     * @var list<non-empty-string>
-     */
-    private const BUILTIN_TYPE_NAME = [
-        'mixed',
-        'string',
-        'int',
-        'float',
-        'bool',
-        'object',
-        'array',
-        'void',
-        'never',
-        'callable',
-        'iterable',
-        'null',
-        'true',
-        'false'
-    ];
-
     /**
      * @var non-empty-string
      */
     private const NAMESPACE_DELIMITER = '\\';
 
     /**
-     * @var non-empty-list<non-empty-string>
+     * @var non-empty-list<Identifier>
      */
     private readonly array $parts;
 
     /**
-     * @param self|non-empty-string|iterable<array-key, non-empty-string> $name
+     * @param iterable<array-key, Identifier|non-empty-string>|non-empty-string|Identifier $name
      */
-    final public function __construct(self|string|iterable $name)
+    final public function __construct(iterable|string|Identifier $name)
     {
-        $this->parts = self::parseName($name);
+        $this->parts = $this->parseName($name);
 
         assert($this->parts !== [], new \InvalidArgumentException(
             'Name parts count can not be empty',
@@ -64,30 +35,29 @@ class Name extends Node implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param self|non-empty-string|iterable<array-key, non-empty-string> $name
+     * @param iterable<array-key, Identifier|non-empty-string>|non-empty-string|Identifier $name
      *
-     * @return list<non-empty-string>
+     * @return list<Identifier>
      */
-    private static function parseName(self|string|iterable $name): array
+    private function parseName(iterable|string|Identifier $name): array
     {
-        return match (true) {
-            $name instanceof self => $name->parts,
-            \is_string($name) => self::parseString($name),
-            default => [...$name],
-        };
+        if (\is_iterable($name)) {
+            return \array_map($this->parseChunk(...), [...$name]);
+        }
+
+        return [$this->parseChunk($name)];
     }
 
     /**
-     * @param non-empty-string $name
-     *
-     * @return non-empty-list<non-empty-string>
+     * @param non-empty-string|Identifier $chunk
      */
-    private static function parseString(string $name): array
+    private function parseChunk(string|Identifier $chunk): Identifier
     {
-        $parts = \explode(self::NAMESPACE_DELIMITER, $name);
-        $parts = \array_map(\trim(...), $parts);
+        if (\is_string($chunk)) {
+            return new Identifier($chunk);
+        }
 
-        return \array_filter($parts);
+        return $chunk;
     }
 
     /**
@@ -111,8 +81,9 @@ class Name extends Node implements \IteratorAggregate, \Countable
      */
     public function isSpecial(): bool
     {
-        return $this->isSimple()
-            && \in_array($this->getFirstPart(), self::SPECIAL_CLASS_NAME, true);
+        $first = $this->getFirstPart();
+
+        return $this->isSimple() && $first->isSpecial();
     }
 
     /**
@@ -120,8 +91,9 @@ class Name extends Node implements \IteratorAggregate, \Countable
      */
     public function isBuiltin(): bool
     {
-        return $this->isSimple()
-            && \in_array($this->getFirstPart(), self::BUILTIN_TYPE_NAME, true);
+        $first = $this->getFirstPart();
+
+        return $this->isSimple() && $first->isBuiltin();
     }
 
     /**
@@ -131,22 +103,6 @@ class Name extends Node implements \IteratorAggregate, \Countable
     public function slice(int $offset = 0, int $length = null): self
     {
         return new static(\array_slice($this->parts, $offset, $length));
-    }
-
-    /**
-     * @param self|non-empty-string|iterable<array-key, non-empty-string> $name
-     */
-    public function prepend(self|string|iterable $name): self
-    {
-        return new static([...self::parseName($name), ...$this->parts]);
-    }
-
-    /**
-     * @param self|non-empty-string|iterable<array-key, non-empty-string> $name
-     */
-    public function append(self|string|iterable $name): self
-    {
-        return new static([...$this->parts, ...self::parseName($name)]);
     }
 
     /**
@@ -162,7 +118,7 @@ class Name extends Node implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return non-empty-list<non-empty-string>
+     * @return non-empty-list<Identifier>
      */
     public function getParts(): array
     {
@@ -170,9 +126,20 @@ class Name extends Node implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return non-empty-string
+     * @return non-empty-list<non-empty-string>
      */
-    public function getFirstPart(): string
+    public function getPartsAsString(): array
+    {
+        $result = [];
+
+        foreach ($this->parts as $identifier) {
+            $result[] = $identifier->toString();
+        }
+
+        return $result;
+    }
+
+    public function getFirstPart(): Identifier
     {
         return $this->parts[\array_key_first($this->parts)];
     }
@@ -180,9 +147,26 @@ class Name extends Node implements \IteratorAggregate, \Countable
     /**
      * @return non-empty-string
      */
-    public function getLastPart(): string
+    public function getFirstPartAsString(): string
+    {
+        $identifier = $this->getFirstPart();
+
+        return $identifier->toString();
+    }
+
+    public function getLastPart(): Identifier
     {
         return $this->parts[\array_key_last($this->parts)];
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function getLastPartAsString(): string
+    {
+        $identifier = $this->getLastPart();
+
+        return $identifier->toString();
     }
 
     /**
@@ -192,7 +176,7 @@ class Name extends Node implements \IteratorAggregate, \Countable
      */
     public function toString(): string
     {
-        return \implode(self::NAMESPACE_DELIMITER, $this->getParts());
+        return \implode(self::NAMESPACE_DELIMITER, $this->getPartsAsString());
     }
 
     /**
@@ -206,7 +190,7 @@ class Name extends Node implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return \Traversable<array-key, non-empty-string>
+     * @return \Traversable<array-key, Identifier>
      */
     public function getIterator(): \Traversable
     {

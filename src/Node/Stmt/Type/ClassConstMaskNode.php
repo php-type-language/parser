@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Type;
 
+use TypeLang\Parser\Node\Identifier;
 use TypeLang\Parser\Node\Name;
 
 /**
@@ -12,16 +13,8 @@ use TypeLang\Parser\Node\Name;
  */
 class ClassConstMaskNode extends TypeStatement
 {
-    /**
-     * @param non-empty-string|null $constant
-     */
     public function __construct(
         public readonly Name $class,
-        public readonly ?string $constant = null,
+        public readonly ?Identifier $constant = null,
     ) {}
-
-    public function __toString(): string
-    {
-        return (string)$this->constant . '*';
-    }
 }

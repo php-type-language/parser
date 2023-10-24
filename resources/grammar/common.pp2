@@ -5,30 +5,20 @@ Name
   ;
 
 FullQualifiedName -> {
-    $parts = [];
-
-    foreach ($children as $child) {
-        $parts[] = $child->getValue();
-    }
-
-    return new Node\FullQualifiedName($parts);
+    return new Node\FullQualifiedName($children);
 }
   : ::T_NS_DELIMITER:: Identifier() (::T_NS_DELIMITER:: Identifier())*
   ;
 
 RelativeName -> {
-    $parts = [];
-
-    foreach ($children as $child) {
-        $parts[] = $child->getValue();
-    }
-
-    return new Node\Name($parts);
+    return new Node\Name($children);
 }
   : Identifier() (::T_NS_DELIMITER:: Identifier())*
   ;
 
-Identifier
+Identifier -> {
+    return new Node\Identifier($children->getValue());
+}
   : <T_NAME>
   | <T_BOOL_LITERAL>
   | <T_NULL_LITERAL>

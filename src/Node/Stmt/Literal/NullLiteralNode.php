@@ -8,7 +8,7 @@ namespace TypeLang\Parser\Node\Stmt\Literal;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-class NullLiteralNode extends LiteralNodeNode
+class NullLiteralNode extends LiteralNode
 {
     public function __construct(string $raw = null)
     {

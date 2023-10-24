@@ -10,7 +10,7 @@ use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
  */
-abstract class LiteralNodeNode extends TypeStatement implements LiteralNodeInterface
+abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface
 {
     public readonly string $raw;
 
