@@ -494,9 +494,8 @@ final class PhpStanTypesTest extends TypesTestCase
                 Stmt\Type\Template\ParameterNode
                   Stmt\Type\UnionTypeNode
                     Stmt\Literal\IntLiteralNode(1)
-                    Stmt\Type\UnionTypeNode
-                      Stmt\Literal\IntLiteralNode(2)
-                      Stmt\Literal\IntLiteralNode(4)
+                    Stmt\Literal\IntLiteralNode(2)
+                    Stmt\Literal\IntLiteralNode(4)
             AST];
         yield 'int-mask-of<Foo::INT_*>' => ['int-mask-of<Foo::INT_*>', <<<'AST'
             Stmt\Type\NamedTypeNode
