@@ -138,16 +138,18 @@ final class PhpStanTypesTest extends TypesTestCase
               Name(key-of)
               Stmt\Type\Template\ParametersListNode
                 Stmt\Type\Template\ParameterNode
-                  Stmt\Type\ClassConstNode(ARRAY_CONST)
+                  Stmt\Type\ClassConstNode
                     Name(Type)
+                    Identifier(ARRAY_CONST)
             AST];
         yield 'value-of<Type::ARRAY_CONST>' => ['value-of<Type::ARRAY_CONST>', <<<'AST'
             Stmt\Type\NamedTypeNode
               Name(value-of)
               Stmt\Type\Template\ParametersListNode
                 Stmt\Type\Template\ParameterNode
-                  Stmt\Type\ClassConstNode(ARRAY_CONST)
+                  Stmt\Type\ClassConstNode
                     Name(Type)
+                    Identifier(ARRAY_CONST)
             AST];
 
         /** @Link https://phpstan.org/writing-php-code/phpdoc-types#iterables */
@@ -331,22 +333,26 @@ final class PhpStanTypesTest extends TypesTestCase
               Stmt\Literal\StringLiteralNode('bar')
             AST];
         yield 'Foo::SOME_CONSTANT' => ['Foo::SOME_CONSTANT', <<<'AST'
-            Stmt\Type\ClassConstNode(SOME_CONSTANT)
+            Stmt\Type\ClassConstNode
               Name(Foo)
+              Identifier(SOME_CONSTANT)
             AST];
         yield 'Foo::SOME_CONSTANT|Bar::OTHER_CONSTANT' => ['Foo::SOME_CONSTANT|Bar::OTHER_CONSTANT', <<<'AST'
             Stmt\Type\UnionTypeNode
-              Stmt\Type\ClassConstNode(SOME_CONSTANT)
+              Stmt\Type\ClassConstNode
                 Name(Foo)
-              Stmt\Type\ClassConstNode(OTHER_CONSTANT)
+                Identifier(SOME_CONSTANT)
+              Stmt\Type\ClassConstNode
                 Name(Bar)
+                Identifier(OTHER_CONSTANT)
             AST];
         yield 'self::SOME_*' => ['self::SOME_*', <<<'AST'
-            Stmt\Type\ClassConstMaskNode(SOME_*)
+            Stmt\Type\ClassConstMaskNode
               Name(self)
+              Identifier(SOME_)
             AST];
         yield 'Foo::*' => ['Foo::*', <<<'AST'
-            Stmt\Type\ClassConstMaskNode(*)
+            Stmt\Type\ClassConstMaskNode
               Name(Foo)
             AST];
 
@@ -497,8 +503,9 @@ final class PhpStanTypesTest extends TypesTestCase
               Name(int-mask-of)
               Stmt\Type\Template\ParametersListNode
                 Stmt\Type\Template\ParameterNode
-                  Stmt\Type\ClassConstMaskNode(INT_*)
+                  Stmt\Type\ClassConstMaskNode
                     Name(Foo)
+                    Identifier(INT_)
             AST];
     }
 
