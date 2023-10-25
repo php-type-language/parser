@@ -8,7 +8,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\TestCase;
 use TypeLang\Parser\Exception\ParseException;
-use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
+use TypeLang\Parser\Node\Type\TypeStatement;
 use TypeLang\Parser\Parser;
 use TypeLang\Parser\Traverser;
 

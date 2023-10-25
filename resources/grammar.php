@@ -65,7 +65,7 @@ return [
         16 => new \Phplrt\Parser\Grammar\Lexeme('T_ASTERISK', true),
         17 => new \Phplrt\Parser\Grammar\Lexeme('T_DOUBLE_COLON', false),
         18 => new \Phplrt\Parser\Grammar\Alternation([15, 13, 16]),
-        19 => new \Phplrt\Parser\Grammar\Concatenation(['Statement']),
+        19 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement']),
         20 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
         21 => new \Phplrt\Parser\Grammar\Concatenation([20, 19]),
         22 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
@@ -104,7 +104,7 @@ return [
         55 => new \Phplrt\Parser\Grammar\Optional(53),
         56 => new \Phplrt\Parser\Grammar\Lexeme('T_COLON', false),
         57 => new \Phplrt\Parser\Grammar\Concatenation([52, 55, 56, 54]),
-        58 => new \Phplrt\Parser\Grammar\Concatenation(['Statement']),
+        58 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement']),
         59 => new \Phplrt\Parser\Grammar\Concatenation([63, 13, 64]),
         60 => new \Phplrt\Parser\Grammar\Concatenation([13, 67]),
         61 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
@@ -118,7 +118,7 @@ return [
         69 => new \Phplrt\Parser\Grammar\Lexeme('T_BOOL_LITERAL', true),
         70 => new \Phplrt\Parser\Grammar\Lexeme('T_NULL_LITERAL', true),
         71 => new \Phplrt\Parser\Grammar\Concatenation([78, 82, 83]),
-        72 => new \Phplrt\Parser\Grammar\Concatenation([97, 'Statement']),
+        72 => new \Phplrt\Parser\Grammar\Concatenation([97, 'TypeStatement']),
         73 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
         74 => new \Phplrt\Parser\Grammar\Optional(71),
         75 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
@@ -135,7 +135,7 @@ return [
         86 => new \Phplrt\Parser\Grammar\Optional(85),
         87 => new \Phplrt\Parser\Grammar\Alternation([91, 94]),
         88 => new \Phplrt\Parser\Grammar\Optional(8),
-        89 => new \Phplrt\Parser\Grammar\Concatenation(['Statement', 96]),
+        89 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement', 96]),
         90 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
         91 => new \Phplrt\Parser\Grammar\Concatenation([90, 89]),
         92 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
@@ -170,14 +170,14 @@ return [
         122 => new \Phplrt\Parser\Grammar\Repetition(121, 0, INF),
         123 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
         124 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
-        125 => new \Phplrt\Parser\Grammar\Concatenation([123, 'Statement', 124]),
-        'Statement' => new \Phplrt\Parser\Grammar\Concatenation([101]),
+        125 => new \Phplrt\Parser\Grammar\Concatenation([123, 'TypeStatement', 124]),
+        'TypeStatement' => new \Phplrt\Parser\Grammar\Concatenation([101]),
         118 => new \Phplrt\Parser\Grammar\Alternation([125, 7, 77, 100])
     ],
     'reducers' => [
         8 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Stmt\Literal\VariableLiteralNode::parse($token->getValue());
+            return Node\Literal\VariableLiteralNode::parse($token->getValue());
         },
         0 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
@@ -185,34 +185,34 @@ return [
         },
         9 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Stmt\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
+            return Node\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
         },
         10 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Stmt\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
+            return Node\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
         },
         1 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Stmt\Literal\FloatLiteralNode::parse($token->getValue());
+            return Node\Literal\FloatLiteralNode::parse($token->getValue());
         },
         2 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return $this->integerPool[$token] ??= Node\Stmt\Literal\IntLiteralNode::parse($token->getValue());
+            return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
         },
         3 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return Node\Stmt\Literal\BoolLiteralNode::parse($token->getValue());
+            return Node\Literal\BoolLiteralNode::parse($token->getValue());
         },
         4 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Literal\NullLiteralNode($children->getValue());
+            return new Node\Literal\NullLiteralNode($children->getValue());
         },
         5 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Type\ConstMaskNode($children[0]);
+            return new Node\Type\ConstMaskNode($children[0]);
         },
         6 => function (\Phplrt\Parser\Context $ctx, $children) {
             // <ClassName> :: <ConstPrefix> "*"
         if (\count($children) === 3) {
-            return new Node\Stmt\Type\ClassConstMaskNode(
+            return new Node\Type\ClassConstMaskNode(
                 $children[0],
                 $children[1],
             );
@@ -220,33 +220,33 @@ return [
     
         // <ClassName> :: <ConstName>
         if ($children[1] instanceof Node\Identifier) {
-            return new Node\Stmt\Type\ClassConstNode(
+            return new Node\Type\ClassConstNode(
                 $children[0],
                 $children[1],
             );
         }
     
         // <ClassName> :: "*"
-        return new Node\Stmt\Type\ClassConstMaskNode($children[0]);
+        return new Node\Type\ClassConstMaskNode($children[0]);
         },
         27 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Type\Template\ParametersListNode($children);
+            return new Node\Type\Template\ParametersListNode($children);
         },
         19 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Type\Template\ParameterNode(
+            return new Node\Type\Template\ParameterNode(
             \is_array($children) ? $children[0] : $children,
         );
         },
         44 => function (\Phplrt\Parser\Context $ctx, $children) {
             if ($children === []) {
-            return new Node\Stmt\Type\Shape\FieldsListNode();
+            return new Node\Type\Shape\FieldsListNode();
         }
     
         if (!$children[0] instanceof \ArrayObject) {
-            return new Node\Stmt\Type\Shape\FieldsListNode([], false);
+            return new Node\Type\Shape\FieldsListNode([], false);
         }
     
-        return new Node\Stmt\Type\Shape\FieldsListNode(
+        return new Node\Type\Shape\FieldsListNode(
             $children[0]->getArrayCopy(),
             \count($children) !== 2,
         );
@@ -260,14 +260,14 @@ return [
         51 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\is_array($children)) {
             $value = \array_pop($children);
-            $field = $children[0] instanceof Node\Stmt\Literal\IntLiteralNode
-                ? new Node\Stmt\Type\Shape\NumericFieldNode($children[0], $value)
-                : new Node\Stmt\Type\Shape\NamedFieldNode($children[0], $value)
+            $field = $children[0] instanceof Node\Literal\IntLiteralNode
+                ? new Node\Type\Shape\NumericFieldNode($children[0], $value)
+                : new Node\Type\Shape\NamedFieldNode($children[0], $value)
             ;
     
             // In case of "nullable" suffix defined
             if (\count($children) === 2) {
-                return new Node\Stmt\Type\Shape\OptionalFieldNode($field);
+                return new Node\Type\Shape\OptionalFieldNode($field);
             }
     
             return $field;
@@ -276,18 +276,18 @@ return [
         return $children;
         },
         54 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Type\Shape\FieldNode($children[0]);
+            return new Node\Type\Shape\FieldNode($children[0]);
         },
         52 => function (\Phplrt\Parser\Context $ctx, $children) {
             return match(true) {
-            $children instanceof Node\Stmt\Literal\IntLiteralNode,
-            $children instanceof Node\Stmt\Literal\StringLiteralNode => $children,
-            $children instanceof Node\Stmt\Literal\BoolLiteralNode,
-            $children instanceof Node\Stmt\Literal\NullLiteralNode,
-                => new Node\Stmt\Literal\StringLiteralNode($children->raw),
+            $children instanceof Node\Literal\IntLiteralNode,
+            $children instanceof Node\Literal\StringLiteralNode => $children,
+            $children instanceof Node\Literal\BoolLiteralNode,
+            $children instanceof Node\Literal\NullLiteralNode,
+                => new Node\Literal\StringLiteralNode($children->raw),
             $children instanceof Node\Identifier
-                => new Node\Stmt\Literal\StringLiteralNode($children->toString()),
-            default => new Node\Stmt\Literal\StringLiteralNode($children->getValue()),
+                => new Node\Literal\StringLiteralNode($children->toString()),
+            default => new Node\Literal\StringLiteralNode($children->getValue()),
         };
         },
         59 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -302,67 +302,67 @@ return [
         77 => function (\Phplrt\Parser\Context $ctx, $children) {
             $name = \array_shift($children);
     
-        $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Type\Callable\ArgumentsListNode
+        $arguments = isset($children[0]) && $children[0] instanceof Node\Type\Callable\ArgumentsListNode
             ? \array_shift($children)
-            : new Node\Stmt\Type\Callable\ArgumentsListNode();
+            : new Node\Type\Callable\ArgumentsListNode();
     
-        return new Node\Stmt\Type\CallableTypeNode(
+        return new Node\Type\CallableTypeNode(
             name: $name,
             arguments: $arguments,
             type: isset($children[0]) ? $children[0] : null,
         );
         },
         71 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Type\Callable\ArgumentsListNode($children);
+            return new Node\Type\Callable\ArgumentsListNode($children);
         },
         78 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (!isset($children[1])) {
             return $children[0];
         }
     
-        return new Node\Stmt\Type\Callable\OptionalArgumentNode($children[0]);
+        return new Node\Type\Callable\OptionalArgumentNode($children[0]);
         },
         84 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 1) {
             return $children[0];
         }
     
-        return new Node\Stmt\Type\Callable\NamedArgumentNode($children[1], $children[0]);
+        return new Node\Type\Callable\NamedArgumentNode($children[1], $children[0]);
         },
         87 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (!isset($children[1])) {
             return $children[0];
         }
     
-        if ($children[0] instanceof Node\Stmt\Type\Callable\ArgumentNodeInterface) {
-            return new Node\Stmt\Type\Callable\VariadicArgumentNode($children[0]);
+        if ($children[0] instanceof Node\Type\Callable\ArgumentNodeInterface) {
+            return new Node\Type\Callable\VariadicArgumentNode($children[0]);
         }
     
-        return new Node\Stmt\Type\Callable\VariadicArgumentNode($children[1]);
+        return new Node\Type\Callable\VariadicArgumentNode($children[1]);
         },
         89 => function (\Phplrt\Parser\Context $ctx, $children) {
-            $argument = new Node\Stmt\Type\Callable\ArgumentNode($children[0]);
+            $argument = new Node\Type\Callable\ArgumentNode($children[0]);
     
         if (\count($children) === 1) {
             return $argument;
         }
     
-        return new Node\Stmt\Type\Callable\OutArgumentNode($argument);
+        return new Node\Type\Callable\OutArgumentNode($argument);
         },
         100 => function (\Phplrt\Parser\Context $ctx, $children) {
             $fields = $parameters = null;
     
         // Shape fields
-        if (\end($children) instanceof Node\Stmt\Type\Shape\FieldsListNode) {
+        if (\end($children) instanceof Node\Type\Shape\FieldsListNode) {
             $fields = \array_pop($children);
         }
     
         // Template parameters
-        if (\end($children) instanceof Node\Stmt\Type\Template\ParametersListNode) {
+        if (\end($children) instanceof Node\Type\Template\ParametersListNode) {
             $parameters = \array_pop($children);
         }
     
-        return new Node\Stmt\Type\NamedTypeNode(
+        return new Node\Type\NamedTypeNode(
             $children[0],
             $parameters,
             $fields,
@@ -370,28 +370,28 @@ return [
         },
         102 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 2) {
-            return new Node\Stmt\Type\UnionTypeNode($children[0], $children[1]);
+            return new Node\Type\UnionTypeNode($children[0], $children[1]);
         }
     
         return $children;
         },
         103 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) === 2) {
-            return new Node\Stmt\Type\IntersectionTypeNode($children[0], $children[1]);
+            return new Node\Type\IntersectionTypeNode($children[0], $children[1]);
         }
     
         return $children;
         },
         111 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\is_array($children)) {
-            return new Node\Stmt\Type\NullableTypeNode($children[1]);
+            return new Node\Type\NullableTypeNode($children[1]);
         }
     
         return $children;
         },
         115 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\count($children) > 1) {
-            $result = new Node\Stmt\Type\NullableTypeNode($children[0]);
+            $result = new Node\Type\NullableTypeNode($children[0]);
             $result->offset = $children[1]->getOffset();
     
             return $result;
@@ -403,7 +403,7 @@ return [
             $statement = \array_shift($children);
     
         for ($i = 0, $length = \count($children); $i < $length; ++$i) {
-            $statement = new Node\Stmt\Type\TypesListNode($statement);
+            $statement = new Node\Type\TypesListNode($statement);
             $statement->offset = $children[$i]->getOffset();
         }
     

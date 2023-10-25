@@ -11,17 +11,17 @@ class ArrayShapesTest extends TestCase
     public function testFields(): void
     {
         $this->assertStatementSame('array{a,b,c}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(sealed)
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(a)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(b)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(c)
             OUTPUT);
     }
@@ -29,26 +29,26 @@ class ArrayShapesTest extends TestCase
     public function testEmptyShape(): void
     {
         $this->assertStatementSame('array{}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
+              Type\Shape\FieldsListNode(sealed)
             OUTPUT);
     }
 
     public function testUnsealedFields(): void
     {
         $this->assertStatementSame('array{a,b,c,...}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(unsealed)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(unsealed)
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(a)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(b)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(c)
             OUTPUT);
     }
@@ -56,11 +56,11 @@ class ArrayShapesTest extends TestCase
     public function testOneAnonymousArgument(): void
     {
         $this->assertStatementSame('array{int}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(sealed)
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(int)
             OUTPUT);
     }
@@ -68,14 +68,14 @@ class ArrayShapesTest extends TestCase
     public function testManyAnonymousFields(): void
     {
         $this->assertStatementSame('array{int, string}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(sealed)
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(int)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(string)
             OUTPUT);
     }
@@ -83,18 +83,18 @@ class ArrayShapesTest extends TestCase
     public function testNestedAnonymousFields(): void
     {
         $this->assertStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(sealed)
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(Some\Any)
-                    Stmt\Type\Shape\FieldsListNode(sealed)
-                      Stmt\Type\Shape\FieldNode
-                        Stmt\Type\NamedTypeNode
+                    Type\Shape\FieldsListNode(sealed)
+                      Type\Shape\FieldNode
+                        Type\NamedTypeNode
                           Name(int)
-                      Stmt\Type\Shape\FieldNode
-                        Stmt\Type\NamedTypeNode
+                      Type\Shape\FieldNode
+                        Type\NamedTypeNode
                           Name(string)
             OUTPUT);
     }
@@ -102,37 +102,37 @@ class ArrayShapesTest extends TestCase
     public function testNamedArgument(): void
     {
         $this->assertStatementSame('array{name:int}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
-                Stmt\Type\Shape\NamedFieldNode(name)
-                  Stmt\Type\Shape\FieldNode
-                    Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(sealed)
+                Type\Shape\NamedFieldNode(name)
+                  Type\Shape\FieldNode
+                    Type\NamedTypeNode
                       Name(int)
-                  Stmt\Literal\StringLiteralNode(name)
+                  Literal\StringLiteralNode(name)
             OUTPUT);
     }
 
     public function testMixedFields(): void
     {
         $this->assertStatementSame('array{some, required:a, optional?:b}', <<<'OUTPUT'
-            Stmt\Type\NamedTypeNode
+            Type\NamedTypeNode
               Name(array)
-              Stmt\Type\Shape\FieldsListNode(sealed)
-                Stmt\Type\Shape\FieldNode
-                  Stmt\Type\NamedTypeNode
+              Type\Shape\FieldsListNode(sealed)
+                Type\Shape\FieldNode
+                  Type\NamedTypeNode
                     Name(some)
-                Stmt\Type\Shape\NamedFieldNode(required)
-                  Stmt\Type\Shape\FieldNode
-                    Stmt\Type\NamedTypeNode
+                Type\Shape\NamedFieldNode(required)
+                  Type\Shape\FieldNode
+                    Type\NamedTypeNode
                       Name(a)
-                  Stmt\Literal\StringLiteralNode(required)
-                Stmt\Type\Shape\OptionalFieldNode
-                  Stmt\Type\Shape\NamedFieldNode(optional)
-                    Stmt\Type\Shape\FieldNode
-                      Stmt\Type\NamedTypeNode
+                  Literal\StringLiteralNode(required)
+                Type\Shape\OptionalFieldNode
+                  Type\Shape\NamedFieldNode(optional)
+                    Type\Shape\FieldNode
+                      Type\NamedTypeNode
                         Name(b)
-                    Stmt\Literal\StringLiteralNode(optional)
+                    Literal\StringLiteralNode(optional)
             OUTPUT);
     }
 }

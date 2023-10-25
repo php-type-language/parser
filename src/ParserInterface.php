@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
-use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
+use TypeLang\Parser\Node\Type\TypeStatement;
 
 interface ParserInterface
 {

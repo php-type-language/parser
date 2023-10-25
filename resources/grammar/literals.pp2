@@ -10,7 +10,7 @@ Literal
   ;
 
 VariableLiteral -> {
-    return Node\Stmt\Literal\VariableLiteralNode::parse($token->getValue());
+    return Node\Literal\VariableLiteralNode::parse($token->getValue());
 }
   : <T_VARIABLE>
   ;
@@ -21,43 +21,43 @@ StringLiteral -> { return $this->stringPool[$token] ??= $children; }
   ;
 
 DoubleQuotedStringLiteral -> {
-    return Node\Stmt\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
+    return Node\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
 }
   : <T_DQ_STRING_LITERAL>
   ;
 
 SingleQuotedStringLiteral -> {
-    return Node\Stmt\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
+    return Node\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
 }
   : <T_SQ_STRING_LITERAL>
   ;
 
 FloatLiteral -> {
-    return Node\Stmt\Literal\FloatLiteralNode::parse($token->getValue());
+    return Node\Literal\FloatLiteralNode::parse($token->getValue());
 }
   : <T_FLOAT_LITERAL>
   ;
 
 IntLiteral -> {
-    return $this->integerPool[$token] ??= Node\Stmt\Literal\IntLiteralNode::parse($token->getValue());
+    return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
 }
   : <T_INT_LITERAL>
   ;
 
 BoolLiteral -> {
-    return Node\Stmt\Literal\BoolLiteralNode::parse($token->getValue());
+    return Node\Literal\BoolLiteralNode::parse($token->getValue());
 }
   : <T_BOOL_LITERAL>
   ;
 
 NullLiteral -> {
-    return new Node\Stmt\Literal\NullLiteralNode($children->getValue());
+    return new Node\Literal\NullLiteralNode($children->getValue());
 }
   : <T_NULL_LITERAL>
   ;
 
 ConstMaskLiteral -> {
-    return new Node\Stmt\Type\ConstMaskNode($children[0]);
+    return new Node\Type\ConstMaskNode($children[0]);
 }
   : Name() ::T_ASTERISK::
   ;
@@ -65,7 +65,7 @@ ConstMaskLiteral -> {
 ClassConstLiteral -> {
     // <ClassName> :: <ConstPrefix> "*"
     if (\count($children) === 3) {
-        return new Node\Stmt\Type\ClassConstMaskNode(
+        return new Node\Type\ClassConstMaskNode(
             $children[0],
             $children[1],
         );
@@ -73,14 +73,14 @@ ClassConstLiteral -> {
 
     // <ClassName> :: <ConstName>
     if ($children[1] instanceof Node\Identifier) {
-        return new Node\Stmt\Type\ClassConstNode(
+        return new Node\Type\ClassConstNode(
             $children[0],
             $children[1],
         );
     }
 
     // <ClassName> :: "*"
-    return new Node\Stmt\Type\ClassConstMaskNode($children[0]);
+    return new Node\Type\ClassConstMaskNode($children[0]);
 }
   : Name() ::T_DOUBLE_COLON::
     ( Identifier() <T_ASTERISK>

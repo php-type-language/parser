@@ -37,7 +37,7 @@ LogicalTypeStatement
 
 UnionTypeStatement -> {
     if (\count($children) === 2) {
-        return new Node\Stmt\Type\UnionTypeNode($children[0], $children[1]);
+        return new Node\Type\UnionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -47,7 +47,7 @@ UnionTypeStatement -> {
 
 IntersectionTypeStatement -> {
     if (\count($children) === 2) {
-        return new Node\Stmt\Type\IntersectionTypeNode($children[0], $children[1]);
+        return new Node\Type\IntersectionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -64,7 +64,7 @@ UnaryTypeStatement
 // stmt = ?Type
 PrefixedNullableTypeStatement -> {
     if (\is_array($children)) {
-        return new Node\Stmt\Type\NullableTypeNode($children[1]);
+        return new Node\Type\NullableTypeNode($children[1]);
     }
 
     return $children;
@@ -76,7 +76,7 @@ PrefixedNullableTypeStatement -> {
 // stmt = Type?
 SuffixedNullableTypeStatement -> {
     if (\count($children) > 1) {
-        $result = new Node\Stmt\Type\NullableTypeNode($children[0]);
+        $result = new Node\Type\NullableTypeNode($children[0]);
         $result->offset = $children[1]->getOffset();
 
         return $result;
@@ -91,7 +91,7 @@ TypesListStatement -> {
     $statement = \array_shift($children);
 
     for ($i = 0, $length = \count($children); $i < $length; ++$i) {
-        $statement = new Node\Stmt\Type\TypesListNode($statement);
+        $statement = new Node\Type\TypesListNode($statement);
         $statement->offset = $children[$i]->getOffset();
     }
 

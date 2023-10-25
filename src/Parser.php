@@ -18,9 +18,9 @@ use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
 use TypeLang\Parser\Exception\LogicException;
 use TypeLang\Parser\Exception\ParseException;
-use TypeLang\Parser\Node\Stmt\Literal\IntLiteralNode;
-use TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode;
-use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
+use TypeLang\Parser\Node\Literal\IntLiteralNode;
+use TypeLang\Parser\Node\Literal\StringLiteralNode;
+use TypeLang\Parser\Node\Type\TypeStatement;
 
 /**
  * @psalm-type GrammarConfigArray = array{

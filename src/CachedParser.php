@@ -6,7 +6,7 @@ namespace TypeLang\Parser;
 
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Source\File;
-use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
+use TypeLang\Parser\Node\Type\TypeStatement;
 
 abstract class CachedParser implements ParserInterface
 {

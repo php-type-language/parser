@@ -61,7 +61,7 @@ $ast = $parser->parse(<<<'PHP'
 Expected Output:
 
 ```php
-TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
+TypeLang\Parser\Node\Type\NamedTypeNode {#756
   +offset: 0
   +name: TypeLang\Parser\Node\Name {#778
     +offset: 0
@@ -73,14 +73,14 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
     ]
   }
   +parameters: null
-  +fields: TypeLang\Parser\Node\Stmt\Type\Shape\FieldsListNode {#742
+  +fields: TypeLang\Parser\Node\Type\Shape\FieldsListNode {#742
     +offset: 5
     +list: array:5 [
-      0 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#153
+      0 => TypeLang\Parser\Node\Type\Shape\NamedFieldNode {#153
         +offset: 11
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#356
+        +of: TypeLang\Parser\Node\Type\Shape\FieldNode {#356
           +offset: 19
-          +value: TypeLang\Parser\Node\Stmt\Type\CallableTypeNode {#167
+          +value: TypeLang\Parser\Node\Type\CallableTypeNode {#167
             +offset: 19
             +name: TypeLang\Parser\Node\Name {#166
               +offset: 19
@@ -91,12 +91,12 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                 }
               ]
             }
-            +arguments: TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentsListNode {#170
+            +arguments: TypeLang\Parser\Node\Type\Callable\ArgumentsListNode {#170
               +offset: 28
               +list: array:2 [
-                0 => TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentNode {#640
+                0 => TypeLang\Parser\Node\Type\Callable\ArgumentNode {#640
                   +offset: 28
-                  +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#606
+                  +type: TypeLang\Parser\Node\Type\NamedTypeNode {#606
                     +offset: 28
                     +name: TypeLang\Parser\Node\Name {#616
                       +offset: 28
@@ -111,9 +111,9 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                     +fields: null
                   }
                 }
-                1 => TypeLang\Parser\Node\Stmt\Type\Callable\ArgumentNode {#484
+                1 => TypeLang\Parser\Node\Type\Callable\ArgumentNode {#484
                   +offset: 37
-                  +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#603
+                  +type: TypeLang\Parser\Node\Type\NamedTypeNode {#603
                     +offset: 37
                     +name: TypeLang\Parser\Node\Name {#602
                       +offset: 37
@@ -130,7 +130,7 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                 }
               ]
             }
-            +type: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#626
+            +type: TypeLang\Parser\Node\Type\NamedTypeNode {#626
               +offset: 42
               +name: TypeLang\Parser\Node\Name {#617
                 +offset: 42
@@ -146,17 +146,17 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
             }
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#364
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#364
           +offset: 11
           +raw: "field1"
           +value: "field1"
         }
       }
-      1 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#154
+      1 => TypeLang\Parser\Node\Type\Shape\NamedFieldNode {#154
         +offset: 53
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#168
+        +of: TypeLang\Parser\Node\Type\Shape\FieldNode {#168
           +offset: 61
-          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#475
+          +value: TypeLang\Parser\Node\Type\NamedTypeNode {#475
             +offset: 61
             +name: TypeLang\Parser\Node\Name {#647
               +offset: 61
@@ -167,12 +167,12 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                 }
               ]
             }
-            +parameters: TypeLang\Parser\Node\Stmt\Type\Template\ParametersListNode {#627
+            +parameters: TypeLang\Parser\Node\Type\Template\ParametersListNode {#627
               +offset: 65
               +list: array:1 [
-                0 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#642
+                0 => TypeLang\Parser\Node\Type\Template\ParameterNode {#642
                   +offset: 66
-                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#605
+                  +value: TypeLang\Parser\Node\Type\NamedTypeNode {#605
                     +offset: 66
                     +name: TypeLang\Parser\Node\Name {#579
                       +offset: 66
@@ -192,17 +192,17 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
             +fields: null
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#159
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#159
           +offset: 53
           +raw: "field2"
           +value: "field2"
         }
       }
-      2 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#158
+      2 => TypeLang\Parser\Node\Type\Shape\NamedFieldNode {#158
         +offset: 77
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#176
+        +of: TypeLang\Parser\Node\Type\Shape\FieldNode {#176
           +offset: 85
-          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#612
+          +value: TypeLang\Parser\Node\Type\NamedTypeNode {#612
             +offset: 85
             +name: TypeLang\Parser\Node\Name {#599
               +offset: 85
@@ -213,12 +213,12 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                 }
               ]
             }
-            +parameters: TypeLang\Parser\Node\Stmt\Type\Template\ParametersListNode {#586
+            +parameters: TypeLang\Parser\Node\Type\Template\ParametersListNode {#586
               +offset: 93
               +list: array:2 [
-                0 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#592
+                0 => TypeLang\Parser\Node\Type\Template\ParameterNode {#592
                   +offset: 94
-                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#585
+                  +value: TypeLang\Parser\Node\Type\NamedTypeNode {#585
                     +offset: 94
                     +name: TypeLang\Parser\Node\Name {#552
                       +offset: 94
@@ -233,9 +233,9 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                     +fields: null
                   }
                 }
-                1 => TypeLang\Parser\Node\Stmt\Type\Template\ParameterNode {#600
+                1 => TypeLang\Parser\Node\Type\Template\ParameterNode {#600
                   +offset: 105
-                  +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#576
+                  +value: TypeLang\Parser\Node\Type\NamedTypeNode {#576
                     +offset: 105
                     +name: TypeLang\Parser\Node\Name {#594
                       +offset: 105
@@ -247,12 +247,12 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                       ]
                     }
                     +parameters: null
-                    +fields: TypeLang\Parser\Node\Stmt\Type\Shape\FieldsListNode {#593
+                    +fields: TypeLang\Parser\Node\Type\Shape\FieldsListNode {#593
                       +offset: 110
                       +list: array:2 [
-                        0 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#482
+                        0 => TypeLang\Parser\Node\Type\Shape\FieldNode {#482
                           +offset: 111
-                          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#341
+                          +value: TypeLang\Parser\Node\Type\NamedTypeNode {#341
                             +offset: 111
                             +name: TypeLang\Parser\Node\Name {#343
                               +offset: 111
@@ -267,9 +267,9 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
                             +fields: null
                           }
                         }
-                        1 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#333
+                        1 => TypeLang\Parser\Node\Type\Shape\FieldNode {#333
                           +offset: 116
-                          +value: TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#347
+                          +value: TypeLang\Parser\Node\Type\NamedTypeNode {#347
                             +offset: 116
                             +name: TypeLang\Parser\Node\Name {#349
                               +offset: 116
@@ -294,15 +294,15 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
             +fields: null
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#175
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#175
           +offset: 77
           +raw: "field3"
           +value: "field3"
         }
       }
-      3 => TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#164
+      3 => TypeLang\Parser\Node\Type\Shape\FieldNode {#164
         +offset: 140
-        +value: TypeLang\Parser\Node\Stmt\Type\ClassConstMaskNode {#587
+        +value: TypeLang\Parser\Node\Type\ClassConstMaskNode {#587
           +offset: 140
           +class: TypeLang\Parser\Node\Name {#580
             +offset: 140
@@ -319,11 +319,11 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
           }
         }
       }
-      4 => TypeLang\Parser\Node\Stmt\Type\Shape\NamedFieldNode {#165
+      4 => TypeLang\Parser\Node\Type\Shape\NamedFieldNode {#165
         +offset: 159
-        +of: TypeLang\Parser\Node\Stmt\Type\Shape\FieldNode {#180
+        +of: TypeLang\Parser\Node\Type\Shape\FieldNode {#180
           +offset: 175
-          +value: TypeLang\Parser\Node\Stmt\Type\ConstMaskNode {#574
+          +value: TypeLang\Parser\Node\Type\ConstMaskNode {#574
             +offset: 175
             +name: TypeLang\Parser\Node\FullQualifiedName {#575
               +offset: 175
@@ -336,7 +336,7 @@ TypeLang\Parser\Node\Stmt\Type\NamedTypeNode {#756
             }
           }
         }
-        +name: TypeLang\Parser\Node\Stmt\Literal\StringLiteralNode {#610
+        +name: TypeLang\Parser\Node\Literal\StringLiteralNode {#610
           +offset: 159
           +raw: ""\njson_flags""
           +value: """

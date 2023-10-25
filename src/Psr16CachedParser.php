@@ -7,7 +7,7 @@ namespace TypeLang\Parser;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use TypeLang\Parser\Node\Stmt\Type\TypeStatement;
+use TypeLang\Parser\Node\Type\TypeStatement;
 
 final class Psr16CachedParser extends CachedParser
 {
