@@ -8,9 +8,6 @@ use TypeLang\Parser\Node\Node;
 
 /**
  * @template-implements \IteratorAggregate<array-key, FieldNodeInterface>
- *
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
  */
 class FieldsListNode extends Node implements \IteratorAggregate, \Countable
 {

@@ -6,10 +6,6 @@ namespace TypeLang\Parser\Node\Type\Shape;
 
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 
-/**
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
- */
 final class NamedFieldNode extends GenericFieldNode
 {
     public function __construct(

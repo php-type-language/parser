@@ -6,9 +6,6 @@ namespace TypeLang\Parser\Node;
 
 /**
  * @template-implements \IteratorAggregate<array-key, Identifier>
- *
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
  */
 class Name extends Node implements \IteratorAggregate, \Countable
 {

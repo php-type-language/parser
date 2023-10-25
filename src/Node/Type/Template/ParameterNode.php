@@ -7,10 +7,6 @@ namespace TypeLang\Parser\Node\Type\Template;
 use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-/**
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
- */
 class ParameterNode extends Node
 {
     public function __construct(

@@ -6,10 +6,6 @@ namespace TypeLang\Parser\Node\Type\Callable;
 
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-/**
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
- */
 interface ArgumentNodeInterface
 {
     public function getType(): TypeStatement;

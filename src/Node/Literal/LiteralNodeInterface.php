@@ -6,9 +6,6 @@ namespace TypeLang\Parser\Node\Literal;
 
 /**
  * @template TValue of mixed
- *
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
  */
 interface LiteralNodeInterface extends \Stringable
 {

@@ -7,9 +7,6 @@ namespace TypeLang\Parser\Node\Type;
 /**
  * @template T of TypeStatement
  * @template-implements \IteratorAggregate<array-key, T>
- *
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
  */
 abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggregate, \Countable
 {

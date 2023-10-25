@@ -8,9 +8,6 @@ namespace TypeLang\Parser\Node\Literal;
  * @template TValue of int
  * @template-extends LiteralNode<TValue>
  *
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
- *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */

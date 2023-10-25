@@ -10,9 +10,6 @@ use TypeLang\Parser\Node\Type\TypeStatement;
  * @template TValue of mixed
  *
  * @template-implements LiteralNodeInterface<TValue>
- *
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
  */
 abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface
 {
