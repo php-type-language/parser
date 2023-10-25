@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Node\Type\Shape;
 
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 
-final class NumericFieldNode extends GenericFieldNode
+final class NumericFieldNode extends GenericFieldNode implements \Stringable
 {
     public function __construct(
         public readonly IntLiteralNode $index,

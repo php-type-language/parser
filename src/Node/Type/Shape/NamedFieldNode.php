@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Node\Type\Shape;
 
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 
-final class NamedFieldNode extends GenericFieldNode
+final class NamedFieldNode extends GenericFieldNode implements \Stringable
 {
     public function __construct(
         public readonly StringLiteralNode $name,
@@ -17,6 +17,6 @@ final class NamedFieldNode extends GenericFieldNode
 
     public function __toString(): string
     {
-        return \sprintf('%s', $this->name->value);
+        return $this->name->getValue();
     }
 }

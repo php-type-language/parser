@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Node\Type;
 
 use TypeLang\Parser\Node\Name;
 
-class ConstMaskNode extends TypeStatement
+class ConstMaskNode extends TypeStatement implements \Stringable
 {
     public function __construct(
         public readonly Name $name,

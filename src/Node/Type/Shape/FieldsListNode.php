@@ -9,7 +9,7 @@ use TypeLang\Parser\Node\Node;
 /**
  * @template-implements \IteratorAggregate<array-key, FieldNodeInterface>
  */
-class FieldsListNode extends Node implements \IteratorAggregate, \Countable
+class FieldsListNode extends Node implements \IteratorAggregate, \Countable, \Stringable
 {
     /**
      * @param list<FieldNodeInterface> $list

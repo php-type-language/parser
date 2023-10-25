@@ -38,7 +38,7 @@ class MatcherVisitor extends Visitor
 
     public function enter(Node $node): ?Command
     {
-        if ($this->found !== null || $this->shouldContinue === true) {
+        if ($this->found !== null || $this->shouldContinue) {
             return Command::SKIP_CHILDREN;
         }
 

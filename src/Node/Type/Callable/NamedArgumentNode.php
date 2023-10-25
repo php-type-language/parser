@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Node\Type\Callable;
 
 use TypeLang\Parser\Node\Literal\VariableLiteralNode;
 
-final class NamedArgumentNode extends GenericArgumentNode
+final class NamedArgumentNode extends GenericArgumentNode implements \Stringable
 {
     public function __construct(
         public readonly VariableLiteralNode $name,

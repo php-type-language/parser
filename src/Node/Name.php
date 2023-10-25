@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node;
 /**
  * @template-implements \IteratorAggregate<array-key, Identifier>
  */
-class Name extends Node implements \IteratorAggregate, \Countable
+class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
 {
     /**
      * @var non-empty-string
