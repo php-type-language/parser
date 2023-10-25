@@ -132,6 +132,3 @@ PrimaryTypeStatement
   | CallableTypeStmt()
   | NamedTypeStmt()
   ;
-
-
-
