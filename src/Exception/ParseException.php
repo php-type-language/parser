@@ -72,9 +72,9 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     /**
      * @param int<0, max> $offset
      */
-    public static function fromLogicError(string $message, string $statement, int $offset): static
+    public static function fromSemanticError(string $message, string $statement, int $offset): static
     {
-        $message = \vsprintf('Syntax error, %s in %s %s', [
+        $message = \vsprintf('Semantic error, %s in %s %s', [
             \lcfirst($message),
             Formatter::source($statement),
             Formatter::suffix($statement, $offset),

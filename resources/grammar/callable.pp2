@@ -30,7 +30,12 @@ OptionalCallableArgument -> {
         return $children[0];
     }
 
-    return new Node\Type\Callable\OptionalArgumentNode($children[0]);
+    if ($children[0]->variadic) {
+        throw new SemanticException('Cannot have variadic param with a default', $offset);
+    }
+
+    $children[0]->optional = true;
+    return $children[0];
 }
   : NamedCallableArgument() <T_EQ>?
   ;
@@ -40,7 +45,8 @@ NamedCallableArgument -> {
         return $children[0];
     }
 
-    return new Node\Type\Callable\NamedArgumentNode($children[1], $children[0]);
+    $children[0]->name = $children[1];
+    return $children[0];
 }
   : VariadicCallableArgument() VariableLiteral()?
   ;
@@ -50,11 +56,13 @@ VariadicCallableArgument -> {
         return $children[0];
     }
 
-    if ($children[0] instanceof Node\Type\Callable\ArgumentNodeInterface) {
-        return new Node\Type\Callable\VariadicArgumentNode($children[0]);
+    if ($children[0] instanceof Node\Type\Callable\ArgumentNode) {
+        $children[0]->variadic = true;
+        return $children[0];
     }
 
-    return new Node\Type\Callable\VariadicArgumentNode($children[1]);
+    $children[1]->variadic = true;
+    return $children[1];
 }
   : <T_ELLIPSIS> OutputCallableArgument()   // Prefixed variadic argument (Psalm format)
   | OutputCallableArgument() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
@@ -63,11 +71,11 @@ VariadicCallableArgument -> {
 OutputCallableArgument -> {
     $argument = new Node\Type\Callable\ArgumentNode($children[0]);
 
-    if (\count($children) === 1) {
-        return $argument;
+    if (\count($children) !== 1) {
+        $argument->output = true;
     }
 
-    return new Node\Type\Callable\OutArgumentNode($argument);
+    return $argument;
 }
   : TypeStatement() <T_AMP>?
   ;

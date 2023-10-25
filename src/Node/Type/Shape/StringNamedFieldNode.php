@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node\Type\Shape;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-final class StringNamedFieldNode extends FieldNode
+final class StringNamedFieldNode extends ExplicitFieldNode
 {
     public function __construct(
         public readonly StringLiteralNode $name,
@@ -15,5 +15,10 @@ final class StringNamedFieldNode extends FieldNode
         bool $optional = false,
     ) {
         parent::__construct($of, $optional);
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->name->getValue();
     }
 }

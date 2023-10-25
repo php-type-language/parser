@@ -16,7 +16,7 @@ use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
-use TypeLang\Parser\Exception\LogicException;
+use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
@@ -122,8 +122,8 @@ final class Parser implements ParserInterface
                 throw $this->unrecognizedTokenError($e, $source);
             } catch (RuntimeExceptionInterface $e) {
                 throw $this->runtimeError($e, $source);
-            } catch (LogicException $e) {
-                throw $this->logicError($e, $source);
+            } catch (SemanticException $e) {
+                throw $this->semanticError($e, $source);
             } catch (\Throwable $e) {
                 throw $this->internalError($e, $source);
             }
@@ -173,9 +173,9 @@ final class Parser implements ParserInterface
         );
     }
 
-    private function logicError(LogicException $e, ReadableInterface $source): ParseException
+    private function semanticError(SemanticException $e, ReadableInterface $source): ParseException
     {
-        return ParseException::fromLogicError(
+        return ParseException::fromSemanticError(
             $e->getMessage(),
             $source->getContents(),
             $e->getOffset(),

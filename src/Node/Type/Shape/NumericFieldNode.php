@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node\Type\Shape;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-final class NumericFieldNode extends FieldNode
+final class NumericFieldNode extends ExplicitFieldNode
 {
     public function __construct(
         public readonly IntLiteralNode $index,
@@ -15,5 +15,10 @@ final class NumericFieldNode extends FieldNode
         bool $optional = false,
     ) {
         parent::__construct($of, $optional);
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->index->getRawValue();
     }
 }

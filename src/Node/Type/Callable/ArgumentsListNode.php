@@ -7,12 +7,12 @@ namespace TypeLang\Parser\Node\Type\Callable;
 use TypeLang\Parser\Node\Node;
 
 /**
- * @template-implements \IteratorAggregate<array-key, ArgumentNodeInterface>
+ * @template-implements \IteratorAggregate<array-key, ArgumentNode>
  */
 class ArgumentsListNode extends Node implements \IteratorAggregate, \Countable
 {
     /**
-     * @param list<ArgumentNodeInterface> $list
+     * @param list<ArgumentNode> $list
      */
     public function __construct(
         public readonly array $list = [],

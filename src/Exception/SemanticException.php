@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
-final class LogicException extends \LogicException implements ParserExceptionInterface
+final class SemanticException extends \LogicException implements ParserExceptionInterface
 {
     /**
      * @param int<0, max> $offset

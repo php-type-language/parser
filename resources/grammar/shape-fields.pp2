@@ -24,17 +24,44 @@ IsSealed -> { return $children === []; }
   ;
 
 ShapeFieldsList -> {
+    $explicit = [];
+    $implicit = false;
+
+    foreach ($children as $field) {
+        if ($field instanceof Node\Type\Shape\ExplicitFieldNode) {
+            $identifier = $field->getIdentifier();
+
+            if (\in_array($identifier, $explicit, true)) {
+                throw new SemanticException(
+                    \sprintf('Duplicate key "%s"', $identifier),
+                    $field->offset,
+                );
+            }
+
+            $explicit[] = $identifier;
+        } else {
+            $implicit = true;
+        }
+    }
+
+    if ($explicit !== [] && $implicit) {
+        throw new SemanticException(
+            \sprintf('Cannot mix explicit and implicit shape keys', $identifier),
+            $offset,
+        );
+    }
+
     return new \ArrayObject($children);
 }
-  : ShapeField() (::T_COMMA:: ShapeField())*
+  : ShapeField() (::T_COMMA:: ShapeField())* ::T_COMMA::?
   ;
 
 ShapeField
-  : IdentifiedField()
-  | AnonymousField()
+  : ExplicitField()
+  | ImplicitField()
   ;
 
-IdentifiedField -> {
+ExplicitField -> {
     $name = $children[0];
     $value = \array_pop($children);
 
@@ -52,7 +79,7 @@ IdentifiedField -> {
   : ShapeKey() (<T_NULLABLE>)? ::T_COLON:: ShapeValue()
   ;
 
-AnonymousField -> {
+ImplicitField -> {
     return new Node\Type\Shape\FieldNode($children[0]);
 }
   : ShapeValue()

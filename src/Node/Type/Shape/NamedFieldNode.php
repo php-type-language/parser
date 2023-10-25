@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node\Type\Shape;
 use TypeLang\Parser\Node\Identifier;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-final class NamedFieldNode extends FieldNode
+final class NamedFieldNode extends ExplicitFieldNode
 {
     public function __construct(
         public readonly Identifier $name,
@@ -15,5 +15,10 @@ final class NamedFieldNode extends FieldNode
         bool $optional = false,
     ) {
         parent::__construct($of, $optional);
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->name->toString();
     }
 }
