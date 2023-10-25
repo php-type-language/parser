@@ -15,8 +15,7 @@ abstract class GenericFieldNode extends Node implements FieldNodeInterface
 {
     public function __construct(
         public readonly FieldNodeInterface $of,
-    ) {
-    }
+    ) {}
 
     public function is(string $class): bool
     {

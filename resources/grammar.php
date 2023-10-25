@@ -57,66 +57,66 @@ return [
         8 => new \Phplrt\Parser\Grammar\Lexeme('T_VARIABLE', true),
         9 => new \Phplrt\Parser\Grammar\Lexeme('T_DQ_STRING_LITERAL', true),
         10 => new \Phplrt\Parser\Grammar\Lexeme('T_SQ_STRING_LITERAL', true),
-        11 => new \Phplrt\Parser\Grammar\Alternation([59, 60]),
+        11 => new \Phplrt\Parser\Grammar\Alternation([19, 20]),
         12 => new \Phplrt\Parser\Grammar\Lexeme('T_ASTERISK', false),
-        13 => new \Phplrt\Parser\Grammar\Alternation([68, 69, 70]),
+        13 => new \Phplrt\Parser\Grammar\Alternation([28, 29, 30]),
         14 => new \Phplrt\Parser\Grammar\Lexeme('T_ASTERISK', true),
         15 => new \Phplrt\Parser\Grammar\Concatenation([13, 14]),
         16 => new \Phplrt\Parser\Grammar\Lexeme('T_ASTERISK', true),
         17 => new \Phplrt\Parser\Grammar\Lexeme('T_DOUBLE_COLON', false),
         18 => new \Phplrt\Parser\Grammar\Alternation([15, 13, 16]),
-        19 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement']),
-        20 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
-        21 => new \Phplrt\Parser\Grammar\Concatenation([20, 19]),
-        22 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
-        23 => new \Phplrt\Parser\Grammar\Lexeme('T_ANGLE_BRACKET_OPEN', false),
-        24 => new \Phplrt\Parser\Grammar\Repetition(21, 0, INF),
-        25 => new \Phplrt\Parser\Grammar\Optional(22),
-        26 => new \Phplrt\Parser\Grammar\Lexeme('T_ANGLE_BRACKET_CLOSE', false),
-        27 => new \Phplrt\Parser\Grammar\Concatenation([23, 19, 24, 25, 26]),
-        28 => new \Phplrt\Parser\Grammar\Concatenation([47, 50]),
-        29 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
-        30 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
-        31 => new \Phplrt\Parser\Grammar\Concatenation([29, 30]),
+        19 => new \Phplrt\Parser\Grammar\Concatenation([23, 13, 24]),
+        20 => new \Phplrt\Parser\Grammar\Concatenation([13, 27]),
+        21 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
+        22 => new \Phplrt\Parser\Grammar\Concatenation([21, 13]),
+        23 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
+        24 => new \Phplrt\Parser\Grammar\Repetition(22, 0, INF),
+        25 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
+        26 => new \Phplrt\Parser\Grammar\Concatenation([25, 13]),
+        27 => new \Phplrt\Parser\Grammar\Repetition(26, 0, INF),
+        28 => new \Phplrt\Parser\Grammar\Lexeme('T_NAME', true),
+        29 => new \Phplrt\Parser\Grammar\Lexeme('T_BOOL_LITERAL', true),
+        30 => new \Phplrt\Parser\Grammar\Lexeme('T_NULL_LITERAL', true),
+        31 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement']),
         32 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
-        33 => new \Phplrt\Parser\Grammar\Optional(31),
-        34 => new \Phplrt\Parser\Grammar\Optional(32),
-        35 => new \Phplrt\Parser\Grammar\Concatenation([28, 33, 34]),
-        36 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
-        37 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
-        38 => new \Phplrt\Parser\Grammar\Optional(36),
-        39 => new \Phplrt\Parser\Grammar\Concatenation([37, 38]),
-        40 => new \Phplrt\Parser\Grammar\Alternation([35, 39]),
-        41 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_OPEN', false),
-        42 => new \Phplrt\Parser\Grammar\Optional(40),
-        43 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_CLOSE', false),
-        44 => new \Phplrt\Parser\Grammar\Concatenation([41, 42, 43]),
-        45 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
-        46 => new \Phplrt\Parser\Grammar\Optional(45),
-        47 => new \Phplrt\Parser\Grammar\Concatenation([51]),
+        33 => new \Phplrt\Parser\Grammar\Concatenation([32, 31]),
+        34 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        35 => new \Phplrt\Parser\Grammar\Lexeme('T_ANGLE_BRACKET_OPEN', false),
+        36 => new \Phplrt\Parser\Grammar\Repetition(33, 0, INF),
+        37 => new \Phplrt\Parser\Grammar\Optional(34),
+        38 => new \Phplrt\Parser\Grammar\Lexeme('T_ANGLE_BRACKET_CLOSE', false),
+        39 => new \Phplrt\Parser\Grammar\Concatenation([35, 31, 36, 37, 38]),
+        40 => new \Phplrt\Parser\Grammar\Concatenation([59, 62]),
+        41 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        42 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
+        43 => new \Phplrt\Parser\Grammar\Concatenation([41, 42]),
+        44 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        45 => new \Phplrt\Parser\Grammar\Optional(43),
+        46 => new \Phplrt\Parser\Grammar\Optional(44),
+        47 => new \Phplrt\Parser\Grammar\Concatenation([40, 45, 46]),
         48 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
-        49 => new \Phplrt\Parser\Grammar\Concatenation([48, 47]),
-        50 => new \Phplrt\Parser\Grammar\Repetition(49, 0, INF),
-        51 => new \Phplrt\Parser\Grammar\Alternation([57, 54]),
-        52 => new \Phplrt\Parser\Grammar\Alternation([13, 2, 3, 4, 0]),
-        53 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
-        54 => new \Phplrt\Parser\Grammar\Concatenation([58]),
-        55 => new \Phplrt\Parser\Grammar\Optional(53),
-        56 => new \Phplrt\Parser\Grammar\Lexeme('T_COLON', false),
-        57 => new \Phplrt\Parser\Grammar\Concatenation([52, 55, 56, 54]),
-        58 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement']),
-        59 => new \Phplrt\Parser\Grammar\Concatenation([63, 13, 64]),
-        60 => new \Phplrt\Parser\Grammar\Concatenation([13, 67]),
-        61 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
-        62 => new \Phplrt\Parser\Grammar\Concatenation([61, 13]),
-        63 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
-        64 => new \Phplrt\Parser\Grammar\Repetition(62, 0, INF),
-        65 => new \Phplrt\Parser\Grammar\Lexeme('T_NS_DELIMITER', false),
-        66 => new \Phplrt\Parser\Grammar\Concatenation([65, 13]),
-        67 => new \Phplrt\Parser\Grammar\Repetition(66, 0, INF),
-        68 => new \Phplrt\Parser\Grammar\Lexeme('T_NAME', true),
-        69 => new \Phplrt\Parser\Grammar\Lexeme('T_BOOL_LITERAL', true),
-        70 => new \Phplrt\Parser\Grammar\Lexeme('T_NULL_LITERAL', true),
+        49 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
+        50 => new \Phplrt\Parser\Grammar\Optional(48),
+        51 => new \Phplrt\Parser\Grammar\Concatenation([49, 50]),
+        52 => new \Phplrt\Parser\Grammar\Alternation([47, 51]),
+        53 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_OPEN', false),
+        54 => new \Phplrt\Parser\Grammar\Optional(52),
+        55 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_CLOSE', false),
+        56 => new \Phplrt\Parser\Grammar\Concatenation([53, 54, 55]),
+        57 => new \Phplrt\Parser\Grammar\Lexeme('T_ELLIPSIS', true),
+        58 => new \Phplrt\Parser\Grammar\Optional(57),
+        59 => new \Phplrt\Parser\Grammar\Concatenation([63]),
+        60 => new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        61 => new \Phplrt\Parser\Grammar\Concatenation([60, 59]),
+        62 => new \Phplrt\Parser\Grammar\Repetition(61, 0, INF),
+        63 => new \Phplrt\Parser\Grammar\Alternation([69, 66]),
+        64 => new \Phplrt\Parser\Grammar\Alternation([13, 2, 3, 4, 0]),
+        65 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
+        66 => new \Phplrt\Parser\Grammar\Concatenation([70]),
+        67 => new \Phplrt\Parser\Grammar\Optional(65),
+        68 => new \Phplrt\Parser\Grammar\Lexeme('T_COLON', false),
+        69 => new \Phplrt\Parser\Grammar\Concatenation([64, 67, 68, 66]),
+        70 => new \Phplrt\Parser\Grammar\Concatenation(['TypeStatement']),
         71 => new \Phplrt\Parser\Grammar\Concatenation([78, 82, 83]),
         72 => new \Phplrt\Parser\Grammar\Concatenation([97, 'TypeStatement']),
         73 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
@@ -144,8 +144,8 @@ return [
         95 => new \Phplrt\Parser\Grammar\Lexeme('T_AMP', true),
         96 => new \Phplrt\Parser\Grammar\Optional(95),
         97 => new \Phplrt\Parser\Grammar\Lexeme('T_COLON', false),
-        98 => new \Phplrt\Parser\Grammar\Optional(27),
-        99 => new \Phplrt\Parser\Grammar\Optional(44),
+        98 => new \Phplrt\Parser\Grammar\Optional(39),
+        99 => new \Phplrt\Parser\Grammar\Optional(56),
         100 => new \Phplrt\Parser\Grammar\Concatenation([11, 98, 99]),
         101 => new \Phplrt\Parser\Grammar\Concatenation([102]),
         102 => new \Phplrt\Parser\Grammar\Concatenation([103, 106]),
@@ -229,15 +229,24 @@ return [
         // <ClassName> :: "*"
         return new Node\Type\ClassConstMaskNode($children[0]);
         },
-        27 => function (\Phplrt\Parser\Context $ctx, $children) {
+        19 => function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\FullQualifiedName($children);
+        },
+        20 => function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\Name($children);
+        },
+        13 => function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\Identifier($children->getValue());
+        },
+        39 => function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Type\Template\ParametersListNode($children);
         },
-        19 => function (\Phplrt\Parser\Context $ctx, $children) {
+        31 => function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Type\Template\ParameterNode(
             \is_array($children) ? $children[0] : $children,
         );
         },
-        44 => function (\Phplrt\Parser\Context $ctx, $children) {
+        56 => function (\Phplrt\Parser\Context $ctx, $children) {
             if ($children === []) {
             return new Node\Type\Shape\FieldsListNode();
         }
@@ -251,13 +260,13 @@ return [
             \count($children) !== 2,
         );
         },
-        46 => function (\Phplrt\Parser\Context $ctx, $children) {
+        58 => function (\Phplrt\Parser\Context $ctx, $children) {
             return $children === [];
         },
-        28 => function (\Phplrt\Parser\Context $ctx, $children) {
+        40 => function (\Phplrt\Parser\Context $ctx, $children) {
             return new \ArrayObject($children);
         },
-        51 => function (\Phplrt\Parser\Context $ctx, $children) {
+        63 => function (\Phplrt\Parser\Context $ctx, $children) {
             if (\is_array($children)) {
             $value = \array_pop($children);
             $field = $children[0] instanceof Node\Literal\IntLiteralNode
@@ -275,10 +284,10 @@ return [
     
         return $children;
         },
-        54 => function (\Phplrt\Parser\Context $ctx, $children) {
+        66 => function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Type\Shape\FieldNode($children[0]);
         },
-        52 => function (\Phplrt\Parser\Context $ctx, $children) {
+        64 => function (\Phplrt\Parser\Context $ctx, $children) {
             return match(true) {
             $children instanceof Node\Literal\IntLiteralNode,
             $children instanceof Node\Literal\StringLiteralNode => $children,
@@ -289,15 +298,6 @@ return [
                 => new Node\Literal\StringLiteralNode($children->toString()),
             default => new Node\Literal\StringLiteralNode($children->getValue()),
         };
-        },
-        59 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\FullQualifiedName($children);
-        },
-        60 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Name($children);
-        },
-        13 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Identifier($children->getValue());
         },
         77 => function (\Phplrt\Parser\Context $ctx, $children) {
             $name = \array_shift($children);

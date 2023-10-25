@@ -15,8 +15,7 @@ abstract class GenericArgumentNode extends Node implements ArgumentNodeInterface
 {
     public function __construct(
         public readonly ArgumentNodeInterface $of,
-    ) {
-    }
+    ) {}
 
     public function is(string $class): bool
     {

@@ -14,7 +14,7 @@ class ClassNameMatcherVisitor extends MatcherVisitor
      */
     public function __construct(string $class, ?\Closure $break = null)
     {
-        $matcher = static fn (Node $node): bool => $node instanceof $class;
+        $matcher = static fn(Node $node): bool => $node instanceof $class;
 
         parent::__construct($matcher, $break);
     }

@@ -146,7 +146,7 @@ class StringLiteralNode extends LiteralNode
      */
     private static function renderHexadecimalSequences(string $body): string
     {
-        $callee = static fn (array $matches): string => \chr(\hexdec((string)$matches[1]));
+        $callee = static fn(array $matches): string => \chr(\hexdec((string)$matches[1]));
 
         /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
