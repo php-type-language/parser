@@ -85,8 +85,8 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     public static function fromInternalError(string $statement, \Throwable $e): static
     {
-        $message = 'An internal error occurred while parsing %s: %s';
-        $message = \sprintf($message, Formatter::source($statement), $e->getMessage());
+        $message = "An internal error occurred while parsing %s";
+        $message = \sprintf($message, Formatter::source($statement));
 
         return new static($message, self::CODE_INTERNAL_ERROR, $e);
     }

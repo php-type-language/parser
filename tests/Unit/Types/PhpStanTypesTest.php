@@ -254,41 +254,36 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NamedFieldNode(foo)
-                  Type\Shape\FieldNode
-                    Type\NamedTypeNode
-                      Name(int)
+                Type\Shape\StringNamedFieldNode(required)
+                  Type\NamedTypeNode
+                    Name(int)
                   Literal\StringLiteralNode('foo')
-                Type\Shape\NamedFieldNode(bar)
-                  Type\Shape\FieldNode
-                    Type\NamedTypeNode
-                      Name(string)
+                Type\Shape\StringNamedFieldNode(required)
+                  Type\NamedTypeNode
+                    Name(string)
                   Literal\StringLiteralNode("bar")
             AST];
         yield 'array{\'foo\': int, "bar"?: string}' => ['array{\'foo\': int, "bar"?: string}', <<<'AST'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NamedFieldNode(foo)
-                  Type\Shape\FieldNode
-                    Type\NamedTypeNode
-                      Name(int)
+                Type\Shape\StringNamedFieldNode(required)
+                  Type\NamedTypeNode
+                    Name(int)
                   Literal\StringLiteralNode('foo')
-                Type\Shape\OptionalFieldNode
-                  Type\Shape\NamedFieldNode(bar)
-                    Type\Shape\FieldNode
-                      Type\NamedTypeNode
-                        Name(string)
-                    Literal\StringLiteralNode("bar")
+                Type\Shape\StringNamedFieldNode(optional)
+                  Type\NamedTypeNode
+                    Name(string)
+                  Literal\StringLiteralNode("bar")
             AST];
         yield 'array{int, int}' => ['array{int, int}', <<<'AST'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode
+                Type\Shape\FieldNode(required)
                   Type\NamedTypeNode
                     Name(int)
-                Type\Shape\FieldNode
+                Type\Shape\FieldNode(required)
                   Type\NamedTypeNode
                     Name(int)
             AST];
@@ -296,32 +291,27 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NumericFieldNode(0)
-                  Type\Shape\FieldNode
-                    Type\NamedTypeNode
-                      Name(int)
+                Type\Shape\NumericFieldNode(required)
+                  Type\NamedTypeNode
+                    Name(int)
                   Literal\IntLiteralNode(0)
-                Type\Shape\OptionalFieldNode
-                  Type\Shape\NumericFieldNode(1)
-                    Type\Shape\FieldNode
-                      Type\NamedTypeNode
-                        Name(int)
-                    Literal\IntLiteralNode(1)
+                Type\Shape\NumericFieldNode(optional)
+                  Type\NamedTypeNode
+                    Name(int)
+                  Literal\IntLiteralNode(1)
             AST];
         yield 'array{foo: int, bar: string}' => ['array{foo: int, bar: string}', <<<'AST'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NamedFieldNode(foo)
-                  Type\Shape\FieldNode
-                    Type\NamedTypeNode
-                      Name(int)
-                  Literal\StringLiteralNode(foo)
-                Type\Shape\NamedFieldNode(bar)
-                  Type\Shape\FieldNode
-                    Type\NamedTypeNode
-                      Name(string)
-                  Literal\StringLiteralNode(bar)
+                Type\Shape\NamedFieldNode(required)
+                  Type\NamedTypeNode
+                    Name(int)
+                  Identifier(foo)
+                Type\Shape\NamedFieldNode(required)
+                  Type\NamedTypeNode
+                    Name(string)
+                  Identifier(bar)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#literals-and-constants */

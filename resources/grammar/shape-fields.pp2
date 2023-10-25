@@ -30,53 +30,37 @@ ShapeFieldsList -> {
   ;
 
 ShapeField
-  : NamedShapeField()
+  : IdentifiedField()
+  | AnonymousField()
   ;
 
-NamedShapeField -> {
-    if (\is_array($children)) {
-        $value = \array_pop($children);
-        $field = $children[0] instanceof Node\Literal\IntLiteralNode
-            ? new Node\Type\Shape\NumericFieldNode($children[0], $value)
-            : new Node\Type\Shape\NamedFieldNode($children[0], $value)
-        ;
+IdentifiedField -> {
+    $name = $children[0];
+    $value = \array_pop($children);
 
-        // In case of "nullable" suffix defined
-        if (\count($children) === 2) {
-            return new Node\Type\Shape\OptionalFieldNode($field);
-        }
+    // In case of "nullable" suffix defined
+    $optional = \count($children) === 2;
 
-        return $field;
-    }
-
-    return $children;
+    return match (true) {
+        $name instanceof Node\Literal\IntLiteralNode
+            => new Node\Type\Shape\NumericFieldNode($name, $value, $optional),
+        $name instanceof Node\Literal\StringLiteralNode
+            => new Node\Type\Shape\StringNamedFieldNode($name, $value, $optional),
+        default => new Node\Type\Shape\NamedFieldNode($name, $value, $optional),
+    };
 }
-  : ShapeKey() (<T_NULLABLE>)? ::T_COLON:: AnonymousShapeField()
-  | AnonymousShapeField()
+  : ShapeKey() (<T_NULLABLE>)? ::T_COLON:: ShapeValue()
   ;
 
-AnonymousShapeField -> {
+AnonymousField -> {
     return new Node\Type\Shape\FieldNode($children[0]);
 }
   : ShapeValue()
   ;
 
-ShapeKey -> {
-    return match(true) {
-        $children instanceof Node\Literal\IntLiteralNode,
-        $children instanceof Node\Literal\StringLiteralNode => $children,
-        $children instanceof Node\Literal\BoolLiteralNode,
-        $children instanceof Node\Literal\NullLiteralNode,
-            => new Node\Literal\StringLiteralNode($children->raw),
-        $children instanceof Node\Identifier
-            => new Node\Literal\StringLiteralNode($children->toString()),
-        default => new Node\Literal\StringLiteralNode($children->getValue()),
-    };
-}
+ShapeKey
   : Identifier()
   | IntLiteral()
-  | BoolLiteral()
-  | NullLiteral()
   | StringLiteral()
   ;
 

@@ -7,10 +7,11 @@ namespace TypeLang\Parser\Node\Type\Shape;
 use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-final class FieldNode extends Node implements FieldNodeInterface
+class FieldNode extends Node implements \Stringable
 {
     public function __construct(
         public readonly TypeStatement $value,
+        public bool $optional = false,
     ) {}
 
     public function is(string $class): bool
@@ -21,5 +22,10 @@ final class FieldNode extends Node implements FieldNodeInterface
     public function getValue(): TypeStatement
     {
         return $this->value;
+    }
+
+    public function __toString(): string
+    {
+        return $this->optional ? 'optional' : 'required';
     }
 }

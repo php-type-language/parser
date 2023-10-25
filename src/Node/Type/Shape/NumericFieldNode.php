@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Type\Shape;
 
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
+use TypeLang\Parser\Node\Type\TypeStatement;
 
-final class NumericFieldNode extends GenericFieldNode implements \Stringable
+final class NumericFieldNode extends FieldNode
 {
     public function __construct(
         public readonly IntLiteralNode $index,
-        FieldNodeInterface $of,
+        TypeStatement $of,
+        bool $optional = false,
     ) {
-        parent::__construct($of);
-    }
-
-    public function __toString(): string
-    {
-        return \sprintf('%s', $this->index->value);
+        parent::__construct($of, $optional);
     }
 }

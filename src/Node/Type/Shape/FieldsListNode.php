@@ -7,12 +7,12 @@ namespace TypeLang\Parser\Node\Type\Shape;
 use TypeLang\Parser\Node\Node;
 
 /**
- * @template-implements \IteratorAggregate<array-key, FieldNodeInterface>
+ * @template-implements \IteratorAggregate<array-key, FieldNode>
  */
 class FieldsListNode extends Node implements \IteratorAggregate, \Countable, \Stringable
 {
     /**
-     * @param list<FieldNodeInterface> $list
+     * @param list<FieldNode> $list
      */
     public function __construct(
         public readonly array $list = [],
