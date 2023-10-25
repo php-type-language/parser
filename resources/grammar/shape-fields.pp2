@@ -14,13 +14,11 @@ ShapeFields -> {
     );
 }
   : ::T_BRACE_OPEN::
-      ( (ShapeFieldsList() (::T_COMMA:: <T_ELLIPSIS>)? ::T_COMMA::?)
-      | <T_ELLIPSIS> ::T_COMMA::? )?
+      (
+        (ShapeFieldsList() (::T_COMMA:: <T_ELLIPSIS>)?)
+        | <T_ELLIPSIS>?
+      )
     ::T_BRACE_CLOSE::
-  ;
-
-IsSealed -> { return $children === []; }
-  : <T_ELLIPSIS>?
   ;
 
 ShapeFieldsList -> {
@@ -53,7 +51,7 @@ ShapeFieldsList -> {
 
     return new \ArrayObject($children);
 }
-  : ShapeField() (::T_COMMA:: ShapeField())* ::T_COMMA::?
+  : ShapeField() (::T_COMMA:: ShapeField())*
   ;
 
 ShapeField
