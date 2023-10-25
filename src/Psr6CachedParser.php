@@ -37,6 +37,13 @@ final class Psr6CachedParser extends CachedParser
             $item->set($parser->parse($source));
         }
 
-        return $item->get();
+        /** @psalm-suppress MixedAssignment */
+        $result = $item->get();
+
+        if ($result instanceof TypeStatement) {
+            return $result;
+        }
+
+        return null;
     }
 }

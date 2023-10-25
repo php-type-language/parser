@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Type;
 
 /**
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
- *
  * @template T of TypeStatement
  * @template-implements \IteratorAggregate<array-key, T>
+ *
+ * @internal This is an internal library class, please do not use it in your code.
+ * @psalm-internal TypeLang\Parser
  */
 abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggregate, \Countable
 {
@@ -23,6 +23,10 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         TypeStatement $b,
         TypeStatement ...$other,
     ) {
+        /**
+         * @psalm-suppress PropertyTypeCoercion
+         * @psalm-suppress ArgumentTypeCoercion
+         */
         $this->statements = [...$this->unwrap([$a, $b, ...$other])];
     }
 
@@ -34,7 +38,11 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
     private function unwrap(array $statements): iterable
     {
         foreach ($statements as $statement) {
-            yield from $statement instanceof static ? $this->unwrap($statement->statements) : [$statement];
+            if ($statement instanceof static) {
+                yield from $this->unwrap($statement->statements);
+            } else {
+                yield $statement;
+            }
         }
     }
 
@@ -44,10 +52,11 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
     }
 
     /**
-     * @return int<2, max>
+     * @return int<2, max> A logical statement must contain at least 2 elements.
      */
     public function count(): int
     {
+        /** @var int<2, max> */
         return \count($this->statements);
     }
 }

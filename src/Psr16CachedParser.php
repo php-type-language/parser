@@ -31,11 +31,12 @@ final class Psr16CachedParser extends CachedParser
      */
     protected function getCachedItem(ParserInterface $parser, ReadableInterface $source): ?TypeStatement
     {
-        $result = $this->cache->get(
-            $key = $this->getCacheKey($source),
-        );
+        $key = $this->getCacheKey($source);
 
-        if ($result === null) {
+        /** @psalm-suppress MixedAssignment */
+        $result = $this->cache->get($key);
+
+        if (!$result instanceof TypeStatement) {
             $result = $parser->parse($source);
 
             $this->cache->set($key, $result);

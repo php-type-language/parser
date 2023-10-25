@@ -4,14 +4,27 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
+/**
+ * @template TValue of non-empty-string
+ * @template-extends LiteralNode<TValue>
+ *
+ * @internal This is an internal library class, please do not use it in your code.
+ * @psalm-internal TypeLang\Parser
+ *
+ * @psalm-consistent-constructor
+ * @psalm-consistent-templates
+ */
 class VariableLiteralNode extends LiteralNode
 {
     /**
-     * @var non-empty-string
+     * @var TValue
      */
     private readonly string $value;
 
-    public function __construct(string $value)
+    /**
+     * @param TValue $value
+     */
+    final public function __construct(string $value)
     {
         assert(\str_starts_with($value, '$'), new \InvalidArgumentException(
             'Variable name must start with "$" character',
@@ -21,6 +34,7 @@ class VariableLiteralNode extends LiteralNode
             'Variable name length must be greater than 0',
         ));
 
+        /** @psalm-suppress PropertyTypeCoercion : Applied value is non-empty-string too */
         $this->value = \substr($value, 1);
 
         parent::__construct($value);
@@ -47,7 +61,7 @@ class VariableLiteralNode extends LiteralNode
     }
 
     /**
-     * @return non-empty-string
+     * @return TValue
      */
     public function getValue(): string
     {

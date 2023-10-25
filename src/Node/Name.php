@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node;
 
 /**
+ * @template-implements \IteratorAggregate<array-key, Identifier>
+ *
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
- *
- * @template-extends \IteratorAggregate<array-key, Identifier>
  */
 class Name extends Node implements \IteratorAggregate, \Countable
 {
@@ -27,8 +27,10 @@ class Name extends Node implements \IteratorAggregate, \Countable
      */
     final public function __construct(iterable|string|Identifier $name)
     {
+        /** @psalm-suppress InvalidPropertyAssignmentValue : Check will be done later */
         $this->parts = $this->parseName($name);
 
+        /** @psalm-suppress RedundantCondition */
         assert($this->parts !== [], new \InvalidArgumentException(
             'Name parts count can not be empty',
         ));
@@ -42,7 +44,13 @@ class Name extends Node implements \IteratorAggregate, \Countable
     private function parseName(iterable|string|Identifier $name): array
     {
         if (\is_iterable($name)) {
-            return \array_map($this->parseChunk(...), [...$name]);
+            $result = [];
+
+            foreach ($name as $chunk) {
+                $result[] = $this->parseChunk($chunk);
+            }
+
+            return $result;
         }
 
         return [$this->parseChunk($name)];

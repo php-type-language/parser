@@ -14,7 +14,7 @@ class MatcherVisitor extends Visitor
 
     /**
      * @param \Closure(Node):bool $matcher
-     * @param null|\Closure(Node):bool $break
+     * @param (\Closure(Node):bool)|null $break
      */
     public function __construct(
         private readonly \Closure $matcher,
@@ -38,7 +38,7 @@ class MatcherVisitor extends Visitor
 
     public function enter(Node $node): ?Command
     {
-        if ($this->break) {
+        if ($this->found !== null || $this->shouldContinue === true) {
             return Command::SKIP_CHILDREN;
         }
 
@@ -49,7 +49,7 @@ class MatcherVisitor extends Visitor
             return Command::SKIP_CHILDREN;
         }
 
-        if (($this->break)($node)) {
+        if ($this->break !== null && ($this->break)($node)) {
             $this->shouldContinue = true;
 
             return Command::SKIP_CHILDREN;

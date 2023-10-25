@@ -10,6 +10,7 @@ class ClassNameMatcherVisitor extends MatcherVisitor
 {
     /**
      * @param class-string<Node> $class
+     * @param (\Closure(Node):bool)|null $break
      */
     public function __construct(string $class, ?\Closure $break = null)
     {

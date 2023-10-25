@@ -59,7 +59,10 @@ final class Parser implements ParserInterface
         /** @psalm-var GrammarConfigArray $grammar */
         $grammar = require __DIR__ . '/../resources/grammar.php';
 
+        /** @var \WeakMap<TokenInterface, StringLiteralNode> */
         $this->stringPool = new \WeakMap();
+
+        /** @var \WeakMap<TokenInterface, IntLiteralNode> */
         $this->integerPool = new \WeakMap();
 
         $this->lexer = $this->createLexer($grammar);
@@ -89,19 +92,18 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @psalm-suppress ImplementedReturnTypeMismatch
-     *
      * @throws ParseException
      */
     public function parse(mixed $source): ?TypeStatement
     {
+        /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::fromSources($source);
 
         return $this->executeAndHandleErrors($source, 'TypeStatement');
     }
 
     /**
-     * @param non-empty-string $initial
+     * @param non-empty-literal-string $initial
      *
      * @throws ParseException
      */
@@ -131,6 +133,8 @@ final class Parser implements ParserInterface
     }
 
     /**
+     * @param non-empty-string $initial
+     *
      * @throws \Throwable
      */
     private function execute(ReadableInterface $source, string $initial): ?TypeStatement

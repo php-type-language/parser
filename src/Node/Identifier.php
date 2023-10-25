@@ -41,6 +41,8 @@ final class Identifier extends Node implements \Stringable
 
     /**
      * @param non-empty-string $value
+     *
+     * @psalm-suppress RedundantCondition
      */
     public function __construct(
         public readonly string $value,

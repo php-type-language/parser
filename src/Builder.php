@@ -26,6 +26,7 @@ final class Builder implements BuilderInterface
         $state = $context->getState();
 
         if (isset($this->reducers[$state])) {
+            /** @psalm-suppress MixedAssignment */
             $result = ($this->reducers[$state])($context, $result);
 
             if ($result instanceof Node && $result->offset === 0) {

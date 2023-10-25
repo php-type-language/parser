@@ -5,11 +5,20 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Literal;
 
 /**
+ * @template TValue of int
+ * @template-extends LiteralNode<TValue>
+ *
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
+ *
+ * @psalm-consistent-constructor
+ * @psalm-consistent-templates
  */
 class IntLiteralNode extends LiteralNode
 {
+    /**
+     * @param TValue $value
+     */
     final public function __construct(
         public readonly int $value,
         string $raw = null,
@@ -42,7 +51,7 @@ class IntLiteralNode extends LiteralNode
 
         // One of: [ 0123, 0o23, 0x00, 0b01 ]
         if ($literal[0] === '0' && isset($literal[1])) {
-            return [$isNegative, match ($literal[1]) {
+            return [$isNegative, (int)(match ($literal[1]) {
                 // hexadecimal
                 'x', 'X' => \hexdec(\substr($literal, 2)),
                 // binary
@@ -51,7 +60,7 @@ class IntLiteralNode extends LiteralNode
                 'o', 'O' => \octdec(\substr($literal, 2)),
                 // octal (legacy)
                 default => \octdec($literal),
-            }];
+            })];
         }
 
         return [$isNegative, (int)$literal];

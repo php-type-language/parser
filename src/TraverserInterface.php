@@ -15,9 +15,7 @@ interface TraverserInterface
     public function with(VisitorInterface $visitor, bool $prepend = false): self;
 
     /**
-     * @param list<Node> $nodes
-     *
-     * @return void
+     * @param iterable<array-key, Node> $nodes
      */
     public function traverse(iterable $nodes): void;
 }

@@ -96,6 +96,7 @@ final class Traverser implements MutableTraverserInterface
             $command = $visitor->enter($node);
 
             if ($command === null) {
+                /** @psalm-suppress MixedAssignment */
                 foreach ($this->getProperties($node) as $property) {
                     if ($property instanceof Node) {
                         $this->applyToNode($property);

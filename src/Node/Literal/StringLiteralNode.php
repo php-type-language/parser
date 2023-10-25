@@ -5,8 +5,14 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Literal;
 
 /**
+ * @template TValue of string
+ * @template-extends LiteralNode<TValue>
+ *
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
+ *
+ * @psalm-consistent-constructor
+ * @psalm-consistent-templates
  */
 class StringLiteralNode extends LiteralNode
 {
@@ -33,6 +39,9 @@ class StringLiteralNode extends LiteralNode
         '\$' => "\$",
     ];
 
+    /**
+     * @param TValue $value
+     */
     final public function __construct(
         public readonly string $value,
         string $raw = null,
@@ -42,6 +51,8 @@ class StringLiteralNode extends LiteralNode
 
     /**
      * @param non-empty-string $value
+     *
+     * @return static<string>
      */
     public static function parse(string $value): static
     {
@@ -56,6 +67,8 @@ class StringLiteralNode extends LiteralNode
 
     /**
      * @param non-empty-string $value
+     *
+     * @return static<string>
      */
     public static function createFromDoubleQuotedString(string $value): static
     {
@@ -71,6 +84,8 @@ class StringLiteralNode extends LiteralNode
 
     /**
      * @param non-empty-string $value
+     *
+     * @return static<string>
      */
     public static function createFromSingleQuotedString(string $value): static
     {
@@ -133,6 +148,7 @@ class StringLiteralNode extends LiteralNode
     {
         $callee = static fn (array $matches): string => \chr(\hexdec((string)$matches[1]));
 
+        /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
 
@@ -156,22 +172,23 @@ class StringLiteralNode extends LiteralNode
             }
 
             if (0x800 > $code) {
-                return StringLiteralNode . php\chr(0xC0 | $code >> 6)
+                return \chr(0xC0 | $code >> 6)
                     . \chr(0x80 | $code & 0x3F);
             }
 
             if (0x10000 > $code) {
-                return StringLiteralNode . php\chr(0xE0 | $code >> 12)
+                return \chr(0xE0 | $code >> 12)
                     . \chr(0x80 | $code >> 6 & 0x3F)
-                     . \chr(0x80 | $code & 0x3F);
+                    . \chr(0x80 | $code & 0x3F);
             }
 
-            return StringLiteralNode . php\chr(0xF0 | $code >> 18)
+            return \chr(0xF0 | $code >> 18)
                 . \chr(0x80 | $code >> 12 & 0x3F)
-                 . \chr(0x80 | $code >> 6 & 0x3F)
-                 . \chr(0x80 | $code & 0x3F);
+                . \chr(0x80 | $code >> 6 & 0x3F)
+                . \chr(0x80 | $code & 0x3F);
         };
 
+        /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
 

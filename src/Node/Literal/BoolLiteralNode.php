@@ -5,12 +5,21 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Literal;
 
 /**
+ * @template TValue of bool
+ * @template-extends LiteralNode<TValue>
+ *
  * @internal This is an internal library class, please do not use it in your code.
  * @psalm-internal TypeLang\Parser
+ *
+ * @psalm-consistent-constructor
+ * @psalm-consistent-templates
  */
 class BoolLiteralNode extends LiteralNode
 {
-    public function __construct(
+    /**
+     * @param TValue $value
+     */
+    final public function __construct(
         public readonly bool $value,
         string $raw = null,
     ) {
