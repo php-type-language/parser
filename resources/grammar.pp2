@@ -5,13 +5,14 @@
  * -----------------------------------------------------------------------------
  */
 
-%include grammar/lexemes
-%include grammar/literals
-%include grammar/template
-%include grammar/shape
-%include grammar/common
-%include grammar/callable
-%include grammar/typedef
+%include grammar/lexemes            // Lexeme/Token definitions
+%include grammar/literals           // Literal definitions
+%include grammar/common             // Common utils
+%include grammar/template-params    // Type's template params
+%include grammar/shape-fields       // Type's shape fields
+%include grammar/callable           // Callable/function definitions
+%include grammar/named-type         // Named type definition containing
+                                    // template params and shape fields
 
 %pragma root Statement
 
@@ -29,7 +30,16 @@
   : LogicalTypeStatement()
   ;
 
-// Binary statements/expressions
+/**
+ * -----------------------------------------------------------------------------
+ *  Logical Statements
+ * -----------------------------------------------------------------------------
+ *
+ *  Logical statements denote union or intersection types, like:
+ *  - A | B | C - for union type references.
+ *  - A & B & C - for intersection type references.
+ *
+ */
 
 LogicalTypeStatement
   : UnionTypeStatement()
@@ -55,7 +65,18 @@ IntersectionTypeStatement -> {
   : UnaryTypeStatement() (::T_AMP:: IntersectionTypeStatement())?
   ;
 
-// Unary statements/expressions
+/**
+ * -----------------------------------------------------------------------------
+ *  Unary Statements
+ * -----------------------------------------------------------------------------
+ *
+ *  Unary statements denote terminal types, like:
+ *  - A - for type reference.
+ *  - ?A - for nullable type reference.
+ *  - 'some' - for string literal reference.
+ *  - etc...
+ *
+ */
 
 UnaryTypeStatement
   : PrefixedNullableTypeStatement()
