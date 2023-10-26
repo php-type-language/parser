@@ -19,6 +19,7 @@ final class NamedFieldNode extends ExplicitFieldNode
 
     public function getIdentifier(): string
     {
+        /** @var non-empty-string */
         return $this->name->toString();
     }
 }

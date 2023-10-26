@@ -94,6 +94,9 @@ final class Parser implements ParserInterface
         return new Lexer($grammar['tokens']['default'], $grammar['skip']);
     }
 
+    /**
+     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
+     */
     public function parse(#[Language('PHP')] mixed $source): iterable
     {
         /** @psalm-suppress PossiblyInvalidArgument */
@@ -102,6 +105,9 @@ final class Parser implements ParserInterface
         return $this->executeAndHandleErrors($source, 'Document');
     }
 
+    /**
+     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
+     */
     public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
     {
         /** @psalm-suppress PossiblyInvalidArgument */
@@ -131,6 +137,7 @@ final class Parser implements ParserInterface
             \ini_set('xdebug.max_nesting_level', -1);
 
             try {
+                /** @var iterable<array-key, TypeStatement|DefinitionStatement> */
                 return $this->parser
                     ->startsAt($initial)
                     ->parse($source)

@@ -28,31 +28,23 @@ final class Psr6CachedParser extends CachedParser
     }
 
     /**
-     * @param callable(ReadableInterface):iterable<array-key, TypeStatement|DefinitionStatement> $execute
-     *
-     * @return iterable<array-key, TypeStatement|DefinitionStatement>
-     *
-     * @throws Exception\ParserExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws \Throwable
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
      */
-    protected function getCachedItem(ReadableInterface $source, callable $execute): iterable
+    protected function getCachedItem(ReadableInterface $source, callable $execute): mixed
     {
-        $item = $this->cache->getItem($this->getCacheKey($source));
-
-        if (!$item->isHit()) {
-            $item->set($execute($source));
-
-            $this->cache->save($item);
-        }
+        $key = $this->getCacheKey($source);
+        $item = $this->cache->getItem($key);
 
         /** @psalm-suppress MixedAssignment */
         $result = $item->get();
 
-        if (\is_iterable($result)) {
-            return $result;
+        if (!\is_iterable($result)) {
+            $item->set($result = $execute($source));
+
+            $this->cache->save($item);
         }
 
-        return null;
+        return $result;
     }
 }

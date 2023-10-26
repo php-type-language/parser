@@ -7,6 +7,9 @@ namespace TypeLang\Parser\Node\Type\Shape;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
+/**
+ * TODO Add name non-emptiness assertion
+ */
 final class StringNamedFieldNode extends ExplicitFieldNode
 {
     public function __construct(
@@ -19,6 +22,7 @@ final class StringNamedFieldNode extends ExplicitFieldNode
 
     public function getIdentifier(): string
     {
+        /** @var non-empty-string */
         return $this->name->getValue();
     }
 }

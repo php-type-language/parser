@@ -19,6 +19,7 @@ final class NumericFieldNode extends ExplicitFieldNode
 
     public function getIdentifier(): string
     {
+        /** @var non-empty-string */
         return $this->index->getRawValue();
     }
 }

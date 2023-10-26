@@ -21,6 +21,8 @@ interface ParserInterface
      *
      * @throws ParserExceptionInterface In case of parsing exception occurs.
      * @throws \Throwable In case of internal error occurs.
+     *
+     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */
     public function parse(#[Language('PHP')] mixed $source): iterable;
 
@@ -32,6 +34,8 @@ interface ParserInterface
      *
      * @throws ParserExceptionInterface In case of parsing exception occurs.
      * @throws \Throwable In case of internal error occurs.
+     *
+     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */
     public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement;
 }

@@ -7,7 +7,6 @@ namespace TypeLang\Parser;
 use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Source\File;
-use TypeLang\Parser\Node\Definition\DefinitionStatement;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
 abstract class CachedParser implements ParserInterface
@@ -24,6 +23,9 @@ abstract class CachedParser implements ParserInterface
         return $source->getHash();
     }
 
+    /**
+     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
+     */
     public function parse(#[Language('PHP')] mixed $source): iterable
     {
         /** @psalm-suppress PossiblyInvalidArgument */
@@ -32,6 +34,9 @@ abstract class CachedParser implements ParserInterface
         return $this->getCachedItem($source, fn(ReadableInterface $src): iterable => $this->parent->parse($src));
     }
 
+    /**
+     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
+     */
     public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
     {
         /** @psalm-suppress PossiblyInvalidArgument */
