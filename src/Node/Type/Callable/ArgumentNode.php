@@ -8,7 +8,7 @@ use TypeLang\Parser\Node\Literal\VariableLiteralNode;
 use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
-final class ArgumentNode extends Node
+final class ArgumentNode extends Node implements \Stringable
 {
     public function __construct(
         public readonly TypeStatement $type,

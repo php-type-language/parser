@@ -29,9 +29,7 @@ abstract class CachedParser implements ParserInterface
         /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::fromSources($source);
 
-        return $this->getCachedItem($source, function (ReadableInterface $src): iterable {
-            return $this->parent->parse($src);
-        });
+        return $this->getCachedItem($source, fn(ReadableInterface $src): iterable => $this->parent->parse($src));
     }
 
     public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
@@ -39,9 +37,7 @@ abstract class CachedParser implements ParserInterface
         /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::fromSources($source);
 
-        return $this->getCachedItem($source, function (ReadableInterface $src): ?TypeStatement {
-            return $this->parent->parseType($src);
-        });
+        return $this->getCachedItem($source, fn(ReadableInterface $src): ?TypeStatement => $this->parent->parseType($src));
     }
 
     public function clear(mixed $source): void
