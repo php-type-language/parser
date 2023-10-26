@@ -6,6 +6,7 @@
  *
  * @link https://www.php.net/manual/en/language.types.iterable.php
  */
+#[Since('7.1', package: 'php')]
 type iterable<out TKey: mixed, out TValue: mixed> = (
     array<TKey, TValue> | Traversable<TKey, TValue>
 );
@@ -13,6 +14,16 @@ type iterable<out TKey: mixed, out TValue: mixed> = (
 /**
  * Interface to detect if a class is traversable using `foreach`.
  *
+ * Note: Kernel (internal) interface without implementation.
+ *
  * @link http://php.net/manual/en/class.traversable.php
  */
+#[Since('5.1', package: 'php')]
 interface Traversable<out TKey: mixed, out TValue: mixed>;
+
+/**
+ * Note: Kernel (internal) type without definition.
+ *
+ * @link http://php.net/manual/en/class.traversable.php
+ */
+type array<out TKey: mixed, out TValue: mixed>;

@@ -4,6 +4,7 @@
  *
  * @link http://php.net/manual/en/class.iteratoraggregate.php
  */
+#[Since('5.1', package: 'php')]
 interface IteratorAggregate<out TKey: mixed, out TValue: mixed>: Traversable<TKey, TValue>
 {
     /**
@@ -20,6 +21,7 @@ interface IteratorAggregate<out TKey: mixed, out TValue: mixed>: Traversable<TKe
  *
  * @link http://php.net/manual/en/class.iterator.php
  */
+#[Since('5.1', package: 'php')]
 interface Iterator<out TKey: mixed, out TValue: mixed>: Traversable<TKey, TValue>
 {
     /**
@@ -61,6 +63,7 @@ interface Iterator<out TKey: mixed, out TValue: mixed>: Traversable<TKey, TValue
 /**
  * @link https://www.php.net/manual/en/class.outeriterator.php
  */
+#[Since('5.1', package: 'php')]
 interface OuterIterator<out TKey: mixed, out TValue: mixed>: Iterator<TKey, TValue>
 {
     /**
@@ -80,6 +83,7 @@ interface OuterIterator<out TKey: mixed, out TValue: mixed>: Iterator<TKey, TVal
  *
  * @link https://www.php.net/manual/en/class.iteratoriterator.php
  */
+#[Since('5.1', package: 'php')]
 class IteratorIterator<out TKey: mixed, out TValue: mixed>: OuterIterator<TKey, TValue>
 {
     /**
