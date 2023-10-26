@@ -364,10 +364,10 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               Name(callable)
               Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode
+                Type\Callable\ArgumentNode(simple)
                   Type\NamedTypeNode
                     Name(int)
-                Type\Callable\ArgumentNode
+                Type\Callable\ArgumentNode(simple)
                   Type\NamedTypeNode
                     Name(int)
               Type\NamedTypeNode
@@ -377,13 +377,12 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               Name(callable)
               Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode
+                Type\Callable\ArgumentNode(simple)
                   Type\NamedTypeNode
                     Name(int)
-                Type\Callable\OptionalArgumentNode
-                  Type\Callable\ArgumentNode
-                    Type\NamedTypeNode
-                      Name(int)
+                Type\Callable\ArgumentNode(optional)
+                  Type\NamedTypeNode
+                    Name(int)
               Type\NamedTypeNode
                 Name(string)
             AST];
@@ -391,15 +390,13 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               Name(callable)
               Type\Callable\ArgumentsListNode
-                Type\Callable\NamedArgumentNode($foo)
-                  Type\Callable\ArgumentNode
-                    Type\NamedTypeNode
-                      Name(int)
+                Type\Callable\ArgumentNode(simple)
+                  Type\NamedTypeNode
+                    Name(int)
                   Literal\VariableLiteralNode($foo)
-                Type\Callable\NamedArgumentNode($bar)
-                  Type\Callable\ArgumentNode
-                    Type\NamedTypeNode
-                      Name(string)
+                Type\Callable\ArgumentNode(simple)
+                  Type\NamedTypeNode
+                    Name(string)
                   Literal\VariableLiteralNode($bar)
               Type\NamedTypeNode
                 Name(void)
@@ -408,11 +405,9 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               Name(callable)
               Type\Callable\ArgumentsListNode
-                Type\Callable\NamedArgumentNode($bar)
-                  Type\Callable\OutArgumentNode
-                    Type\Callable\ArgumentNode
-                      Type\NamedTypeNode
-                        Name(string)
+                Type\Callable\ArgumentNode(output)
+                  Type\NamedTypeNode
+                    Name(string)
                   Literal\VariableLiteralNode($bar)
               Type\NamedTypeNode
                 Name(mixed)
@@ -421,11 +416,9 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               Name(callable)
               Type\Callable\ArgumentsListNode
-                Type\Callable\NamedArgumentNode($floats)
-                  Type\Callable\VariadicArgumentNode
-                    Type\Callable\ArgumentNode
-                      Type\NamedTypeNode
-                        Name(float)
+                Type\Callable\ArgumentNode(variadic)
+                  Type\NamedTypeNode
+                    Name(float)
                   Literal\VariableLiteralNode($floats)
               Type\UnionTypeNode
                 Type\NamedTypeNode
@@ -436,10 +429,9 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               Name(callable)
               Type\Callable\ArgumentsListNode
-                Type\Callable\VariadicArgumentNode
-                  Type\Callable\ArgumentNode
-                    Type\NamedTypeNode
-                      Name(float)
+                Type\Callable\ArgumentNode(variadic)
+                  Type\NamedTypeNode
+                    Name(float)
               Type\UnionTypeNode
                 Type\NamedTypeNode
                   Name(int)
@@ -449,10 +441,10 @@ final class PhpStanTypesTest extends TypesTestCase
             Type\CallableTypeNode
               FullQualifiedName(\Closure)
               Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode
+                Type\Callable\ArgumentNode(simple)
                   Type\NamedTypeNode
                     Name(int)
-                Type\Callable\ArgumentNode
+                Type\Callable\ArgumentNode(simple)
                   Type\NamedTypeNode
                     Name(int)
               Type\NamedTypeNode
@@ -501,7 +493,7 @@ final class PhpStanTypesTest extends TypesTestCase
     #[DataProvider('typesDataProvider')]
     public function testTypes(string $type, string $expected = null): void
     {
-        $this->assertStatementSame($type, $expected ?? <<<AST
+        $this->assertTypeStatementSame($type, $expected ?? <<<AST
             Type\NamedTypeNode
               Name($type)
             AST);

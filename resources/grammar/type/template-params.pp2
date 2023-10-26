@@ -12,5 +12,5 @@ TemplateParameter -> {
         \is_array($children) ? $children[0] : $children,
     );
 }
-  : TypeStatement()
+  : Type()
   ;

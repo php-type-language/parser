@@ -22,4 +22,7 @@ Identifier -> {
   : <T_NAME>
   | <T_BOOL_LITERAL>
   | <T_NULL_LITERAL>
+  | <T_TYPE>
+  | <T_OUT>
+  | <T_IN>
   ;

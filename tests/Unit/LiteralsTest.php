@@ -17,7 +17,7 @@ class LiteralsTest extends TestCase
     #[DataProvider('floatLiteralsDataProvider')]
     public function testFloatLiteral(string $expr, float $value): void
     {
-        $ast = $this->getStatementResult($expr);
+        $ast = $this->getTypeStatementResult($expr);
 
         $this->assertInstanceOf(FloatLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
@@ -26,7 +26,7 @@ class LiteralsTest extends TestCase
     #[DataProvider('intLiteralsDataProvider')]
     public function testIntLiteral(string $expr, int $value): void
     {
-        $ast = $this->getStatementResult($expr);
+        $ast = $this->getTypeStatementResult($expr);
 
         $this->assertInstanceOf(IntLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
@@ -35,7 +35,7 @@ class LiteralsTest extends TestCase
     #[DataProvider('boolLiteralsDataProvider')]
     public function testBoolLiteral(string $expr, bool $value): void
     {
-        $ast = $this->getStatementResult($expr);
+        $ast = $this->getTypeStatementResult($expr);
 
         $this->assertInstanceOf(BoolLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);
@@ -44,7 +44,7 @@ class LiteralsTest extends TestCase
     #[DataProvider('nullLiteralsDataProvider')]
     public function testNullLiteral(string $expr): void
     {
-        $ast = $this->getStatementResult($expr);
+        $ast = $this->getTypeStatementResult($expr);
 
         $this->assertInstanceOf(NullLiteralNode::class, $ast);
     }
@@ -52,7 +52,7 @@ class LiteralsTest extends TestCase
     #[DataProvider('stringLiteralsDataProvider')]
     public function testStringLiteral(string $expr, string $value): void
     {
-        $ast = $this->getStatementResult($expr);
+        $ast = $this->getTypeStatementResult($expr);
 
         $this->assertInstanceOf(StringLiteralNode::class, $ast);
         $this->assertSame($value, $ast->value);

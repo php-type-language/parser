@@ -1,5 +1,5 @@
 
-CallableTypeStmt -> {
+CallableType -> {
     $name = \array_shift($children);
 
     $arguments = isset($children[0]) && $children[0] instanceof Node\Type\Callable\ArgumentsListNode
@@ -41,7 +41,7 @@ OptionalCallableArgument -> {
     $children[0]->optional = true;
     return $children[0];
 }
-  : NamedCallableArgument() <T_EQ>?
+  : NamedCallableArgument() <T_ASSIGN>?
   ;
 
 NamedCallableArgument -> {
@@ -81,9 +81,9 @@ OutputCallableArgument -> {
 
     return $argument;
 }
-  : TypeStatement() <T_AMP>?
+  : Type() <T_AMP>?
   ;
 
 CallableReturnType
-  : ::T_COLON:: TypeStatement()
+  : ::T_COLON:: Type()
   ;

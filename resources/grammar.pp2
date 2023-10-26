@@ -5,16 +5,29 @@
  * -----------------------------------------------------------------------------
  */
 
-%include grammar/lexemes            // Lexeme/Token definitions
-%include grammar/literals           // Literal definitions
-%include grammar/common             // Common utils
-%include grammar/template-params    // Type's template params
-%include grammar/shape-fields       // Type's shape fields
-%include grammar/callable           // Callable/function definitions
-%include grammar/named-type         // Named type definition containing
-                                    // template params and shape fields
+%include grammar/lexemes                    // Lexeme/Token definitions
+%include grammar/literals                   // Literal definitions
+%include grammar/common                     // Common utils
 
-%pragma root Statement
+%include grammar/type/template-params       // Type's template params
+%include grammar/type/shape-fields          // Type's shape fields
+%include grammar/type/callable              // Callable/function definitions
+%include grammar/type/named-type            // Named type definition containing
+                                            // template params and shape fields
+
+%include grammar/definition/template-params
+%include grammar/definition/type
+
+%pragma root Document
+
+#Document
+  : DefinitionStatement()+
+  ;
+
+DefinitionStatement
+  : (TypeDefinition())
+    ::T_SEMICOLON::
+  ;
 
 /**
  * -----------------------------------------------------------------------------
@@ -26,8 +39,8 @@
  *
  */
 
-#TypeStatement
-  : LogicalTypeStatement()
+#Type
+  : LogicalType()
   ;
 
 /**
@@ -41,28 +54,28 @@
  *
  */
 
-LogicalTypeStatement
-  : UnionTypeStatement()
+LogicalType
+  : UnionType()
   ;
 
-UnionTypeStatement -> {
+UnionType -> {
     if (\count($children) === 2) {
         return new Node\Type\UnionTypeNode($children[0], $children[1]);
     }
 
     return $children;
 }
-  : IntersectionTypeStatement() (::T_OR:: UnionTypeStatement())?
+  : IntersectionType() (::T_OR:: UnionType())?
   ;
 
-IntersectionTypeStatement -> {
+IntersectionType -> {
     if (\count($children) === 2) {
         return new Node\Type\IntersectionTypeNode($children[0], $children[1]);
     }
 
     return $children;
 }
-  : UnaryTypeStatement() (::T_AMP:: IntersectionTypeStatement())?
+  : UnaryType() (::T_AMP:: IntersectionType())?
   ;
 
 /**
@@ -78,24 +91,24 @@ IntersectionTypeStatement -> {
  *
  */
 
-UnaryTypeStatement
-  : PrefixedNullableTypeStatement()
+UnaryType
+  : PrefixedNullableType()
   ;
 
 // stmt = ?Type
-PrefixedNullableTypeStatement -> {
+PrefixedNullableType -> {
     if (\is_array($children)) {
         return new Node\Type\NullableTypeNode($children[1]);
     }
 
     return $children;
 }
-  : <T_NULLABLE> TypesListStatement()
-  | SuffixedNullableTypeStatement()
+  : <T_NULLABLE> TypesList()
+  | SuffixedNullableType()
   ;
 
 // stmt = Type?
-SuffixedNullableTypeStatement -> {
+SuffixedNullableType -> {
     if (\count($children) > 1) {
         $result = new Node\Type\NullableTypeNode($children[0]);
         $result->offset = $children[1]->getOffset();
@@ -105,10 +118,10 @@ SuffixedNullableTypeStatement -> {
 
     return $children[0];
 }
-  : TypesListStatement() <T_NULLABLE>?
+  : TypesList() <T_NULLABLE>?
   ;
 
-TypesListStatement -> {
+TypesList -> {
     $statement = \array_shift($children);
 
     for ($i = 0, $length = \count($children); $i < $length; ++$i) {
@@ -118,17 +131,15 @@ TypesListStatement -> {
 
     return $statement;
 }
-  : PrimaryTypeStatement() (
+  : PrimaryType() (
       <T_SQUARE_BRACKET_OPEN>
       ::T_SQUARE_BRACKET_CLOSE::
     )*
   ;
 
-// Primary
-
-PrimaryTypeStatement
-  : ::T_PARENTHESIS_OPEN:: TypeStatement() ::T_PARENTHESIS_CLOSE::
+PrimaryType
+  : ::T_PARENTHESIS_OPEN:: Type() ::T_PARENTHESIS_CLOSE::
   | Literal()
-  | CallableTypeStmt()
-  | NamedTypeStmt()
+  | CallableType()
+  | NamedType()
   ;

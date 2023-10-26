@@ -46,7 +46,7 @@ $ composer require phptl/parser
 ```php
 $parser = new \TypeLang\Parser\Parser();
 
-$ast = $parser->parse(<<<'PHP'
+$type = $parser->parseType(<<<'PHP'
     array{
         field1: callable(Example, int):mixed,
         field2: list<Some>,

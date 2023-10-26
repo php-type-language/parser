@@ -1,0 +1,42 @@
+
+TemplateParameterDefinitions -> {
+    return new Node\Definition\Template\ParametersListNode($children);
+}
+  : ::T_ANGLE_BRACKET_OPEN::
+      TemplateParameterDefinition() (
+        ::T_COMMA:: TemplateParameterDefinition()
+      )*
+    ::T_ANGLE_BRACKET_CLOSE::
+  ;
+
+TemplateParameterDefinition -> {
+    return new Node\Definition\Template\ParameterNode(
+        $children[1],
+        $children[0],
+        $children[2] ?? null,
+    );
+}
+  : TemplateParameterVariance() Identifier()
+    TemplateParameterDefinitionType()?
+  ;
+
+TemplateParameterDefinitionType
+  : ::T_COLON:: Type()
+  ;
+
+TemplateParameterVariance -> {
+    if ($children === []) {
+        return Node\Definition\Template\ParameterVariance::ANY;
+    }
+
+    return match ($children->getValue()) {
+        'in' => Node\Definition\Template\ParameterVariance::IN,
+        'out' => Node\Definition\Template\ParameterVariance::OUT,
+        default => throw new SemanticException(
+            \sprintf('Unprocessable type variance "%s"', $children->getValue()),
+            $offset,
+        ),
+    };
+}
+  : (<T_IN>|<T_OUT>)?
+  ;

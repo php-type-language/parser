@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Source\File;
+use TypeLang\Parser\Node\Definition\DefinitionStatement;
 use TypeLang\Parser\Node\Type\TypeStatement;
 
 abstract class CachedParser implements ParserInterface
@@ -22,9 +24,24 @@ abstract class CachedParser implements ParserInterface
         return $source->getHash();
     }
 
-    public function parse(mixed $source): ?TypeStatement
+    public function parse(#[Language('PHP')] mixed $source): iterable
     {
-        return $this->getCachedItem($this->parent, File::new($source));
+        /** @psalm-suppress PossiblyInvalidArgument */
+        $source = File::fromSources($source);
+
+        return $this->getCachedItem($source, function (ReadableInterface $src): iterable {
+            return $this->parent->parse($src);
+        });
+    }
+
+    public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
+    {
+        /** @psalm-suppress PossiblyInvalidArgument */
+        $source = File::fromSources($source);
+
+        return $this->getCachedItem($source, function (ReadableInterface $src): ?TypeStatement {
+            return $this->parent->parseType($src);
+        });
     }
 
     public function clear(mixed $source): void
@@ -34,5 +51,12 @@ abstract class CachedParser implements ParserInterface
 
     abstract protected function removeCacheItem(ReadableInterface $source): void;
 
-    abstract protected function getCachedItem(ParserInterface $parser, ReadableInterface $source): ?TypeStatement;
+    /**
+     * @template TReturn of mixed
+     *
+     * @param callable(ReadableInterface):TReturn $execute
+     *
+     * @return TReturn
+     */
+    abstract protected function getCachedItem(ReadableInterface $source, callable $execute): mixed;
 }

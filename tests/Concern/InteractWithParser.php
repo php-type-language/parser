@@ -25,14 +25,14 @@ trait InteractWithParser
         $this->parser = new Parser();
     }
 
-    protected function getStatementResult(string $statement): ?TypeStatement
+    protected function getTypeStatementResult(string $statement): ?TypeStatement
     {
-        return $this->parser->parse($statement);
+        return $this->parser->parseType($statement);
     }
 
-    protected function getStatementAsString(string $statement): ?string
+    protected function getTypeStatementAsString(string $statement): ?string
     {
-        $result = $this->getStatementResult($statement);
+        $result = $this->getTypeStatementResult($statement);
 
         if ($result === null) {
             return null;
@@ -53,31 +53,31 @@ trait InteractWithParser
         }
     }
 
-    protected function assertStatementCompilable(string $statement): void
+    protected function assertTypeStatementCompilable(string $statement): void
     {
         $this->expectNotToPerformAssertions();
 
-        $this->getStatementResult($statement);
+        $this->getTypeStatementResult($statement);
     }
 
-    protected function assertStatementSame(string $statement, string $expected, string $message = ''): void
+    protected function assertTypeStatementSame(string $statement, string $expected, string $message = ''): void
     {
-        $actual = \trim($this->getStatementAsString($statement));
+        $actual = \trim($this->getTypeStatementAsString($statement));
 
         Assert::assertSame(\trim($expected), $actual, $message);
     }
 
-    protected function assertStatementNotSame(string $statement, string $expected, string $message = ''): void
+    protected function assertTypeStatementNotSame(string $statement, string $expected, string $message = ''): void
     {
-        $actual = \trim($this->getStatementAsString($statement));
+        $actual = \trim($this->getTypeStatementAsString($statement));
 
         Assert::assertNotSame(\trim($expected), $actual, $message);
     }
 
-    protected function assertStatementFails(string $statement, string $error): void
+    protected function assertTypeStatementFails(string $statement, string $error): void
     {
         $this->expectParseError($error);
 
-        $this->getStatementResult($statement);
+        $this->getTypeStatementResult($statement);
     }
 }

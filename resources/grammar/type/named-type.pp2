@@ -1,5 +1,5 @@
 
-NamedTypeStmt -> {
+NamedType -> {
     $fields = $parameters = null;
 
     // Shape fields

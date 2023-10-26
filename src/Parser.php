@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Lexer\TokenInterface;
@@ -18,6 +19,7 @@ use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Node\Definition\DefinitionStatement;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Type\TypeStatement;
@@ -78,7 +80,8 @@ final class Parser implements ParserInterface
             lexer: $lexer,
             grammar: $grammar['grammar'],
             options: [
-                ParserConfigsInterface::CONFIG_AST_BUILDER  => new Builder($grammar['reducers']),
+                ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
+                ParserConfigsInterface::CONFIG_AST_BUILDER => new Builder($grammar['reducers']),
             ]
         );
     }
@@ -91,23 +94,36 @@ final class Parser implements ParserInterface
         return new Lexer($grammar['tokens']['default'], $grammar['skip']);
     }
 
-    /**
-     * @throws ParseException
-     */
-    public function parse(mixed $source): ?TypeStatement
+    public function parse(#[Language('PHP')] mixed $source): iterable
     {
         /** @psalm-suppress PossiblyInvalidArgument */
-        $source = File::fromSources($source);
+        $source = File::new($source);
 
-        return $this->executeAndHandleErrors($source, 'TypeStatement');
+        return $this->executeAndHandleErrors($source, 'Document');
+    }
+
+    public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
+    {
+        /** @psalm-suppress PossiblyInvalidArgument */
+        $source = File::new($source);
+
+        foreach ($this->executeAndHandleErrors($source, 'Type') as $type) {
+            if ($type instanceof TypeStatement) {
+                return $type;
+            }
+        }
+
+        return null;
     }
 
     /**
      * @param non-empty-literal-string $initial
      *
+     * @return iterable<array-key, TypeStatement|DefinitionStatement>
+     *
      * @throws ParseException
      */
-    private function executeAndHandleErrors(ReadableInterface $source, string $initial): ?TypeStatement
+    private function executeAndHandleErrors(ReadableInterface $source, string $initial): iterable
     {
         $allowedNestingLevel = (int)\ini_get('xdebug.max_nesting_level');
 
@@ -115,7 +131,10 @@ final class Parser implements ParserInterface
             \ini_set('xdebug.max_nesting_level', -1);
 
             try {
-                return $this->execute($source, $initial);
+                return $this->parser
+                    ->startsAt($initial)
+                    ->parse($source)
+                ;
             } catch (UnexpectedTokenException $e) {
                 throw $this->unexpectedTokenError($e, $source);
             } catch (UnrecognizedTokenException $e) {
@@ -130,25 +149,6 @@ final class Parser implements ParserInterface
         } finally {
             \ini_set('xdebug.max_nesting_level', $allowedNestingLevel);
         }
-    }
-
-    /**
-     * @param non-empty-string $initial
-     *
-     * @throws \Throwable
-     */
-    private function execute(ReadableInterface $source, string $initial): ?TypeStatement
-    {
-        $result = $this->parser
-            ->startsAt($initial)
-            ->parse($source);
-
-        foreach ($result as $node) {
-            /** @var TypeStatement */
-            return $node;
-        }
-
-        return null;
     }
 
     private function unexpectedTokenError(UnexpectedTokenException $e, ReadableInterface $source): ParseException

@@ -10,7 +10,7 @@ class ArrayShapesTest extends TestCase
 {
     public function testFields(): void
     {
-        $this->assertStatementSame('array{a,b,c}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{a,b,c}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -28,7 +28,7 @@ class ArrayShapesTest extends TestCase
 
     public function testEmptyShape(): void
     {
-        $this->assertStatementSame('array{}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -37,7 +37,7 @@ class ArrayShapesTest extends TestCase
 
     public function testUnsealedFields(): void
     {
-        $this->assertStatementSame('array{a,b,c,...}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{a,b,c,...}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(unsealed)
@@ -55,7 +55,7 @@ class ArrayShapesTest extends TestCase
 
     public function testOneAnonymousArgument(): void
     {
-        $this->assertStatementSame('array{int}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{int}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -67,7 +67,7 @@ class ArrayShapesTest extends TestCase
 
     public function testManyAnonymousFields(): void
     {
-        $this->assertStatementSame('array{int, string}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{int, string}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -82,7 +82,7 @@ class ArrayShapesTest extends TestCase
 
     public function testNestedAnonymousFields(): void
     {
-        $this->assertStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -101,7 +101,7 @@ class ArrayShapesTest extends TestCase
 
     public function testNamedArgument(): void
     {
-        $this->assertStatementSame('array{name:int}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{name:int}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -114,7 +114,7 @@ class ArrayShapesTest extends TestCase
 
     public function testStringNamedArgument(): void
     {
-        $this->assertStatementSame('array{"name":int}', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array{"name":int}', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
@@ -127,9 +127,15 @@ class ArrayShapesTest extends TestCase
 
     public function testMixedFields(): void
     {
-        $this->assertStatementSame(<<<'PHP'
+        $this->assertTypeStatementFails(<<<'PHP'
+            array{ int, named: int }
+            PHP, 'cannot mix explicit and implicit shape keys');
+    }
+
+    public function testAllFields(): void
+    {
+        $this->assertTypeStatementSame(<<<'PHP'
             array{
-                some,
                 required: a,
                 optional?: b,
                 "string_required": c,
@@ -139,9 +145,6 @@ class ArrayShapesTest extends TestCase
             Type\NamedTypeNode
               Name(array)
               Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
-                    Name(some)
                 Type\Shape\NamedFieldNode(required)
                   Type\NamedTypeNode
                     Name(a)

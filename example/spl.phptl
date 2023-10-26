@@ -1,0 +1,133 @@
+
+/**
+ * Interface to create an external Iterator.
+ *
+ * @link http://php.net/manual/en/class.iteratoraggregate.php
+ */
+interface IteratorAggregate<out TKey: mixed, out TValue: mixed>: Traversable<TKey, TValue>
+{
+    /**
+     * Retrieve an external iterator
+     *
+     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
+     */
+    public function getIterator(): Traversable<TKey, TValue>;
+}
+
+/**
+ * Interface for external iterators or objects that can be iterated
+ * themselves internally.
+ *
+ * @link http://php.net/manual/en/class.iterator.php
+ */
+interface Iterator<out TKey: mixed, out TValue: mixed>: Traversable<TKey, TValue>
+{
+    /**
+     * Return the current element.
+     *
+     * @link http://php.net/manual/en/iterator.current.php
+     */
+    public function current(): TValue;
+
+    /**
+     * Move forward to next element.
+     *
+     * @link http://php.net/manual/en/iterator.next.php
+     */
+    public function next(): void;
+
+    /**
+     * Return the key of the current element.
+     *
+     * @link http://php.net/manual/en/iterator.key.php
+     */
+    public function key(): TKey;
+
+    /**
+     * Checks if current position is valid
+     *
+     * @link http://php.net/manual/en/iterator.valid.php
+     */
+    public function valid(): bool;
+
+    /**
+     * Rewind the Iterator to the first element
+     *
+     * @link http://php.net/manual/en/iterator.rewind.php
+     */
+    public function rewind(): void;
+}
+
+/**
+ * @link https://www.php.net/manual/en/class.outeriterator.php
+ */
+interface OuterIterator<out TKey: mixed, out TValue: mixed>: Iterator<TKey, TValue>
+{
+    /**
+     * Returns the inner iterator for the current entry.
+     *
+     * @link https://www.php.net/manual/en/outeriterator.getinneriterator.php
+     */
+    public function getInnerIterator(): Iterator<TKey, TValue>;
+}
+
+/**
+ * This iterator wrapper allows the conversion of anything that
+ * is {@see Traversable} into an Iterator. It is important to understand that
+ * most classes that do not implement Iterators have reasons as most likely
+ * they do not allow the full Iterator feature set. If so, techniques should be
+ * provided to prevent misuse, otherwise expect exceptions or fatal errors.
+ *
+ * @link https://www.php.net/manual/en/class.iteratoriterator.php
+ */
+class IteratorIterator<out TKey: mixed, out TValue: mixed>: OuterIterator<TKey, TValue>
+{
+    /**
+     * Create an iterator from anything that is traversable.
+     *
+     * @link https://www.php.net/manual/en/iteratoriterator.construct.php
+     */
+    public function __construct($iterator: Traversable<TKey, TValue>): void;
+
+    /**
+     * Get the inner iterator.
+     *
+     * @link https://www.php.net/manual/en/iteratoriterator.getinneriterator.php
+     */
+    public function getInnerIterator(): Traversable<TKey, TValue>;
+
+    /**
+     * Return the current element.
+     *
+     * @link http://php.net/manual/en/iterator.current.php
+     */
+    public function current(): TValue;
+
+    /**
+     * Move forward to next element.
+     *
+     * @link http://php.net/manual/en/iterator.next.php
+     */
+    public function next(): void;
+
+    /**
+     * Return the key of the current element.
+     *
+     * @link http://php.net/manual/en/iterator.key.php
+     */
+    public function key(): TKey;
+
+    /**
+     * Checks if current position is valid.
+     *
+     * @link http://php.net/manual/en/iterator.valid.php
+     */
+    public function valid(): bool;
+
+    /**
+     * Rewind the Iterator to the first element.
+     *
+     * @link http://php.net/manual/en/iterator.rewind.php
+     */
+    public function rewind(): void;
+}

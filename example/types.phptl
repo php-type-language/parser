@@ -1,0 +1,18 @@
+
+/**
+ * Iterable is a pseudo-type introduced in PHP 7.1. It accepts any array or
+ * object implementing the Traversable interface. Both of these types are
+ * iterable using foreach and can be used with yield from within a generator.
+ *
+ * @link https://www.php.net/manual/en/language.types.iterable.php
+ */
+type iterable<out TKey: mixed, out TValue: mixed> = (
+    array<TKey, TValue> | Traversable<TKey, TValue>
+);
+
+/**
+ * Interface to detect if a class is traversable using `foreach`.
+ *
+ * @link http://php.net/manual/en/class.traversable.php
+ */
+interface Traversable<out TKey: mixed, out TValue: mixed>;

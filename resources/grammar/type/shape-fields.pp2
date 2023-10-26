@@ -18,6 +18,7 @@ ShapeFields -> {
         (ShapeFieldsList() (::T_COMMA:: <T_ELLIPSIS>)?)
         | <T_ELLIPSIS>?
       )
+      ::T_COMMA::?
     ::T_BRACE_CLOSE::
   ;
 
@@ -92,5 +93,5 @@ ShapeKey
   ;
 
 ShapeValue
-  : TypeStatement()
+  : Type()
   ;

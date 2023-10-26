@@ -1,6 +1,7 @@
 * text=auto eol=lf
 *.pp eol=lf linguist-language=EBNF
 *.pp2 eol=lf linguist-language=EBNF
+*.phptl eol=lf linguist-language=TypeScript
 
 .editorconfig export-ignore
 .php-cs-fixer.php export-ignore
@@ -12,4 +13,5 @@ psalm.xml export-ignore
 rector.php export-ignore
 
 /.github export-ignore
+/example export-ignore
 /tests export-ignore

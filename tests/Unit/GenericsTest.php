@@ -10,7 +10,7 @@ class GenericsTest extends TestCase
 {
     public function testParameters(): void
     {
-        $this->assertStatementSame('array<a,b,c>', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array<a,b,c>', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Template\ParametersListNode
@@ -28,7 +28,7 @@ class GenericsTest extends TestCase
 
     public function testOneParameter(): void
     {
-        $this->assertStatementSame('array<int>', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array<int>', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Template\ParametersListNode
@@ -40,7 +40,7 @@ class GenericsTest extends TestCase
 
     public function testManyParameters(): void
     {
-        $this->assertStatementSame('array<int, string>', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array<int, string>', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Template\ParametersListNode
@@ -55,7 +55,7 @@ class GenericsTest extends TestCase
 
     public function testNestedGeneric(): void
     {
-        $this->assertStatementSame('array<Some\Any<int, string>>', <<<'OUTPUT'
+        $this->assertTypeStatementSame('array<Some\Any<int, string>>', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(array)
               Type\Template\ParametersListNode

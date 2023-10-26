@@ -10,7 +10,7 @@ class NamesTypeTest extends TestCase
 {
     public function testSimpleType(): void
     {
-        $this->assertStatementSame('ExampleName', <<<'OUTPUT'
+        $this->assertTypeStatementSame('ExampleName', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(ExampleName)
             OUTPUT);
@@ -18,7 +18,7 @@ class NamesTypeTest extends TestCase
 
     public function testAllowsDash(): void
     {
-        $this->assertStatementSame('example-name', <<<'OUTPUT'
+        $this->assertTypeStatementSame('example-name', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(example-name)
             OUTPUT);
@@ -26,14 +26,14 @@ class NamesTypeTest extends TestCase
 
     public function testNotAllowsDashAtStart(): void
     {
-        $this->assertStatementFails('-name', <<<'ERROR'
+        $this->assertTypeStatementFails('-name', <<<'ERROR'
             Syntax error, unrecognized "-"
             ERROR);
     }
 
     public function testAllowsDashAtEnd(): void
     {
-        $this->assertStatementSame('example-', <<<'OUTPUT'
+        $this->assertTypeStatementSame('example-', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(example-)
             OUTPUT);
@@ -41,7 +41,7 @@ class NamesTypeTest extends TestCase
 
     public function testRelativeNamespacedName(): void
     {
-        $this->assertStatementSame('Some\\Any', <<<'OUTPUT'
+        $this->assertTypeStatementSame('Some\\Any', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(Some\Any)
             OUTPUT);
@@ -49,7 +49,7 @@ class NamesTypeTest extends TestCase
 
     public function testAbsoluteNamespacedName(): void
     {
-        $this->assertStatementSame('\\Some\\Any', <<<'OUTPUT'
+        $this->assertTypeStatementSame('\\Some\\Any', <<<'OUTPUT'
             Type\NamedTypeNode
               FullQualifiedName(\Some\Any)
             OUTPUT);
@@ -57,7 +57,7 @@ class NamesTypeTest extends TestCase
 
     public function testNamespacedNameWithDash(): void
     {
-        $this->assertStatementSame('Some-Any\\Any', <<<'OUTPUT'
+        $this->assertTypeStatementSame('Some-Any\\Any', <<<'OUTPUT'
             Type\NamedTypeNode
               Name(Some-Any\Any)
             OUTPUT);
@@ -65,28 +65,28 @@ class NamesTypeTest extends TestCase
 
     public function testBackslashAtEnd(): void
     {
-        $this->assertStatementFails('Some\\Any\\', <<<'ERROR'
+        $this->assertTypeStatementFails('Some\\Any\\', <<<'ERROR'
             Syntax error, unexpected end of input
             ERROR);
     }
 
     public function testMultipleBackslashes(): void
     {
-        $this->assertStatementFails('Some\\\\Any', <<<'ERROR'
+        $this->assertTypeStatementFails('Some\\\\Any', <<<'ERROR'
             Syntax error, unexpected "\"
             ERROR);
     }
 
     public function testMultipleBackslashesAtEnd(): void
     {
-        $this->assertStatementFails('Some\\Any\\\\', <<<'ERROR'
+        $this->assertTypeStatementFails('Some\\Any\\\\', <<<'ERROR'
             Syntax error, unexpected "\"
             ERROR);
     }
 
     public function testMultipleBackslashesAtStart(): void
     {
-        $this->assertStatementFails('\\\\Some\\Any', <<<'ERROR'
+        $this->assertTypeStatementFails('\\\\Some\\Any', <<<'ERROR'
             Syntax error, unexpected "\"
             ERROR);
     }
