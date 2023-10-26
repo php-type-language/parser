@@ -179,6 +179,7 @@ final class Parser implements ParserInterface
             $e->getMessage(),
             $source->getContents(),
             $e->getOffset(),
+            $e->getCode(),
         );
     }
 

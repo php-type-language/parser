@@ -31,7 +31,11 @@ OptionalCallableArgument -> {
     }
 
     if ($children[0]->variadic) {
-        throw new SemanticException('Cannot have variadic param with a default', $offset);
+        throw new SemanticException(
+            'Cannot have variadic param with a default',
+            $offset,
+            SemanticException::CODE_VARIADIC_WITH_DEFAULT,
+        );
     }
 
     $children[0]->optional = true;

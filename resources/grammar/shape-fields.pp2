@@ -33,6 +33,7 @@ ShapeFieldsList -> {
                 throw new SemanticException(
                     \sprintf('Duplicate key "%s"', $identifier),
                     $field->offset,
+                    SemanticException::CODE_SHAPE_KEY_DUPLICATION,
                 );
             }
 
@@ -46,6 +47,7 @@ ShapeFieldsList -> {
         throw new SemanticException(
             \sprintf('Cannot mix explicit and implicit shape keys', $identifier),
             $offset,
+            SemanticException::CODE_SHAPE_KEY_MIX,
         );
     }
 
