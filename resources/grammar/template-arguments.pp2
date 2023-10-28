@@ -1,0 +1,18 @@
+
+TemplateArguments -> {
+    return new Node\Stmt\Template\ArgumentsListNode($children);
+}
+  : ::T_ANGLE_BRACKET_OPEN::
+      TemplateArgument() (
+        ::T_COMMA:: TemplateArgument()
+      )* ::T_COMMA::?
+    ::T_ANGLE_BRACKET_CLOSE::
+  ;
+
+TemplateArgument -> {
+    return new Node\Stmt\Template\ArgumentNode(
+        \is_array($children) ? $children[0] : $children,
+    );
+}
+  : Type()
+  ;

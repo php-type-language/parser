@@ -1,0 +1,41 @@
+
+MethodDefinition -> {
+    $arguments = $type = null;
+
+    if (\end($children) instanceof Node\Stmt\NamedTypeNode) {
+        $type = \array_pop($children);
+    }
+
+    if (\end($children) instanceof Node\Stmt\Callable\ArgumentsListNode) {
+        $arguments = \array_pop($children);
+    }
+
+    return new Node\Stmt\Callable\MethodDefinitionNode(
+        $children[0],
+        $children[1],
+        $arguments,
+        $type,
+    );
+}
+  : MethodVisibility() FunctionDefinitionImplementation()
+  ;
+
+MethodVisibility -> {
+    if ($children === []) {
+        return Node\Stmt\Callable\Visibility::PUBLIC;
+    }
+
+    return match ($children->getName()) {
+        'T_VISIBILITY_PUBLIC' => Node\Stmt\Callable\Visibility::PUBLIC,
+        'T_VISIBILITY_PROTECTED' => Node\Stmt\Callable\Visibility::PROTECTED,
+        'T_VISIBILITY_PRIVATE' => Node\Stmt\Callable\Visibility::PRIVATE,
+        default => throw new SemanticException(
+            \sprintf('Unprocessable method visibility "%s"', $children->getValue()),
+            $offset,
+        ),
+    };
+}
+  : (<T_VISIBILITY_PUBLIC>
+  | <T_VISIBILITY_PROTECTED>
+  | <T_VISIBILITY_PRIVATE>)?
+  ;

@@ -1,0 +1,89 @@
+
+CallableType -> {
+    $name = \array_shift($children);
+
+    $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ArgumentsListNode
+        ? \array_shift($children)
+        : new Node\Stmt\Callable\ArgumentsListNode();
+
+    return new Node\Stmt\CallableTypeNode(
+        name: $name,
+        arguments: $arguments,
+        type: isset($children[0]) ? $children[0] : null,
+    );
+}
+  : Name()
+    ::T_PARENTHESIS_OPEN::
+        CallableArguments()?
+    ::T_PARENTHESIS_CLOSE::
+    CallableReturnType()?
+  ;
+
+CallableArguments -> {
+    return new Node\Stmt\Callable\ArgumentsListNode($children);
+}
+  : OptionalCallableArgument() (::T_COMMA:: OptionalCallableArgument())* ::T_COMMA::?
+  ;
+
+OptionalCallableArgument -> {
+    if (!isset($children[1])) {
+        return $children[0];
+    }
+
+    if ($children[0]->variadic) {
+        throw new SemanticException(
+            'Cannot have variadic param with a default',
+            $offset,
+            SemanticException::CODE_VARIADIC_WITH_DEFAULT,
+        );
+    }
+
+    $children[0]->optional = true;
+    return $children[0];
+}
+  : NamedCallableArgument() <T_ASSIGN>?
+  ;
+
+NamedCallableArgument -> {
+    if (\count($children) === 1) {
+        return $children[0];
+    }
+
+    $children[0]->name = $children[1];
+    return $children[0];
+}
+  : VariadicCallableArgument() VariableLiteral()?
+  ;
+
+VariadicCallableArgument -> {
+    if (!isset($children[1])) {
+        return $children[0];
+    }
+
+    if ($children[0] instanceof Node\Stmt\Callable\ArgumentNode) {
+        $children[0]->variadic = true;
+        return $children[0];
+    }
+
+    $children[1]->variadic = true;
+    return $children[1];
+}
+  : <T_ELLIPSIS> OutputCallableArgument()   // Prefixed variadic argument (Psalm format)
+  | OutputCallableArgument() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
+  ;
+
+OutputCallableArgument -> {
+    $argument = new Node\Stmt\Callable\ArgumentNode($children[0]);
+
+    if (\count($children) !== 1) {
+        $argument->output = true;
+    }
+
+    return $argument;
+}
+  : Type() <T_AMP>?
+  ;
+
+CallableReturnType
+  : ::T_COLON:: Type()
+  ;

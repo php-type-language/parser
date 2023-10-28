@@ -1,0 +1,22 @@
+
+ClassExtends -> {
+    return new Node\Stmt\ClassLike\ClassExtendsNode($children[0]);
+}
+  : ::T_EXTENDS:: NamedType()
+  ;
+
+InterfaceExtends -> {
+    return new Node\Stmt\ClassLike\InterfaceImplementsNode($children);
+}
+  : ::T_EXTENDS:: NamedType() (
+      ::T_COMMA:: NamedType()
+    )* ::T_COMMA::?
+  ;
+
+InterfaceImplements -> {
+    return new Node\Stmt\ClassLike\InterfaceImplementsNode($children);
+}
+  : ::T_IMPLEMENTS:: NamedType() (
+      ::T_COMMA:: NamedType()
+    )* ::T_COMMA::?
+  ;

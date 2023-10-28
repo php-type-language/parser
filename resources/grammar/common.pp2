@@ -22,7 +22,17 @@ Identifier -> {
   : <T_NAME>
   | <T_BOOL_LITERAL>
   | <T_NULL_LITERAL>
+  | <T_NAMESPACE>
   | <T_TYPE>
+  | <T_INTERFACE>
+  | <T_CLASS>
+  | <T_TRAIT>
+  | <T_FUNCTION>
+  | <T_VISIBILITY_PUBLIC>
+  | <T_VISIBILITY_PROTECTED>
+  | <T_VISIBILITY_PRIVATE>
+  | <T_IMPLEMENTS>
+  | <T_EXTENDS>
   | <T_OUT>
   | <T_IN>
   ;

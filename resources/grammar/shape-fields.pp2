@@ -1,0 +1,110 @@
+
+ShapeFields -> {
+    if ($children === []) {
+        return new Node\Stmt\Shape\FieldsListNode();
+    }
+
+    $parameters = null;
+
+    if (\end($children) instanceof Node\Stmt\Template\ArgumentsListNode) {
+        $parameters = \array_pop($children);
+    }
+
+    $fields = \reset($children) instanceof Node\Stmt\Shape\FieldsListNode
+        ? \array_shift($children)
+        : new Node\Stmt\Shape\FieldsListNode();
+
+    if ($children !== []) {
+        $fields->sealed = false;
+    }
+
+    return \array_filter([$parameters, $fields]);
+}
+  : ::T_BRACE_OPEN::
+      (
+        (ShapeFieldsList() (::T_COMMA:: ShapeFieldsUnsealed())?)
+        | ShapeFieldsUnsealed()?
+      )
+      ::T_COMMA::?
+    ::T_BRACE_CLOSE::
+  ;
+
+ShapeFieldsUnsealed
+  : <T_ELLIPSIS> TemplateArguments()?
+  ;
+
+ShapeFieldsList -> {
+    $explicit = [];
+    $implicit = false;
+
+    foreach ($children as $field) {
+        if ($field instanceof Node\Stmt\Shape\ExplicitFieldNode) {
+            $identifier = $field->getIdentifier();
+
+            if (\in_array($identifier, $explicit, true)) {
+                throw new SemanticException(
+                    \sprintf('Duplicate key "%s"', $identifier),
+                    $field->offset,
+                    SemanticException::CODE_SHAPE_KEY_DUPLICATION,
+                );
+            }
+
+            $explicit[] = $identifier;
+        } else {
+            $implicit = true;
+        }
+    }
+
+    if ($explicit !== [] && $implicit) {
+        throw new SemanticException(
+            \sprintf('Cannot mix explicit and implicit shape keys', $identifier),
+            $offset,
+            SemanticException::CODE_SHAPE_KEY_MIX,
+        );
+    }
+
+    return new Node\Stmt\Shape\FieldsListNode($children);
+}
+  : ShapeField() (
+      ::T_COMMA:: ShapeField()
+    )*
+  ;
+
+ShapeField
+  : ExplicitField()
+  | ImplicitField()
+  ;
+
+ExplicitField -> {
+    $name = $children[0];
+    $value = \array_pop($children);
+
+    // In case of "nullable" suffix defined
+    $optional = \count($children) === 2;
+
+    return match (true) {
+        $name instanceof Node\Literal\IntLiteralNode
+            => new Node\Stmt\Shape\NumericFieldNode($name, $value, $optional),
+        $name instanceof Node\Literal\StringLiteralNode
+            => new Node\Stmt\Shape\StringNamedFieldNode($name, $value, $optional),
+        default => new Node\Stmt\Shape\NamedFieldNode($name, $value, $optional),
+    };
+}
+  : ShapeKey() (<T_NULLABLE>)? ::T_COLON:: ShapeValue()
+  ;
+
+ImplicitField -> {
+    return new Node\Stmt\Shape\FieldNode($children[0]);
+}
+  : ShapeValue()
+  ;
+
+ShapeKey
+  : Identifier()
+  | IntLiteral()
+  | StringLiteral()
+  ;
+
+ShapeValue
+  : Type()
+  ;

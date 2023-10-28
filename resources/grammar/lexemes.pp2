@@ -10,10 +10,23 @@
 
 // Keywords
 
-%token  T_TYPE                  type\b
+%token  T_NAMESPACE             namespace(?![a-zA-Z0-9\-_\x80-\xff])
 
-%token  T_OUT                   out\b
-%token  T_IN                    in\b
+%token  T_TYPE                  type(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_INTERFACE             interface(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_CLASS                 class(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_TRAIT                 trait(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_FUNCTION              function(?![a-zA-Z0-9\-_\x80-\xff])
+
+%token  T_VISIBILITY_PUBLIC     public(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_VISIBILITY_PROTECTED  protected(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_VISIBILITY_PRIVATE    private(?![a-zA-Z0-9\-_\x80-\xff])
+
+%token  T_IMPLEMENTS            implements(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_EXTENDS               extends(?![a-zA-Z0-9\-_\x80-\xff])
+
+%token  T_OUT                   out(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_IN                    in(?![a-zA-Z0-9\-_\x80-\xff])
 
 // Identifier
 
@@ -26,8 +39,8 @@
 %token  T_ANGLE_BRACKET_CLOSE   >
 %token  T_PARENTHESIS_OPEN      \(
 %token  T_PARENTHESIS_CLOSE     \)
-%token  T_BRACE_OPEN            {
-%token  T_BRACE_CLOSE           }
+%token  T_BRACE_OPEN            \{
+%token  T_BRACE_CLOSE           \}
 %token  T_SQUARE_BRACKET_OPEN   \[
 %token  T_SQUARE_BRACKET_CLOSE  \]
 %token  T_COMMA                 ,

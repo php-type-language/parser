@@ -40,182 +40,182 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'non-negative-int' => ['non-negative-int'];
         yield 'non-zero-int' => ['non-zero-int'];
         yield 'int<0, 100>' => ['int<0, 100>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(int)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(0)
-                Type\Template\ParameterNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(100)
             AST];
         yield 'int<min, 100>' => ['int<min, 100>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(int)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(min)
-                Type\Template\ParameterNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(100)
             AST];
         yield 'int<50, max>' => ['int<50, max>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(int)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(50)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(max)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#general-arrays */
         yield 'Type[]' => ['Type[]', <<<'AST'
-            Type\TypesListNode
-              Type\NamedTypeNode
+            Stmt\TypesListNode
+              Stmt\NamedTypeNode
                 Name(Type)
             AST];
         yield 'array<Type>' => ['array<Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'array<int, Type>' => ['array<int, Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'non-empty-array<Type>' => ['non-empty-array<Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(non-empty-array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'non-empty-array<int, Type>' => ['non-empty-array<int, Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(non-empty-array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#lists */
         yield 'list<Type>' => ['list<Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(list)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'non-empty-list<Type>' => ['non-empty-list<Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(non-empty-list)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables */
         yield 'key-of<Type::ARRAY_CONST>' => ['key-of<Type::ARRAY_CONST>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(key-of)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\ClassConstNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\ClassConstNode
                     Name(Type)
                     Identifier(ARRAY_CONST)
             AST];
         yield 'value-of<Type::ARRAY_CONST>' => ['value-of<Type::ARRAY_CONST>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(value-of)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\ClassConstNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\ClassConstNode
                     Name(Type)
                     Identifier(ARRAY_CONST)
             AST];
 
         /** @Link https://phpstan.org/writing-php-code/phpdoc-types#iterables */
         yield 'iterable<Type>' => ['iterable<Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(iterable)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'Collection<Type>' => ['Collection<Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(Collection)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'Collection<int, Type>' => ['Collection<int, Type>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(Collection)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Type)
             AST];
         yield 'Collection|Type[]' => ['Collection|Type[]', <<<'AST'
-            Type\UnionTypeNode
-              Type\NamedTypeNode
+            Stmt\UnionTypeNode
+              Stmt\NamedTypeNode
                 Name(Collection)
-              Type\TypesListNode
-                Type\NamedTypeNode
+              Stmt\TypesListNode
+                Stmt\NamedTypeNode
                   Name(Type)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#union-types */
         yield 'Type1|Type2' => ['Type1|Type2', <<<'AST'
-            Type\UnionTypeNode
-              Type\NamedTypeNode
+            Stmt\UnionTypeNode
+              Stmt\NamedTypeNode
                 Name(Type1)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(Type2)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#intersection-types */
         yield 'Type1&Type2' => ['Type1&Type2', <<<'AST'
-            Type\IntersectionTypeNode
-              Type\NamedTypeNode
+            Stmt\IntersectionTypeNode
+              Stmt\NamedTypeNode
                 Name(Type1)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(Type2)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#parentheses */
         yield '(Type1&Type2)|Type3' => ['(Type1&Type2)|Type3', <<<'AST'
-            Type\UnionTypeNode
-              Type\IntersectionTypeNode
-                Type\NamedTypeNode
+            Stmt\UnionTypeNode
+              Stmt\IntersectionTypeNode
+                Stmt\NamedTypeNode
                   Name(Type1)
-                Type\NamedTypeNode
+                Stmt\NamedTypeNode
                   Name(Type2)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(Type3)
             AST];
 
@@ -225,19 +225,19 @@ final class PhpStanTypesTest extends TypesTestCase
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#class-string */
         yield 'class-string' => ['class-string'];
         yield 'class-string<T>' => ['class-string<T>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(class-string)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(T)
             AST];
         yield 'class-string<Foo>' => ['class-string<Foo>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(class-string)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Foo)
             AST];
 
@@ -251,65 +251,65 @@ final class PhpStanTypesTest extends TypesTestCase
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#array-shapes */
         yield 'array{\'foo\': int, "bar": string}' => ['array{\'foo\': int, "bar": string}', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\StringNamedFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\StringNamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Literal\StringLiteralNode('foo')
-                Type\Shape\StringNamedFieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\StringNamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(string)
                   Literal\StringLiteralNode("bar")
             AST];
         yield 'array{\'foo\': int, "bar"?: string}' => ['array{\'foo\': int, "bar"?: string}', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\StringNamedFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\StringNamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Literal\StringLiteralNode('foo')
-                Type\Shape\StringNamedFieldNode(optional)
-                  Type\NamedTypeNode
+                Stmt\Shape\StringNamedFieldNode(optional)
+                  Stmt\NamedTypeNode
                     Name(string)
                   Literal\StringLiteralNode("bar")
             AST];
         yield 'array{int, int}' => ['array{int, int}', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
             AST];
         yield 'array{0: int, 1?: int}' => ['array{0: int, 1?: int}', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NumericFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\NumericFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Literal\IntLiteralNode(0)
-                Type\Shape\NumericFieldNode(optional)
-                  Type\NamedTypeNode
+                Stmt\Shape\NumericFieldNode(optional)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Literal\IntLiteralNode(1)
             AST];
         yield 'array{foo: int, bar: string}' => ['array{foo: int, bar: string}', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NamedFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\NamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Identifier(foo)
-                Type\Shape\NamedFieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\NamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(string)
                   Identifier(bar)
             AST];
@@ -318,136 +318,136 @@ final class PhpStanTypesTest extends TypesTestCase
         yield ' 234' => ['234', 'Literal\IntLiteralNode(234)'];
         yield ' 1.0' => ['1.0', 'Literal\FloatLiteralNode(1.0)'];
         yield '\'foo\'|\'bar\'' => ['\'foo\'|\'bar\'', <<<'AST'
-            Type\UnionTypeNode
+            Stmt\UnionTypeNode
               Literal\StringLiteralNode('foo')
               Literal\StringLiteralNode('bar')
             AST];
         yield 'Foo::SOME_CONSTANT' => ['Foo::SOME_CONSTANT', <<<'AST'
-            Type\ClassConstNode
+            Stmt\ClassConstNode
               Name(Foo)
               Identifier(SOME_CONSTANT)
             AST];
         yield 'Foo::SOME_CONSTANT|Bar::OTHER_CONSTANT' => ['Foo::SOME_CONSTANT|Bar::OTHER_CONSTANT', <<<'AST'
-            Type\UnionTypeNode
-              Type\ClassConstNode
+            Stmt\UnionTypeNode
+              Stmt\ClassConstNode
                 Name(Foo)
                 Identifier(SOME_CONSTANT)
-              Type\ClassConstNode
+              Stmt\ClassConstNode
                 Name(Bar)
                 Identifier(OTHER_CONSTANT)
             AST];
         yield 'self::SOME_*' => ['self::SOME_*', <<<'AST'
-            Type\ClassConstMaskNode
+            Stmt\ClassConstMaskNode
               Name(self)
               Identifier(SOME_)
             AST];
         yield 'Foo::*' => ['Foo::*', <<<'AST'
-            Type\ClassConstMaskNode
+            Stmt\ClassConstMaskNode
               Name(Foo)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#global-constants */
         yield 'SOME_CONSTANT' => ['SOME_CONSTANT', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(SOME_CONSTANT)
             AST];
         yield 'SOME_CONSTANT|OTHER_CONSTANT' => ['SOME_CONSTANT|OTHER_CONSTANT', <<<'AST'
-            Type\UnionTypeNode
-              Type\NamedTypeNode
+            Stmt\UnionTypeNode
+              Stmt\NamedTypeNode
                 Name(SOME_CONSTANT)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(OTHER_CONSTANT)
             AST];
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#callables */
         yield 'callable(int, int): string' => ['callable(int, int): string', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               Name(callable)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(int)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(string)
             AST];
         yield 'callable(int, int=): string' => ['callable(int, int=): string', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               Name(callable)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Callable\ArgumentNode(optional)
-                  Type\NamedTypeNode
+                Stmt\Callable\ArgumentNode(optional)
+                  Stmt\NamedTypeNode
                     Name(int)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(string)
             AST];
         yield 'callable(int $foo, string $bar): void' => ['callable(int $foo, string $bar): void', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               Name(callable)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Literal\VariableLiteralNode($foo)
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(string)
                   Literal\VariableLiteralNode($bar)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(void)
             AST];
         yield 'callable(string &$bar): mixed' => ['callable(string &$bar): mixed', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               Name(callable)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(output)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(output)
+                  Stmt\NamedTypeNode
                     Name(string)
                   Literal\VariableLiteralNode($bar)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(mixed)
             AST];
         yield 'callable(float ...$floats): (int|null)' => ['callable(float ...$floats): (int|null)', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               Name(callable)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(variadic)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(variadic)
+                  Stmt\NamedTypeNode
                     Name(float)
                   Literal\VariableLiteralNode($floats)
-              Type\UnionTypeNode
-                Type\NamedTypeNode
+              Stmt\UnionTypeNode
+                Stmt\NamedTypeNode
                   Name(int)
                 Literal\NullLiteralNode(null)
             AST];
         yield 'callable(float...): (int|null)' => ['callable(float...): (int|null)', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               Name(callable)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(variadic)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(variadic)
+                  Stmt\NamedTypeNode
                     Name(float)
-              Type\UnionTypeNode
-                Type\NamedTypeNode
+              Stmt\UnionTypeNode
+                Stmt\NamedTypeNode
                   Name(int)
                 Literal\NullLiteralNode(null)
             AST];
         yield '\Closure(int, int): string' => ['\Closure(int, int): string', <<<'AST'
-            Type\CallableTypeNode
+            Stmt\CallableTypeNode
               FullQualifiedName(\Closure)
-              Type\Callable\ArgumentsListNode
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+              Stmt\Callable\ArgumentsListNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Callable\ArgumentNode(simple)
-                  Type\NamedTypeNode
+                Stmt\Callable\ArgumentNode(simple)
+                  Stmt\NamedTypeNode
                     Name(int)
-              Type\NamedTypeNode
+              Stmt\NamedTypeNode
                 Name(string)
             AST];
 
@@ -459,32 +459,32 @@ final class PhpStanTypesTest extends TypesTestCase
 
         /** @link https://phpstan.org/writing-php-code/phpdoc-types#integer-masks */
         yield 'int-mask<1, 2, 4>' => ['int-mask<1, 2, 4>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(int-mask)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(1)
-                Type\Template\ParameterNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(2)
-                Type\Template\ParameterNode
+                Stmt\Template\ArgumentNode
                   Literal\IntLiteralNode(4)
             AST];
         yield 'int-mask-of<1|2|4>' => ['int-mask-of<1|2|4>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(int-mask-of)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\UnionTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\UnionTypeNode
                     Literal\IntLiteralNode(1)
                     Literal\IntLiteralNode(2)
                     Literal\IntLiteralNode(4)
             AST];
         yield 'int-mask-of<Foo::INT_*>' => ['int-mask-of<Foo::INT_*>', <<<'AST'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(int-mask-of)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\ClassConstMaskNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\ClassConstMaskNode
                     Name(Foo)
                     Identifier(INT_)
             AST];
@@ -494,7 +494,7 @@ final class PhpStanTypesTest extends TypesTestCase
     public function testTypes(string $type, string $expected = null): void
     {
         $this->assertTypeStatementSame($type, $expected ?? <<<AST
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name($type)
             AST);
     }

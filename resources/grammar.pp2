@@ -5,28 +5,43 @@
  * -----------------------------------------------------------------------------
  */
 
-%include grammar/lexemes                    // Lexeme/Token definitions
-%include grammar/literals                   // Literal definitions
-%include grammar/common                     // Common utils
+%include grammar/lexemes                // Lexeme/Token Definitions
+%include grammar/common                 // Common Utils
 
-%include grammar/type/template-params       // Type's template params
-%include grammar/type/shape-fields          // Type's shape fields
-%include grammar/type/callable              // Callable/function definitions
-%include grammar/type/named-type            // Named type definition containing
-                                            // template params and shape fields
+%include grammar/literals               // Literal Definitions
 
-%include grammar/definition/template-params
-%include grammar/definition/type
+%include grammar/template-params        // T<out TArg: Type, in TArg2: Type>
+%include grammar/template-arguments     // T<TArg, TArg2>
+
+%include grammar/callable               // callable(mixed): void
+%include grammar/function               // function name(mixed): void
+%include grammar/method                 // public function name(mixed): void
+
+%include grammar/shape-fields           // array { key: int, ...<TKey, TValue> }
+%include grammar/named-type             // Map<int<0, max>, non-empty-string>
+
+%include grammar/inheritance            // extends Class<T>
+                                        // extends Interface<T>, Interface2<T>
+                                        // implements Interface<T>, Interface2<T>
+
+%include grammar/namespace              // namespace Name\Any;
+%include grammar/class-like             // class Example {}
+                                        // interface Example {}
+                                        // trait Example {}
+%include grammar/type                   // type T = string | int
 
 %pragma root Document
 
 #Document
-  : DefinitionStatement()+
+  : Namespace()
+  | DefinitionStatement()*
   ;
 
 DefinitionStatement
-  : (TypeDefinition())
-    ::T_SEMICOLON::
+  : TypeDefinition()
+  | ClassDefinition()
+  | InterfaceDefinition()
+  | TraitDefinition()
   ;
 
 /**
@@ -60,7 +75,7 @@ LogicalType
 
 UnionType -> {
     if (\count($children) === 2) {
-        return new Node\Type\UnionTypeNode($children[0], $children[1]);
+        return new Node\Stmt\UnionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -70,7 +85,7 @@ UnionType -> {
 
 IntersectionType -> {
     if (\count($children) === 2) {
-        return new Node\Type\IntersectionTypeNode($children[0], $children[1]);
+        return new Node\Stmt\IntersectionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -98,7 +113,7 @@ UnaryType
 // stmt = ?Type
 PrefixedNullableType -> {
     if (\is_array($children)) {
-        return new Node\Type\NullableTypeNode($children[1]);
+        return new Node\Stmt\NullableTypeNode($children[1]);
     }
 
     return $children;
@@ -110,7 +125,7 @@ PrefixedNullableType -> {
 // stmt = Type?
 SuffixedNullableType -> {
     if (\count($children) > 1) {
-        $result = new Node\Type\NullableTypeNode($children[0]);
+        $result = new Node\Stmt\NullableTypeNode($children[0]);
         $result->offset = $children[1]->getOffset();
 
         return $result;
@@ -125,7 +140,7 @@ TypesList -> {
     $statement = \array_shift($children);
 
     for ($i = 0, $length = \count($children); $i < $length; ++$i) {
-        $statement = new Node\Type\TypesListNode($statement);
+        $statement = new Node\Stmt\TypesListNode($statement);
         $statement->offset = $children[$i]->getOffset();
     }
 

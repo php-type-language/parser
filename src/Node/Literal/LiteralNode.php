@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
-use TypeLang\Parser\Node\Type\TypeStatement;
+use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 /**
  * @template TValue of mixed

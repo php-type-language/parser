@@ -7,8 +7,8 @@ namespace TypeLang\Parser;
 use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Source\ReadableInterface;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
-use TypeLang\Parser\Node\Definition\DefinitionStatement;
-use TypeLang\Parser\Node\Type\TypeStatement;
+use TypeLang\Parser\Node\Stmt\DefinitionStatement;
+use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 interface ParserInterface
 {

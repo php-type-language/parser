@@ -8,47 +8,47 @@ use TypeLang\Parser\Tests\TestCase;
 
 class GenericsTest extends TestCase
 {
-    public function testParameters(): void
+    public function testArguments(): void
     {
         $this->assertTypeStatementSame('array<a,b,c>', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(a)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(b)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(c)
             OUTPUT);
     }
 
-    public function testOneParameter(): void
+    public function testOneArgument(): void
     {
         $this->assertTypeStatementSame('array<int>', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(int)
             OUTPUT);
     }
 
-    public function testManyParameters(): void
+    public function testManyArguments(): void
     {
         $this->assertTypeStatementSame('array<int, string>', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(string)
             OUTPUT);
     }
@@ -56,18 +56,18 @@ class GenericsTest extends TestCase
     public function testNestedGeneric(): void
     {
         $this->assertTypeStatementSame('array<Some\Any<int, string>>', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Template\ParametersListNode
-                Type\Template\ParameterNode
-                  Type\NamedTypeNode
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Stmt\NamedTypeNode
                     Name(Some\Any)
-                    Type\Template\ParametersListNode
-                      Type\Template\ParameterNode
-                        Type\NamedTypeNode
+                    Stmt\Template\ArgumentsListNode
+                      Stmt\Template\ArgumentNode
+                        Stmt\NamedTypeNode
                           Name(int)
-                      Type\Template\ParameterNode
-                        Type\NamedTypeNode
+                      Stmt\Template\ArgumentNode
+                        Stmt\NamedTypeNode
                           Name(string)
             OUTPUT);
     }

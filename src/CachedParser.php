@@ -7,7 +7,7 @@ namespace TypeLang\Parser;
 use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Source\File;
-use TypeLang\Parser\Node\Type\TypeStatement;
+use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 abstract class CachedParser implements ParserInterface
 {

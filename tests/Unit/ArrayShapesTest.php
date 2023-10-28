@@ -11,17 +11,17 @@ class ArrayShapesTest extends TestCase
     public function testFields(): void
     {
         $this->assertTypeStatementSame('array{a,b,c}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(a)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(b)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(c)
             OUTPUT);
     }
@@ -29,26 +29,26 @@ class ArrayShapesTest extends TestCase
     public function testEmptyShape(): void
     {
         $this->assertTypeStatementSame('array{}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
+              Stmt\Shape\FieldsListNode(sealed)
             OUTPUT);
     }
 
     public function testUnsealedFields(): void
     {
         $this->assertTypeStatementSame('array{a,b,c,...}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(unsealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(unsealed)
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(a)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(b)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(c)
             OUTPUT);
     }
@@ -56,11 +56,11 @@ class ArrayShapesTest extends TestCase
     public function testOneAnonymousArgument(): void
     {
         $this->assertTypeStatementSame('array{int}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
             OUTPUT);
     }
@@ -68,14 +68,14 @@ class ArrayShapesTest extends TestCase
     public function testManyAnonymousFields(): void
     {
         $this->assertTypeStatementSame('array{int, string}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(string)
             OUTPUT);
     }
@@ -83,18 +83,18 @@ class ArrayShapesTest extends TestCase
     public function testNestedAnonymousFields(): void
     {
         $this->assertTypeStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\FieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\FieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(Some\Any)
-                    Type\Shape\FieldsListNode(sealed)
-                      Type\Shape\FieldNode(required)
-                        Type\NamedTypeNode
+                    Stmt\Shape\FieldsListNode(sealed)
+                      Stmt\Shape\FieldNode(required)
+                        Stmt\NamedTypeNode
                           Name(int)
-                      Type\Shape\FieldNode(required)
-                        Type\NamedTypeNode
+                      Stmt\Shape\FieldNode(required)
+                        Stmt\NamedTypeNode
                           Name(string)
             OUTPUT);
     }
@@ -102,11 +102,11 @@ class ArrayShapesTest extends TestCase
     public function testNamedArgument(): void
     {
         $this->assertTypeStatementSame('array{name:int}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NamedFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\NamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Identifier(name)
             OUTPUT);
@@ -115,11 +115,11 @@ class ArrayShapesTest extends TestCase
     public function testStringNamedArgument(): void
     {
         $this->assertTypeStatementSame('array{"name":int}', <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\StringNamedFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\StringNamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(int)
                   Literal\StringLiteralNode("name")
             OUTPUT);
@@ -142,23 +142,23 @@ class ArrayShapesTest extends TestCase
                 "string_optional"?: d
             }
             PHP, <<<'OUTPUT'
-            Type\NamedTypeNode
+            Stmt\NamedTypeNode
               Name(array)
-              Type\Shape\FieldsListNode(sealed)
-                Type\Shape\NamedFieldNode(required)
-                  Type\NamedTypeNode
+              Stmt\Shape\FieldsListNode(sealed)
+                Stmt\Shape\NamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(a)
                   Identifier(required)
-                Type\Shape\NamedFieldNode(optional)
-                  Type\NamedTypeNode
+                Stmt\Shape\NamedFieldNode(optional)
+                  Stmt\NamedTypeNode
                     Name(b)
                   Identifier(optional)
-                Type\Shape\StringNamedFieldNode(required)
-                  Type\NamedTypeNode
+                Stmt\Shape\StringNamedFieldNode(required)
+                  Stmt\NamedTypeNode
                     Name(c)
                   Literal\StringLiteralNode("string_required")
-                Type\Shape\StringNamedFieldNode(optional)
-                  Type\NamedTypeNode
+                Stmt\Shape\StringNamedFieldNode(optional)
+                  Stmt\NamedTypeNode
                     Name(d)
                   Literal\StringLiteralNode("string_optional")
             OUTPUT);

@@ -19,10 +19,10 @@ use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
-use TypeLang\Parser\Node\Definition\DefinitionStatement;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
-use TypeLang\Parser\Node\Type\TypeStatement;
+use TypeLang\Parser\Node\Stmt\DefinitionStatement;
+use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 /**
  * @psalm-type GrammarConfigArray = array{
@@ -40,7 +40,7 @@ final class Parser implements ParserInterface
 {
     private readonly ParserCombinator $parser;
 
-    private readonly Lexer $lexer;
+    public readonly Lexer $lexer;
 
     /**
      * In-memory string literal pool.
@@ -76,13 +76,15 @@ final class Parser implements ParserInterface
      */
     private function createParser(LexerInterface $lexer, array $grammar): ParserCombinator
     {
+        $options = [
+            ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
+            ParserConfigsInterface::CONFIG_AST_BUILDER => new Builder($grammar['reducers']),
+        ];
+
         return new ParserCombinator(
             lexer: $lexer,
             grammar: $grammar['grammar'],
-            options: [
-                ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
-                ParserConfigsInterface::CONFIG_AST_BUILDER => new Builder($grammar['reducers']),
-            ]
+            options: $options,
         );
     }
 
