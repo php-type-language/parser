@@ -7,42 +7,13 @@
 
 %include grammar/lexemes                // Lexeme/Token Definitions
 %include grammar/common                 // Common Utils
-
 %include grammar/literals               // Literal Definitions
-
-%include grammar/template-params        // T<out TArg: Type, in TArg2: Type>
 %include grammar/template-arguments     // T<TArg, TArg2>
-
 %include grammar/callable               // callable(mixed): void
-%include grammar/function               // function name(mixed): void
-%include grammar/method                 // public function name(mixed): void
-
 %include grammar/shape-fields           // array { key: int, ...<TKey, TValue> }
 %include grammar/named-type             // Map<int<0, max>, non-empty-string>
 
-%include grammar/inheritance            // extends Class<T>
-                                        // extends Interface<T>, Interface2<T>
-                                        // implements Interface<T>, Interface2<T>
-
-%include grammar/namespace              // namespace Name\Any;
-%include grammar/class-like             // class Example {}
-                                        // interface Example {}
-                                        // trait Example {}
-%include grammar/type                   // type T = string | int
-
-%pragma root Document
-
-#Document
-  : Namespace()
-  | DefinitionStatement()*
-  ;
-
-DefinitionStatement
-  : TypeDefinition()
-  | ClassDefinition()
-  | InterfaceDefinition()
-  | TraitDefinition()
-  ;
+%pragma root Type
 
 /**
  * -----------------------------------------------------------------------------

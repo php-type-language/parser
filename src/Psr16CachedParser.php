@@ -7,7 +7,6 @@ namespace TypeLang\Parser;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use TypeLang\Parser\Node\Stmt\DefinitionStatement;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 final class Psr16CachedParser extends CachedParser
@@ -31,7 +30,7 @@ final class Psr16CachedParser extends CachedParser
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress InvalidReturnStatement
      */
-    protected function getCachedItem(ReadableInterface $source, callable $execute): mixed
+    protected function getCachedItem(ParserInterface $parser, ReadableInterface $source): ?TypeStatement
     {
         $key = $this->getCacheKey($source);
 
@@ -39,7 +38,7 @@ final class Psr16CachedParser extends CachedParser
         $result = $this->cache->get($key);
 
         if (!\is_iterable($result)) {
-            $this->cache->set($key, $result = $execute($source));
+            $this->cache->set($key, $result = $parser->parse($source));
         }
 
         return $result;

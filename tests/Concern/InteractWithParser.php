@@ -27,7 +27,7 @@ trait InteractWithParser
 
     protected function getTypeStatementResult(string $statement): ?TypeStatement
     {
-        return $this->parser->parseType($statement);
+        return $this->parser->parse($statement);
     }
 
     protected function getTypeStatementAsString(string $statement): ?string

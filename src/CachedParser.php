@@ -26,24 +26,14 @@ abstract class CachedParser implements ParserInterface
     /**
      * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */
-    public function parse(#[Language('PHP')] mixed $source): iterable
+    public function parse(#[Language('PHP')] mixed $source): ?TypeStatement
     {
         /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::fromSources($source);
 
-        return $this->getCachedItem($source, fn(ReadableInterface $src): iterable => $this->parent->parse($src));
+        return $this->getCachedItem($this->parent, $source);
     }
 
-    /**
-     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
-     */
-    public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
-    {
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $source = File::fromSources($source);
-
-        return $this->getCachedItem($source, fn(ReadableInterface $src): ?TypeStatement => $this->parent->parseType($src));
-    }
 
     public function clear(mixed $source): void
     {
@@ -52,12 +42,5 @@ abstract class CachedParser implements ParserInterface
 
     abstract protected function removeCacheItem(ReadableInterface $source): void;
 
-    /**
-     * @template TReturn of mixed
-     *
-     * @param callable(ReadableInterface):TReturn $execute
-     *
-     * @return TReturn
-     */
-    abstract protected function getCachedItem(ReadableInterface $source, callable $execute): mixed;
+    abstract protected function getCachedItem(ParserInterface $parser, ReadableInterface $source): ?TypeStatement;
 }

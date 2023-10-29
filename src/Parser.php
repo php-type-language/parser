@@ -21,7 +21,6 @@ use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
-use TypeLang\Parser\Node\Stmt\DefinitionStatement;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 /**
@@ -99,51 +98,24 @@ final class Parser implements ParserInterface
     /**
      * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */
-    public function parse(#[Language('PHP')] mixed $source): iterable
+    public function parse(#[Language('PHP')] mixed $source): ?TypeStatement
     {
         /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::new($source);
 
-        return $this->executeAndHandleErrors($source, 'Document');
-    }
-
-    /**
-     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
-     */
-    public function parseType(#[Language('PHP')] mixed $source): ?TypeStatement
-    {
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $source = File::new($source);
-
-        foreach ($this->executeAndHandleErrors($source, 'Type') as $type) {
-            if ($type instanceof TypeStatement) {
-                return $type;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param non-empty-literal-string $initial
-     *
-     * @return iterable<array-key, TypeStatement|DefinitionStatement>
-     *
-     * @throws ParseException
-     */
-    private function executeAndHandleErrors(ReadableInterface $source, string $initial): iterable
-    {
         $allowedNestingLevel = (int)\ini_get('xdebug.max_nesting_level');
 
         try {
             \ini_set('xdebug.max_nesting_level', -1);
 
             try {
-                /** @var iterable<array-key, TypeStatement|DefinitionStatement> */
-                return $this->parser
-                    ->startsAt($initial)
-                    ->parse($source)
-                ;
+                foreach ($this->parser->parse($source) as $stmt) {
+                    if ($stmt instanceof TypeStatement) {
+                        return $stmt;
+                    }
+                }
+
+                return null;
             } catch (UnexpectedTokenException $e) {
                 throw $this->unexpectedTokenError($e, $source);
             } catch (UnrecognizedTokenException $e) {
