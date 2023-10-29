@@ -7,11 +7,12 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of float
  * @template-extends LiteralNode<TValue>
+ * @template-implements ParsableLiteralNodeInterface<TValue, numeric-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */
-class FloatLiteralNode extends LiteralNode
+class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     /**
      * @param TValue $value
@@ -23,9 +24,6 @@ class FloatLiteralNode extends LiteralNode
         parent::__construct($raw ?? (string)$this->value);
     }
 
-    /**
-     * @param numeric-string $value
-     */
     public static function parse(string $value): self
     {
         return new self((float)$value, $value);

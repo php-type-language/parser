@@ -7,11 +7,12 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of bool
  * @template-extends LiteralNode<TValue>
+ * @template-implements ParsableLiteralNodeInterface<TValue, non-empty-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */
-class BoolLiteralNode extends LiteralNode
+class BoolLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     /**
      * @param TValue $value

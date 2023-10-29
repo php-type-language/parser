@@ -90,21 +90,7 @@ PrefixedNullableType -> {
     return $children;
 }
   : <T_NULLABLE> TypesList()
-  | SuffixedNullableType()
-  ;
-
-// stmt = Type?
-SuffixedNullableType -> {
-    if (\count($children) > 1) {
-        $result = new Node\Stmt\NullableTypeNode($children[0]);
-        $result->offset = $children[1]->getOffset();
-
-        return $result;
-    }
-
-    return $children[0];
-}
-  : TypesList() <T_NULLABLE>?
+  | TypesList()
   ;
 
 TypesList -> {

@@ -7,11 +7,12 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of string
  * @template-extends LiteralNode<TValue>
+ * @template-implements ParsableLiteralNodeInterface<TValue, non-empty-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */
-class StringLiteralNode extends LiteralNode
+class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     /**
      * @var non-empty-string
@@ -161,7 +162,9 @@ class StringLiteralNode extends LiteralNode
             $code = \hexdec((string)$matches[1]);
 
             if (\function_exists('\\mb_chr')) {
-                return \mb_chr($code);
+                if (($result = \mb_chr($code)) !== false) {
+                    return $result;
+                }
             }
 
             if (0x80 > $code %= 0x200000) {

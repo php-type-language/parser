@@ -156,22 +156,19 @@ return [
         103 => new \Phplrt\Parser\Grammar\Lexeme('T_AMP', false),
         104 => new \Phplrt\Parser\Grammar\Concatenation([103, 98]),
         105 => new \Phplrt\Parser\Grammar\Optional(104),
-        106 => new \Phplrt\Parser\Grammar\Alternation([109, 110]),
-        107 => new \Phplrt\Parser\Grammar\Concatenation([113, 117]),
+        106 => new \Phplrt\Parser\Grammar\Alternation([109, 107]),
+        107 => new \Phplrt\Parser\Grammar\Concatenation([110, 114]),
         108 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
         109 => new \Phplrt\Parser\Grammar\Concatenation([108, 107]),
-        110 => new \Phplrt\Parser\Grammar\Concatenation([107, 112]),
-        111 => new \Phplrt\Parser\Grammar\Lexeme('T_NULLABLE', true),
-        112 => new \Phplrt\Parser\Grammar\Optional(111),
-        114 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_OPEN', true),
-        115 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
-        116 => new \Phplrt\Parser\Grammar\Concatenation([114, 115]),
-        117 => new \Phplrt\Parser\Grammar\Repetition(116, 0, INF),
-        118 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
-        119 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
-        120 => new \Phplrt\Parser\Grammar\Concatenation([118, 'Type', 119]),
+        111 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_OPEN', true),
+        112 => new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
+        113 => new \Phplrt\Parser\Grammar\Concatenation([111, 112]),
+        114 => new \Phplrt\Parser\Grammar\Repetition(113, 0, INF),
+        115 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
+        116 => new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
+        117 => new \Phplrt\Parser\Grammar\Concatenation([115, 'Type', 116]),
         'Type' => new \Phplrt\Parser\Grammar\Concatenation([96]),
-        113 => new \Phplrt\Parser\Grammar\Alternation([120, 21, 46, 95])
+        110 => new \Phplrt\Parser\Grammar\Alternation([117, 21, 46, 95])
     ],
     'reducers' => [
         0 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -421,16 +418,6 @@ return [
         }
     
         return $children;
-        },
-        110 => function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\count($children) > 1) {
-            $result = new Node\Stmt\NullableTypeNode($children[0]);
-            $result->offset = $children[1]->getOffset();
-    
-            return $result;
-        }
-    
-        return $children[0];
         },
         107 => function (\Phplrt\Parser\Context $ctx, $children) {
             $statement = \array_shift($children);

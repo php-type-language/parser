@@ -7,11 +7,12 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of non-empty-string
  * @template-extends LiteralNode<TValue>
+ * @template-implements ParsableLiteralNodeInterface<TValue, non-empty-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */
-class VariableLiteralNode extends LiteralNode
+class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     /**
      * @var TValue
@@ -37,23 +38,12 @@ class VariableLiteralNode extends LiteralNode
         parent::__construct($value);
     }
 
-    /**
-     * @param non-empty-string $name
-     */
-    public static function create(string $name): static
-    {
-        if (!\str_starts_with($name, '$')) {
-            $name = '$' . $name;
-        }
-
-        return new static($name);
-    }
-
-    /**
-     * @param non-empty-string $value
-     */
     public static function parse(string $value): static
     {
+        if (!\str_starts_with($value, '$')) {
+            $value = '$' . $value;
+        }
+
         return new static($value);
     }
 

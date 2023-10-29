@@ -7,11 +7,12 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of int
  * @template-extends LiteralNode<TValue>
+ * @template-implements ParsableLiteralNodeInterface<TValue, numeric-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */
-class IntLiteralNode extends LiteralNode
+class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     /**
      * @param TValue $value
@@ -23,9 +24,6 @@ class IntLiteralNode extends LiteralNode
         parent::__construct($raw ?? (string)$this->value);
     }
 
-    /**
-     * @param numeric-string $value
-     */
     public static function parse(string $value): self
     {
         [$isNegative, $decimal] = self::split($value);
