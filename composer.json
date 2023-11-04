@@ -1,5 +1,5 @@
 {
-    "name": "phptl/parser",
+    "name": "type-lang/parser",
     "type": "library",
     "description": "PHP Type Language reference implementation",
     "keywords": ["parser", "language", "php", "phpdoc"],
