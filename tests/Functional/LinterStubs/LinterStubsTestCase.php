@@ -20,6 +20,7 @@ abstract class LinterStubsTestCase extends TestCase
 
     protected const TAGS = [
         'param', 'var', 'return',
+        'param-out', 'psalm-param-out', 'phpstan-param-out',
         'phpstan-param', 'phpstan-var', 'phpstan-return',
         'psalm-param', 'psalm-var', 'psalm-return',
     ];
@@ -117,39 +118,11 @@ abstract class LinterStubsTestCase extends TestCase
         ;
 
         //
-        // Known errors in phpdoc
+        // Known issues in phpdoc
         //
         if (
-            // Invalid phpdoc, like a "Iterator<<string>>"
-            \str_contains($expr, '>>') ||
-            // Psr\EventDispatcher\ListenerProviderInterface phpdoc bug
-            \str_contains($expr, 'iterable[callable]') ||
             // Non-const expression in typedef (will not support)
             \str_contains($expr, 'func_num_args() > ') ||
-            // PHPDoc bug: https://github.com/phpDocumentor/ReflectionDocBlock/issues/351
-            \str_ends_with($expr, 'string[]}>}|array}|null') ||
-            // Invalid stmts
-            \str_contains($expr, 'array[string]') ||
-            // Syntax errors in:
-            // - netresearch\jsonmapper\tests\JsonMapperTest\Array.php:69
-            // - netresearch\jsonmapper\tests\JsonMapperTest\Array.php:75
-            // - netresearch\jsonmapper\tests\JsonMapperTest\Broken.php:25
-            // - netresearch\jsonmapper\tests\namespacetest\UnitData.php:6
-            \str_contains($expr, 'ArrayObject[') ||
-            // Syntax error in:
-            // - netresearch\jsonmapper\tests\namespacetest\UnitData.php:31
-            \str_contains($expr, 'model\UserList[') ||
-            // phpstan bug in PHPUnit\Framework\Constraint\IsType:124
-            // Cannot extract 'resource'|'resource (closed)' expressions.
-            \str_ends_with($expr, "'resource'|'resource")
-        ) {
-            $this->markTestIncomplete("Test is flagged as false-positive:\n" . $message);
-        }
-
-        //
-        // Known issues
-        //
-        if (
             // Conditional types with variables not supported
             \str_starts_with($e->getMessage(), 'Syntax error, unexpected "$') ||
             // Conditional types with template params not supported

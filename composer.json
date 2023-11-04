@@ -22,6 +22,8 @@
         }
     },
     "require-dev": {
+        "nikic/php-parser": "^4.17",
+        "phpdocumentor/reflection-docblock": "^5.3",
         "friendsofphp/php-cs-fixer": "^3.35",
         "phplrt/compiler": "^3.4",
         "phpunit/phpunit": "^10.4",

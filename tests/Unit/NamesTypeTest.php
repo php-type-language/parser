@@ -27,7 +27,7 @@ class NamesTypeTest extends TestCase
     public function testNotAllowsDashAtStart(): void
     {
         $this->assertTypeStatementFails('-name', <<<'ERROR'
-            Syntax error, unrecognized "-"
+            Syntax error, unexpected "-"
             ERROR);
     }
 
