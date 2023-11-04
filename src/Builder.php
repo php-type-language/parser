@@ -23,19 +23,19 @@ final class Builder implements BuilderInterface
 
     public function build(Context $context, mixed $result): mixed
     {
-        $state = $context->getState();
+        if (!isset($this->reducers[$context->state])) {
+            return $result;
+        }
 
-        if (isset($this->reducers[$state])) {
-            /** @psalm-suppress MixedAssignment */
-            $result = ($this->reducers[$state])($context, $result);
+        /** @psalm-suppress MixedAssignment */
+        $result = ($this->reducers[$context->state])($context, $result);
 
-            if ($result instanceof Node && $result->offset === 0) {
-                $processed = $context->lastProcessedToken;
-                $ordinal = $context->lastOrdinalToken;
+        if ($result instanceof Node && $result->offset === 0) {
+            $processed = $context->lastProcessedToken;
+            $ordinal = $context->lastOrdinalToken;
 
-                $result->offset = $processed->getOffset();
-                $result->offsetTo = $ordinal?->getOffset() ?? $result->offset;
-            }
+            $result->offset = $processed->getOffset();
+            $result->offsetTo = $ordinal?->getOffset() ?? $result->offset;
         }
 
         return $result;

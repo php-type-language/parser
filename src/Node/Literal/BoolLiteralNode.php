@@ -7,7 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of bool
  * @template-extends LiteralNode<TValue>
- * @template-implements ParsableLiteralNodeInterface<TValue, non-empty-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
@@ -17,16 +16,24 @@ class BoolLiteralNode extends LiteralNode implements ParsableLiteralNodeInterfac
     /**
      * @param TValue $value
      */
-    final public function __construct(
+    public function __construct(
         public readonly bool $value,
         string $raw = null,
     ) {
         parent::__construct($raw ?? ($value ? 'true' : 'false'));
     }
 
-    public static function parse(string $value): self
+    /**
+     * @param non-empty-string $value
+     *
+     * @return static<bool>
+     * @psalm-suppress MoreSpecificImplementedParamType : Strengthening the
+     *                 precondition will violate the LSP, but in this case it is
+     *                 acceptable.
+     */
+    public static function parse(string $value): static
     {
-        return new self(\strtolower($value) === 'true', $value);
+        return new static(\strtolower($value) === 'true', $value);
     }
 
     public function getValue(): bool

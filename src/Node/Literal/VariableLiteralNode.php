@@ -7,7 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of non-empty-string
  * @template-extends LiteralNode<TValue>
- * @template-implements ParsableLiteralNodeInterface<TValue, non-empty-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
@@ -38,6 +37,14 @@ class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInte
         parent::__construct($value);
     }
 
+    /**
+     * @param non-empty-string $value
+     *
+     * @return static<non-empty-string>
+     * @psalm-suppress MoreSpecificImplementedParamType : Strengthening the
+     *                 precondition will violate the LSP, but in this case it is
+     *                 acceptable.
+     */
     public static function parse(string $value): static
     {
         if (!\str_starts_with($value, '$')) {

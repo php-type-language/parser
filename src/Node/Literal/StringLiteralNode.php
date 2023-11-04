@@ -7,7 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of string
  * @template-extends LiteralNode<TValue>
- * @template-implements ParsableLiteralNodeInterface<TValue, non-empty-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
@@ -51,6 +50,9 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
      * @param non-empty-string $value
      *
      * @return static<string>
+     * @psalm-suppress MoreSpecificImplementedParamType : Strengthening the
+     *                 precondition will violate the LSP, but in this case it is
+     *                 acceptable.
      */
     public static function parse(string $value): static
     {

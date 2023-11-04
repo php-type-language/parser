@@ -4,32 +4,21 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Shape;
 
-use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\NodeList;
 
 /**
- * @template-implements \IteratorAggregate<array-key, FieldNode>
+ * @template-extends NodeList<FieldNode>
  */
-class FieldsListNode extends Node implements \IteratorAggregate, \Countable, \Stringable
+class FieldsListNode extends NodeList implements \Stringable
 {
     /**
      * @param list<FieldNode> $list
      */
     public function __construct(
-        public readonly array $list = [],
+        array $list = [],
         public bool $sealed = true,
-    ) {}
-
-    public function getIterator(): \Traversable
-    {
-        return new \ArrayIterator($this->list);
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function count(): int
-    {
-        return \count($this->list);
+    ) {
+        parent::__construct($list);
     }
 
     public function __toString(): string

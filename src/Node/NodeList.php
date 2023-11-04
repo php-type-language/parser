@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Node\Stmt;
-
-use TypeLang\Parser\Node\Node;
+namespace TypeLang\Parser\Node;
 
 /**
- * @template-implements \IteratorAggregate<array-key, DefinitionStatement>
+ * @template TNode of Node
+ *
+ * @template-implements \IteratorAggregate<array-key, TNode>
  */
-class DefinitionsListNode extends Node implements \IteratorAggregate, \Countable
+abstract class NodeList extends Node implements \IteratorAggregate, \Countable
 {
     /**
-     * @param array<DefinitionStatement> $list
+     * @param list<TNode> $list
      */
     public function __construct(
         public readonly array $list = [],

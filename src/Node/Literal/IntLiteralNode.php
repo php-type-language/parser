@@ -7,7 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template TValue of int
  * @template-extends LiteralNode<TValue>
- * @template-implements ParsableLiteralNodeInterface<TValue, numeric-string>
  *
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
@@ -17,18 +16,26 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
     /**
      * @param TValue $value
      */
-    final public function __construct(
+    public function __construct(
         public readonly int $value,
         string $raw = null,
     ) {
         parent::__construct($raw ?? (string)$this->value);
     }
 
-    public static function parse(string $value): self
+    /**
+     * @param numeric-string $value
+     *
+     * @return static<int>
+     * @psalm-suppress MoreSpecificImplementedParamType : Strengthening the
+     *                 precondition will violate the LSP, but in this case it is
+     *                 acceptable.
+     */
+    public static function parse(string $value): static
     {
         [$isNegative, $decimal] = self::split($value);
 
-        return new self($isNegative ? -$decimal : $decimal, $value);
+        return new static($isNegative ? -$decimal : $decimal, $value);
     }
 
     /**

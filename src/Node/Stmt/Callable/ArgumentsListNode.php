@@ -4,30 +4,9 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Callable;
 
-use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\NodeList;
 
 /**
- * @template-implements \IteratorAggregate<array-key, ArgumentNode>
+ * @template-extends NodeList<ArgumentNode>
  */
-class ArgumentsListNode extends Node implements \IteratorAggregate, \Countable
-{
-    /**
-     * @param list<ArgumentNode> $list
-     */
-    public function __construct(
-        public readonly array $list = [],
-    ) {}
-
-    public function getIterator(): \Traversable
-    {
-        return new \ArrayIterator($this->list);
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function count(): int
-    {
-        return \count($this->list);
-    }
-}
+class ArgumentsListNode extends NodeList {}
