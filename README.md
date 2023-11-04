@@ -16,21 +16,15 @@
     <a href="https://github.com/php-type-language/parser/actions"><img src="https://github.com/php-type-language/parser/workflows/tests/badge.svg"></a>
 </p>
 
-The PHP reference implementation for Type Language.
+The PHP reference implementation for Type Language parser.
 
 ## Getting Started
 
 **Type Language** is a declarative type language inspired by static analyzers
 like [PHPStan](https://phpstan.org/) and [Psalm](https://psalm.dev/docs/).
 
-The Type Language specification is edited in the markdown files found in
-[/spec](https://github.com/php-type-language/spec) the latest release of which
-is published at https://php-type-language.github.io/spec/.
-
-The latest draft specification can be found at
-https://php-type-language.github.io/spec/draft/ which tracks the latest commit
-to the master branch in [spec](https://github.com/php-type-language/spec)
-repository.
+Read [documentation pages](https://nesk.gitbook.io/php-type-language) for more
+information.
 
 ## Installation
 
