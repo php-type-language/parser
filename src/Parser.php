@@ -10,7 +10,8 @@ use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Lexer\TokenInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Lexer\Lexer;
-use Phplrt\Parser\ContextInterface;
+use Phplrt\Parser\BuilderInterface;
+use Phplrt\Parser\Context;
 use Phplrt\Parser\Exception\UnexpectedTokenException;
 use Phplrt\Parser\Exception\UnrecognizedTokenException;
 use Phplrt\Parser\Grammar\RuleInterface;
@@ -32,7 +33,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
  *  skip: array<non-empty-string>,
  *  transitions: array,
  *  grammar: array<int<0, max>|non-empty-string, RuleInterface>,
- *  reducers: array<int<0, max>|non-empty-string, callable(ContextInterface, mixed):mixed>
+ *  reducers: array<int<0, max>|non-empty-string, callable(Context, mixed):mixed>
  * }
  */
 final class Parser implements ParserInterface
@@ -55,8 +56,11 @@ final class Parser implements ParserInterface
      */
     private readonly \WeakMap $integerPool;
 
-    public function __construct()
-    {
+    private readonly BuilderInterface $builer;
+
+    public function __construct(
+        private readonly bool $tolerant = false,
+    ) {
         /** @psalm-var GrammarConfigArray $grammar */
         $grammar = require __DIR__ . '/../resources/grammar.php';
 
@@ -66,6 +70,7 @@ final class Parser implements ParserInterface
         /** @var \WeakMap<TokenInterface, IntLiteralNode> */
         $this->integerPool = new \WeakMap();
 
+        $this->builer = new Builder($grammar['reducers']);
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
     }
@@ -75,15 +80,14 @@ final class Parser implements ParserInterface
      */
     private function createParser(LexerInterface $lexer, array $grammar): ParserCombinator
     {
-        $options = [
-            ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
-            ParserConfigsInterface::CONFIG_AST_BUILDER => new Builder($grammar['reducers']),
-        ];
-
         return new ParserCombinator(
             lexer: $lexer,
             grammar: $grammar['grammar'],
-            options: $options,
+            options: [
+                ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
+                ParserConfigsInterface::CONFIG_AST_BUILDER => $this->builer,
+                ParserConfigsInterface::CONFIG_ALLOW_TRAILING_TOKENS => $this->tolerant,
+            ],
         );
     }
 
@@ -92,7 +96,14 @@ final class Parser implements ParserInterface
      */
     private function createLexer(array $grammar): Lexer
     {
-        return new Lexer($grammar['tokens']['default'], $grammar['skip']);
+        $lexer = new Lexer(
+            tokens: $grammar['tokens']['default'],
+            skip: $grammar['skip'],
+        );
+
+        $lexer->disableUnrecognizedTokenException();
+
+        return $lexer;
     }
 
     /**
