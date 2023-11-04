@@ -13,6 +13,7 @@ VariableLiteral -> {
     return Node\Literal\VariableLiteralNode::parse($token->getValue());
 }
   : <T_VARIABLE>
+  | <T_THIS>
   ;
 
 StringLiteral -> { return $this->stringPool[$token] ??= $children; }
