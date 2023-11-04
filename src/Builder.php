@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use Phplrt\Parser\Context;
 use TypeLang\Parser\Node\Node;
 use Phplrt\Parser\BuilderInterface;
-use Phplrt\Parser\ContextInterface;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
@@ -15,13 +15,13 @@ use Phplrt\Parser\ContextInterface;
 final class Builder implements BuilderInterface
 {
     /**
-     * @param array<int<0, max>|non-empty-string, callable(ContextInterface, mixed):mixed> $reducers
+     * @param array<int<0, max>|non-empty-string, callable(Context, mixed):mixed> $reducers
      */
     public function __construct(
         private readonly array $reducers,
     ) {}
 
-    public function build(ContextInterface $context, mixed $result): mixed
+    public function build(Context $context, mixed $result): mixed
     {
         $state = $context->getState();
 
@@ -29,9 +29,15 @@ final class Builder implements BuilderInterface
             /** @psalm-suppress MixedAssignment */
             $result = ($this->reducers[$state])($context, $result);
 
-            if ($result instanceof Node && $result->offset === 0) {
-                $token = $context->getToken();
-                $result->offset = $token->getOffset();
+            if ($context instanceof Context
+                && $result instanceof Node
+                && $result->offset === 0
+            ) {
+                $processed = $context->lastProcessedToken;
+                $ordinal = $context->lastOrdinalToken;
+
+                $result->offset = $processed->getOffset();
+                $result->offsetTo = $ordinal?->getOffset() ?? $result->offset;
             }
         }
 
