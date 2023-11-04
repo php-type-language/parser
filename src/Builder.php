@@ -29,10 +29,7 @@ final class Builder implements BuilderInterface
             /** @psalm-suppress MixedAssignment */
             $result = ($this->reducers[$state])($context, $result);
 
-            if ($context instanceof Context
-                && $result instanceof Node
-                && $result->offset === 0
-            ) {
+            if ($result instanceof Node && $result->offset === 0) {
                 $processed = $context->lastProcessedToken;
                 $ordinal = $context->lastOrdinalToken;
 
