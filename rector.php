@@ -6,6 +6,7 @@ use Rector\CodeQuality\Rector\ClassMethod\LocallyCalledStaticMethodToNonStaticRe
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodingStyle\Rector\Assign\SplitDoubleAssignRector;
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
+use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Config\RectorConfig;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
@@ -13,6 +14,7 @@ use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
+use Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector;
 
 return static function (RectorConfig $config): void {
     $config->paths([__DIR__ . '/src']);
@@ -26,26 +28,15 @@ return static function (RectorConfig $config): void {
     ]);
 
     $config->skip([
-        //
-        // Do not replace classic properties to promoted eq. These are
-        // completely different statements.
-        //
         ClassPropertyAssignToConstructorPromotionRector::class,
-
-        //
-        // This rector can break the Doctrine that replaces implementations
-        // with proxies, like:
-        //  - private Collection $relation;          // OK This can be replaced with a proxy
-        //  + private readonly Collection $relation; // FAIL
-        //
         ReadOnlyPropertyRector::class,
-
-        // Totally pointless "improvements"
         CatchExceptionNameMatchingTypeRector::class,
         SplitDoubleAssignRector::class,
         FinalizePublicClassConstantRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
         ReturnBinaryOrToEarlyReturnRector::class,
         LocallyCalledStaticMethodToNonStaticRector::class,
+        EncapsedStringsToSprintfRector::class,
+        AddReturnTypeDeclarationFromYieldsRector::class,
     ]);
 };

@@ -163,10 +163,10 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         $callee = static function (array $matches): string {
             $code = \hexdec((string)$matches[1]);
 
-            if (\function_exists('\\mb_chr')) {
-                if (($result = \mb_chr($code)) !== false) {
-                    return $result;
-                }
+            if (\function_exists('\\mb_chr')
+                && ($result = \mb_chr($code)) !== false
+            ) {
+                return $result;
             }
 
             if (0x80 > $code %= 0x200000) {
