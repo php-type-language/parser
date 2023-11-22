@@ -8,10 +8,10 @@ use TypeLang\Parser\Node\Literal\VariableLiteralNode;
 use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
-final class ArgumentNode extends Node implements \Stringable
+final class ParameterNode extends Node implements \Stringable
 {
     public function __construct(
-        public readonly TypeStatement $type,
+        public ?TypeStatement $type = null,
         public ?VariableLiteralNode $name = null,
         public bool $output = false,
         public bool $variadic = false,
@@ -23,7 +23,7 @@ final class ArgumentNode extends Node implements \Stringable
         return $this instanceof $class;
     }
 
-    public function getType(): TypeStatement
+    public function getType(): ?TypeStatement
     {
         return $this->type;
     }

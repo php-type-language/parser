@@ -249,18 +249,18 @@ return [
         48 => function (\Phplrt\Parser\Context $ctx, $children) {
             $name = \array_shift($children);
     
-        $arguments = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ArgumentsListNode
+        $parameters = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ParametersListNode
             ? \array_shift($children)
-            : new Node\Stmt\Callable\ArgumentsListNode();
+            : new Node\Stmt\Callable\ParametersListNode();
     
         return new Node\Stmt\CallableTypeNode(
             name: $name,
-            arguments: $arguments,
+            parameters: $parameters,
             type: isset($children[0]) ? $children[0] : null,
         );
         },
         42 => function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Callable\ArgumentsListNode($children);
+            return new Node\Stmt\Callable\ParametersListNode($children);
         },
         49 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
@@ -293,7 +293,7 @@ return [
             return $children[0];
         }
     
-        if ($children[0] instanceof Node\Stmt\Callable\ArgumentNode) {
+        if ($children[0] instanceof Node\Stmt\Callable\ParameterNode) {
             $children[0]->variadic = true;
             return $children[0];
         }
@@ -302,7 +302,7 @@ return [
         return $children[1];
         },
         60 => function (\Phplrt\Parser\Context $ctx, $children) {
-            $argument = new Node\Stmt\Callable\ArgumentNode($children[0]);
+            $argument = new Node\Stmt\Callable\ParameterNode($children[0]);
     
         if (\count($children) !== 1) {
             $argument->output = true;

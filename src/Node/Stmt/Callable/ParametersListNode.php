@@ -7,6 +7,6 @@ namespace TypeLang\Parser\Node\Stmt\Callable;
 use TypeLang\Parser\Node\NodeList;
 
 /**
- * @template-extends NodeList<ArgumentNode>
+ * @template-extends NodeList<ParameterNode>
  */
-class ArgumentsListNode extends NodeList {}
+class ParametersListNode extends NodeList {}
