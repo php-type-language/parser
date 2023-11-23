@@ -120,6 +120,8 @@ final class Parser implements ParserInterface
      */
     public function parse(#[Language('PHP')] mixed $source): ?TypeStatement
     {
+        $this->lastProcessedTokenOffset = 0;
+
         /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::new($source);
 
@@ -132,9 +134,12 @@ final class Parser implements ParserInterface
                 foreach ($this->parser->parse($source) as $stmt) {
                     if ($stmt instanceof TypeStatement) {
                         $context = $this->parser->getLastExecutionContext();
-                        $token = $context->buffer->current();
 
-                        $this->lastProcessedTokenOffset = $token->getOffset();
+                        if ($context !== null) {
+                            $token = $context->buffer->current();
+
+                            $this->lastProcessedTokenOffset = $token->getOffset();
+                        }
 
                         return $stmt;
                     }
