@@ -35,7 +35,10 @@ final class TypeResolverVisitor extends Visitor
     public function enter(Node $node): ?Command
     {
         if ($this->containsName($node)) {
-            /** @var object{name: Name} $node */
+            /**
+             * @var object{name: Name} $node
+             * @psalm-suppress MixedAssignment
+             */
             $mapped = ($this->transform)($node->name);
 
             if ($mapped instanceof Name) {
