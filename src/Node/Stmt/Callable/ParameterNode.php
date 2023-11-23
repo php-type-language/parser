@@ -16,7 +16,11 @@ final class ParameterNode extends Node implements \Stringable
         public bool $output = false,
         public bool $variadic = false,
         public bool $optional = false,
-    ) {}
+    ) {
+        assert($type !== null || $name !== null, new \TypeError(
+            'Required indication of the type or name of the parameter (one of)',
+        ));
+    }
 
     public function is(string $class): bool
     {

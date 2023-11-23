@@ -36,13 +36,18 @@ SingleQuotedStringLiteral -> {
 FloatLiteral -> {
     return Node\Literal\FloatLiteralNode::parse($token->getValue());
 }
-  : <T_FLOAT_LITERAL>
+  : <T_PFX_FLOAT_LITERAL>
+  | <T_SFX_FLOAT_LITERAL>
+  | <T_EXP_LITERAL>
   ;
 
 IntLiteral -> {
     return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
 }
-  : <T_INT_LITERAL>
+  : <T_BIN_INT_LITERAL>
+  | <T_OCT_INT_LITERAL>
+  | <T_HEX_INT_LITERAL>
+  | <T_DEC_INT_LITERAL>
   ;
 
 BoolLiteral -> {

@@ -363,11 +363,11 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'callable(int, int): string' => ['callable(int, int): string', <<<'AST'
             Stmt\CallableTypeNode
               Name(callable)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(simple)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
-                Stmt\Callable\ArgumentNode(simple)
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
               Stmt\NamedTypeNode
@@ -376,11 +376,11 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'callable(int, int=): string' => ['callable(int, int=): string', <<<'AST'
             Stmt\CallableTypeNode
               Name(callable)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(simple)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
-                Stmt\Callable\ArgumentNode(optional)
+                Stmt\Callable\ParameterNode(optional)
                   Stmt\NamedTypeNode
                     Name(int)
               Stmt\NamedTypeNode
@@ -389,12 +389,12 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'callable(int $foo, string $bar): void' => ['callable(int $foo, string $bar): void', <<<'AST'
             Stmt\CallableTypeNode
               Name(callable)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(simple)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                   Literal\VariableLiteralNode($foo)
-                Stmt\Callable\ArgumentNode(simple)
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(string)
                   Literal\VariableLiteralNode($bar)
@@ -404,8 +404,8 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'callable(string &$bar): mixed' => ['callable(string &$bar): mixed', <<<'AST'
             Stmt\CallableTypeNode
               Name(callable)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(output)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(output)
                   Stmt\NamedTypeNode
                     Name(string)
                   Literal\VariableLiteralNode($bar)
@@ -415,8 +415,8 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'callable(float ...$floats): (int|null)' => ['callable(float ...$floats): (int|null)', <<<'AST'
             Stmt\CallableTypeNode
               Name(callable)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(variadic)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(variadic)
                   Stmt\NamedTypeNode
                     Name(float)
                   Literal\VariableLiteralNode($floats)
@@ -428,8 +428,8 @@ final class PhpStanTypesTest extends TypesTestCase
         yield 'callable(float...): (int|null)' => ['callable(float...): (int|null)', <<<'AST'
             Stmt\CallableTypeNode
               Name(callable)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(variadic)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(variadic)
                   Stmt\NamedTypeNode
                     Name(float)
               Stmt\UnionTypeNode
@@ -440,11 +440,11 @@ final class PhpStanTypesTest extends TypesTestCase
         yield '\Closure(int, int): string' => ['\Closure(int, int): string', <<<'AST'
             Stmt\CallableTypeNode
               FullQualifiedName(\Closure)
-              Stmt\Callable\ArgumentsListNode
-                Stmt\Callable\ArgumentNode(simple)
+              Stmt\Callable\ParametersListNode
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
-                Stmt\Callable\ArgumentNode(simple)
+                Stmt\Callable\ParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
               Stmt\NamedTypeNode
