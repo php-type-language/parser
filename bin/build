@@ -37,6 +37,7 @@ $grammar = (new Compiler())
         ->withClassUsage('TypeLang\\Parser\\Node')
         ->withClassUsage('TypeLang\\Parser\\Exception')
         ->withClassUsage('TypeLang\\Parser\\Exception\\SemanticException')
+        ->withClassUsage('TypeLang\\Parser\\Exception\\FeatureNotAllowedException')
 ;
 
 file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar->generate());

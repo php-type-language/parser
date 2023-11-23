@@ -1,0 +1,47 @@
+
+TernaryExpressionOrLogicalType -> {
+    $count = \count($children);
+
+    if ($count === 1) {
+        return $children[0];
+    }
+
+    if ($this->conditional === false) {
+        throw FeatureNotAllowedException::fromFeature('conditional expressions', $offset);
+    }
+
+    $condition = match ($children[1]->getName()) {
+        'T_EQ' => new Node\Stmt\Condition\EqualConditionNode(
+            $children[0],
+            $children[2],
+        ),
+        'T_NEQ' => new Node\Stmt\Condition\NotEqualConditionNode(
+            $children[0],
+            $children[2],
+        ),
+        default => throw new SemanticException(
+            \sprintf('Invalid conditional operator "%s"', $children[1]->getValue()),
+            $offset,
+            SemanticException::CODE_INVALID_OPERATOR,
+        ),
+    };
+
+    return new Node\Stmt\TernaryConditionNode(
+        $condition,
+        $children[3],
+        $children[4],
+    );
+}
+  : LogicalType() OptionalTernaryExpressionSuffix()
+  | VariableLiteral() TernaryExpressionSuffix()
+  ;
+
+OptionalTernaryExpressionSuffix
+  : TernaryExpressionSuffix()?
+  ;
+
+TernaryExpressionSuffix
+  : (<T_EQ>|<T_NEQ>) (Type()|VariableLiteral())
+    ::T_QMARK:: Type()
+    ::T_COLON:: Type()
+  ;

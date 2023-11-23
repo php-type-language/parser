@@ -31,11 +31,7 @@ final class Builder implements BuilderInterface
         $result = ($this->reducers[$context->state])($context, $result);
 
         if ($result instanceof Node && $result->offset === 0) {
-            $processed = $context->lastProcessedToken;
-            $ordinal = $context->lastOrdinalToken;
-
-            $result->offset = $processed->getOffset();
-            $result->offsetTo = $ordinal?->getOffset() ?? $result->offset;
+            $result->offset = $context->lastProcessedToken->getOffset();
         }
 
         return $result;

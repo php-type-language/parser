@@ -1,12 +1,21 @@
 
 Literal
+  : RawLiteral()
+  | ConstMaskLiteral()
+  | ClassConstLiteral()
+  ;
+
+RawLiteral -> {
+    if ($this->literals === false) {
+        throw FeatureNotAllowedException::fromFeature('literal values', $offset);
+    }
+    return $children;
+}
   : StringLiteral()
   | FloatLiteral()
   | IntLiteral()
   | BoolLiteral()
   | NullLiteral()
-  | ConstMaskLiteral()
-  | ClassConstLiteral()
   ;
 
 VariableLiteral -> {

@@ -20,6 +20,7 @@ Identifier -> {
     return new Node\Identifier($children->getValue());
 }
   : <T_NAME>
+  | <T_EQ>
   | <T_BOOL_LITERAL>
   | <T_NULL_LITERAL>
   ;

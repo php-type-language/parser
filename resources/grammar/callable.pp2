@@ -2,6 +2,10 @@
 CallableType -> {
     $name = \array_shift($children);
 
+    if ($this->callables === false) {
+        throw FeatureNotAllowedException::fromFeature('callable types', $offset);
+    }
+
     $parameters = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ParametersListNode
         ? \array_shift($children)
         : new Node\Stmt\Callable\ParametersListNode();

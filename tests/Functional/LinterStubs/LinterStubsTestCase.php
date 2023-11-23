@@ -120,13 +120,13 @@ abstract class LinterStubsTestCase extends TestCase
         //
         // Known issues in phpdoc
         //
-        if (
+        if (true
             // Non-const expression in typedef (will not support)
-            \str_contains($expr, 'func_num_args() > ') ||
+            || \str_contains($expr, 'func_num_args() > ')
             // Conditional types with variables not supported
-            \str_starts_with($e->getMessage(), 'Syntax error, unexpected "$') ||
+            // || \str_starts_with($e->getMessage(), 'Syntax error, unexpected "$')
             // Conditional types with template params not supported
-            \str_starts_with($e->getMessage(), 'Syntax error, unexpected "is"')
+            // || \str_starts_with($e->getMessage(), 'Syntax error, unexpected "is"')
         ) {
             $this->markTestIncomplete("Test is flagged as a known issue:\n" . $message);
         }

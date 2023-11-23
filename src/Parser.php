@@ -56,10 +56,19 @@ final class Parser implements ParserInterface
      */
     private readonly \WeakMap $integerPool;
 
-    private readonly BuilderInterface $builer;
+    private readonly BuilderInterface $builder;
+
+    /**
+     * @var int<0, max>
+     */
+    public int $lastProcessedTokenOffset = 0;
 
     public function __construct(
-        private readonly bool $tolerant = false,
+        public readonly bool $tolerant = false,
+        public readonly bool $conditional = true,
+        public readonly bool $shapes = true,
+        public readonly bool $callables = true,
+        public readonly bool $literals = true,
     ) {
         /** @psalm-var GrammarConfigArray $grammar */
         $grammar = require __DIR__ . '/../resources/grammar.php';
@@ -70,7 +79,7 @@ final class Parser implements ParserInterface
         /** @var \WeakMap<TokenInterface, IntLiteralNode> */
         $this->integerPool = new \WeakMap();
 
-        $this->builer = new Builder($grammar['reducers']);
+        $this->builder = new Builder($grammar['reducers']);
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
     }
@@ -85,7 +94,7 @@ final class Parser implements ParserInterface
             grammar: $grammar['grammar'],
             options: [
                 ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
-                ParserConfigsInterface::CONFIG_AST_BUILDER => $this->builer,
+                ParserConfigsInterface::CONFIG_AST_BUILDER => $this->builder,
                 ParserConfigsInterface::CONFIG_ALLOW_TRAILING_TOKENS => $this->tolerant,
             ],
         );
@@ -122,6 +131,11 @@ final class Parser implements ParserInterface
             try {
                 foreach ($this->parser->parse($source) as $stmt) {
                     if ($stmt instanceof TypeStatement) {
+                        $context = $this->parser->getLastExecutionContext();
+                        $token = $context->buffer->current();
+
+                        $this->lastProcessedTokenOffset = $token->getOffset();
+
                         return $stmt;
                     }
                 }

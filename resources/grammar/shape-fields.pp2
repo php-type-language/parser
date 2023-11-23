@@ -4,6 +4,10 @@ ShapeFields -> {
         return new Node\Stmt\Shape\FieldsListNode();
     }
 
+    if ($this->shapes === false) {
+        throw FeatureNotAllowedException::fromFeature('shape fields', $offset);
+    }
+
     $parameters = null;
 
     if (\end($children) instanceof Node\Stmt\Template\ArgumentsListNode) {
@@ -90,7 +94,7 @@ ExplicitField -> {
         default => new Node\Stmt\Shape\NamedFieldNode($name, $value, $optional),
     };
 }
-  : ShapeKey() (<T_NULLABLE>)? ::T_COLON:: ShapeValue()
+  : ShapeKey() (<T_QMARK>)? ::T_COLON:: ShapeValue()
   ;
 
 ImplicitField -> {

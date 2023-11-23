@@ -12,7 +12,9 @@ class SemanticException extends \LogicException implements ParserExceptionInterf
 
     final public const CODE_VARIADIC_WITH_DEFAULT = 0x03;
 
-    public const CODE_LAST = self::CODE_VARIADIC_WITH_DEFAULT;
+    final public const CODE_INVALID_OPERATOR = 0x04;
+
+    public const CODE_LAST = self::CODE_INVALID_OPERATOR;
 
     /**
      * @param int<0, max> $offset
