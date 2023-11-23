@@ -9,6 +9,9 @@ use Phplrt\Contracts\Source\ReadableInterface;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
+/**
+ * @property-read int<0, max> $lastProcessedTokenOffset
+ */
 interface ParserInterface
 {
     /**
