@@ -41,7 +41,7 @@ OptionalTernaryExpressionSuffix
   ;
 
 TernaryExpressionSuffix
-  : (<T_EQ>|<T_NEQ>) (Type()|VariableLiteral())
+  : (<T_EQ>|<T_NEQ>) (VariableLiteral()|Type())
     ::T_QMARK:: Type()
     ::T_COLON:: Type()
   ;
