@@ -11,8 +11,8 @@ use TypeLang\Parser\Node\Stmt\Template\ArgumentsListNode;
 class NamedTypeNode extends TypeStatement
 {
     public function __construct(
-        public readonly Name $name,
-        public readonly ?ArgumentsListNode $arguments = null,
-        public readonly ?FieldsListNode $fields = null,
+        public Name $name,
+        public ?ArgumentsListNode $arguments = null,
+        public ?FieldsListNode $fields = null,
     ) {}
 }

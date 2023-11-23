@@ -10,7 +10,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 final class NamedFieldNode extends ExplicitFieldNode
 {
     public function __construct(
-        public readonly Identifier $name,
+        public Identifier $name,
         TypeStatement $of,
         bool $optional = false,
     ) {

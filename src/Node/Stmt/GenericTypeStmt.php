@@ -13,6 +13,6 @@ abstract class GenericTypeStmt extends TypeStatement
      * @param T $type
      */
     public function __construct(
-        public readonly TypeStatement $type,
+        public TypeStatement $type,
     ) {}
 }

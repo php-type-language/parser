@@ -10,7 +10,7 @@ use TypeLang\Parser\Node\Name;
 class ClassConstMaskNode extends TypeStatement
 {
     public function __construct(
-        public readonly Name $class,
-        public readonly ?Identifier $constant = null,
+        public Name $class,
+        public ?Identifier $constant = null,
     ) {}
 }

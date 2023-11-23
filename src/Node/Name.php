@@ -40,6 +40,10 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
      */
     private function parseName(iterable|string|Identifier $name): array
     {
+        if (\is_string($name)) {
+            $name = \array_filter(\explode('\\', $name));
+        }
+
         if (\is_iterable($name)) {
             $result = [];
 
@@ -108,6 +112,70 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
     public function slice(int $offset = 0, int $length = null): self
     {
         return new static(\array_slice($this->parts, $offset, $length));
+    }
+
+    /**
+     * Appends the passed {@see Name} to the existing one at the end.
+     *
+     * ```php
+     *  $name = new Name('Some\Any');
+     *
+     *  echo $name->withAdded(new Name('Test\Class'));
+     *  > "Some\Any\Test\Class"
+     *
+     *  echo $name->withAdded(new Name('Any\Class'));
+     *  > "Some\Any\Any\Class"
+     * ```
+     */
+    public function withAdded(self $name): self
+    {
+        return new static([
+            ...$this->parts,
+            ...$name->parts,
+        ]);
+    }
+
+    /**
+     * Combines two names into one (in case the last one is an alias).
+     *
+     * ```php
+     *   $name = new Name('Some\Any');
+     *
+     *   echo $name->mergeWith(new Name('Test\Class'));
+     *   > "Some\Any\Class"
+     *
+     *   echo $name->mergeWith(new Name('Any\Class'));
+     *   > "Some\Any\Class"
+     * ```
+     *
+     * Real world use case:
+     * ```php
+     *  // use TypeLang\Parser\Node;
+     *  // echo Node::class;
+     *
+     *  $name = new Name('TypeLang\Parser\Node');
+     *  echo $name->mergeWith(new Name('Node'));
+     *
+     *  // > TypeLang\Parser\Node
+     * ```
+     *
+     * Or aliased:
+     * ```php
+     *  // use TypeLang\Parser\Exception as Error;
+     *  // echo Error\SemanticException::class;
+     *
+     *  $name = new Name('TypeLang\Parser\Exception');
+     *  echo $name->mergeWith(new Name('Error\SemanticException'));
+     *
+     *  // > TypeLang\Parser\Exception\SemanticException
+     * ```
+     */
+    public function mergeWith(self $name): self
+    {
+        return new static([
+            ...$this->parts,
+            ...\array_slice($name->parts, 1),
+        ]);
     }
 
     /**

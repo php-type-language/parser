@@ -15,7 +15,7 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
      * @param list<TNode> $list
      */
     public function __construct(
-        public readonly array $list = [],
+        public array $list = [],
     ) {}
 
     public function getIterator(): \Traversable

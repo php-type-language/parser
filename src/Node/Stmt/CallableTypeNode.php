@@ -10,8 +10,8 @@ use TypeLang\Parser\Node\Stmt\Callable\ParametersListNode;
 class CallableTypeNode extends TypeStatement
 {
     public function __construct(
-        public readonly Name $name,
-        public readonly ParametersListNode $parameters = new ParametersListNode(),
-        public readonly ?TypeStatement $type = null,
+        public Name $name,
+        public ParametersListNode $parameters = new ParametersListNode(),
+        public ?TypeStatement $type = null,
     ) {}
 }

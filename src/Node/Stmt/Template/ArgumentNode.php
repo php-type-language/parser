@@ -10,6 +10,6 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 class ArgumentNode extends Node
 {
     public function __construct(
-        public readonly TypeStatement $value
+        public TypeStatement $value
     ) {}
 }

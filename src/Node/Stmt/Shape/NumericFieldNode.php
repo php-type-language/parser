@@ -10,7 +10,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 final class NumericFieldNode extends ExplicitFieldNode
 {
     public function __construct(
-        public readonly IntLiteralNode $index,
+        public IntLiteralNode $index,
         TypeStatement $of,
         bool $optional = false,
     ) {

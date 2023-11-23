@@ -10,7 +10,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 abstract class Condition extends Statement
 {
     public function __construct(
-        public readonly TypeStatement $subject,
-        public readonly TypeStatement $target,
+        public TypeStatement $subject,
+        public TypeStatement $target,
     ) {}
 }

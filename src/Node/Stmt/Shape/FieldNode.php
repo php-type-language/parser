@@ -10,7 +10,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 class FieldNode extends Node implements \Stringable
 {
     public function __construct(
-        public readonly TypeStatement $value,
+        public TypeStatement $value,
         public bool $optional = false,
     ) {}
 

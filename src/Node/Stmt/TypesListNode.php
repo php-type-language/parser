@@ -7,6 +7,6 @@ namespace TypeLang\Parser\Node\Stmt;
 class TypesListNode extends TypeStatement
 {
     public function __construct(
-        public readonly TypeStatement $type,
+        public TypeStatement $type,
     ) {}
 }

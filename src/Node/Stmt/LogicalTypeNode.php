@@ -13,7 +13,7 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
     /**
      * @var non-empty-list<T>
      */
-    public readonly array $statements;
+    public array $statements;
 
     public function __construct(
         TypeStatement $a,

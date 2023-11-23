@@ -9,8 +9,8 @@ use TypeLang\Parser\Node\Stmt\Condition\Condition;
 final class TernaryConditionNode extends TypeStatement
 {
     public function __construct(
-        public readonly Condition $condition,
-        public readonly TypeStatement $then,
-        public readonly TypeStatement $else,
+        public Condition $condition,
+        public TypeStatement $then,
+        public TypeStatement $else,
     ) {}
 }

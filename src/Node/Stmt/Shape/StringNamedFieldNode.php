@@ -13,7 +13,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 final class StringNamedFieldNode extends ExplicitFieldNode
 {
     public function __construct(
-        public readonly StringLiteralNode $name,
+        public StringLiteralNode $name,
         TypeStatement $of,
         bool $optional = false,
     ) {

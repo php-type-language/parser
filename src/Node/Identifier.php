@@ -53,7 +53,16 @@ final class Identifier extends Node implements \Stringable
      */
     public function isSpecial(): bool
     {
-        return \in_array($this->value, self::SPECIAL_CLASS_NAME, true);
+        return self::looksLikeSpecial($this->value);
+    }
+
+    /**
+     * Returns {@see true} in case of passed "$name" argument looks like
+     * a special type name or {@see false} instead.
+     */
+    public static function looksLikeSpecial(string $name): bool
+    {
+        return \in_array(\strtolower($name), self::SPECIAL_CLASS_NAME, true);
     }
 
     /**
@@ -61,7 +70,16 @@ final class Identifier extends Node implements \Stringable
      */
     public function isBuiltin(): bool
     {
-        return \in_array($this->value, self::BUILTIN_TYPE_NAME, true);
+        return self::looksLikeBuiltin($this->value);
+    }
+
+    /**
+     * Returns {@see true} in case of passed "$name" argument looks like
+     * a builtin type name or {@see false} instead.
+     */
+    public static function looksLikeBuiltin(string $value): bool
+    {
+        return \in_array(\strtolower($value), self::BUILTIN_TYPE_NAME, true);
     }
 
     /**

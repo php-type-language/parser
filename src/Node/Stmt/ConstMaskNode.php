@@ -9,7 +9,7 @@ use TypeLang\Parser\Node\Name;
 class ConstMaskNode extends TypeStatement implements \Stringable
 {
     public function __construct(
-        public readonly Name $name,
+        public Name $name,
     ) {}
 
     public function __toString(): string
