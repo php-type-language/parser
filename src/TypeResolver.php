@@ -7,14 +7,14 @@ namespace TypeLang\Parser;
 use TypeLang\Parser\Node\FullQualifiedName;
 use TypeLang\Parser\Node\Name;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
-use TypeLang\Parser\TypeResolver\TypeResolverVisitor;
+use TypeLang\Parser\Traverser\TypeMapVisitor;
 
 final class TypeResolver implements TypeResolverInterface
 {
     public function resolve(TypeStatement $type, callable $transform): TypeStatement
     {
         Traverser::through(
-            visitor: new TypeResolverVisitor($transform(...)),
+            visitor: new TypeMapVisitor($transform(...)),
             nodes: [$type],
         );
 

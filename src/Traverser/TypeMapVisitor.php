@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\TypeResolver;
+namespace TypeLang\Parser\Traverser;
 
 use TypeLang\Parser\Node\Name;
 use TypeLang\Parser\Node\Node;
@@ -10,15 +10,12 @@ use TypeLang\Parser\Node\Stmt\CallableTypeNode;
 use TypeLang\Parser\Node\Stmt\ClassConstMaskNode;
 use TypeLang\Parser\Node\Stmt\ConstMaskNode;
 use TypeLang\Parser\Node\Stmt\NamedTypeNode;
-use TypeLang\Parser\Traverser\Command;
-use TypeLang\Parser\Traverser\Visitor;
 
-/**
- * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal TypeLang\Parser
- */
-final class TypeResolverVisitor extends Visitor
+final class TypeMapVisitor extends Visitor
 {
+    /**
+     * @param \Closure(Name):(Name|null) $transform
+     */
     public function __construct(
         private readonly \Closure $transform,
     ) {}
