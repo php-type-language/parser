@@ -16,4 +16,12 @@ class ConstMaskNode extends TypeStatement implements \Stringable
     {
         return $this->name->toString() . '*';
     }
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => TypeKind::CONST_MASK_KIND,
+            'name' => $this->name->toString(),
+        ];
+    }
 }

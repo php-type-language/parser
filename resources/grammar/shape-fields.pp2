@@ -43,17 +43,17 @@ ShapeFieldsList -> {
 
     foreach ($children as $field) {
         if ($field instanceof Node\Stmt\Shape\ExplicitFieldNode) {
-            $identifier = $field->getIdentifier();
+            $key = $field->getKey();
 
-            if (\in_array($identifier, $explicit, true)) {
+            if (\in_array($key, $explicit, true)) {
                 throw new SemanticException(
-                    \sprintf('Duplicate key "%s"', $identifier),
+                    \sprintf('Duplicate key "%s"', $key),
                     $field->offset,
                     SemanticException::CODE_SHAPE_KEY_DUPLICATION,
                 );
             }
 
-            $explicit[] = $identifier;
+            $explicit[] = $key;
         } else {
             $implicit = true;
         }
@@ -61,7 +61,7 @@ ShapeFieldsList -> {
 
     if ($explicit !== [] && $implicit) {
         throw new SemanticException(
-            \sprintf('Cannot mix explicit and implicit shape keys', $identifier),
+            \sprintf('Cannot mix explicit and implicit shape keys', $key),
             $offset,
             SemanticException::CODE_SHAPE_KEY_MIX,
         );
@@ -98,7 +98,7 @@ ExplicitField -> {
   ;
 
 ImplicitField -> {
-    return new Node\Stmt\Shape\FieldNode($children[0]);
+    return new Node\Stmt\Shape\ImplicitFieldNode($children[0]);
 }
   : ShapeValue()
   ;

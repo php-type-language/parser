@@ -198,4 +198,12 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
     {
         return $this->value;
     }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => LiteralKind::STRING_KIND,
+        ];
+    }
 }

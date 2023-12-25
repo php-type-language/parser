@@ -68,7 +68,7 @@ final class TypeResolver implements TypeResolverInterface
         }
 
         /** @var array<non-empty-lowercase-string, Name> $replacements */
-        return $this->resolve($type, function (Name $name) use ($replacements) {
+        return $this->resolve($type, static function (Name $name) use ($replacements) {
             $first = \strtolower($name->getFirstPartAsString());
 
             if (isset($replacements[$first])) {

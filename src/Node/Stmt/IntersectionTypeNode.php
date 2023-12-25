@@ -8,4 +8,13 @@ namespace TypeLang\Parser\Node\Stmt;
  * @template T of TypeStatement
  * @template-extends LogicalTypeNode<T>
  */
-class IntersectionTypeNode extends LogicalTypeNode {}
+class IntersectionTypeNode extends LogicalTypeNode
+{
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => TypeKind::LOGICAL_INTERSECTION_KIND,
+        ];
+    }
+}

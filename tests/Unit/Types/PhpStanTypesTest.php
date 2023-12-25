@@ -280,10 +280,10 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\NamedTypeNode
               Name(array)
               Stmt\Shape\FieldsListNode(sealed)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
             AST];

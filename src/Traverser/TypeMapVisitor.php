@@ -39,7 +39,7 @@ final class TypeMapVisitor extends Visitor
             $mapped = ($this->transform)($node->name);
 
             if ($mapped instanceof Name) {
-                $node->name = $mapped;
+                $node->key = $mapped;
             }
         }
 

@@ -12,15 +12,15 @@ namespace TypeLang\Parser\Node;
 abstract class NodeList extends Node implements \IteratorAggregate, \Countable
 {
     /**
-     * @param list<TNode> $list
+     * @param list<TNode> $items
      */
     public function __construct(
-        public array $list = [],
+        public array $items = [],
     ) {}
 
     public function getIterator(): \Traversable
     {
-        return new \ArrayIterator($this->list);
+        return new \ArrayIterator($this->items);
     }
 
     /**
@@ -28,6 +28,17 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
      */
     public function count(): int
     {
-        return \count($this->list);
+        return \count($this->items);
+    }
+
+    public function toArray(): array
+    {
+        $items = [];
+
+        foreach ($this->items as $item) {
+            $items[] = $item->toArray();
+        }
+
+        return ['items' => $items];
     }
 }

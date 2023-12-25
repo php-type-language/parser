@@ -37,4 +37,12 @@ abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface
     {
         return $this->raw;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => LiteralKind::UNKNOWN,
+            'value' => $this->getValue(),
+        ];
+    }
 }

@@ -23,4 +23,12 @@ class NullLiteralNode extends LiteralNode
     {
         return null;
     }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => LiteralKind::NULL_KIND,
+        ];
+    }
 }

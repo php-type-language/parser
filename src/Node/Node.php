@@ -15,4 +15,9 @@ abstract class Node implements NodeInterface
     {
         return $this->offset;
     }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
+    }
 }

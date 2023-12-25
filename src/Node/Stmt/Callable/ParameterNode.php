@@ -20,6 +20,10 @@ final class ParameterNode extends Node implements \Stringable
         assert($type !== null || $name !== null, new \TypeError(
             'Required indication of the type or name of the parameter (one of)',
         ));
+
+        assert($variadic === false || $optional === false, new \TypeError(
+            'Parameter cannot be both variable and optional (variadic parameter is already optional)',
+        ));
     }
 
     public function is(string $class): bool
@@ -53,5 +57,16 @@ final class ParameterNode extends Node implements \Stringable
         }
 
         return \implode(', ', $result);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name?->getValue(),
+            'type' => $this->type?->toArray(),
+            'output' => $this->output,
+            'variadic' => $this->variadic,
+            'optional' => $this->optional,
+        ];
     }
 }

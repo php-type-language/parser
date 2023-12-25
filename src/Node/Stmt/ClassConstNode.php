@@ -13,4 +13,13 @@ class ClassConstNode extends ClassConstMaskNode
     {
         parent::__construct($class, $constant);
     }
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => TypeKind::CLASS_CONST_KIND,
+            'class' => $this->class->toString(),
+            'constant' => $this->constant?->toString(),
+        ];
+    }
 }

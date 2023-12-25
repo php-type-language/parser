@@ -15,4 +15,28 @@ class NamedTypeNode extends TypeStatement
         public ?ArgumentsListNode $arguments = null,
         public ?FieldsListNode $fields = null,
     ) {}
+
+    public function toArray(): array
+    {
+        $result = [
+            'kind' => TypeKind::TYPE_KIND,
+            'name' => $this->name->toString(),
+        ];
+
+        if ($this->arguments !== null) {
+            $arguments = [];
+
+            foreach ($this->arguments as $argument) {
+                $arguments[] = $argument->value->toArray();
+            }
+
+            $result['arguments'] = $arguments;
+        }
+
+        if ($this->fields !== null) {
+            $result['fields'] = $this->fields->toArray();
+        }
+
+        return $result;
+    }
 }

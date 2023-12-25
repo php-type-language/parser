@@ -13,4 +13,13 @@ abstract class Condition extends Statement
         public TypeStatement $subject,
         public TypeStatement $target,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => ConditionKind::UNKNOWN,
+            'subject' => $this->subject->toArray(),
+            'target' => $this->target->toArray(),
+        ];
+    }
 }

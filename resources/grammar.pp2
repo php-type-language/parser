@@ -126,16 +126,9 @@ TypesList -> {
     )*
   ;
 
-ThisType -> {
-    return new Node\Stmt\ThisTypeNode();
-}
-  : <T_THIS>
-  ;
-
 PrimaryType
   : ::T_PARENTHESIS_OPEN:: Type() ::T_PARENTHESIS_CLOSE::
   | Literal()
   | CallableType()
   | NamedType()
-  | ThisType()
   ;

@@ -12,4 +12,9 @@ class ArgumentNode extends Node
     public function __construct(
         public TypeStatement $value
     ) {}
+
+    public function toArray(): array
+    {
+        return $this->value->toArray();
+    }
 }

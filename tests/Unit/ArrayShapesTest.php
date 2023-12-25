@@ -14,13 +14,13 @@ class ArrayShapesTest extends TestCase
             Stmt\NamedTypeNode
               Name(array)
               Stmt\Shape\FieldsListNode(sealed)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(a)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(b)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(c)
             OUTPUT);
@@ -41,13 +41,13 @@ class ArrayShapesTest extends TestCase
             Stmt\NamedTypeNode
               Name(array)
               Stmt\Shape\FieldsListNode(unsealed)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(a)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(b)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(c)
             OUTPUT);
@@ -59,7 +59,7 @@ class ArrayShapesTest extends TestCase
             Stmt\NamedTypeNode
               Name(array)
               Stmt\Shape\FieldsListNode(sealed)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
             OUTPUT);
@@ -71,10 +71,10 @@ class ArrayShapesTest extends TestCase
             Stmt\NamedTypeNode
               Name(array)
               Stmt\Shape\FieldsListNode(sealed)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(string)
             OUTPUT);
@@ -86,14 +86,14 @@ class ArrayShapesTest extends TestCase
             Stmt\NamedTypeNode
               Name(array)
               Stmt\Shape\FieldsListNode(sealed)
-                Stmt\Shape\FieldNode(required)
+                Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(Some\Any)
                     Stmt\Shape\FieldsListNode(sealed)
-                      Stmt\Shape\FieldNode(required)
+                      Stmt\Shape\ImplicitFieldNode(required)
                         Stmt\NamedTypeNode
                           Name(int)
-                      Stmt\Shape\FieldNode(required)
+                      Stmt\Shape\ImplicitFieldNode(required)
                         Stmt\NamedTypeNode
                           Name(string)
             OUTPUT);

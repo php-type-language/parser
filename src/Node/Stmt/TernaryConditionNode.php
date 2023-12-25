@@ -13,4 +13,14 @@ final class TernaryConditionNode extends TypeStatement
         public TypeStatement $then,
         public TypeStatement $else,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => TypeKind::TERNARY_KIND,
+            'condition' => $this->condition->toArray(),
+            'then' => $this->then->toArray(),
+            'else' => $this->else->toArray(),
+        ];
+    }
 }

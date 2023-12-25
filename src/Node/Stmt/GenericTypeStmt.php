@@ -15,4 +15,12 @@ abstract class GenericTypeStmt extends TypeStatement
     public function __construct(
         public TypeStatement $type,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'type' => $this->type->toArray(),
+        ];
+    }
 }

@@ -13,4 +13,13 @@ class ClassConstMaskNode extends TypeStatement
         public Name $class,
         public ?Identifier $constant = null,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => TypeKind::CLASS_CONST_MASK_KIND,
+            'class' => $this->class->toString(),
+            'constant' => $this->constant?->toString(),
+        ];
+    }
 }

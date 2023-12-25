@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Node\Stmt\Condition;
+namespace TypeLang\Parser\Node\Stmt\Shape;
 
-final class EqualConditionNode extends Condition
+class ImplicitFieldNode extends FieldNode
 {
     public function toArray(): array
     {
         return [
             ...parent::toArray(),
-            'kind' => ConditionKind::KIND_EQUAL,
+            'kind' => ShapeFieldKind::IMPLICIT_FIELD_KIND,
         ];
     }
 }

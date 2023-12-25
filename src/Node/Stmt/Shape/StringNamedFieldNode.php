@@ -13,16 +13,24 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 final class StringNamedFieldNode extends ExplicitFieldNode
 {
     public function __construct(
-        public StringLiteralNode $name,
+        public StringLiteralNode $key,
         TypeStatement $of,
         bool $optional = false,
     ) {
         parent::__construct($of, $optional);
     }
 
-    public function getIdentifier(): string
+    public function getKey(): string
     {
-        /** @var non-empty-string */
-        return $this->name->getValue();
+        return $this->key->getValue();
+    }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'key' => $this->key->getValue(),
+            'kind' => ShapeFieldKind::STRING_FIELD_KIND,
+        ];
     }
 }

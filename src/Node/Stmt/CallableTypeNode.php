@@ -14,4 +14,14 @@ class CallableTypeNode extends TypeStatement
         public ParametersListNode $parameters = new ParametersListNode(),
         public ?TypeStatement $type = null,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => TypeKind::CALLABLE_KIND,
+            'name' => $this->name->toString(),
+            'parameters' => $this->parameters->toArray(),
+            'type' => $this->type?->toArray(),
+        ];
+    }
 }

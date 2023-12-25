@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node;
 
-interface NodeInterface
+interface NodeInterface extends SerializableInterface
 {
     /**
      * Returns token offset defined in the source code.

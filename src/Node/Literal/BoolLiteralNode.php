@@ -40,4 +40,12 @@ class BoolLiteralNode extends LiteralNode implements ParsableLiteralNodeInterfac
     {
         return $this->value;
     }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => LiteralKind::BOOL_KIND,
+        ];
+    }
 }

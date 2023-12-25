@@ -72,4 +72,12 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
     {
         return $this->value;
     }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => LiteralKind::INT_KIND,
+        ];
+    }
 }

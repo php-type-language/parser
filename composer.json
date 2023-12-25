@@ -24,11 +24,11 @@
     "require-dev": {
         "nikic/php-parser": "^4.17",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "friendsofphp/php-cs-fixer": "^3.35",
+        "friendsofphp/php-cs-fixer": "^3.42",
         "phplrt/compiler": "^3.5",
-        "phpunit/phpunit": "^10.4",
+        "phpunit/phpunit": "^10.5",
         "rector/rector": "^0.18",
-        "vimeo/psalm": "^5.15"
+        "vimeo/psalm": "^5.18"
     },
     "autoload-dev": {
         "psr-4": {
@@ -37,8 +37,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev",
-            "dev-main": "1.0.x-dev"
+            "dev-master": "2.0.x-dev",
+            "dev-main": "2.0.x-dev"
         }
     },
     "config": {

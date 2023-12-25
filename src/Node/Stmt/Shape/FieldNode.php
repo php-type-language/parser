@@ -7,10 +7,10 @@ namespace TypeLang\Parser\Node\Stmt\Shape;
 use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
-class FieldNode extends Node implements \Stringable
+abstract class FieldNode extends Node implements \Stringable
 {
     public function __construct(
-        public TypeStatement $value,
+        public TypeStatement $type,
         public bool $optional = false,
     ) {}
 
@@ -19,13 +19,22 @@ class FieldNode extends Node implements \Stringable
         return $this instanceof $class;
     }
 
-    public function getValue(): TypeStatement
+    public function getType(): TypeStatement
     {
-        return $this->value;
+        return $this->type;
     }
 
     public function __toString(): string
     {
         return $this->optional ? 'optional' : 'required';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'kind' => ShapeFieldKind::UNKNOWN,
+            'type' => $this->type->toArray(),
+            'optional' => $this->optional,
+        ];
     }
 }

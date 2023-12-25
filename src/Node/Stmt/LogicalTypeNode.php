@@ -56,4 +56,18 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         /** @var int<2, max> */
         return \count($this->statements);
     }
+
+    public function toArray(): array
+    {
+        $items = [];
+
+        foreach ($this->statements as $statement) {
+            $items[] = $statement->toArray();
+        }
+
+        return [
+            ...parent::toArray(),
+            'items' => $items,
+        ];
+    }
 }

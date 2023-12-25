@@ -25,4 +25,18 @@ class FieldsListNode extends NodeList implements \Stringable
     {
         return $this->sealed ? 'sealed' : 'unsealed';
     }
+
+    public function toArray(): array
+    {
+        $items = [];
+
+        foreach ($this->items as $item) {
+            $items[] = $item->toArray();
+        }
+
+        return [
+            'items' => $items,
+            'sealed' => $this->sealed,
+        ];
+    }
 }

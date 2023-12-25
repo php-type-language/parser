@@ -40,4 +40,12 @@ class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterfa
     {
         return $this->value;
     }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => LiteralKind::FLOAT_KIND,
+        ];
+    }
 }

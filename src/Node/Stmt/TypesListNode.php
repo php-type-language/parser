@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt;
 
-class TypesListNode extends TypeStatement
+/**
+ * @template T of TypeStatement
+ * @template-extends GenericTypeStmt<T>
+ */
+class TypesListNode extends GenericTypeStmt
 {
-    public function __construct(
-        public TypeStatement $type,
-    ) {}
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'kind' => TypeKind::LIST_KIND,
+        ];
+    }
 }

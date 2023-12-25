@@ -32,7 +32,7 @@ final class Identifier extends Node implements \Stringable
         'iterable',
         'null',
         'true',
-        'false'
+        'false',
     ];
 
     /**
@@ -105,5 +105,20 @@ final class Identifier extends Node implements \Stringable
     public function __toString(): string
     {
         return $this->value;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'identifier' => $this->toString(),
+        ];
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->toString();
     }
 }
