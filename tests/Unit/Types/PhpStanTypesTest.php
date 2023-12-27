@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Unit\Types;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
+#[Group('unit'), Group('type-lang/parser')]
 final class PhpStanTypesTest extends TypesTestCase
 {
     /**

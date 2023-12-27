@@ -11,9 +11,11 @@ use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Position\Position;
 use Phplrt\Source\File;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Parser\Tests\Concern\InteractWithDocBlocks;
 use TypeLang\Parser\Tests\Functional\TestCase;
 
+#[Group('functional'), Group('type-lang/parser')]
 abstract class LinterStubsTestCase extends TestCase
 {
     use InteractWithDocBlocks;
