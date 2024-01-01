@@ -23,7 +23,7 @@ The PHP reference implementation for Type Language parser.
 **Type Language** is a declarative type language inspired by static analyzers
 like [PHPStan](https://phpstan.org/) and [Psalm](https://psalm.dev/docs/).
 
-Read [documentation pages](https://nesk.gitbook.io/php-type-language) for more
+Read [documentation pages](https://docs.phpdoc.io) for more
 information.
 
 ## Installation
