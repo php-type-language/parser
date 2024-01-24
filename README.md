@@ -16,15 +16,12 @@
     <a href="https://github.com/php-type-language/parser/actions"><img src="https://github.com/php-type-language/parser/workflows/tests/badge.svg"></a>
 </p>
 
-The PHP reference implementation for Type Language parser.
-
-## Getting Started
+The PHP reference implementation for Type Language Parser.
 
 **Type Language** is a declarative type language inspired by static analyzers
 like [PHPStan](https://phpstan.org/) and [Psalm](https://psalm.dev/docs/).
 
-Read [documentation pages](https://docs.phpdoc.io) for more
-information.
+Read [documentation pages](https://docs.phpdoc.io) for more information.
 
 ## Installation
 
