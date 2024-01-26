@@ -309,11 +309,7 @@ return [
         }
     
         if ($children[0]->variadic) {
-            throw new SemanticException(
-                'Cannot have variadic param with a default',
-                $offset,
-                SemanticException::CODE_VARIADIC_WITH_DEFAULT,
-            );
+            throw SemanticException::fromVariadicWithDefault($offset);
         }
     
         $children[0]->optional = true;
@@ -387,11 +383,7 @@ return [
                 $key = $field->getKey();
     
                 if (\in_array($key, $explicit, true)) {
-                    throw new SemanticException(
-                        \sprintf('Duplicate key "%s"', $key),
-                        $field->offset,
-                        SemanticException::CODE_SHAPE_KEY_DUPLICATION,
-                    );
+                    throw SemanticException::fromShapeFieldDuplication($key, $field->offset);
                 }
     
                 $explicit[] = $key;
@@ -401,11 +393,7 @@ return [
         }
     
         if ($explicit !== [] && $implicit) {
-            throw new SemanticException(
-                \sprintf('Cannot mix explicit and implicit shape keys', $key),
-                $offset,
-                SemanticException::CODE_SHAPE_KEY_MIX,
-            );
+            throw SemanticException::fromShapeMixedKeys($offset);
         }
     
         return new Node\Stmt\Shape\FieldsListNode($children);
@@ -469,10 +457,9 @@ return [
                 $children[0],
                 $children[2],
             ),
-            default => throw new SemanticException(
-                \sprintf('Invalid conditional operator "%s"', $children[1]->getValue()),
+            default => throw SemanticException::fromInvalidConditionalOperator(
+                $children[1]->getValue(),
                 $offset,
-                SemanticException::CODE_INVALID_OPERATOR,
             ),
         };
     

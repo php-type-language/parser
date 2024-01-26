@@ -6,17 +6,17 @@ namespace TypeLang\Parser\Exception;
 
 class ParseException extends \LogicException implements ParserExceptionInterface
 {
-    final public const CODE_UNEXPECTED_TOKEN = 0x01;
+    final public const ERROR_CODE_UNEXPECTED_TOKEN = 0x01;
 
-    final public const CODE_UNRECOGNIZED_TOKEN = 0x02;
+    final public const ERROR_CODE_UNRECOGNIZED_TOKEN = 0x02;
 
-    final public const CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
+    final public const ERROR_CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
 
-    final public const CODE_INTERNAL_ERROR = 0x05;
+    final public const ERROR_CODE_INTERNAL_ERROR = 0x05;
 
-    final public const CODE_SEMANTIC_ERROR_BASE = 0x06;
+    final public const ERROR_CODE_SEMANTIC_ERROR_BASE = 0x06;
 
-    public const CODE_LAST = self::CODE_SEMANTIC_ERROR_BASE + SemanticException::CODE_LAST;
+    protected const CODE_LAST = self::ERROR_CODE_SEMANTIC_ERROR_BASE;
 
     final public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
     {
@@ -37,7 +37,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
             Formatter::suffix($statement, $offset),
         ]);
 
-        return new static($message, self::CODE_UNEXPECTED_TOKEN);
+        return new static($message, self::ERROR_CODE_UNEXPECTED_TOKEN);
     }
 
     /**
@@ -53,7 +53,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
             Formatter::suffix($statement, $offset),
         ]);
 
-        return new static($message, self::CODE_UNRECOGNIZED_TOKEN);
+        return new static($message, self::ERROR_CODE_UNRECOGNIZED_TOKEN);
     }
 
     /**
@@ -66,7 +66,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
             Formatter::suffix($statement, $offset),
         ]);
 
-        return new static($message, self::CODE_UNEXPECTED_SYNTAX_ERROR);
+        return new static($message, self::ERROR_CODE_UNEXPECTED_SYNTAX_ERROR);
     }
 
     /**
@@ -74,13 +74,13 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      */
     public static function fromSemanticError(string $message, string $statement, int $offset, int $code = 0): static
     {
-        $message = \vsprintf('Semantic error, %s in %s %s', [
-            \lcfirst($message),
+        $message = \vsprintf('%s in %s %s', [
+            \ucfirst($message),
             Formatter::source($statement),
             Formatter::suffix($statement, $offset),
         ]);
 
-        return new static($message, self::CODE_SEMANTIC_ERROR_BASE + $code);
+        return new static($message, self::ERROR_CODE_SEMANTIC_ERROR_BASE + $code);
     }
 
     public static function fromInternalError(string $statement, \Throwable $e): static
@@ -88,6 +88,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
         $message = "An internal error occurred while parsing %s";
         $message = \sprintf($message, Formatter::source($statement));
 
-        return new static($message, self::CODE_INTERNAL_ERROR, $e);
+        return new static($message, self::ERROR_CODE_INTERNAL_ERROR, $e);
     }
 }

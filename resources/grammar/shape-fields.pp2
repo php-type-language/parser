@@ -46,11 +46,7 @@ ShapeFieldsList -> {
             $key = $field->getKey();
 
             if (\in_array($key, $explicit, true)) {
-                throw new SemanticException(
-                    \sprintf('Duplicate key "%s"', $key),
-                    $field->offset,
-                    SemanticException::CODE_SHAPE_KEY_DUPLICATION,
-                );
+                throw SemanticException::fromShapeFieldDuplication($key, $field->offset);
             }
 
             $explicit[] = $key;
@@ -60,11 +56,7 @@ ShapeFieldsList -> {
     }
 
     if ($explicit !== [] && $implicit) {
-        throw new SemanticException(
-            \sprintf('Cannot mix explicit and implicit shape keys', $key),
-            $offset,
-            SemanticException::CODE_SHAPE_KEY_MIX,
-        );
+        throw SemanticException::fromShapeMixedKeys($offset);
     }
 
     return new Node\Stmt\Shape\FieldsListNode($children);

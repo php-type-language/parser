@@ -19,10 +19,9 @@ TernaryExpressionOrLogicalType -> {
             $children[0],
             $children[2],
         ),
-        default => throw new SemanticException(
-            \sprintf('Invalid conditional operator "%s"', $children[1]->getValue()),
+        default => throw SemanticException::fromInvalidConditionalOperator(
+            $children[1]->getValue(),
             $offset,
-            SemanticException::CODE_INVALID_OPERATOR,
         ),
     };
 
