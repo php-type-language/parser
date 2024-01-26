@@ -18,6 +18,22 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
         public array $items = [],
     ) {}
 
+    /**
+     * @return TNode|null
+     */
+    public function first(): ?Node
+    {
+        return \reset($this->items) ?: null;
+    }
+
+    /**
+     * @return TNode|null
+     */
+    public function last(): ?Node
+    {
+        return \end($this->items) ?: null;
+    }
+
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
