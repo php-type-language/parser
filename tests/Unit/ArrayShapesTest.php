@@ -131,7 +131,7 @@ class ArrayShapesTest extends TestCase
     {
         $this->assertTypeStatementFails(<<<'PHP'
             array{ int, named: int }
-            PHP, 'cannot mix explicit and implicit shape keys');
+            PHP, 'explicit and implicit shape keys');
     }
 
     public function testAllFields(): void
