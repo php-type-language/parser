@@ -125,7 +125,7 @@ final class Parser implements ParserInterface
         /** @psalm-suppress PossiblyInvalidArgument */
         $source = File::new($source);
 
-        $allowedNestingLevel = (int)\ini_get('xdebug.max_nesting_level');
+        $allowedNestingLevel = (int) \ini_get('xdebug.max_nesting_level');
 
         try {
             \ini_set('xdebug.max_nesting_level', -1);

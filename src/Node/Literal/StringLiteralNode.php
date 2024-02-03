@@ -146,7 +146,7 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
      */
     private static function renderHexadecimalSequences(string $body): string
     {
-        $callee = static fn(array $matches): string => \chr(\hexdec((string)$matches[1]));
+        $callee = static fn(array $matches): string => \chr(\hexdec((string) $matches[1]));
 
         /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
@@ -161,7 +161,7 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
     private static function renderUtfSequences(string $body): string
     {
         $callee = static function (array $matches): string {
-            $code = \hexdec((string)$matches[1]);
+            $code = \hexdec((string) $matches[1]);
 
             if (\function_exists('\\mb_chr')
                 && ($result = \mb_chr($code)) !== false

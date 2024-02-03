@@ -20,7 +20,7 @@ class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterfa
         public readonly float $value,
         string $raw = null,
     ) {
-        parent::__construct($raw ?? (string)$this->value);
+        parent::__construct($raw ?? (string) $this->value);
     }
 
     /**
@@ -33,7 +33,7 @@ class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterfa
      */
     public static function parse(string $value): static
     {
-        return new static((float)$value, $value);
+        return new static((float) $value, $value);
     }
 
     public function getValue(): float

@@ -33,7 +33,7 @@ abstract class DumperVisitor extends Visitor
         $suffix = \str_replace($this->prefix, '', $node::class);
 
         if ($node instanceof \Stringable) {
-            $suffix .= \sprintf('(%s)', (string)$node);
+            $suffix .= \sprintf('(%s)', (string) $node);
         }
 
         $this->write($prefix . $suffix . "\n");

@@ -20,7 +20,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
         public readonly int $value,
         string $raw = null,
     ) {
-        parent::__construct($raw ?? (string)$this->value);
+        parent::__construct($raw ?? (string) $this->value);
     }
 
     /**
@@ -53,7 +53,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 
         // One of: [ 0123, 0o23, 0x00, 0b01 ]
         if ($literal[0] === '0' && isset($literal[1])) {
-            return [$isNegative, (int)(match ($literal[1]) {
+            return [$isNegative, (int) (match ($literal[1]) {
                 // hexadecimal
                 'x', 'X' => \hexdec(\substr($literal, 2)),
                 // binary
@@ -65,7 +65,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
             })];
         }
 
-        return [$isNegative, (int)$literal];
+        return [$isNegative, (int) $literal];
     }
 
     public function getValue(): int
