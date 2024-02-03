@@ -38,6 +38,7 @@ class SemanticException extends \LogicException implements ParserExceptionInterf
 
     /**
      * @param non-empty-string $key
+     * @param int<0, max> $offset
      *
      * @return static
      */
@@ -49,6 +50,8 @@ class SemanticException extends \LogicException implements ParserExceptionInterf
     }
 
     /**
+     * @param int<0, max> $offset
+     *
      * @return static
      */
     public static function fromShapeMixedKeys(int $offset = 0): self
@@ -59,6 +62,8 @@ class SemanticException extends \LogicException implements ParserExceptionInterf
     }
 
     /**
+     * @param int<0, max> $offset
+     *
      * @return static
      */
     public static function fromVariadicWithDefault(int $offset = 0): self
@@ -70,6 +75,7 @@ class SemanticException extends \LogicException implements ParserExceptionInterf
 
     /**
      * @param non-empty-string $operator
+     * @param int<0, max> $offset
      *
      * @return static
      */
