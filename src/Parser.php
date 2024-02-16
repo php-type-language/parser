@@ -9,6 +9,7 @@ use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Lexer\TokenInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
+use Phplrt\Contracts\Source\SourceFactoryInterface;
 use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\BuilderInterface;
 use Phplrt\Parser\Context;
@@ -18,6 +19,7 @@ use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\File;
+use Phplrt\Source\SourceFactory;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
@@ -60,8 +62,11 @@ final class Parser implements ParserInterface
 
     /**
      * @var int<0, max>
+     * @psalm-readonly-allow-private-mutation
      */
     public int $lastProcessedTokenOffset = 0;
+
+    private readonly SourceFactoryInterface $sources;
 
     public function __construct(
         public readonly bool $tolerant = false,
@@ -79,6 +84,7 @@ final class Parser implements ParserInterface
         /** @var \WeakMap<TokenInterface, IntLiteralNode> */
         $this->integerPool = new \WeakMap();
 
+        $this->sources = new SourceFactory();
         $this->builder = new Builder($grammar['reducers']);
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
@@ -123,42 +129,34 @@ final class Parser implements ParserInterface
         $this->lastProcessedTokenOffset = 0;
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $source = File::new($source);
-
-        $allowedNestingLevel = (int) \ini_get('xdebug.max_nesting_level');
+        $source = $this->sources->create($source);
 
         try {
-            \ini_set('xdebug.max_nesting_level', -1);
+            foreach ($this->parser->parse($source) as $stmt) {
+                if ($stmt instanceof TypeStatement) {
+                    $context = $this->parser->getLastExecutionContext();
 
-            try {
-                foreach ($this->parser->parse($source) as $stmt) {
-                    if ($stmt instanceof TypeStatement) {
-                        $context = $this->parser->getLastExecutionContext();
+                    if ($context !== null) {
+                        $token = $context->buffer->current();
 
-                        if ($context !== null) {
-                            $token = $context->buffer->current();
-
-                            $this->lastProcessedTokenOffset = $token->getOffset();
-                        }
-
-                        return $stmt;
+                        $this->lastProcessedTokenOffset = $token->getOffset();
                     }
-                }
 
-                return null;
-            } catch (UnexpectedTokenException $e) {
-                throw $this->unexpectedTokenError($e, $source);
-            } catch (UnrecognizedTokenException $e) {
-                throw $this->unrecognizedTokenError($e, $source);
-            } catch (RuntimeExceptionInterface $e) {
-                throw $this->runtimeError($e, $source);
-            } catch (SemanticException $e) {
-                throw $this->semanticError($e, $source);
-            } catch (\Throwable $e) {
-                throw $this->internalError($e, $source);
+                    return $stmt;
+                }
             }
-        } finally {
-            \ini_set('xdebug.max_nesting_level', $allowedNestingLevel);
+
+            return null;
+        } catch (UnexpectedTokenException $e) {
+            throw $this->unexpectedTokenError($e, $source);
+        } catch (UnrecognizedTokenException $e) {
+            throw $this->unrecognizedTokenError($e, $source);
+        } catch (RuntimeExceptionInterface $e) {
+            throw $this->runtimeError($e, $source);
+        } catch (SemanticException $e) {
+            throw $this->semanticError($e, $source);
+        } catch (\Throwable $e) {
+            throw $this->internalError($e, $source);
         }
     }
 
