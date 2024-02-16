@@ -47,6 +47,7 @@ final class Identifier extends Node implements \Stringable
      */
     public function __construct(string $value)
     {
+        /** @psalm-suppress PropertyTypeCoercion */
         $this->value = \trim($value);
 
         assert($this->value !== '', new \InvalidArgumentException(
