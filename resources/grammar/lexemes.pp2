@@ -18,6 +18,7 @@
 %token  T_NEQ                   (?i)is\h+not(?![a-zA-Z0-9\-_\x80-\xff])
 %token  T_EQ                    (?i)is(?![a-zA-Z0-9\-_\x80-\xff])
 %token  T_VARIABLE              \$[a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
+%token  T_NAME_WITH_SPACE       [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*\s+?
 %token  T_NAME                  [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
 
 // Special Chars

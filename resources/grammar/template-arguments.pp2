@@ -11,8 +11,18 @@ TemplateArguments -> {
 
 TemplateArgument -> {
     return new Node\Stmt\Template\ArgumentNode(
-        \is_array($children) ? $children[0] : $children,
+        \array_pop($children),
+        $children[0] ?? null,
     );
 }
+  : TemplateHintedArgument()
+  | TemplateSimpleArgument()
+  ;
+
+TemplateSimpleArgument
   : Type()
+  ;
+
+TemplateHintedArgument
+  : IdentifierWithExtraSpace() Type()
   ;

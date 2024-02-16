@@ -36,13 +36,19 @@ final class Identifier extends Node implements \Stringable
     ];
 
     /**
+     * @var non-empty-string
+     */
+    public readonly string $value;
+
+    /**
      * @param non-empty-string $value
      *
      * @psalm-suppress RedundantCondition
      */
-    public function __construct(
-        public readonly string $value,
-    ) {
+    public function __construct(string $value)
+    {
+        $this->value = \trim($value);
+
         assert($this->value !== '', new \InvalidArgumentException(
             'Identifier value cannot be empty',
         ));
