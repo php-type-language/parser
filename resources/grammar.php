@@ -234,7 +234,7 @@ return [
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
-        if ($this->literals === false) {
+            if ($this->literals === false) {
                 throw FeatureNotAllowedException::fromFeature('literal values', $offset);
             }
             return $children;
@@ -266,25 +266,25 @@ return [
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return $this->stringPool[$token] ??= $children;
+            return $this->stringPool[$token] ??= $children;
         },
         22 => static function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return Node\Literal\FloatLiteralNode::parse($token->getValue());
+            return Node\Literal\FloatLiteralNode::parse($token->getValue());
         },
         23 => function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
+            return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
         },
         24 => static function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return Node\Literal\BoolLiteralNode::parse($token->getValue());
+            return Node\Literal\BoolLiteralNode::parse($token->getValue());
         },
         25 => static function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Literal\NullLiteralNode($children->getValue());
@@ -293,19 +293,19 @@ return [
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return Node\Literal\VariableLiteralNode::parse($token->getValue());
+            return Node\Literal\VariableLiteralNode::parse($token->getValue());
         },
         27 => static function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return Node\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
+            return Node\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
         },
         28 => static function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$token" variable is an auto-generated
             $token = $ctx->lastProcessedToken;
 
-        return Node\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
+            return Node\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
         },
         42 => static function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Stmt\Template\ArgumentNode(
@@ -323,7 +323,7 @@ return [
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
-        $name = \array_shift($children);
+            $name = \array_shift($children);
 
             if ($this->callables === false) {
                 throw FeatureNotAllowedException::fromFeature('callable types', $offset);
@@ -343,7 +343,7 @@ return [
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
-        if (!isset($children[1])) {
+            if (!isset($children[1])) {
                 return $children[0];
             }
 
@@ -388,7 +388,7 @@ return [
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
-        $explicit = [];
+            $explicit = [];
             $implicit = false;
 
             foreach ($children as $field) {
@@ -415,7 +415,7 @@ return [
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
-        if ($children === []) {
+            if ($children === []) {
                 return new Node\Stmt\Shape\FieldsListNode();
             }
 
@@ -480,7 +480,7 @@ return [
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
-        $count = \count($children);
+            $count = \count($children);
 
             if ($count === 1) {
                 return $children[0];
