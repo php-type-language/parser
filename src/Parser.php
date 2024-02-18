@@ -11,6 +11,7 @@ use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Contracts\Source\SourceFactoryInterface;
 use Phplrt\Lexer\Config\NullHandler;
+use Phplrt\Lexer\Config\PassthroughHandler;
 use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\BuilderInterface;
 use Phplrt\Parser\Context;
@@ -114,7 +115,7 @@ final class Parser implements ParserInterface
         return new Lexer(
             tokens: $grammar['tokens']['default'],
             skip: $grammar['skip'],
-            onUnknownToken: new NullHandler(),
+            onUnknownToken: new PassthroughHandler(),
         );
     }
 
