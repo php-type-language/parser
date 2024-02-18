@@ -13,8 +13,8 @@
         "psr/cache": "^1.0|^2.0|^3.0",
         "psr/simple-cache": "^1.0|^2.0|^3.0",
         "psr/log": "^1.0|^2.0|^3.0",
-        "phplrt/lexer": "^3.5",
-        "phplrt/parser": "^3.5"
+        "phplrt/lexer": "^3.6",
+        "phplrt/parser": "^3.6"
     },
     "autoload": {
         "psr-4": {
@@ -25,7 +25,7 @@
         "nikic/php-parser": "^4.17",
         "phpdocumentor/reflection-docblock": "^5.3",
         "friendsofphp/php-cs-fixer": "^3.42",
-        "phplrt/compiler": "^3.5",
+        "phplrt/compiler": "^3.6",
         "phpunit/phpunit": "^10.5",
         "rector/rector": "^0.18",
         "symfony/var-dumper": "^5.6|^6.0|^7.0",

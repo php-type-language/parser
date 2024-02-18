@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace TypeLang\Parser;
 
 use JetBrains\PhpStorm\Language;
-use Phplrt\Contracts\Exception\RuntimeExceptionInterface;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Lexer\TokenInterface;
+use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Contracts\Source\SourceFactoryInterface;
+use Phplrt\Lexer\Config\NullHandler;
 use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\BuilderInterface;
 use Phplrt\Parser\Context;
@@ -18,7 +19,6 @@ use Phplrt\Parser\Exception\UnrecognizedTokenException;
 use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
-use Phplrt\Source\File;
 use Phplrt\Source\SourceFactory;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
@@ -30,9 +30,9 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
  * @psalm-type GrammarConfigArray = array{
  *  initial: int<0, max>|non-empty-string,
  *  tokens: array{
- *      default: array<non-empty-string, non-empty-string>
+ *      default: array<array-key, non-empty-string>
  *  },
- *  skip: array<non-empty-string>,
+ *  skip: list<non-empty-string>,
  *  transitions: array,
  *  grammar: array<int<0, max>|non-empty-string, RuleInterface>,
  *  reducers: array<int<0, max>|non-empty-string, callable(Context, mixed):mixed>
@@ -111,14 +111,11 @@ final class Parser implements ParserInterface
      */
     private function createLexer(array $grammar): Lexer
     {
-        $lexer = new Lexer(
+        return new Lexer(
             tokens: $grammar['tokens']['default'],
             skip: $grammar['skip'],
+            onUnknownToken: new NullHandler(),
         );
-
-        $lexer->disableUnrecognizedTokenException();
-
-        return $lexer;
     }
 
     /**
@@ -132,6 +129,7 @@ final class Parser implements ParserInterface
         $source = $this->sources->create($source);
 
         try {
+
             foreach ($this->parser->parse($source) as $stmt) {
                 if ($stmt instanceof TypeStatement) {
                     $context = $this->parser->getLastExecutionContext();
@@ -151,8 +149,8 @@ final class Parser implements ParserInterface
             throw $this->unexpectedTokenError($e, $source);
         } catch (UnrecognizedTokenException $e) {
             throw $this->unrecognizedTokenError($e, $source);
-        } catch (RuntimeExceptionInterface $e) {
-            throw $this->runtimeError($e, $source);
+        } catch (ParserRuntimeExceptionInterface $e) {
+            throw $this->parserRuntimeError($e, $source);
         } catch (SemanticException $e) {
             throw $this->semanticError($e, $source);
         } catch (\Throwable $e) {
@@ -192,7 +190,7 @@ final class Parser implements ParserInterface
         );
     }
 
-    private function runtimeError(RuntimeExceptionInterface $e, ReadableInterface $source): ParseException
+    private function parserRuntimeError(ParserRuntimeExceptionInterface $e, ReadableInterface $source): ParseException
     {
         $token = $e->getToken();
 
