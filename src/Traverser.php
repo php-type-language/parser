@@ -41,6 +41,8 @@ final class Traverser implements MutableTraverserInterface
     }
 
     /**
+     * Creates a new traverser instance.
+     *
      * @param list<VisitorInterface> $visitors
      */
     public static function new(iterable $visitors = []): self
