@@ -10,7 +10,6 @@ use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Config\RectorConfig;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -32,7 +31,6 @@ return static function (RectorConfig $config): void {
         ReadOnlyPropertyRector::class,
         CatchExceptionNameMatchingTypeRector::class,
         SplitDoubleAssignRector::class,
-        FinalizePublicClassConstantRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
         ReturnBinaryOrToEarlyReturnRector::class,
         LocallyCalledStaticMethodToNonStaticRector::class,
