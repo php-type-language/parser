@@ -10,7 +10,6 @@ use Phplrt\Contracts\Lexer\TokenInterface;
 use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Contracts\Source\SourceFactoryInterface;
-use Phplrt\Lexer\Config\NullHandler;
 use Phplrt\Lexer\Config\PassthroughHandler;
 use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\BuilderInterface;
