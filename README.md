@@ -25,7 +25,7 @@ Read [documentation pages](https://phpdoc.io) for more information.
 
 ## Installation
 
-Type Language Parser is available as composer repository and can be installed
+Type Language Parser is available as Composer repository and can be installed
 using the following command in a root of your project:
 
 ```sh
