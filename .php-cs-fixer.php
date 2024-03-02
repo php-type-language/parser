@@ -12,5 +12,5 @@ return (new PhpCsFixer\Config())
             'syntax' => 'short',
         ],
     ])
-    ->setCacheFile(__DIR__ . '/vendor/.php-cs-fixer.cache')
+    ->setCacheFile(__DIR__ . '/vendor/.cache.php-cs-fixer')
     ->setFinder($files);

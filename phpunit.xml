@@ -6,7 +6,7 @@
          stopOnFailure="false"
          processIsolation="false"
          bootstrap="vendor/autoload.php"
-         cacheDirectory="vendor/.phpunit.cache"
+         cacheDirectory="vendor/.cache.phpunit"
          backupStaticProperties="false"
 >
     <testsuites>

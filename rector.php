@@ -17,6 +17,7 @@ use Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYield
 
 return static function (RectorConfig $config): void {
     $config->paths([__DIR__ . '/src']);
+    $config->cacheDirectory(__DIR__ . '/vendor/.cache.rector');
 
     $config->sets([
         LevelSetList::UP_TO_PHP_81,
