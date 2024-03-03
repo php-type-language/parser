@@ -34,13 +34,13 @@ if (!class_exists(Compiler::class)) {
 $grammar = (new Compiler())
     ->load(new SplFileInfo(__DIR__ . '/../resources/grammar.pp2'))
     ->build()
-        ->withClassUsage('TypeLang\\Parser\\Node')
-        ->withClassUsage('TypeLang\\Parser\\Exception')
-        ->withClassUsage('TypeLang\\Parser\\Exception\\SemanticException')
-        ->withClassUsage('TypeLang\\Parser\\Exception\\FeatureNotAllowedException')
-;
+        ->withClassReference('TypeLang\\Parser\\Node')
+        ->withClassReference('TypeLang\\Parser\\Exception')
+        ->withClassReference('TypeLang\\Parser\\Exception\\SemanticException')
+        ->withClassReference('TypeLang\\Parser\\Exception\\FeatureNotAllowedException')
+    ->generate();
 
-file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar->generate());
+file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar);
 
 //
 // Postprocess and optimize output grammar

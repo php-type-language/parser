@@ -67,14 +67,13 @@ final class Parser implements ParserInterface
      */
     public int $lastProcessedTokenOffset = 0;
 
-    private readonly SourceFactoryInterface $sources;
-
     public function __construct(
         public readonly bool $tolerant = false,
         public readonly bool $conditional = true,
         public readonly bool $shapes = true,
         public readonly bool $callables = true,
         public readonly bool $literals = true,
+        private readonly SourceFactoryInterface $sources = new SourceFactory(),
     ) {
         /** @psalm-var GrammarConfigArray $grammar */
         $grammar = require __DIR__ . '/../resources/grammar.php';
@@ -85,7 +84,6 @@ final class Parser implements ParserInterface
         /** @var \WeakMap<TokenInterface, IntLiteralNode> */
         $this->integerPool = new \WeakMap();
 
-        $this->sources = new SourceFactory();
         $this->builder = new Builder($grammar['reducers']);
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
