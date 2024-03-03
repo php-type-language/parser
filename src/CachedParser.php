@@ -6,17 +6,22 @@ namespace TypeLang\Parser;
 
 use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Source\ReadableInterface;
-use Phplrt\Source\File;
+use Phplrt\Contracts\Source\SourceExceptionInterface;
+use Phplrt\Contracts\Source\SourceFactoryInterface;
+use Phplrt\Source\SourceFactory;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 abstract class CachedParser implements ParserInterface
 {
     public function __construct(
         private readonly ParserInterface $parent,
+        private readonly SourceFactoryInterface $sources = new SourceFactory(),
     ) {}
 
     /**
      * @return non-empty-string
+     *
+     * @throws SourceExceptionInterface In case of source hash creation error.
      */
     protected function getCacheKey(ReadableInterface $source): string
     {
@@ -25,19 +30,24 @@ abstract class CachedParser implements ParserInterface
 
     /**
      * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
+     *
+     * @throws SourceExceptionInterface In case of source creation error.
      */
     public function parse(#[Language('PHP')] mixed $source): ?TypeStatement
     {
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $source = File::fromSources($source);
+        $instance = $this->sources->create($source);
 
-        return $this->getCachedItem($this->parent, $source);
+        return $this->getCachedItem($this->parent, $instance);
     }
 
-
+    /**
+     * @throws SourceExceptionInterface In case of source creation error.
+     */
     public function clear(mixed $source): void
     {
-        $this->removeCacheItem(File::new($source));
+        $instance = $this->sources->create($source);
+
+        $this->removeCacheItem($instance);
     }
 
     abstract protected function removeCacheItem(ReadableInterface $source): void;

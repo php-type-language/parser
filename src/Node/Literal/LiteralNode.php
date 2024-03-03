@@ -13,12 +13,9 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
  */
 abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface
 {
-    public readonly string $raw;
-
-    public function __construct(string $raw)
-    {
-        $this->raw = $raw;
-    }
+    public function __construct(
+        public readonly string $raw,
+    ) {}
 
     /**
      * Returns parsed literal value.

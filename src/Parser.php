@@ -9,6 +9,7 @@ use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Lexer\TokenInterface;
 use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
+use Phplrt\Contracts\Source\SourceExceptionInterface;
 use Phplrt\Contracts\Source\SourceFactoryInterface;
 use Phplrt\Lexer\Config\PassthroughHandler;
 use Phplrt\Lexer\Lexer;
@@ -20,8 +21,8 @@ use Phplrt\Parser\Grammar\RuleInterface;
 use Phplrt\Parser\Parser as ParserCombinator;
 use Phplrt\Parser\ParserConfigsInterface;
 use Phplrt\Source\SourceFactory;
-use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
@@ -125,83 +126,109 @@ final class Parser implements ParserInterface
     {
         $this->lastProcessedTokenOffset = 0;
 
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $source = $this->sources->create($source);
-
         try {
+            $instance = $this->sources->create($source);
 
-            foreach ($this->parser->parse($source) as $stmt) {
-                if ($stmt instanceof TypeStatement) {
-                    $context = $this->parser->getLastExecutionContext();
+            try {
+                foreach ($this->parser->parse($instance) as $stmt) {
+                    if ($stmt instanceof TypeStatement) {
+                        $context = $this->parser->getLastExecutionContext();
 
-                    if ($context !== null) {
-                        $token = $context->buffer->current();
+                        if ($context !== null) {
+                            $token = $context->buffer->current();
 
-                        $this->lastProcessedTokenOffset = $token->getOffset();
+                            $this->lastProcessedTokenOffset = $token->getOffset();
+                        }
+
+                        return $stmt;
                     }
-
-                    return $stmt;
                 }
-            }
 
-            return null;
-        } catch (UnexpectedTokenException $e) {
-            throw $this->unexpectedTokenError($e, $source);
-        } catch (UnrecognizedTokenException $e) {
-            throw $this->unrecognizedTokenError($e, $source);
-        } catch (ParserRuntimeExceptionInterface $e) {
-            throw $this->parserRuntimeError($e, $source);
-        } catch (SemanticException $e) {
-            throw $this->semanticError($e, $source);
-        } catch (\Throwable $e) {
-            throw $this->internalError($e, $source);
+                return null;
+            } catch (UnexpectedTokenException $e) {
+                throw $this->unexpectedTokenError($e, $instance);
+            } catch (UnrecognizedTokenException $e) {
+                throw $this->unrecognizedTokenError($e, $instance);
+            } catch (ParserRuntimeExceptionInterface $e) {
+                throw $this->parserRuntimeError($e, $instance);
+            } catch (SemanticException $e) {
+                throw $this->semanticError($e, $instance);
+            } catch (\Throwable $e) {
+                throw $this->internalError($e, $instance);
+            }
+        } catch (SourceExceptionInterface $e) {
+            throw new ParseException(
+                message: $e->getMessage(),
+                code: ParseException::ERROR_CODE_INTERNAL_ERROR,
+                previous: $e,
+            );
         }
+
+        return null;
     }
 
+    /**
+     * @throws SourceExceptionInterface In case of source content reading error.
+     */
     private function unexpectedTokenError(UnexpectedTokenException $e, ReadableInterface $source): ParseException
     {
         $token = $e->getToken();
 
         return ParseException::fromUnexpectedToken(
-            $token->getValue(),
-            $source->getContents(),
-            $token->getOffset(),
+            char: $token->getValue(),
+            statement: $source->getContents(),
+            offset: $token->getOffset(),
         );
     }
 
+    /**
+     * @throws SourceExceptionInterface In case of source content reading error.
+     */
     private function unrecognizedTokenError(UnrecognizedTokenException $e, ReadableInterface $source): ParseException
     {
         $token = $e->getToken();
 
         return ParseException::fromUnrecognizedToken(
-            $token->getValue(),
-            $source->getContents(),
-            $token->getOffset(),
+            token: $token->getValue(),
+            statement: $source->getContents(),
+            offset: $token->getOffset(),
         );
     }
 
+    /**
+     * @throws SourceExceptionInterface In case of source content reading error.
+     */
     private function semanticError(SemanticException $e, ReadableInterface $source): ParseException
     {
         return ParseException::fromSemanticError(
-            $e->getMessage(),
-            $source->getContents(),
-            $e->getOffset(),
-            $e->getCode(),
+            message: $e->getMessage(),
+            statement: $source->getContents(),
+            offset: $e->getOffset(),
+            code: $e->getCode(),
         );
     }
 
+    /**
+     * @throws SourceExceptionInterface In case of source content reading error.
+     */
     private function parserRuntimeError(ParserRuntimeExceptionInterface $e, ReadableInterface $source): ParseException
     {
         $token = $e->getToken();
 
         return ParseException::fromUnrecognizedSyntaxError(
-            $source->getContents(),
-            $token->getOffset(),
+            statement: $source->getContents(),
+            offset: $token->getOffset(),
         );
     }
 
+    /**
+     * @throws SourceExceptionInterface In case of source content reading error.
+     */
     private function internalError(\Throwable $e, ReadableInterface $source): ParseException
     {
-        return ParseException::fromInternalError($source->getContents(), $e);
+        return ParseException::fromInternalError(
+            statement: $source->getContents(),
+            e: $e
+        );
     }
 }
