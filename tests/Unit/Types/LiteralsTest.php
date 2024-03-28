@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Tests\Unit;
+namespace TypeLang\Parser\Tests\Unit\Types;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -11,10 +11,9 @@ use TypeLang\Parser\Node\Literal\FloatLiteralNode;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\NullLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
-use TypeLang\Parser\Tests\TestCase;
 
 #[Group('unit'), Group('type-lang/parser')]
-class LiteralsTest extends TestCase
+class LiteralsTest extends TypesTestCase
 {
     #[DataProvider('floatLiteralsDataProvider')]
     public function testFloatLiteral(string $expr, float $value): void

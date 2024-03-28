@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Tests\Unit;
+namespace TypeLang\Parser\Tests\Unit\Types;
 
 use PHPUnit\Framework\Attributes\Group;
-use TypeLang\Parser\Tests\TestCase;
 
 #[Group('unit'), Group('type-lang/parser')]
-class ArrayShapesTest extends TestCase
+class ArrayShapesTest extends TypesTestCase
 {
     public function testFields(): void
     {

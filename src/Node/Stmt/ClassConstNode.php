@@ -9,7 +9,7 @@ use TypeLang\Parser\Node\Name;
 
 class ClassConstNode extends ClassConstMaskNode
 {
-    public function __construct(Name $class, Identifier $constant)
+    public function __construct(Name $class, Identifier|string $constant)
     {
         parent::__construct($class, $constant);
     }

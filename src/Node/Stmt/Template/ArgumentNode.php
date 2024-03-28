@@ -10,10 +10,17 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 class ArgumentNode extends Node
 {
+    public ?Identifier $hint;
+
+    /**
+     * @param Identifier|non-empty-string|null $hint
+     */
     public function __construct(
         public TypeStatement $value,
-        public ?Identifier $hint = null,
-    ) {}
+        Identifier|string|null $hint = null,
+    ) {
+        $this->hint = \is_string($hint) ? new Identifier($hint) : $hint;
+    }
 
     public function toArray(): array
     {

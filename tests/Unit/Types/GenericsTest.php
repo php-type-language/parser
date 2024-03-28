@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace TypeLang\Parser\Tests\Unit;
+namespace TypeLang\Parser\Tests\Unit\Types;
 
 use PHPUnit\Framework\Attributes\Group;
-use TypeLang\Parser\Tests\TestCase;
 
 #[Group('unit'), Group('type-lang/parser')]
-class GenericsTest extends TestCase
+class GenericsTest extends TypesTestCase
 {
     public function testArguments(): void
     {

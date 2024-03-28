@@ -1,0 +1,1 @@
+E:50:"TypeLang\Parser\Node\Literal\LiteralKind:BOOL_KIND";

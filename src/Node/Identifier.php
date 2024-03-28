@@ -128,4 +128,20 @@ final class Identifier extends Node implements \Stringable
     {
         return $this->toString();
     }
+
+    public function __serialize(): array
+    {
+        return [$this->offset, $this->value];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->offset = $data[0] ?? throw new \UnexpectedValueException(
+            message: 'Unable to unserialize Identifier offset',
+        );
+
+        $this->value = $data[1] ?? throw new \UnexpectedValueException(
+            message: 'Unable to unserialize Identifier value',
+        );
+    }
 }

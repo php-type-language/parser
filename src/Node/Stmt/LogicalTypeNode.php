@@ -70,4 +70,22 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
             'items' => $items,
         ];
     }
+
+    public function __serialize(): array
+    {
+        return [$this->offset, $this->statements];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->offset = $data[0] ?? throw new \UnexpectedValueException(\sprintf(
+            'Unable to unserialize %s offset',
+            static::class,
+        ));
+
+        $this->statements = $data[1] ?? throw new \UnexpectedValueException(\sprintf(
+            'Unable to unserialize %s statements',
+            static::class,
+        ));
+    }
 }

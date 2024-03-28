@@ -300,4 +300,20 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
     {
         return $this->toString();
     }
+
+    public function __serialize(): array
+    {
+        return [$this->offset, $this->parts];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->offset = $data[0] ?? throw new \UnexpectedValueException(
+            message: 'Unable to unserialize Name offset',
+        );
+
+        $this->parts = $data[1] ?? throw new \UnexpectedValueException(
+            message: 'Unable to unserialize Name identifier parts',
+        );
+    }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
+use Phplrt\Contracts\Source\SourceExceptionInterface;
+
 class ParseException extends \LogicException implements ParserExceptionInterface
 {
     final public const ERROR_CODE_UNEXPECTED_TOKEN = 0x01;
@@ -28,6 +30,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * unexpected source location.
      *
      * @param int<0, max> $offset
+     * @throws SourceExceptionInterface
      */
     public static function fromUnexpectedToken(string $char, string $statement, int $offset): static
     {
@@ -44,6 +47,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * This error occurs when unable to recognize tokens in source code.
      *
      * @param int<0, max> $offset
+     * @throws SourceExceptionInterface
      */
     public static function fromUnrecognizedToken(string $token, string $statement, int $offset): static
     {
@@ -58,6 +62,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param int<0, max> $offset
+     * @throws SourceExceptionInterface
      */
     public static function fromUnrecognizedSyntaxError(string $statement, int $offset): static
     {
@@ -71,6 +76,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param int<0, max> $offset
+     * @throws SourceExceptionInterface
      */
     public static function fromSemanticError(string $message, string $statement, int $offset, int $code = 0): static
     {

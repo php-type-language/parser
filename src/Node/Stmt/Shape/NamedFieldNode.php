@@ -9,11 +9,18 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 final class NamedFieldNode extends ExplicitFieldNode
 {
+    public Identifier $key;
+
+    /**
+     * @param Identifier|non-empty-string $key
+     */
     public function __construct(
-        public Identifier $key,
+        Identifier|string $key,
         TypeStatement $of,
         bool $optional = false,
     ) {
+        $this->key = \is_string($key) ? new Identifier($key) : $key;
+
         parent::__construct($of, $optional);
     }
 
