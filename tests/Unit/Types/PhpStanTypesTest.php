@@ -141,8 +141,8 @@ final class PhpStanTypesTest extends TypesTestCase
               Stmt\Template\ArgumentsListNode
                 Stmt\Template\ArgumentNode
                   Stmt\ClassConstNode
-                    Name(Type)
                     Identifier(ARRAY_CONST)
+                    Name(Type)
             AST];
         yield 'value-of<Type::ARRAY_CONST>' => ['value-of<Type::ARRAY_CONST>', <<<'AST'
             Stmt\NamedTypeNode
@@ -150,8 +150,8 @@ final class PhpStanTypesTest extends TypesTestCase
               Stmt\Template\ArgumentsListNode
                 Stmt\Template\ArgumentNode
                   Stmt\ClassConstNode
-                    Name(Type)
                     Identifier(ARRAY_CONST)
+                    Name(Type)
             AST];
 
         /** @Link https://phpstan.org/writing-php-code/phpdoc-types#iterables */
@@ -326,22 +326,22 @@ final class PhpStanTypesTest extends TypesTestCase
             AST];
         yield 'Foo::SOME_CONSTANT' => ['Foo::SOME_CONSTANT', <<<'AST'
             Stmt\ClassConstNode
-              Name(Foo)
               Identifier(SOME_CONSTANT)
+              Name(Foo)
             AST];
         yield 'Foo::SOME_CONSTANT|Bar::OTHER_CONSTANT' => ['Foo::SOME_CONSTANT|Bar::OTHER_CONSTANT', <<<'AST'
             Stmt\UnionTypeNode
               Stmt\ClassConstNode
-                Name(Foo)
                 Identifier(SOME_CONSTANT)
+                Name(Foo)
               Stmt\ClassConstNode
-                Name(Bar)
                 Identifier(OTHER_CONSTANT)
+                Name(Bar)
             AST];
         yield 'self::SOME_*' => ['self::SOME_*', <<<'AST'
             Stmt\ClassConstMaskNode
-              Name(self)
               Identifier(SOME_)
+              Name(self)
             AST];
         yield 'Foo::*' => ['Foo::*', <<<'AST'
             Stmt\ClassConstMaskNode
@@ -487,8 +487,8 @@ final class PhpStanTypesTest extends TypesTestCase
               Stmt\Template\ArgumentsListNode
                 Stmt\Template\ArgumentNode
                   Stmt\ClassConstMaskNode
-                    Name(Foo)
                     Identifier(INT_)
+                    Name(Foo)
             AST];
     }
 
