@@ -134,6 +134,9 @@ final class Identifier extends Node implements \Stringable
         return [$this->offset, $this->value];
     }
 
+    /**
+     * @psalm-suppress MixedAssignment
+     */
     public function __unserialize(array $data): void
     {
         $this->offset = $data[0] ?? throw new \UnexpectedValueException(

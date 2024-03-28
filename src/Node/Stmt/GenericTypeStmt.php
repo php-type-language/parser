@@ -29,6 +29,9 @@ abstract class GenericTypeStmt extends TypeStatement
         return [$this->offset, $this->type];
     }
 
+    /**
+     * @psalm-suppress MixedAssignment
+     */
     public function __unserialize(array $data): void
     {
         $this->offset = $data[0] ?? throw new \UnexpectedValueException(\sprintf(

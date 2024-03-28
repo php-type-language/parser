@@ -76,6 +76,9 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         return [$this->offset, $this->statements];
     }
 
+    /**
+     * @psalm-suppress MixedAssignment
+     */
     public function __unserialize(array $data): void
     {
         $this->offset = $data[0] ?? throw new \UnexpectedValueException(\sprintf(

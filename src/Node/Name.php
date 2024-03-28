@@ -306,6 +306,9 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
         return [$this->offset, $this->parts];
     }
 
+    /**
+     * @psalm-suppress MixedAssignment
+     */
     public function __unserialize(array $data): void
     {
         $this->offset = $data[0] ?? throw new \UnexpectedValueException(
