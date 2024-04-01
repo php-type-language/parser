@@ -1,7 +1,7 @@
 {
     "name": "type-lang/parser",
     "type": "library",
-    "description": "PHP Type Language reference implementation",
+    "description": "Library for parsing and validating TypeLang syntax and converting it into AST nodes",
     "keywords": ["parser", "language", "php", "phpdoc"],
     "license": "MIT",
     "support": {

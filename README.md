@@ -14,16 +14,16 @@
     <a href="https://github.com/php-type-language/parser/actions"><img src="https://github.com/php-type-language/parser/workflows/tests/badge.svg"></a>
 </p>
 
-The PHP reference implementation for Type Language Parser.
+Reference implementation for TypeLang Parser.
 
-**Type Language** is a declarative type language inspired by static analyzers
+**TypeLang** is a declarative type language inspired by static analyzers
 like [PHPStan](https://phpstan.org/) and [Psalm](https://psalm.dev/docs/).
 
 Read [documentation pages](https://phpdoc.io) for more information.
 
 ## Installation
 
-Type Language Parser is available as Composer repository and can be installed
+TypeLang Parser is available as Composer repository and can be installed
 using the following command in a root of your project:
 
 ```sh
