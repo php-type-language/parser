@@ -120,7 +120,7 @@ final class Parser implements ParserInterface
     /**
      * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */
-    public function parse(#[Language('PHP')] mixed $source): ?TypeStatement
+    public function parse(#[Language('PHP')] mixed $source): TypeStatement
     {
         $this->lastProcessedTokenOffset = 0;
 
@@ -142,7 +142,10 @@ final class Parser implements ParserInterface
                     }
                 }
 
-                return null;
+                throw new ParseException(
+                    message: 'Could not read type statement',
+                    code: ParseException::ERROR_CODE_INTERNAL_ERROR,
+                );
             } catch (UnexpectedTokenException $e) {
                 throw $this->unexpectedTokenError($e, $instance);
             } catch (UnrecognizedTokenException $e) {
@@ -161,8 +164,6 @@ final class Parser implements ParserInterface
                 previous: $e,
             );
         }
-
-        return null;
     }
 
     /**

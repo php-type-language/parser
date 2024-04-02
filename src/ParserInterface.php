@@ -21,5 +21,5 @@ interface ParserInterface
      *
      * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */
-    public function parse(#[Language('PHP')] mixed $source): ?TypeStatement;
+    public function parse(#[Language('PHP')] mixed $source): TypeStatement;
 }
