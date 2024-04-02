@@ -14,7 +14,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 final class InMemoryCachedParser implements ParserInterface
 {
     /**
-     * @var array<non-empty-string, TypeStatement|null>
+     * @var array<non-empty-string, TypeStatement>
      */
     private array $types = [];
 
@@ -28,7 +28,7 @@ final class InMemoryCachedParser implements ParserInterface
      * @throws SourceExceptionInterface
      * @throws \Throwable
      */
-    public function parse(#[Language('PHP')] mixed $source): ?TypeStatement
+    public function parse(#[Language('PHP')] mixed $source): TypeStatement
     {
         $instance = $this->sources->create($source);
 
