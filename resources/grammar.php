@@ -313,7 +313,14 @@ return [
                 $children[0] ?? null,
             );
         },
-        50 => static function (\Phplrt\Parser\Context $ctx, $children) {
+        50 => function (\Phplrt\Parser\Context $ctx, $children) {
+            // The "$offset" variable is an auto-generated
+            $offset = $ctx->lastProcessedToken->getOffset();
+
+            if ($this->generics === false) {
+                throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
+            }
+
             return new Node\Stmt\Template\ArgumentsListNode($children);
         },
         54 => static function (\Phplrt\Parser\Context $ctx, $children) {
@@ -511,15 +518,29 @@ return [
                 $children[4],
             );
         },
-        123 => static function (\Phplrt\Parser\Context $ctx, $children) {
+        123 => function (\Phplrt\Parser\Context $ctx, $children) {
+            // The "$offset" variable is an auto-generated
+            $offset = $ctx->lastProcessedToken->getOffset();
+
             if (\count($children) === 2) {
+                if ($this->union === false) {
+                    throw FeatureNotAllowedException::fromFeature('union types', $offset);
+                }
+
                 return new Node\Stmt\UnionTypeNode($children[0], $children[1]);
             }
 
             return $children;
         },
-        124 => static function (\Phplrt\Parser\Context $ctx, $children) {
+        124 => function (\Phplrt\Parser\Context $ctx, $children) {
+            // The "$offset" variable is an auto-generated
+            $offset = $ctx->lastProcessedToken->getOffset();
+
             if (\count($children) === 2) {
+                if ($this->intersection === false) {
+                    throw FeatureNotAllowedException::fromFeature('intersection types', $offset);
+                }
+
                 return new Node\Stmt\IntersectionTypeNode($children[0], $children[1]);
             }
 
@@ -532,10 +553,17 @@ return [
 
             return $children;
         },
-        133 => static function (\Phplrt\Parser\Context $ctx, $children) {
+        133 => function (\Phplrt\Parser\Context $ctx, $children) {
+            // The "$offset" variable is an auto-generated
+            $offset = $ctx->lastProcessedToken->getOffset();
+
             $statement = \array_shift($children);
 
             for ($i = 0, $length = \count($children); $i < $length; ++$i) {
+                if ($this->list === false) {
+                    throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
+                }
+
                 $statement = new Node\Stmt\TypesListNode($statement);
                 $statement->offset = $children[$i]->getOffset();
             }

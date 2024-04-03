@@ -67,6 +67,29 @@ final class Parser implements ParserInterface
      */
     public int $lastProcessedTokenOffset = 0;
 
+    /**
+     * @param bool $tolerant Enables or disables tolerant type recognition. If
+     *       the option is {@see true}, the parser allows arbitrary text after
+     *       the type definition. This mode allows you to recognize types
+     *       specified in DocBlocks.
+     * @param bool $conditional Enables or disables support for
+     *        dependent/conditional types such as `T ? X : Y`.
+     * @param bool $shapes Enables or disables support for type shapes
+     *        such as `T{key: X}`.
+     * @param bool $callables Enables or disables support for callable types
+     *        such as `(X, Y): T`.
+     * @param bool $literals Enables or disables support for literal types such
+     *        as `42` or `"string"`.
+     * @param bool $generics Enables or disables support for template arguments
+     *        such as `T<X, Y>`.
+     * @param bool $union Enables or disables support for logical union types
+     *        such as `T | X`.
+     * @param bool $intersection Enables or disables support for logical
+     *        intersection types such as `T & X`.
+     * @param bool $list Enables or disables support for square bracket list
+     *        types such as `T[]`.
+     * @param SourceFactoryInterface $sources
+     */
     public function __construct(
         public readonly bool $tolerant = false,
         public readonly bool $conditional = true,
