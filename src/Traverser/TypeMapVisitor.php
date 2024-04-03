@@ -20,29 +20,32 @@ final class TypeMapVisitor extends Visitor
         private readonly \Closure $transform,
     ) {}
 
-    private function containsName(Node $node): bool
+    private function map(Name $name): Name
     {
-        return $node instanceof NamedTypeNode
-            || $node instanceof CallableTypeNode
-            || $node instanceof ConstMaskNode
-            || $node instanceof ClassConstMaskNode
-        ;
+        $result = ($this->transform)($name);
+
+        if ($result instanceof Name) {
+            return $result;
+        }
+
+        return $name;
     }
 
     public function enter(Node $node): ?Command
     {
-        if ($this->containsName($node)) {
-            /**
-             * @var object{name: Name} $node
-             * @psalm-suppress MixedAssignment
-             */
-            $mapped = ($this->transform)($node->name);
+        switch (true) {
+            case $node instanceof NamedTypeNode:
+            case $node instanceof CallableTypeNode:
+            case $node instanceof ConstMaskNode:
+                $node->name = $this->map($node->name);
+                return null;
 
-            if ($mapped instanceof Name) {
-                $node->key = $mapped;
-            }
+            case $node instanceof ClassConstMaskNode:
+                $node->class = $this->map($node->class);
+                return null;
+
+            default:
+                return null;
         }
-
-        return null;
     }
 }
