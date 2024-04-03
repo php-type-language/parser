@@ -1,5 +1,9 @@
 
 TemplateArguments -> {
+    if ($this->generics === false) {
+        throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
+    }
+
     return new Node\Stmt\Template\ArgumentsListNode($children);
 }
   : ::T_ANGLE_BRACKET_OPEN::

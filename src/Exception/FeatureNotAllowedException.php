@@ -14,7 +14,7 @@ class FeatureNotAllowedException extends SemanticException
      */
     public static function fromFeature(string $name, int $offset = 0): self
     {
-        $message = \sprintf('%s not allowed by parser configuration', $name);
+        $message = \sprintf('%s not allowed', $name);
 
         return new static($offset, $message);
     }

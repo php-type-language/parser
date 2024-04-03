@@ -63,6 +63,10 @@ LogicalType
 
 UnionType -> {
     if (\count($children) === 2) {
+        if ($this->union === false) {
+            throw FeatureNotAllowedException::fromFeature('union types', $offset);
+        }
+
         return new Node\Stmt\UnionTypeNode($children[0], $children[1]);
     }
 
@@ -73,6 +77,10 @@ UnionType -> {
 
 IntersectionType -> {
     if (\count($children) === 2) {
+        if ($this->intersection === false) {
+            throw FeatureNotAllowedException::fromFeature('intersection types', $offset);
+        }
+
         return new Node\Stmt\IntersectionTypeNode($children[0], $children[1]);
     }
 
@@ -114,6 +122,10 @@ TypesList -> {
     $statement = \array_shift($children);
 
     for ($i = 0, $length = \count($children); $i < $length; ++$i) {
+        if ($this->list === false) {
+            throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
+        }
+
         $statement = new Node\Stmt\TypesListNode($statement);
         $statement->offset = $children[$i]->getOffset();
     }

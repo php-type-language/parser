@@ -73,6 +73,10 @@ final class Parser implements ParserInterface
         public readonly bool $shapes = true,
         public readonly bool $callables = true,
         public readonly bool $literals = true,
+        public readonly bool $generics = true,
+        public readonly bool $union = true,
+        public readonly bool $intersection = true,
+        public readonly bool $list = true,
         private readonly SourceFactoryInterface $sources = new SourceFactory(),
     ) {
         /** @psalm-var GrammarConfigArray $grammar */
