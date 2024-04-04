@@ -43,7 +43,7 @@ final class Parser implements ParserInterface
 {
     private readonly ParserCombinator $parser;
 
-    public readonly Lexer $lexer;
+    private readonly Lexer $lexer;
 
     /**
      * In-memory string literal pool.
