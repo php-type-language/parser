@@ -61,12 +61,12 @@ final class ParameterNode extends Node implements \Stringable
 
     public function jsonSerialize(): array
     {
-        return [
+        return \array_filter([
             'name' => $this->name?->getValue(),
-            'type' => $this->type?->jsonSerialize(),
+            'type' => $this->type,
             'output' => $this->output,
             'variadic' => $this->variadic,
             'optional' => $this->optional,
-        ];
+        ], static fn (mixed $value): bool => $value !== null);
     }
 }

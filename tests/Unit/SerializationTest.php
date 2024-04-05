@@ -287,6 +287,7 @@ final class SerializationTest extends TestCase
         self::assertSame(
             expected: \file_get_contents($pathname),
             actual: \json_encode($node, flags: \JSON_PRETTY_PRINT),
+            message: 'Actual data not compatible with the stored ' . $pathname
         );
     }
 }

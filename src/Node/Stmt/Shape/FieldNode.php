@@ -33,7 +33,7 @@ abstract class FieldNode extends Node implements \Stringable
     {
         return [
             'kind' => ShapeFieldKind::UNKNOWN,
-            'type' => $this->type->jsonSerialize(),
+            'type' => $this->type,
             'optional' => $this->optional,
         ];
     }

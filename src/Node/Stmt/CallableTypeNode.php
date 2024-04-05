@@ -17,11 +17,11 @@ class CallableTypeNode extends TypeStatement
 
     public function jsonSerialize(): array
     {
-        return [
+        return \array_filter([
             'kind' => TypeKind::CALLABLE_KIND,
             'name' => $this->name->toString(),
-            'parameters' => $this->parameters->jsonSerialize(),
-            'type' => $this->type?->jsonSerialize(),
-        ];
+            'parameters' => $this->parameters,
+            'type' => $this->type,
+        ], static fn (mixed $value): bool => $value !== null);
     }
 }

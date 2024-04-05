@@ -18,8 +18,8 @@ abstract class Condition extends Statement
     {
         return [
             'kind' => ConditionKind::UNKNOWN,
-            'subject' => $this->subject->jsonSerialize(),
-            'target' => $this->target->jsonSerialize(),
+            'subject' => $this->subject,
+            'target' => $this->target,
         ];
     }
 }

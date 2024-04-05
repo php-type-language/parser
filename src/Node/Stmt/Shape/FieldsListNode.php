@@ -28,14 +28,8 @@ class FieldsListNode extends NodeList implements \Stringable
 
     public function jsonSerialize(): array
     {
-        $items = [];
-
-        foreach ($this->items as $item) {
-            $items[] = $item->jsonSerialize();
-        }
-
         return [
-            'items' => $items,
+            'items' => $this->items,
             'sealed' => $this->sealed,
         ];
     }

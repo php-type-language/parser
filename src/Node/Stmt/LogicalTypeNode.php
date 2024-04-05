@@ -59,15 +59,9 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
 
     public function jsonSerialize(): array
     {
-        $items = [];
-
-        foreach ($this->statements as $statement) {
-            $items[] = $statement->jsonSerialize();
-        }
-
         return [
             ...parent::jsonSerialize(),
-            'items' => $items,
+            'items' => $this->statements,
         ];
     }
 

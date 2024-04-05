@@ -26,25 +26,11 @@ class NamedTypeNode extends TypeStatement
 
     public function jsonSerialize(): array
     {
-        $result = [
+        return \array_filter([
             'kind' => TypeKind::TYPE_KIND,
             'name' => $this->name->toString(),
-        ];
-
-        if ($this->arguments !== null) {
-            $arguments = [];
-
-            foreach ($this->arguments as $argument) {
-                $arguments[] = $argument->value->jsonSerialize();
-            }
-
-            $result['arguments'] = $arguments;
-        }
-
-        if ($this->fields !== null) {
-            $result['fields'] = $this->fields->jsonSerialize();
-        }
-
-        return $result;
+            'arguments' => $this->arguments,
+            'fields' => $this->fields,
+        ], static fn (mixed $value): bool => $value !== null);
     }
 }

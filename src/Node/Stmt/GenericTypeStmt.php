@@ -20,7 +20,7 @@ abstract class GenericTypeStmt extends TypeStatement
     {
         return [
             ...parent::jsonSerialize(),
-            'type' => $this->type->jsonSerialize(),
+            'type' => $this->type,
         ];
     }
 

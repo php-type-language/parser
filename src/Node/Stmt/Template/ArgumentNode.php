@@ -24,6 +24,9 @@ class ArgumentNode extends Node
 
     public function jsonSerialize(): array
     {
-        return $this->value->jsonSerialize();
+        return \array_filter([
+            'hint' => $this->hint,
+            'value' => $this->value,
+        ], static fn (mixed $value): bool => $value !== null);
     }
 }

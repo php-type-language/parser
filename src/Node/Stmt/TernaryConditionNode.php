@@ -18,9 +18,9 @@ final class TernaryConditionNode extends TypeStatement
     {
         return [
             'kind' => TypeKind::TERNARY_KIND,
-            'condition' => $this->condition->jsonSerialize(),
-            'then' => $this->then->jsonSerialize(),
-            'else' => $this->else->jsonSerialize(),
+            'condition' => $this->condition,
+            'then' => $this->then,
+            'else' => $this->else,
         ];
     }
 }
