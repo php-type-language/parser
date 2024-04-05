@@ -105,10 +105,6 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
         return $this->isSimple() && $first->isBuiltin();
     }
 
-    /**
-     * @param int<0, max> $offset
-     * @param int<0, max>|null $length
-     */
     public function slice(int $offset = 0, int $length = null): self
     {
         return new static(\array_slice($this->parts, $offset, $length));
