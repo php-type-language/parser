@@ -1,0 +1,9 @@
+{
+    "kind": 3,
+    "type": {
+        "kind": 1,
+        "name": "string"
+    },
+    "optional": true,
+    "key": 42
+}

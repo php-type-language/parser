@@ -59,11 +59,11 @@ final class ParameterNode extends Node implements \Stringable
         return \implode(', ', $result);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'name' => $this->name?->getValue(),
-            'type' => $this->type?->toArray(),
+            'type' => $this->type?->jsonSerialize(),
             'output' => $this->output,
             'variadic' => $this->variadic,
             'optional' => $this->optional,

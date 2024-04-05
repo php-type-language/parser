@@ -14,12 +14,12 @@ abstract class Condition extends Statement
         public TypeStatement $target,
     ) {}
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => ConditionKind::UNKNOWN,
-            'subject' => $this->subject->toArray(),
-            'target' => $this->target->toArray(),
+            'subject' => $this->subject->jsonSerialize(),
+            'target' => $this->target->jsonSerialize(),
         ];
     }
 }

@@ -47,12 +47,12 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
         return \count($this->items);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = $item->toArray();
+            $items[] = $item->jsonSerialize();
         }
 
         return ['items' => $items];

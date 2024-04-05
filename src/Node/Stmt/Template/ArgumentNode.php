@@ -22,8 +22,8 @@ class ArgumentNode extends Node
         $this->hint = \is_string($hint) ? new Identifier($hint) : $hint;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
-        return $this->value->toArray();
+        return $this->value->jsonSerialize();
     }
 }

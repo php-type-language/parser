@@ -30,10 +30,10 @@ final class NamedFieldNode extends ExplicitFieldNode
         return $this->key->toString();
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'key' => $this->key->toString(),
             'kind' => ShapeFieldKind::NAMED_FIELD_KIND,
         ];

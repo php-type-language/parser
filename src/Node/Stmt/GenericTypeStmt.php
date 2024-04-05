@@ -16,11 +16,11 @@ abstract class GenericTypeStmt extends TypeStatement
         public TypeStatement $type,
     ) {}
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
-            'type' => $this->type->toArray(),
+            ...parent::jsonSerialize(),
+            'type' => $this->type->jsonSerialize(),
         ];
     }
 

@@ -199,10 +199,10 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         return $this->value;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => LiteralKind::STRING_KIND,
         ];
     }

@@ -222,15 +222,14 @@ final class SerializationTest extends TestCase
     }
 
     #[DataProvider('nodesDataProvider')]
-    public function testSerialization(object $expected): void
+    public function testPhpSerialization(object $expected): void
     {
         $actual = \unserialize(\serialize($expected));
 
         self::assertEquals($expected, $actual);
     }
 
-    #[DataProvider('nodesDataProvider')]
-    public function testSerializationSize(object $node): void
+    private function getPathname(object $node, string $ext): string
     {
         $filename = __DIR__ . '/SerializationTest/'
             . \strtolower(\str_replace('\\', '_', $node::class));
@@ -239,13 +238,19 @@ final class SerializationTest extends TestCase
             $filename .= '.' . \strtolower($node->name);
         }
 
-        $filename .= '.txt';
+        return $filename . '.' . $ext;
+    }
 
-        if (!\is_file($filename)) {
-            \file_put_contents($filename, \serialize($node));
+    #[DataProvider('nodesDataProvider')]
+    public function testPhpSerializationSize(object $node): void
+    {
+        $pathname = $this->getPathname($node, 'txt');
+
+        if (!\is_file($pathname)) {
+            \file_put_contents($pathname, \serialize($node));
         }
 
-        $serializedExpected = \trim(\file_get_contents($filename));
+        $serializedExpected = \trim(\file_get_contents($pathname));
         $serializedActual = \trim(\serialize($node));
 
         if ($serializedExpected !== $serializedActual) {
@@ -264,6 +269,24 @@ final class SerializationTest extends TestCase
             ),
         );
 
-        \file_put_contents($filename, $serializedActual);
+        \file_put_contents($pathname, $serializedActual);
+    }
+
+    #[DataProvider('nodesDataProvider')]
+    public function testJsonSerialization(object $node): void
+    {
+        $pathname = $this->getPathname($node, 'json');
+
+        if (!\is_file($pathname)) {
+            \file_put_contents(
+                filename: $pathname,
+                data: \json_encode($node, flags: \JSON_PRETTY_PRINT),
+            );
+        }
+
+        self::assertSame(
+            expected: \file_get_contents($pathname),
+            actual: \json_encode($node, flags: \JSON_PRETTY_PRINT),
+        );
     }
 }

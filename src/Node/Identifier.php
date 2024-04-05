@@ -114,13 +114,6 @@ final class Identifier extends Node implements \Stringable
         return $this->value;
     }
 
-    public function toArray(): array
-    {
-        return [
-            'identifier' => $this->toString(),
-        ];
-    }
-
     /**
      * @return non-empty-string
      */

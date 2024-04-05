@@ -35,7 +35,7 @@ abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface
         return $this->raw;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => LiteralKind::UNKNOWN,

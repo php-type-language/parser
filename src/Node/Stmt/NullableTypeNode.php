@@ -10,10 +10,10 @@ namespace TypeLang\Parser\Node\Stmt;
  */
 class NullableTypeNode extends GenericTypeStmt
 {
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => TypeKind::NULLABLE_KIND,
         ];
     }

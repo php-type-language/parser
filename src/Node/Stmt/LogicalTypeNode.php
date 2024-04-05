@@ -57,16 +57,16 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         return \count($this->statements);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         $items = [];
 
         foreach ($this->statements as $statement) {
-            $items[] = $statement->toArray();
+            $items[] = $statement->jsonSerialize();
         }
 
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'items' => $items,
         ];
     }

@@ -21,7 +21,7 @@ class ClassConstMaskNode extends TypeStatement
         $this->constant = \is_string($constant) ? new Identifier($constant) : $constant;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => TypeKind::CLASS_CONST_MASK_KIND,

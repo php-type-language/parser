@@ -10,10 +10,10 @@ namespace TypeLang\Parser\Node\Stmt;
  */
 class IntersectionTypeNode extends LogicalTypeNode
 {
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => TypeKind::LOGICAL_INTERSECTION_KIND,
         ];
     }

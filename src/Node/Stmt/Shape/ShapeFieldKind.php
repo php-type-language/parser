@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Stmt\Shape;
 
-use TypeLang\Parser\Node\SerializableInterface;
-use TypeLang\Parser\Node\SerializableKind;
-
-enum ShapeFieldKind: int implements SerializableInterface
+enum ShapeFieldKind: int implements \JsonSerializable
 {
-    use SerializableKind;
-
     case UNKNOWN = 0;
 
     /**
@@ -32,4 +27,12 @@ enum ShapeFieldKind: int implements SerializableInterface
      * Defines a field without key.
      */
     case IMPLICIT_FIELD_KIND = 4;
+
+    /**
+     * @return int<0, max>
+     */
+    public function jsonSerialize(): int
+    {
+        return $this->value;
+    }
 }

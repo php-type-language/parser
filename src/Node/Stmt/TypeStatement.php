@@ -8,7 +8,7 @@ use TypeLang\Parser\Node\Statement;
 
 abstract class TypeStatement extends Statement
 {
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => TypeKind::UNKNOWN,

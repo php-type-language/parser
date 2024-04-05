@@ -15,13 +15,13 @@ class CallableTypeNode extends TypeStatement
         public ?TypeStatement $type = null,
     ) {}
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => TypeKind::CALLABLE_KIND,
             'name' => $this->name->toString(),
-            'parameters' => $this->parameters->toArray(),
-            'type' => $this->type?->toArray(),
+            'parameters' => $this->parameters->jsonSerialize(),
+            'type' => $this->type?->jsonSerialize(),
         ];
     }
 }

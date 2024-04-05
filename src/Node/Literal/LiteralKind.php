@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Node\Literal;
 
-use TypeLang\Parser\Node\SerializableInterface;
-use TypeLang\Parser\Node\SerializableKind;
-
-enum LiteralKind: int implements SerializableInterface
+enum LiteralKind: int implements \JsonSerializable
 {
-    use SerializableKind;
-
     case UNKNOWN = 0;
     case BOOL_KIND = 1;
     case FLOAT_KIND = 2;
@@ -18,4 +13,12 @@ enum LiteralKind: int implements SerializableInterface
     case NULL_KIND = 4;
     case STRING_KIND = 5;
     case VARIABLE_KIND = 6;
+
+    /**
+     * @return int<0, max>
+     */
+    public function jsonSerialize(): int
+    {
+        return $this->value;
+    }
 }

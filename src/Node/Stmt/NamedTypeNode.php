@@ -24,7 +24,7 @@ class NamedTypeNode extends TypeStatement
         $this->name = $name instanceof Name ? $name : new Name($name);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         $result = [
             'kind' => TypeKind::TYPE_KIND,
@@ -35,14 +35,14 @@ class NamedTypeNode extends TypeStatement
             $arguments = [];
 
             foreach ($this->arguments as $argument) {
-                $arguments[] = $argument->value->toArray();
+                $arguments[] = $argument->value->jsonSerialize();
             }
 
             $result['arguments'] = $arguments;
         }
 
         if ($this->fields !== null) {
-            $result['fields'] = $this->fields->toArray();
+            $result['fields'] = $this->fields->jsonSerialize();
         }
 
         return $result;

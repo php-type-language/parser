@@ -62,10 +62,10 @@ class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInte
         return $this->value;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => LiteralKind::VARIABLE_KIND,
         ];
     }

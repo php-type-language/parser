@@ -1,0 +1,22 @@
+{
+    "kind": 2,
+    "name": "foo",
+    "parameters": {
+        "items": [
+            {
+                "name": "test",
+                "type": {
+                    "kind": 1,
+                    "name": "int"
+                },
+                "output": true,
+                "variadic": true,
+                "optional": true
+            }
+        ]
+    },
+    "type": {
+        "kind": 1,
+        "name": "void"
+    }
+}

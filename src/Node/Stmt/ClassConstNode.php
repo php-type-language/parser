@@ -17,7 +17,7 @@ class ClassConstNode extends ClassConstMaskNode
         parent::__construct($class, $constant);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => TypeKind::CLASS_CONST_KIND,

@@ -6,10 +6,10 @@ namespace TypeLang\Parser\Node\Stmt\Shape;
 
 class ImplicitFieldNode extends FieldNode
 {
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => ShapeFieldKind::IMPLICIT_FIELD_KIND,
         ];
     }

@@ -1,0 +1,22 @@
+{
+    "kind": 9,
+    "condition": {
+        "kind": 1,
+        "subject": {
+            "kind": 6,
+            "value": "some"
+        },
+        "target": {
+            "kind": 1,
+            "name": "int"
+        }
+    },
+    "then": {
+        "kind": 1,
+        "name": "int"
+    },
+    "else": {
+        "kind": 1,
+        "name": "mixed"
+    }
+}

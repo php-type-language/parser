@@ -10,10 +10,10 @@ namespace TypeLang\Parser\Node\Stmt;
  */
 class UnionTypeNode extends LogicalTypeNode
 {
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => TypeKind::LOGICAL_UNION_KIND,
         ];
     }

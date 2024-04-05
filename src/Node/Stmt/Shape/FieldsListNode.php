@@ -26,12 +26,12 @@ class FieldsListNode extends NodeList implements \Stringable
         return $this->sealed ? 'sealed' : 'unsealed';
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = $item->toArray();
+            $items[] = $item->jsonSerialize();
         }
 
         return [

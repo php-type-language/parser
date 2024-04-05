@@ -29,11 +29,11 @@ abstract class FieldNode extends Node implements \Stringable
         return $this->optional ? 'optional' : 'required';
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'kind' => ShapeFieldKind::UNKNOWN,
-            'type' => $this->type->toArray(),
+            'type' => $this->type->jsonSerialize(),
             'optional' => $this->optional,
         ];
     }

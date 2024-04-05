@@ -1,0 +1,12 @@
+{
+    "items": [
+        {
+            "kind": 1,
+            "name": "Some\\Any"
+        },
+        {
+            "kind": 1,
+            "name": "Any\\Test"
+        }
+    ]
+}

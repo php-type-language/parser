@@ -6,10 +6,10 @@ namespace TypeLang\Parser\Node\Stmt\Condition;
 
 final class NotEqualConditionNode extends Condition
 {
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            ...parent::toArray(),
+            ...parent::jsonSerialize(),
             'kind' => ConditionKind::KIND_NOT_EQUAL,
         ];
     }

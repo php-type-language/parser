@@ -282,13 +282,6 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
         return $this->toString();
     }
 
-    public function toArray(): array
-    {
-        return [
-            'name' => $this->toString()
-        ];
-    }
-
     /**
      * @return non-empty-string
      */
