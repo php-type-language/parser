@@ -1,0 +1,17 @@
+{
+    "items": [
+        {
+            "value": {
+                "kind": 1,
+                "name": "Some\\Any"
+            }
+        },
+        {
+            "hint": "in",
+            "value": {
+                "kind": 1,
+                "name": "Any\\Test"
+            }
+        }
+    ]
+}
