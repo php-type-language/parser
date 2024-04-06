@@ -1,1 +1,0 @@
-E:63:"TypeLang\Parser\Node\Stmt\Shape\ShapeFieldKind:NAMED_FIELD_KIND";

@@ -1,1 +1,0 @@
-E:51:"TypeLang\Parser\Node\Stmt\TypeKind:CLASS_CONST_KIND";

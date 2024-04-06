@@ -23,12 +23,4 @@ class NullLiteralNode extends LiteralNode
     {
         return null;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'kind' => LiteralKind::NULL_KIND,
-        ];
-    }
 }

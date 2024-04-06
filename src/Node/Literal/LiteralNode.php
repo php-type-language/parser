@@ -34,12 +34,4 @@ abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface
     {
         return $this->raw;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'kind' => LiteralKind::UNKNOWN,
-            'value' => $this->getValue(),
-        ];
-    }
 }

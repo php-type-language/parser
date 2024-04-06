@@ -1,1 +1,0 @@
-O:46:"TypeLang\Parser\Node\Literal\StringLiteralNode":3:{s:6:"offset";i:0;s:3:"raw";s:10:"0xDEADBEEF";s:5:"value";s:10:"0xDEADBEEF";}

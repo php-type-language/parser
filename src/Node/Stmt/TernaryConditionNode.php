@@ -13,14 +13,4 @@ final class TernaryConditionNode extends TypeStatement
         public TypeStatement $then,
         public TypeStatement $else,
     ) {}
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'kind' => TypeKind::TERNARY_KIND,
-            'condition' => $this->condition,
-            'then' => $this->then,
-            'else' => $this->else,
-        ];
-    }
 }

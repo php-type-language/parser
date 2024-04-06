@@ -1,9 +1,0 @@
-{
-    "type": {
-        "kind": 257,
-        "name": "int"
-    },
-    "output": false,
-    "variadic": false,
-    "optional": false
-}

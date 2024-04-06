@@ -23,14 +23,4 @@ class NamedTypeNode extends TypeStatement
     ) {
         $this->name = $name instanceof Name ? $name : new Name($name);
     }
-
-    public function jsonSerialize(): array
-    {
-        return \array_filter([
-            'kind' => TypeKind::TYPE_KIND,
-            'name' => $this->name->toString(),
-            'arguments' => $this->arguments,
-            'fields' => $this->fields,
-        ], static fn(mixed $value): bool => $value !== null);
-    }
 }

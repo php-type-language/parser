@@ -46,9 +46,4 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
     {
         return \count($this->items);
     }
-
-    public function jsonSerialize(): array
-    {
-        return ['items' => $this->items];
-    }
 }

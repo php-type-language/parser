@@ -1,1 +1,0 @@
-E:44:"TypeLang\Parser\Node\Stmt\TypeKind:LIST_KIND";

@@ -8,13 +8,4 @@ namespace TypeLang\Parser\Node\Stmt;
  * @template T of TypeStatement
  * @template-extends LogicalTypeNode<T>
  */
-class UnionTypeNode extends LogicalTypeNode
-{
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'kind' => TypeKind::LOGICAL_UNION_KIND,
-        ];
-    }
-}
+class UnionTypeNode extends LogicalTypeNode {}

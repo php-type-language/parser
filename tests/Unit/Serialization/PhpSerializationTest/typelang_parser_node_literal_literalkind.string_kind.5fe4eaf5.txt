@@ -1,1 +1,0 @@
-E:52:"TypeLang\Parser\Node\Literal\LiteralKind:STRING_KIND";

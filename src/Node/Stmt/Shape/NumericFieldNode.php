@@ -21,13 +21,4 @@ final class NumericFieldNode extends ExplicitFieldNode
     {
         return $this->key->getValue();
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'key' => $this->key->getValue(),
-            'kind' => ShapeFieldKind::NUMERIC_FIELD_KIND,
-        ];
-    }
 }

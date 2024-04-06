@@ -8,13 +8,4 @@ namespace TypeLang\Parser\Node\Stmt;
  * @template T of TypeStatement
  * @template-extends GenericTypeStmt<T>
  */
-class TypesListNode extends GenericTypeStmt
-{
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'kind' => TypeKind::LIST_KIND,
-        ];
-    }
-}
+class TypesListNode extends GenericTypeStmt {}

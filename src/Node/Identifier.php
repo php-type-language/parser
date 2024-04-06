@@ -114,14 +114,6 @@ final class Identifier extends Node implements \Stringable
         return $this->value;
     }
 
-    /**
-     * @return non-empty-string
-     */
-    public function jsonSerialize(): string
-    {
-        return $this->toString();
-    }
-
     public function __serialize(): array
     {
         return [$this->offset, $this->value];

@@ -282,14 +282,6 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
         return $this->toString();
     }
 
-    /**
-     * @return non-empty-string
-     */
-    public function jsonSerialize(): string
-    {
-        return $this->toString();
-    }
-
     public function __serialize(): array
     {
         return [$this->offset, $this->parts];

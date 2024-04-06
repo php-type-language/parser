@@ -198,12 +198,4 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
     {
         return $this->value;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'kind' => LiteralKind::STRING_KIND,
-        ];
-    }
 }

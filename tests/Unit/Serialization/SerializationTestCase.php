@@ -10,7 +10,6 @@ use TypeLang\Parser\Node\Identifier;
 use TypeLang\Parser\Node\Literal\BoolLiteralNode;
 use TypeLang\Parser\Node\Literal\FloatLiteralNode;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
-use TypeLang\Parser\Node\Literal\LiteralKind;
 use TypeLang\Parser\Node\Literal\NullLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Literal\VariableLiteralNode;
@@ -20,7 +19,6 @@ use TypeLang\Parser\Node\Stmt\Callable\ParametersListNode;
 use TypeLang\Parser\Node\Stmt\CallableTypeNode;
 use TypeLang\Parser\Node\Stmt\ClassConstMaskNode;
 use TypeLang\Parser\Node\Stmt\ClassConstNode;
-use TypeLang\Parser\Node\Stmt\Condition\ConditionKind;
 use TypeLang\Parser\Node\Stmt\Condition\EqualConditionNode;
 use TypeLang\Parser\Node\Stmt\Condition\NotEqualConditionNode;
 use TypeLang\Parser\Node\Stmt\ConstMaskNode;
@@ -31,12 +29,10 @@ use TypeLang\Parser\Node\Stmt\Shape\FieldsListNode;
 use TypeLang\Parser\Node\Stmt\Shape\ImplicitFieldNode;
 use TypeLang\Parser\Node\Stmt\Shape\NamedFieldNode;
 use TypeLang\Parser\Node\Stmt\Shape\NumericFieldNode;
-use TypeLang\Parser\Node\Stmt\Shape\ShapeFieldKind;
 use TypeLang\Parser\Node\Stmt\Shape\StringNamedFieldNode;
 use TypeLang\Parser\Node\Stmt\Template\ArgumentNode;
 use TypeLang\Parser\Node\Stmt\Template\ArgumentsListNode;
 use TypeLang\Parser\Node\Stmt\TernaryConditionNode;
-use TypeLang\Parser\Node\Stmt\TypeKind;
 use TypeLang\Parser\Node\Stmt\TypesListNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 use TypeLang\Parser\Node\Stmt\UnionTypeNode;
@@ -96,7 +92,6 @@ abstract class SerializationTestCase extends TestCase
         yield self::className(VariableLiteralNode::class) => [
             new VariableLiteralNode('$some'),
         ];
-        yield from self::enums(LiteralKind::class);
 
         // Shapes
         yield self::className(FieldsListNode::class) => [new FieldsListNode([
@@ -128,8 +123,6 @@ abstract class SerializationTestCase extends TestCase
             of: new NamedTypeNode(new Name('string')),
             optional: true,
         )];
-
-        yield from self::enums(ShapeFieldKind::class);
 
         // Templates
         yield self::className(ArgumentsListNode::class) => [new ArgumentsListNode([
@@ -263,8 +256,6 @@ abstract class SerializationTestCase extends TestCase
             target: new NamedTypeNode('int')
         )];
 
-        yield from self::enums(ConditionKind::class);
-
         yield self::className(TernaryConditionNode::class) => [
             new TernaryConditionNode(
                 condition: new EqualConditionNode(
@@ -305,19 +296,6 @@ abstract class SerializationTestCase extends TestCase
                 name: new Name('foo'),
                 parameters: $paramList,
             )];
-
-        yield from self::enums(TypeKind::class);
-    }
-
-    /**
-     * @param class-string<\UnitEnum> $enum
-     * @return iterable<non-empty-string, array{\UnitEnum}>
-     */
-    private static function enums(string $enum): iterable
-    {
-        foreach ($enum::cases() as $case) {
-            yield self::className($enum) . '::' . $case->name => [$case];
-        }
     }
 
     public static function typeStatementsDataProvider(): iterable

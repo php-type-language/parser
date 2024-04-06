@@ -13,13 +13,4 @@ abstract class Condition extends Statement
         public TypeStatement $subject,
         public TypeStatement $target,
     ) {}
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'kind' => ConditionKind::UNKNOWN,
-            'subject' => $this->subject,
-            'target' => $this->target,
-        ];
-    }
 }

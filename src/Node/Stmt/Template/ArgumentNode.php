@@ -21,12 +21,4 @@ class ArgumentNode extends Node
     ) {
         $this->hint = \is_string($hint) ? new Identifier($hint) : $hint;
     }
-
-    public function jsonSerialize(): array
-    {
-        return \array_filter([
-            'hint' => $this->hint,
-            'value' => $this->value,
-        ], static fn(mixed $value): bool => $value !== null);
-    }
 }

@@ -29,13 +29,4 @@ final class NamedFieldNode extends ExplicitFieldNode
         /** @var non-empty-string */
         return $this->key->toString();
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'key' => $this->key->toString(),
-            'kind' => ShapeFieldKind::NAMED_FIELD_KIND,
-        ];
-    }
 }

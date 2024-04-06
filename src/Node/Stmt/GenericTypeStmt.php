@@ -16,14 +16,6 @@ abstract class GenericTypeStmt extends TypeStatement
         public TypeStatement $type,
     ) {}
 
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'type' => $this->type,
-        ];
-    }
-
     public function __serialize(): array
     {
         return [$this->offset, $this->type];

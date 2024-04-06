@@ -25,12 +25,4 @@ class FieldsListNode extends NodeList implements \Stringable
     {
         return $this->sealed ? 'sealed' : 'unsealed';
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'items' => $this->items,
-            'sealed' => $this->sealed,
-        ];
-    }
 }

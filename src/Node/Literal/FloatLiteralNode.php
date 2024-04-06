@@ -40,12 +40,4 @@ class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterfa
     {
         return $this->value;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'kind' => LiteralKind::FLOAT_KIND,
-        ];
-    }
 }

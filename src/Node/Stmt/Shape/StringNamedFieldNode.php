@@ -24,13 +24,4 @@ final class StringNamedFieldNode extends ExplicitFieldNode
     {
         return $this->key->getValue();
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            ...parent::jsonSerialize(),
-            'key' => $this->key->getValue(),
-            'kind' => ShapeFieldKind::STRING_FIELD_KIND,
-        ];
-    }
 }
