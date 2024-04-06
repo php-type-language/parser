@@ -53,6 +53,7 @@ enum LiteralKind: int implements \JsonSerializable
      */
     public function jsonSerialize(): int
     {
+        /** @var int<0, max> */
         return $this->value;
     }
 }

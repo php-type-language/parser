@@ -19,6 +19,8 @@ class ClassConstNode extends ClassConstMaskNode
 
     public function jsonSerialize(): array
     {
+        assert($this->constant !== null, 'Const ref cannot be null');
+
         return [
             'kind' => TypeKind::CLASS_CONST_KIND,
             'class' => $this->class->toString(),
