@@ -1,0 +1,1 @@
+E:64:"TypeLang\Parser\Node\Stmt\Shape\ShapeFieldKind:STRING_FIELD_KIND";

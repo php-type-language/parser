@@ -1,0 +1,1 @@
+E:66:"TypeLang\Parser\Node\Stmt\Shape\ShapeFieldKind:IMPLICIT_FIELD_KIND";

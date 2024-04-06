@@ -1,0 +1,61 @@
+{
+    "kind": 257,
+    "name": "int",
+    "arguments": {
+        "items": [
+            {
+                "value": {
+                    "kind": 257,
+                    "name": "int"
+                }
+            },
+            {
+                "hint": "covariant",
+                "value": {
+                    "kind": 257,
+                    "name": "int"
+                }
+            }
+        ]
+    },
+    "fields": {
+        "items": [
+            {
+                "kind": 516,
+                "type": {
+                    "kind": 257,
+                    "name": "string"
+                },
+                "optional": true
+            },
+            {
+                "kind": 513,
+                "type": {
+                    "kind": 257,
+                    "name": "string"
+                },
+                "optional": true,
+                "key": "string"
+            },
+            {
+                "kind": 515,
+                "type": {
+                    "kind": 257,
+                    "name": "string"
+                },
+                "optional": true,
+                "key": 42
+            },
+            {
+                "kind": 514,
+                "type": {
+                    "kind": 257,
+                    "name": "string"
+                },
+                "optional": true,
+                "key": "key"
+            }
+        ],
+        "sealed": false
+    }
+}

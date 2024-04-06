@@ -1,0 +1,1 @@
+E:44:"TypeLang\Parser\Node\Stmt\TypeKind:TYPE_KIND";

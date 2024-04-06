@@ -1,0 +1,1 @@
+E:50:"TypeLang\Parser\Node\Stmt\TypeKind:CONST_MASK_KIND";

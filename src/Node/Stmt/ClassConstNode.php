@@ -19,10 +19,10 @@ class ClassConstNode extends ClassConstMaskNode
 
     public function jsonSerialize(): array
     {
-        return \array_filter([
+        return [
             'kind' => TypeKind::CLASS_CONST_KIND,
             'class' => $this->class->toString(),
-            'constant' => $this->constant?->toString(),
-        ], static fn (mixed $value): bool => $value !== null);
+            'constant' => $this->constant->toString(),
+        ];
     }
 }

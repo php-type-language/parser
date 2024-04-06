@@ -20,6 +20,7 @@
         }
     },
     "require-dev": {
+        "justinrainbow/json-schema": "^5.2",
         "friendsofphp/php-cs-fixer": "^3.42",
         "jetbrains/phpstorm-attributes": "^1.0",
         "nikic/php-parser": "^4.17",

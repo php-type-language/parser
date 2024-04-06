@@ -1,0 +1,14 @@
+{
+    "items": [
+        {
+            "name": "test",
+            "type": {
+                "kind": 257,
+                "name": "int"
+            },
+            "output": true,
+            "variadic": true,
+            "optional": true
+        }
+    ]
+}
