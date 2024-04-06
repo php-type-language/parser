@@ -6,6 +6,8 @@ namespace TypeLang\Parser\Node\Literal;
 
 use TypeLang\Parser\Node\Kind;
 
+const LITERAL_KIND = Kind::LITERAL_KIND;
+
 enum LiteralKind: int implements \JsonSerializable
 {
     /**
@@ -14,39 +16,39 @@ enum LiteralKind: int implements \JsonSerializable
      *
      * @internal
      */
-    case UNKNOWN = Kind::LITERAL_KIND;
+    case UNKNOWN = LITERAL_KIND;
 
     /**
      * Denotes any {@see bool} type consisting of the
      * literal {@see true} and {@see false} values.
      */
-    case BOOL_KIND = Kind::LITERAL_KIND + 1;
+    case BOOL_KIND = LITERAL_KIND + 1;
 
     /**
      * Denotes any {@see float} type.
      */
-    case FLOAT_KIND = Kind::LITERAL_KIND + 2;
+    case FLOAT_KIND = LITERAL_KIND + 2;
 
     /**
      * Denotes any {@see int} type.
      */
-    case INT_KIND = Kind::LITERAL_KIND + 3;
+    case INT_KIND = LITERAL_KIND + 3;
 
     /**
      * Denotes any {@see null} type.
      */
-    case NULL_KIND = Kind::LITERAL_KIND + 4;
+    case NULL_KIND = LITERAL_KIND + 4;
 
     /**
      * Denotes any {@see string} type.
      */
-    case STRING_KIND = Kind::LITERAL_KIND + 5;
+    case STRING_KIND = LITERAL_KIND + 5;
 
     /**
      * Denotes any variable (for example function
      * argument/parameter) type.
      */
-    case VARIABLE_KIND = Kind::LITERAL_KIND + 6;
+    case VARIABLE_KIND = LITERAL_KIND + 6;
 
     /**
      * @return int<0, max>
