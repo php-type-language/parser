@@ -88,7 +88,6 @@ final class Parser implements ParserInterface
      *        intersection types such as `T & X`.
      * @param bool $list Enables or disables support for square bracket list
      *        types such as `T[]`.
-     * @param SourceFactoryInterface $sources
      */
     public function __construct(
         public readonly bool $tolerant = false,
