@@ -6,8 +6,6 @@ namespace TypeLang\Parser\Node\Stmt;
 
 use TypeLang\Parser\Node\Kind;
 
-const TYPE_KIND = Kind::TYPE_KIND;
-
 enum TypeKind: int implements \JsonSerializable
 {
     /**
@@ -15,8 +13,9 @@ enum TypeKind: int implements \JsonSerializable
      * that has not been explicitly defined.
      *
      * @internal
+     * @see Kind::TYPE_KIND
      */
-    case UNKNOWN = TYPE_KIND;
+    case UNKNOWN = /*Kind::TYPE_KIND*/0x0100;
 
     /**
      * Denotes any named type, which may be a reference to a class,
@@ -25,8 +24,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * Path\To\SomeClass<T, Y>
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case TYPE_KIND = TYPE_KIND + 1;
+    case TYPE_KIND = /*Kind::TYPE_KIND*/0x0100 + 1;
 
     /**
      * Denotes any callable type that can contain parameters
@@ -35,8 +36,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * example(T, U): V
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case CALLABLE_KIND = TYPE_KIND + 2;
+    case CALLABLE_KIND = /*Kind::TYPE_KIND*/0x0100 + 2;
 
     /**
      * Denotes a constant mask for a class.
@@ -44,8 +47,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * Path\To\SomeClass::CONST_*
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case CLASS_CONST_MASK_KIND = TYPE_KIND + 3;
+    case CLASS_CONST_MASK_KIND = /*Kind::TYPE_KIND*/0x0100 + 3;
 
     /**
      * Denotes a reference to a specific class constant.
@@ -53,8 +58,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * Path\To\SomeClass::CONST_NAME
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case CLASS_CONST_KIND = TYPE_KIND + 4;
+    case CLASS_CONST_KIND = /*Kind::TYPE_KIND*/0x0100 + 4;
 
     /**
      * Denotes a global constant mask.
@@ -62,8 +69,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * JSON_ERROR_*
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case CONST_MASK_KIND = TYPE_KIND + 5;
+    case CONST_MASK_KIND = /*Kind::TYPE_KIND*/0x0100 + 5;
 
     /**
      * Denotes the logical intersection type.
@@ -71,8 +80,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * T & U
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case LOGICAL_INTERSECTION_KIND = TYPE_KIND + 6;
+    case LOGICAL_INTERSECTION_KIND = /*Kind::TYPE_KIND*/0x0100 + 6;
 
     /**
      * Denotes the logical union type.
@@ -80,8 +91,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * T | U
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case LOGICAL_UNION_KIND = TYPE_KIND + 7;
+    case LOGICAL_UNION_KIND = /*Kind::TYPE_KIND*/0x0100 + 7;
 
     /**
      * Denotes the nullable type.
@@ -89,8 +102,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * ?T
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case NULLABLE_KIND = TYPE_KIND + 8;
+    case NULLABLE_KIND = /*Kind::TYPE_KIND*/0x0100 + 8;
 
     /**
      * Denotes the logical ternary type.
@@ -98,8 +113,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * T ? U : V
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case TERNARY_KIND = TYPE_KIND + 9;
+    case TERNARY_KIND = /*Kind::TYPE_KIND*/0x0100 + 9;
 
     /**
      * Indicates a list type in the "legacy" syntax format.
@@ -107,8 +124,10 @@ enum TypeKind: int implements \JsonSerializable
      * ```
      * T[]
      * ```
+     *
+     * @see Kind::TYPE_KIND
      */
-    case LIST_KIND = TYPE_KIND + 10;
+    case LIST_KIND = /*Kind::TYPE_KIND*/0x0100 + 10;
 
     /**
      * @return int<0, max>
