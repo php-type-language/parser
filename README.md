@@ -48,45 +48,45 @@ var_dump($type);
 Expected Output:
 
 ```php
-TypeLang\Parser\Node\Stmt\NamedTypeNode {#739
+TypeLang\Parser\Node\Stmt\NamedTypeNode {
   +offset: 0
-  +name: TypeLang\Parser\Node\Name {#737
+  +name: TypeLang\Parser\Node\Name {
     +offset: 0
     -parts: array:1 [
-      0 => TypeLang\Parser\Node\Identifier {#746
+      0 => TypeLang\Parser\Node\Identifier {
         +offset: 0
         +value: "array"
       }
     ]
   }
   +arguments: null
-  +fields: TypeLang\Parser\Node\Stmt\Shape\FieldsListNode {#757
+  +fields: TypeLang\Parser\Node\Stmt\Shape\FieldsListNode {
     +offset: 11
     +items: array:1 [
-      0 => TypeLang\Parser\Node\Stmt\Shape\NamedFieldNode {#346
+      0 => TypeLang\Parser\Node\Stmt\Shape\NamedFieldNode {
         +offset: 11
-        +type: TypeLang\Parser\Node\Stmt\CallableTypeNode {#339
+        +type: TypeLang\Parser\Node\Stmt\CallableTypeNode {
           +offset: 16
-          +name: TypeLang\Parser\Node\Name {#313
+          +name: TypeLang\Parser\Node\Name {
             +offset: 16
             -parts: array:1 [
-              0 => TypeLang\Parser\Node\Identifier {#332
+              0 => TypeLang\Parser\Node\Identifier {
                 +offset: 16
                 +value: "callable"
               }
             ]
           }
-          +parameters: TypeLang\Parser\Node\Stmt\Callable\ParametersListNode {#318
+          +parameters: TypeLang\Parser\Node\Stmt\Callable\ParametersListNode {
             +offset: 25
             +items: array:2 [
-              0 => TypeLang\Parser\Node\Stmt\Callable\ParameterNode {#315
+              0 => TypeLang\Parser\Node\Stmt\Callable\ParameterNode {
                 +offset: 25
-                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#304
+                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 25
-                  +name: TypeLang\Parser\Node\Name {#242
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 25
                     -parts: array:1 [
-                      0 => TypeLang\Parser\Node\Identifier {#311
+                      0 => TypeLang\Parser\Node\Identifier {
                         +offset: 25
                         +value: "Example"
                       }
@@ -100,14 +100,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#739
                 +variadic: false
                 +optional: false
               }
-              1 => TypeLang\Parser\Node\Stmt\Callable\ParameterNode {#330
+              1 => TypeLang\Parser\Node\Stmt\Callable\ParameterNode {
                 +offset: 34
-                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#312
+                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
                   +offset: 34
-                  +name: TypeLang\Parser\Node\Name {#284
+                  +name: TypeLang\Parser\Node\Name {
                     +offset: 34
                     -parts: array:1 [
-                      0 => TypeLang\Parser\Node\Identifier {#298
+                      0 => TypeLang\Parser\Node\Identifier {
                         +offset: 34
                         +value: "int"
                       }
@@ -123,12 +123,12 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#739
               }
             ]
           }
-          +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {#287
+          +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
             +offset: 40
-            +name: TypeLang\Parser\Node\Name {#314
+            +name: TypeLang\Parser\Node\Name {
               +offset: 40
               -parts: array:1 [
-                0 => TypeLang\Parser\Node\Identifier {#307
+                0 => TypeLang\Parser\Node\Identifier {
                   +offset: 40
                   +value: "mixed"
                 }
@@ -139,7 +139,7 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#739
           }
         }
         +optional: false
-        +key: TypeLang\Parser\Node\Identifier {#371
+        +key: TypeLang\Parser\Node\Identifier {
           +offset: 11
           +value: "key"
         }
@@ -148,81 +148,6 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {#739
     +sealed: false
   }
 }
-```
-
-### Array Normalization
-
-```php
-$parser = new \TypeLang\Parser\Parser();
-
-$type = $parser->parse(<<<'PHP'
-    array{
-        key: callable(Example, int): mixed,
-        ...
-    }
-    PHP);
-
-var_dump($type->toArray());
-```
-
-Expected Output:
-
-```php
-array:3 [
-  "kind" => TypeLang\Parser\Node\Stmt\TypeKind {#773
-    +name: "TYPE_KIND"
-    +value: 1
-  }
-  "name" => "array"
-  "fields" => array:2 [
-    "items" => array:1 [
-      0 => array:4 [
-        "kind" => TypeLang\Parser\Node\Stmt\Shape\ShapeFieldKind {#733
-          +name: "NAMED_FIELD_KIND"
-          +value: 1
-        }
-        "type" => array:4 [
-          "kind" => TypeLang\Parser\Node\Stmt\TypeKind {#741
-            +name: "CALLABLE_KIND"
-            +value: 2
-          }
-          "name" => "callable"
-          "parameters" => array:1 [
-            "items" => array:2 [
-              0 => array:5 [
-                "name" => null
-                "type" => array:2 [
-                  "kind" => TypeLang\Parser\Node\Stmt\TypeKind {#773}
-                  "name" => "Example"
-                ]
-                "output" => false
-                "variadic" => false
-                "optional" => false
-              ]
-              1 => array:5 [
-                "name" => null
-                "type" => array:2 [
-                  "kind" => TypeLang\Parser\Node\Stmt\TypeKind {#773}
-                  "name" => "int"
-                ]
-                "output" => false
-                "variadic" => false
-                "optional" => false
-              ]
-            ]
-          ]
-          "type" => array:2 [
-            "kind" => TypeLang\Parser\Node\Stmt\TypeKind {#773}
-            "name" => "mixed"
-          ]
-        ]
-        "optional" => false
-        "key" => "key"
-      ]
-    ]
-    "sealed" => false
-  ]
-]
 ```
 
 ### JSON Serialization
@@ -238,28 +163,27 @@ $type = $parser->parse(<<<'PHP'
     }
     PHP);
 
-echo json_encode($type);
+echo json_encode($type, JSON_PRETTY_PRINT);
 ```
 
 Expected Output:
 
 ```json
 {
-    "kind": 1,
+    "kind": 257,
     "name": "array",
     "fields": {
         "items": [
             {
-                "kind": 1,
+                "kind": 513,
                 "type": {
-                    "kind": 2,
+                    "kind": 258,
                     "name": "callable",
                     "parameters": {
                         "items": [
                             {
-                                "name": null,
                                 "type": {
-                                    "kind": 1,
+                                    "kind": 257,
                                     "name": "Example"
                                 },
                                 "output": false,
@@ -267,9 +191,8 @@ Expected Output:
                                 "optional": false
                             },
                             {
-                                "name": null,
                                 "type": {
-                                    "kind": 1,
+                                    "kind": 257,
                                     "name": "int"
                                 },
                                 "output": false,
@@ -279,7 +202,7 @@ Expected Output:
                         ]
                     },
                     "type": {
-                        "kind": 1,
+                        "kind": 257,
                         "name": "mixed"
                     }
                 },
