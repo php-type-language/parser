@@ -22,6 +22,6 @@ class CallableTypeNode extends TypeStatement
             'name' => $this->name->toString(),
             'parameters' => $this->parameters,
             'type' => $this->type,
-        ], static fn (mixed $value): bool => $value !== null);
+        ], static fn(mixed $value): bool => $value !== null);
     }
 }

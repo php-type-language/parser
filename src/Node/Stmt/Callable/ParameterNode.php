@@ -67,6 +67,6 @@ final class ParameterNode extends Node implements \Stringable
             'output' => $this->output,
             'variadic' => $this->variadic,
             'optional' => $this->optional,
-        ], static fn (mixed $value): bool => $value !== null);
+        ], static fn(mixed $value): bool => $value !== null);
     }
 }

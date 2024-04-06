@@ -27,6 +27,6 @@ class ClassConstMaskNode extends TypeStatement
             'kind' => TypeKind::CLASS_CONST_MASK_KIND,
             'class' => $this->class->toString(),
             'constant' => $this->constant?->toString(),
-        ], static fn (mixed $value): bool => $value !== null);
+        ], static fn(mixed $value): bool => $value !== null);
     }
 }

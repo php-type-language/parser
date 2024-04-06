@@ -31,6 +31,6 @@ class NamedTypeNode extends TypeStatement
             'name' => $this->name->toString(),
             'arguments' => $this->arguments,
             'fields' => $this->fields,
-        ], static fn (mixed $value): bool => $value !== null);
+        ], static fn(mixed $value): bool => $value !== null);
     }
 }

@@ -27,6 +27,6 @@ class ArgumentNode extends Node
         return \array_filter([
             'hint' => $this->hint,
             'value' => $this->value,
-        ], static fn (mixed $value): bool => $value !== null);
+        ], static fn(mixed $value): bool => $value !== null);
     }
 }
