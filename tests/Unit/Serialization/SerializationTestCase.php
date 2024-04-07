@@ -297,13 +297,4 @@ abstract class SerializationTestCase extends TestCase
                 parameters: $paramList,
             )];
     }
-
-    public static function typeStatementsDataProvider(): iterable
-    {
-        foreach (self::nodesDataProvider() as $name => [$node]) {
-            if ($node instanceof TypeStatement) {
-                yield $name => [$node];
-            }
-        }
-    }
 }
