@@ -200,7 +200,7 @@ final class Parser implements ParserInterface
         $token = $e->getToken();
 
         return ParseException::fromUnexpectedToken(
-            char: $token->getValue(),
+            token: $token->getValue(),
             statement: $source->getContents(),
             offset: $token->getOffset(),
         );

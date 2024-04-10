@@ -32,11 +32,11 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * @param int<0, max> $offset
      * @throws SourceExceptionInterface
      */
-    public static function fromUnexpectedToken(string $char, string $statement, int $offset): static
+    public static function fromUnexpectedToken(string $token, string $statement, int $offset): static
     {
-        $message = \vsprintf('Syntax error, unexpected %s in %s %s', [
-            Formatter::token($char),
-            Formatter::source($statement),
+        $message = \vsprintf('Syntax error, unexpected %s%s %s', [
+            Formatter::token($token),
+            $token === $statement ? '' : ' in ' . Formatter::source($statement),
             Formatter::suffix($statement, $offset),
         ]);
 
@@ -51,9 +51,9 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      */
     public static function fromUnrecognizedToken(string $token, string $statement, int $offset): static
     {
-        $message = \vsprintf('Syntax error, unrecognized %s in %s %s', [
+        $message = \vsprintf('Syntax error, unrecognized %s%s %s', [
             Formatter::token($token),
-            Formatter::source($statement),
+            $token === $statement ? '' : ' in ' . Formatter::source($statement),
             Formatter::suffix($statement, $offset),
         ]);
 
