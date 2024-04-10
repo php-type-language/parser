@@ -343,7 +343,7 @@ return [
             return new Node\Stmt\CallableTypeNode(
                 name: $name,
                 parameters: $parameters,
-                type: isset($children[0]) ? $children[0] : null,
+                type: $children[0] ?? null,
             );
         },
         61 => static function (\Phplrt\Parser\Context $ctx, $children) {
