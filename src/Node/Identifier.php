@@ -56,6 +56,20 @@ final class Identifier extends Node implements \Stringable
     }
 
     /**
+     * Returns {@see true} if the identifier contains the name of
+     * a "virtual" type, i.e. invalid in the PHP namespace.
+     *
+     * - `SomeClass` - Non-virtual, can be a type in PHP.
+     * - `false` - Non-virtual, can be a type in PHP.
+     * - `non-empty-array` - Virtual, cannot be defined in PHP.
+     * - `empty-string` - Virtual, cannot be defined in PHP.
+     */
+    public function isVirtual(): bool
+    {
+        return \str_contains($this->value, '-');
+    }
+
+    /**
      * Returns {@see true} in case of name contains special class reference.
      */
     public function isSpecial(): bool
