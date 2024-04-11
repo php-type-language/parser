@@ -23,7 +23,7 @@ class SemanticException extends \LogicException implements ParserExceptionInterf
         public readonly int $offset,
         string $message,
         int $code = 0,
-        ?\Throwable $previous = null
+        ?\Throwable $previous = null,
     ) {
         parent::__construct($message, $code, $previous);
     }

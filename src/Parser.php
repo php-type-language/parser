@@ -253,7 +253,7 @@ final class Parser implements ParserInterface
     {
         return ParseException::fromInternalError(
             statement: $source->getContents(),
-            e: $e
+            e: $e,
         );
     }
 }
