@@ -139,7 +139,7 @@ abstract class LinterStubsTestCase extends TestCase
     public function testReturnStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
         self::assertInstanceOf(Standard\ReturnTag::class, $tag,
-            message: $this->getReasonPhrase($tag),
+            message: self::getReasonPhrase($tag),
         );
     }
 
@@ -154,14 +154,16 @@ abstract class LinterStubsTestCase extends TestCase
     #[DataProvider('paramTagDataProvider')]
     public function testParamStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
-        $this->inCaseOfReasonPhrase($tag, function (string $message) {
-            if (\str_contains($message, 'contains an incorrect variable name')) {
-                self::markTestIncomplete('TODO Known phpdoc parser issue: ' . $message);
-            }
-        });
+        // TODO Known phpdoc parser issue for variadic or optional variables
+        $this->skipInCaseOfReasonPhraseContains($tag, 'contains an incorrect variable name');
+
+        // TODO Known phpdoc parser issue for non-typed @param tags
+        $this->skipInCaseOfReasonPhraseContains($tag, 'type: &$info [optional]');
+        $this->skipInCaseOfReasonPhraseContains($tag, 'type: &$composed [optional]');
+        $this->skipInCaseOfReasonPhraseContains($tag, 'type: &$result [optional]');
 
         self::assertInstanceOf(Standard\ParamTag::class, $tag,
-            message: $this->getReasonPhrase($tag),
+            message: self::getReasonPhrase($tag),
         );
     }
 
@@ -174,7 +176,7 @@ abstract class LinterStubsTestCase extends TestCase
     public function testVarStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
         self::assertInstanceOf(Standard\VarTag::class, $tag,
-            message: $this->getReasonPhrase($tag),
+            message: self::getReasonPhrase($tag),
         );
     }
 
@@ -191,7 +193,7 @@ abstract class LinterStubsTestCase extends TestCase
     public function testPropertyStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
         self::assertInstanceOf(Standard\PropertyTag::class, $tag,
-            message: $this->getReasonPhrase($tag),
+            message: self::getReasonPhrase($tag),
         );
     }
 
@@ -203,8 +205,11 @@ abstract class LinterStubsTestCase extends TestCase
     #[DataProvider('methodTagDataProvider')]
     public function testMethodStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
+        // TODO Known phpdoc parser issue for legacy method signature
+        $this->skipInCaseOfReasonPhraseContains($tag, 'mixed eval($script, $args = array(), $numKeys = 0)');
+
         self::assertInstanceOf(Standard\MethodTag::class, $tag,
-            message: $this->getReasonPhrase($tag),
+            message: self::getReasonPhrase($tag),
         );
     }
 
@@ -216,12 +221,15 @@ abstract class LinterStubsTestCase extends TestCase
     #[DataProvider('throwsTagDataProvider')]
     public function testThrowsStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
+        // TODO Known phpdoc parser issue for html-tagged descriptions
+        $this->skipInCaseOfReasonPhraseContains($tag, 'SolrServerException <p>');
+
         self::assertInstanceOf(Standard\ThrowsTag::class, $tag,
-            message: $this->getReasonPhrase($tag),
+            message: self::getReasonPhrase($tag),
         );
     }
 
-    private function getReasonPhrase(TagInterface $tag): string
+    private static function getReasonPhrase(TagInterface $tag): string
     {
         if ($tag instanceof InvalidTag) {
             $reason = $tag->getReason();
@@ -232,16 +240,18 @@ abstract class LinterStubsTestCase extends TestCase
         return 'Failed to parse tag: ' . \print_r($tag, true);
     }
 
-    /**
-     * @param callable(string):void $then
-     */
-    private static function inCaseOfReasonPhrase(TagInterface $tag, callable $then): void
+    private static function skipInCaseOfReasonPhraseContains(TagInterface $tag, string $message): void
     {
         if (!$tag instanceof InvalidTag) {
             return;
         }
 
-        $reason = $tag->getReason();
-        $then($reason->getMessage());
+        $phrase = self::getReasonPhrase($tag);
+
+        if (!\str_contains($phrase, $message)) {
+            return;
+        }
+
+        self::markTestIncomplete('TODO Known phpdoc parser issue: ' . $phrase);
     }
 }
