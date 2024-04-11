@@ -20,9 +20,9 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.52",
+        "friendsofphp/php-cs-fixer": "^3.53",
         "jetbrains/phpstorm-attributes": "^1.0",
-        "nikic/php-parser": "^4.17|^5.0",
+        "nikic/php-parser": "^4.19|^5.0",
         "phplrt/compiler": "^3.6",
         "phpunit/phpunit": "^10.5|^11.0",
         "rector/rector": "^1.0",
@@ -31,7 +31,7 @@
         "type-lang/printer": ">=1.0.0-beta2 <2.0",
         "type-lang/phpdoc": ">=1.0.0-beta8 <2.0",
         "type-lang/phpdoc-standard-tags": "^1.0",
-        "vimeo/psalm": "^5.18"
+        "vimeo/psalm": "^5.23"
     },
     "autoload-dev": {
         "psr-4": {
