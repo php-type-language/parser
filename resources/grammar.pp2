@@ -140,6 +140,7 @@ TypesList -> {
 
 PrimaryType
   : ::T_PARENTHESIS_OPEN:: Type() ::T_PARENTHESIS_CLOSE::
+  | ThisLiteral()
   | Literal()
   | CallableType()
   | NamedType()

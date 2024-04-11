@@ -46,6 +46,7 @@ OptionalCallableParameter -> {
 
 NamedCallableParameter -> {
     if (\count($children) === 1) {
+
         return $children[0];
     }
 

@@ -40,7 +40,16 @@ OptionalTernaryExpressionSuffix
   ;
 
 TernaryExpressionSuffix
-  : (<T_EQ>|<T_NEQ>) (VariableLiteral()|Type())
+  : TernaryExpressionOperator() Type()
     ::T_QMARK:: Type()
     ::T_COLON:: Type()
+  ;
+
+TernaryExpressionOperator
+  : <T_EQ>
+  | <T_NEQ>
+  | <T_LTE>
+  | <T_GTE>
+  | <T_ANGLE_BRACKET_OPEN>
+  | <T_ANGLE_BRACKET_CLOSE>
   ;
