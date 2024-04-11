@@ -28,8 +28,8 @@
         "rector/rector": "^1.0",
         "symfony/finder": "^5.4|^6.0|^7.0",
         "symfony/var-dumper": "^5.4|^6.0|^7.0",
-        "type-lang/printer": "^1.0",
-        "type-lang/phpdoc": "^1.0",
+        "type-lang/printer": ">=1.0.0-beta2 <2.0",
+        "type-lang/phpdoc": ">=1.0.0-beta8 <2.0",
         "type-lang/phpdoc-standard-tags": "^1.0",
         "vimeo/psalm": "^5.18"
     },
