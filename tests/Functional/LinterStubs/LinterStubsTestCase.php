@@ -223,6 +223,7 @@ abstract class LinterStubsTestCase extends TestCase
     {
         // TODO Known phpdoc parser issue for html-tagged descriptions
         $this->skipInCaseOfReasonPhraseContains($tag, 'SolrServerException <p>');
+        $this->skipInCaseOfReasonPhraseContains($tag, 'ArithmeticError <p>');
 
         self::assertInstanceOf(Standard\ThrowsTag::class, $tag,
             message: self::getReasonPhrase($tag),
