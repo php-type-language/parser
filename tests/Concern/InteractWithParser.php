@@ -20,7 +20,7 @@ trait InteractWithParser
     protected readonly Parser $parser;
 
     #[Before]
-    public function setUpParser(): void
+    public function setUpInteractWithParser(): void
     {
         $this->parser = new Parser();
     }

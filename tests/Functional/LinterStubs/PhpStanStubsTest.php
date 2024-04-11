@@ -9,13 +9,8 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('functional'), Group('type-lang/parser')]
 class PhpStanStubsTest extends LinterStubsTestCase
 {
-    protected static function getCachePathname(): string
+    protected static function getStubsDirectory(): string
     {
-        return self::getVendorDirectory() . '/.phpstan-1.10.35.cache.php';
-    }
-
-    protected static function getFilesDirectory(): string
-    {
-        return __DIR__ . '/phpstan/1.10.35';
+        return __DIR__ . '/phpstan';
     }
 }

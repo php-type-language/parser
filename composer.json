@@ -20,15 +20,17 @@
         }
     },
     "require-dev": {
-        "justinrainbow/json-schema": "^5.2",
-        "friendsofphp/php-cs-fixer": "^3.42",
+        "friendsofphp/php-cs-fixer": "^3.52",
         "jetbrains/phpstorm-attributes": "^1.0",
-        "nikic/php-parser": "^4.17",
-        "phpdocumentor/reflection-docblock": "^5.3",
+        "nikic/php-parser": "^4.17|^5.0",
         "phplrt/compiler": "^3.6",
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^10.5|^11.0",
         "rector/rector": "^1.0",
-        "symfony/var-dumper": "^5.6|^6.0|^7.0",
+        "symfony/finder": "^5.4|^6.0|^7.0",
+        "symfony/var-dumper": "^5.4|^6.0|^7.0",
+        "type-lang/printer": "^1.0",
+        "type-lang/phpdoc": "^1.0",
+        "type-lang/phpdoc-standard-tags": "^1.0",
         "vimeo/psalm": "^5.18"
     },
     "autoload-dev": {

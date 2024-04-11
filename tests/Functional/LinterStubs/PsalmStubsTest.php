@@ -9,13 +9,8 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('functional'), Group('type-lang/parser')]
 class PsalmStubsTest extends LinterStubsTestCase
 {
-    protected static function getCachePathname(): string
+    protected static function getStubsDirectory(): string
     {
-        return self::getVendorDirectory() . '/.psalm-5.15.0.cache.php';
-    }
-
-    protected static function getFilesDirectory(): string
-    {
-        return __DIR__ . '/psalm/5.15.0';
+        return __DIR__ . '/psalm';
     }
 }

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 trait CompileGrammarIfPossible
 {
     #[BeforeClass]
-    public static function setUpCompilerBeforeClass(): void
+    public static function setUpCompileGrammarIfPossible(): void
     {
         // Skip code assembly if the compiler is not available.
         if (!\class_exists(Compiler::class)) {

@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @template-covariant TDate of DateTimeInterface
+ * @template-covariant TEnd of ?DateTimeInterface
+ * @template-covariant TRecurrences of ?int
+ * @implements \IteratorAggregate<int, TDate>
+ * @implements \Traversable<int, TDate>
+ */
+class DatePeriod implements \IteratorAggregate, \Traversable
+{
+
+	/**
+	 * @return TEnd
+	 */
+	public function getEndDate()
+	{
+
+	}
+
+	/**
+	 * @return TRecurrences
+	 */
+	public function getRecurrences()
+	{
+
+	}
+
+	/**
+	 * @return TDate
+	 */
+	public function getStartDate(): DateTimeInterface
+	{
+
+	}
+}

@@ -4,135 +4,244 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Functional\LinterStubs;
 
-use Composer\Autoload\ClassLoader;
-use Phplrt\Contracts\Position\PositionInterface;
-use Phplrt\Contracts\Source\FileInterface;
-use Phplrt\Contracts\Source\ReadableInterface;
-use Phplrt\Position\Position;
-use Phplrt\Source\File;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use TypeLang\Parser\Tests\Concern\InteractWithDocBlocks;
+use PHPUnit\Framework\ExpectationFailedException;
+use Symfony\Component\Finder\Finder;
+use TypeLang\Parser\Tests\Concern\InteractWithPHPDocParser;
+use TypeLang\Parser\Tests\Concern\InteractWithPHPDocTagsParser;
 use TypeLang\Parser\Tests\Functional\TestCase;
+use TypeLang\PHPDoc\Tag\InvalidTag;
+use TypeLang\PHPDoc\Tag\TagInterface;
+use TypeLang\PHPDoc\Standard;
+use TypeLang\PHPDoc\Tag\TypeProviderInterface;
 
 #[Group('functional'), Group('type-lang/parser')]
 abstract class LinterStubsTestCase extends TestCase
 {
-    use InteractWithDocBlocks;
-
-    protected const TAGS = [
-        'param', 'var', 'return',
-        'param-out', 'psalm-param-out', 'phpstan-param-out',
-        'phpstan-param', 'phpstan-var', 'phpstan-return',
-        'psalm-param', 'psalm-var', 'psalm-return',
-    ];
+    use InteractWithPHPDocParser;
+    use InteractWithPHPDocTagsParser;
 
     /**
      * @return non-empty-string
      */
-    protected static function getVendorDirectory(): string
-    {
-        $classLoader = new \ReflectionClass(ClassLoader::class);
+    abstract protected static function getStubsDirectory(): string;
 
-        return \dirname($classLoader->getFileName(), 2);
+    /**
+     * @return iterable<non-empty-string, non-empty-string>
+     * @throws \Throwable
+     */
+    protected static function getVersions(): iterable
+    {
+        $files = (new Finder())
+            ->in(static::getStubsDirectory())
+            ->directories()
+            ->depth(0);
+
+        foreach ($files as $file) {
+            yield $file->getFilename() => $file->getPathname();
+        }
     }
 
     /**
-     * @psalm-taint-sink file $directory
      * @param non-empty-string $directory
-     *
-     * @return iterable<array-key, ReadableInterface>
+     * @return iterable<non-empty-string, non-empty-string>
+     * @throws \Throwable
      */
-    protected static function getSources(string $directory, array $ext = ['php', 'stub', 'phpstub', 'stubphp']): iterable
+    protected static function getFilesFromDirectory(string $directory): iterable
     {
-        $result = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
-        );
+        $files = (new Finder())
+            ->in($directory)
+            ->files()
+            ->name(['*.php', '*.stub', '*.phpstub', '*.stubphp']);
 
-        /** @var \SplFileInfo $file */
-        foreach ($result as $file) {
-            if (!\in_array(\strtolower($file->getExtension()), $ext, true)) {
+        foreach ($files as $file) {
+            yield $file->getRelativePathname() => $file->getPathname();
+        }
+    }
+
+    /**
+     * @return iterable<non-empty-string, non-empty-string>
+     * @throws \Throwable
+     */
+    protected static function getFiles(): iterable
+    {
+        foreach (self::getVersions() as $version => $directory) {
+            foreach (self::getFilesFromDirectory($directory) as $relative => $pathname) {
+                yield $version . '-' . \strtolower($relative) => $pathname;
+            }
+        }
+    }
+
+    /**
+     * @return iterable<non-empty-string, TagInterface>
+     * @throws ExpectationFailedException
+     * @throws \LogicException
+     * @throws \Throwable
+     */
+    protected static function getAllTags(): iterable
+    {
+        $context = \pathinfo(static::getStubsDirectory(), \PATHINFO_FILENAME);
+        $directory = __DIR__ . '/cache/' . $context;
+
+        if (!\is_dir($directory)) {
+            \mkdir($directory, recursive: true);
+        }
+
+        $types = [];
+
+        foreach (self::getFiles() as $name => $pathname) {
+            $cache = $directory . '/' . \str_replace(['/', '\\'], '-', $name) . '.cache';
+
+            // Read from cache
+            if (\is_file($cache)) {
+                yield from \unserialize(\file_get_contents($cache));
                 continue;
             }
 
-            yield File::fromSplFileInfo($file);
-        }
-    }
-
-    abstract protected static function getCachePathname(): string;
-
-    abstract protected static function getFilesDirectory(): string;
-
-    /**
-     * @return array<array-key, array{non-empty-string, non-empty-string}>
-     */
-    public static function dataProvider(): array
-    {
-        if (!\is_file(static::getCachePathname())) {
             $result = [];
+            $docblocks = self::getDocBlocksFromPhpFile($pathname);
 
-            $blocks = self::getDocTypesFromSources(
-                sources: self::getSources(static::getFilesDirectory()),
-                tags: self::TAGS,
-            );
-
-            foreach ($blocks as $phpdoc => [$file, $position]) {
-                $result[$phpdoc] = [$phpdoc, self::location($file, $position)];
+            foreach ($docblocks as $info => $docblock) {
+                foreach (self::getTagsFromDocBlock($docblock) as $tag) {
+                    $result[$name . ' ' . $info] = [$tag];
+                }
             }
 
-            \file_put_contents(
-                filename: static::getCachePathname(),
-                data: '<?php return ' . \var_export($result, true) . ';',
-            );
-        }
+            yield from $result;
 
-        return require static::getCachePathname();
-    }
-
-    protected static function location(ReadableInterface $src, PositionInterface $pos = null): string
-    {
-        $name = '<source#' . $src->getHash() . '>';
-
-        if ($src instanceof FileInterface) {
-            $name = \realpath($src->getPathname()) ?: $src->getPathname();
-        }
-
-        return $name . ':' . ($pos ?? Position::start())->getLine();
-    }
-
-    #[DataProvider('dataProvider')]
-    public function testStubs(string $type, string $location): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        try {
-            $this->getTypeStatementResult($type);
-        } catch (\Throwable $e) {
-            $this->onFail($e, $type, $location);
+            \file_put_contents($cache, \serialize($result));
         }
     }
 
-    protected function onFail(\Throwable $e, string $expr, string $location): void
+    /**
+     * @param non-empty-list<non-empty-string> $name
+     * @return iterable<non-empty-string, TagInterface>
+     * @throws \LogicException
+     * @throws ExpectationFailedException
+     * @throws \Throwable
+     */
+    protected static function getTagByName(array $names): iterable
     {
-        $message = $e::class . ': ' . $e->getMessage()
-            . "\n  - Definition: $expr"
-            . "\n  - Source:     $location"
-        ;
+        foreach (self::getAllTags() as $i => [$tag]) {
+            if (\in_array($tag->getName(), $names, true)) {
+                yield $i => [$tag];
+            }
+        }
+    }
 
-        //
-        // Known issues in phpdoc
-        //
-        if (true
-            // Non-const expression in typedef (will not support)
-            || \str_contains($expr, 'func_num_args() > ')
-            // Conditional types with variables not supported
-            // || \str_starts_with($e->getMessage(), 'Syntax error, unexpected "$')
-            // Conditional types with template params not supported
-            // || \str_starts_with($e->getMessage(), 'Syntax error, unexpected "is"')
-        ) {
-            $this->markTestIncomplete("Test is flagged as a known issue:\n" . $message);
+    public static function returnTagDataProvider(): iterable
+    {
+        yield from self::getTagByName(self::getPrefixedTags('return'));
+    }
+
+    #[DataProvider('returnTagDataProvider')]
+    public function testReturnStatementsIsCorrectlyRecognized(TagInterface $tag): void
+    {
+        self::assertInstanceOf(Standard\ReturnTag::class, $tag,
+            message: $this->getReasonPhrase($tag),
+        );
+    }
+
+    public static function paramTagDataProvider(): iterable
+    {
+        yield from self::getTagByName([
+            ...self::getPrefixedTags('param'),
+            ...self::getPrefixedTags('param-out'),
+        ]);
+    }
+
+    #[DataProvider('paramTagDataProvider')]
+    public function testParamStatementsIsCorrectlyRecognized(TagInterface $tag): void
+    {
+        $this->inCaseOfReasonPhrase($tag, function (string $message) {
+            if (\str_contains($message, 'contains an incorrect variable name')) {
+                self::markTestIncomplete('TODO Known phpdoc parser issue: ' . $message);
+            }
+        });
+
+        self::assertInstanceOf(Standard\ParamTag::class, $tag,
+            message: $this->getReasonPhrase($tag),
+        );
+    }
+
+    public static function varTagDataProvider(): iterable
+    {
+        yield from self::getTagByName(self::getPrefixedTags('var'));
+    }
+
+    #[DataProvider('varTagDataProvider')]
+    public function testVarStatementsIsCorrectlyRecognized(TagInterface $tag): void
+    {
+        self::assertInstanceOf(Standard\VarTag::class, $tag,
+            message: $this->getReasonPhrase($tag),
+        );
+    }
+
+    public static function propertyTagDataProvider(): iterable
+    {
+        yield from self::getTagByName([
+            'property',
+            'property-read',
+            'property-write',
+        ]);
+    }
+
+    #[DataProvider('propertyTagDataProvider')]
+    public function testPropertyStatementsIsCorrectlyRecognized(TagInterface $tag): void
+    {
+        self::assertInstanceOf(Standard\PropertyTag::class, $tag,
+            message: $this->getReasonPhrase($tag),
+        );
+    }
+
+    public static function methodTagDataProvider(): iterable
+    {
+        yield from self::getTagByName(['method']);
+    }
+
+    #[DataProvider('methodTagDataProvider')]
+    public function testMethodStatementsIsCorrectlyRecognized(TagInterface $tag): void
+    {
+        self::assertInstanceOf(Standard\MethodTag::class, $tag,
+            message: $this->getReasonPhrase($tag),
+        );
+    }
+
+    public static function throwsTagDataProvider(): iterable
+    {
+        yield from self::getTagByName(['throws']);
+    }
+
+    #[DataProvider('throwsTagDataProvider')]
+    public function testThrowsStatementsIsCorrectlyRecognized(TagInterface $tag): void
+    {
+        self::assertInstanceOf(Standard\ThrowsTag::class, $tag,
+            message: $this->getReasonPhrase($tag),
+        );
+    }
+
+    private function getReasonPhrase(TagInterface $tag): string
+    {
+        if ($tag instanceof InvalidTag) {
+            $reason = $tag->getReason();
+
+            return $reason->getMessage() . ': ' . (string) $tag->getDescription();
         }
 
-        $this->fail($message);
+        return 'Failed to parse tag: ' . \print_r($tag, true);
+    }
+
+    /**
+     * @param callable(string):void $then
+     */
+    private static function inCaseOfReasonPhrase(TagInterface $tag, callable $then): void
+    {
+        if (!$tag instanceof InvalidTag) {
+            return;
+        }
+
+        $reason = $tag->getReason();
+        $then($reason->getMessage());
     }
 }

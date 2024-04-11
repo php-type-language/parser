@@ -1,0 +1,470 @@
+<?php
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ */
+interface Traversable
+{
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ *
+ * @extends Traversable<TKey, TValue>
+ */
+interface IteratorAggregate extends Traversable
+{
+
+	/**
+	 * @return Traversable<TKey, TValue>
+	 */
+	public function getIterator();
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ *
+ * @extends Traversable<TKey, TValue>
+ */
+interface Iterator extends Traversable
+{
+
+	/**
+	 * @return TValue
+	 */
+	public function current();
+
+	/**
+	 * @return TKey
+	 */
+	public function key();
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ *
+ * @extends Iterator<TKey, TValue>
+ */
+interface RecursiveIterator extends Iterator
+{
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TSend
+ * @template-covariant TReturn
+ *
+ * @implements Iterator<TKey, TValue>
+ */
+class Generator implements Iterator
+{
+
+	/**
+	 * @return TReturn
+	 */
+	public function getReturn() {}
+
+	/**
+	 * @param TSend $value
+	 * @return TValue
+	 */
+	public function send($value) {}
+
+}
+
+/**
+ * @implements Traversable<string, static>
+ * @implements ArrayAccess<int|string, static>
+ * @implements Iterator<string, static>
+ * @implements RecursiveIterator<string, static>
+ */
+class SimpleXMLElement implements Traversable, ArrayAccess, Iterator, RecursiveIterator
+{
+
+	/**
+	 * @return ($filename is null ? string|false : bool)
+	 */
+	public function asXML(?string $filename = null) {  }
+
+	/**
+	 * @return ($filename is null ? string|false : bool)
+	 */
+	public function saveXML(?string $filename = null) {  }
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @extends Iterator<TKey, TValue>
+ */
+interface SeekableIterator extends Iterator
+{
+
+}
+
+/**
+ * @template TKey of array-key
+ * @template TValue
+ * @implements SeekableIterator<TKey, TValue>
+ * @implements ArrayAccess<TKey, TValue>
+ */
+class ArrayIterator implements SeekableIterator, ArrayAccess, Countable
+{
+
+	/**
+	 * @param array<TKey, TValue> $array
+	 * @param int $flags
+	 */
+	public function __construct($array = array(), $flags = 0) { }
+
+	/**
+	 * @param TValue $value
+	 * @return void
+	 */
+	public function append($value) { }
+
+	/**
+	 * @return array<TKey, TValue>
+	 */
+	public function getArrayCopy() { }
+
+	/**
+	 * @param callable(TValue, TValue): int $cmp_function
+	 * @return void
+	 */
+	public function uasort($cmp_function) { }
+
+	/**
+	 * @param callable(TKey, TKey): int $cmp_function
+	 * @return void
+	 */
+	public function uksort($cmp_function) { }
+
+}
+
+/**
+ * @template T of \RecursiveIterator|\IteratorAggregate
+ * @mixin T
+ */
+class RecursiveIteratorIterator
+{
+	/**
+	 * @param T $iterator
+	 */
+	public function __construct(
+		$iterator,
+		int $mode = RecursiveIteratorIterator::LEAVES_ONLY,
+		int $flags = 0
+	)
+	{
+
+	}
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ *
+ * @template-extends Iterator<TKey, TValue>
+ */
+interface OuterIterator extends Iterator {
+    /**
+     * @return Iterator<TKey, TValue>
+     */
+    public function getInnerIterator();
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Traversable<TKey, TValue>
+ *
+ * @template-implements OuterIterator<TKey, TValue>
+ *
+ * @mixin TIterator
+ */
+class IteratorIterator implements OuterIterator {
+    /**
+     * @param TIterator $iterator
+     */
+    public function __construct(Traversable $iterator) {}
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Traversable<TKey, TValue>
+ *
+ * @template-extends IteratorIterator<TKey, TValue, TIterator>
+ */
+class FilterIterator extends IteratorIterator
+{
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Traversable<TKey, TValue>
+ *
+ * @extends FilterIterator<TKey, TValue, TIterator>
+ */
+class CallbackFilterIterator extends FilterIterator
+{
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Traversable<TKey, TValue>
+ *
+ * @extends CallbackFilterIterator<TKey, TValue, TIterator>
+ * @implements RecursiveIterator<TKey, TValue>
+ */
+class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements RecursiveIterator
+{
+    /**
+     * @return bool
+     */
+    public function hasChildren() {}
+
+    /**
+     * @return RecursiveCallbackFilterIterator<TKey, TValue, TIterator>
+     */
+    public function getChildren() {}
+
+}
+
+/**
+ * @template TKey of array-key
+ * @template TValue
+ *
+ * @template-implements RecursiveIterator<TKey, TValue>
+ * @template-extends ArrayIterator<TKey, TValue>
+ */
+class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator {
+
+    /**
+     * @return RecursiveArrayIterator<TKey, TValue>
+     */
+    public function getChildren() {}
+
+    /**
+     * @return bool
+     */
+    public function hasChildren() {}
+
+    /**
+     * @return TValue
+     */
+    public function current() {}
+
+    /**
+     * @return TKey
+     */
+    public function key() {}
+
+    /**
+     * @param callable(TKey, TKey): int $cmp_function
+     * @return void
+     */
+    public function uksort($cmp_function) { }
+}
+
+/**
+ * @template TKey
+ * @template TValue
+ * @template TIterator as Iterator<TKey, TValue>
+ *
+ * @template-extends IteratorIterator<TKey, TValue, TIterator>
+ */
+class AppendIterator extends IteratorIterator {
+
+    /**
+     * @param TIterator $iterator
+     * @return void
+     */
+    public function append(Iterator $iterator) {}
+
+    /**
+     * @return ArrayIterator<array-key, TValue>
+     */
+    public function getArrayIterator() {}
+
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Iterator<TKey, TValue>
+ *
+ * @template-extends IteratorIterator<TKey, TValue, TIterator>
+ */
+class NoRewindIterator extends IteratorIterator {
+    /**
+     * @param TIterator $iterator
+     */
+    public function __construct(Iterator $iterator) {}
+
+    /**
+     * @return TValue
+     */
+    public function current() {}
+
+    /**
+     * @return TKey
+     */
+    public function key() {}
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Iterator<TKey, TValue>
+ *
+ * @template-implements OuterIterator<TKey, TValue>
+ * @template-extends IteratorIterator<TKey, TValue, TIterator>
+ */
+class LimitIterator extends IteratorIterator implements OuterIterator {
+    /**
+     * @param TIterator $iterator
+     */
+    public function __construct(Iterator $iterator, int $offset = 0, int $count = -1) {}
+
+    /**
+     * @return TValue
+     */
+    public function current() {}
+
+    /**
+     * @return TKey
+     */
+    public function key() {}
+}
+
+/**
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @template TIterator as Iterator<TKey, TValue>
+ *
+ * @template-extends IteratorIterator<TKey, TValue, TIterator>
+ */
+class InfiniteIterator extends IteratorIterator {
+    /**
+     * @param TIterator $iterator
+     */
+    public function __construct(Iterator $iterator) {}
+
+    /**
+     * @return TValue
+     */
+    public function current() {}
+
+    /**
+     * @return TKey
+     */
+    public function key() {}
+}
+
+/**
+ * @template TKey
+ * @template TValue
+ * @template TIterator as Iterator<TKey, TValue>
+ *
+ * @template-implements OuterIterator<TKey, TValue>
+ * @template-implements ArrayAccess<TKey, TValue>
+ *
+ * @template-extends IteratorIterator<TKey, TValue, TIterator>
+ */
+class CachingIterator extends IteratorIterator implements OuterIterator, ArrayAccess, Countable {
+    const CALL_TOSTRING = 1 ;
+    const CATCH_GET_CHILD = 16 ;
+    const TOSTRING_USE_KEY = 2 ;
+    const TOSTRING_USE_CURRENT = 4 ;
+    const TOSTRING_USE_INNER = 8 ;
+    const FULL_CACHE = 256 ;
+
+    /**
+     * @param TIterator $iterator
+     * @param int-mask-of<self::*> $flags
+     */
+    public function __construct(Iterator $iterator, int $flags = self::CALL_TOSTRING) {}
+
+    /**
+     * @return TValue
+     */
+    public function current() {}
+
+    /**
+     * @return TKey
+     */
+    public function key() {}
+
+    /**
+     * @return array<array-key, TValue>
+     */
+    public function getCache() {}
+}
+
+/**
+ * @template TKey
+ * @template TValue
+ * @template TIterator of Traversable<TKey, TValue>
+ *
+ * @template-extends FilterIterator<TKey, TValue, TIterator>
+ */
+class RegexIterator extends FilterIterator {
+    const MATCH = 0 ;
+    const GET_MATCH = 1 ;
+    const ALL_MATCHES = 2 ;
+    const SPLIT = 3 ;
+    const REPLACE = 4 ;
+    const USE_KEY = 1 ;
+
+    /**
+     * @param Iterator<TKey, TValue> $iterator
+     * @param self::MATCH|self::GET_MATCH|self::ALL_MATCHES|self::SPLIT|self::REPLACE $mode
+     */
+    public function __construct(Iterator $iterator, string $regex, int $mode = self::MATCH, int $flags = 0, int $preg_flags = 0) {}
+
+    /**
+     * @return TValue
+     */
+    public function current() {}
+
+    /**
+     * @return TKey
+     */
+    public function key() {}
+}
+
+/**
+ * @template-implements Iterator<never, never>
+ */
+class EmptyIterator implements Iterator {
+    /**
+     * @return never
+     */
+    public function current() {}
+
+    /**
+     * @return never
+     */
+    public function key() {}
+
+    /**
+     * @return false
+     */
+    public function valid() {}
+}
