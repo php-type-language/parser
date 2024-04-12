@@ -13,7 +13,7 @@ use TypeLang\Parser\Node\Literal\NullLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 
 #[Group('unit'), Group('type-lang/parser')]
-class LiteralsTest extends TypesTestCase
+class LiteralTypesTest extends TypesTestCase
 {
     #[DataProvider('floatLiteralsDataProvider')]
     public function testFloatLiteral(string $expr, float $value): void

@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Tests\Unit\Types;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('unit'), Group('type-lang/parser')]
-class GenericsTest extends TypesTestCase
+class GenericTypesTest extends TypesTestCase
 {
     public function testArguments(): void
     {
@@ -70,6 +70,23 @@ class GenericsTest extends TypesTestCase
                       Stmt\Template\ArgumentNode
                         Stmt\NamedTypeNode
                           Name(string)
+            OUTPUT);
+    }
+
+    public function testHintedGenericParam(): void
+    {
+        $this->assertTypeStatementSame('array<out T, in U>', <<<'OUTPUT'
+            Stmt\NamedTypeNode
+              Name(array)
+              Stmt\Template\ArgumentsListNode
+                Stmt\Template\ArgumentNode
+                  Identifier(out)
+                  Stmt\NamedTypeNode
+                    Name(T)
+                Stmt\Template\ArgumentNode
+                  Identifier(in)
+                  Stmt\NamedTypeNode
+                    Name(U)
             OUTPUT);
     }
 }

@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Tests\Unit\Types;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('unit'), Group('type-lang/parser')]
-class ArrayShapesTest extends TypesTestCase
+class ArrayShapeTypesTest extends TypesTestCase
 {
     public function testFields(): void
     {

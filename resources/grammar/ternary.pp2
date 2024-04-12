@@ -19,6 +19,22 @@ TernaryExpressionOrLogicalType -> {
             $children[0],
             $children[2],
         ),
+        'T_GTE' => new Node\Stmt\Condition\GreaterOrEqualThanConditionNode(
+            $children[0],
+            $children[2],
+        ),
+        'T_ANGLE_BRACKET_CLOSE' => new Node\Stmt\Condition\GreaterThanConditionNode(
+            $children[0],
+            $children[2],
+        ),
+        'T_LTE' => new Node\Stmt\Condition\LessOrEqualThanConditionNode(
+            $children[0],
+            $children[2],
+        ),
+        'T_ANGLE_BRACKET_OPEN' => new Node\Stmt\Condition\LessThanConditionNode(
+            $children[0],
+            $children[2],
+        ),
         default => throw SemanticException::fromInvalidConditionalOperator(
             $children[1]->getValue(),
             $offset,
@@ -40,7 +56,7 @@ OptionalTernaryExpressionSuffix
   ;
 
 TernaryExpressionSuffix
-  : TernaryExpressionOperator() Type()
+  : TernaryExpressionOperator() (Type() | VariableLiteral())
     ::T_QMARK:: Type()
     ::T_COLON:: Type()
   ;
@@ -48,8 +64,8 @@ TernaryExpressionSuffix
 TernaryExpressionOperator
   : <T_EQ>
   | <T_NEQ>
-  | <T_LTE>
   | <T_GTE>
+  | <T_LTE>
   | <T_ANGLE_BRACKET_OPEN>
   | <T_ANGLE_BRACKET_CLOSE>
   ;
