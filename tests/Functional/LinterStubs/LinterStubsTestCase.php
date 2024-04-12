@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Finder\Finder;
+use TypeLang\Parser\Node\Name;
+use TypeLang\Parser\Node\Stmt\CallableTypeNode;
 use TypeLang\Parser\Tests\Concern\InteractWithPHPDocParser;
 use TypeLang\Parser\Tests\Concern\InteractWithPHPDocTagsParser;
 use TypeLang\Parser\Tests\Functional\TestCase;
@@ -199,6 +201,12 @@ abstract class LinterStubsTestCase extends TestCase
 
     public static function methodTagDataProvider(): iterable
     {
+        // PhpStan and Psalm stubs does not provide this tags
+        yield '[sample]' => [new Standard\MethodTag(
+            name: 'sample',
+            type: new CallableTypeNode(new Name('sample'))
+        )];
+
         yield from self::getTagByName(['method']);
     }
 
