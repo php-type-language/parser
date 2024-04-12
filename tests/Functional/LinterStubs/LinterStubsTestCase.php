@@ -16,7 +16,6 @@ use TypeLang\Parser\Tests\Functional\TestCase;
 use TypeLang\PHPDoc\Tag\InvalidTag;
 use TypeLang\PHPDoc\Tag\TagInterface;
 use TypeLang\PHPDoc\Standard;
-use TypeLang\PHPDoc\Tag\TypeProviderInterface;
 
 #[Group('functional'), Group('type-lang/parser')]
 abstract class LinterStubsTestCase extends TestCase
@@ -90,8 +89,6 @@ abstract class LinterStubsTestCase extends TestCase
             \mkdir($directory, recursive: true);
         }
 
-        $types = [];
-
         foreach (self::getFiles() as $name => $pathname) {
             $cache = $directory . '/' . \str_replace(['/', '\\'], '-', $name) . '.cache';
 
@@ -156,13 +153,16 @@ abstract class LinterStubsTestCase extends TestCase
     #[DataProvider('paramTagDataProvider')]
     public function testParamStatementsIsCorrectlyRecognized(TagInterface $tag): void
     {
-        // TODO Known phpdoc parser issue for variadic or optional variables
-        $this->skipInCaseOfReasonPhraseContains($tag, 'contains an incorrect variable name');
+        // PHPStan SplObjectStorage docblock bug?
+        $this->skipInCaseOfReasonPhraseContains($tag, 'contains an incorrect variable name:'
+            . ' \SplObjectStorage<*, *> $storage');
 
-        // TODO Known phpdoc parser issue for non-typed @param tags
-        $this->skipInCaseOfReasonPhraseContains($tag, 'type: &$info [optional]');
-        $this->skipInCaseOfReasonPhraseContains($tag, 'type: &$composed [optional]');
-        $this->skipInCaseOfReasonPhraseContains($tag, 'type: &$result [optional]');
+        // Psalm redis docblock bug (param tag does not provide variable name)
+        $this->skipInCaseOfReasonPhraseContains($tag, 'contains an incorrect variable name:'
+            . ' array<int|string, string>');
+        // Known phpdoc bug
+        $this->skipInCaseOfReasonPhraseContains($tag, 'contains an incorrect variable name:'
+            . ' $1 $2');
 
         self::assertInstanceOf(Standard\ParamTag::class, $tag,
             message: self::getReasonPhrase($tag),
@@ -238,7 +238,7 @@ abstract class LinterStubsTestCase extends TestCase
         );
     }
 
-    private static function getReasonPhrase(TagInterface $tag): string
+    protected static function getReasonPhrase(TagInterface $tag): string
     {
         if ($tag instanceof InvalidTag) {
             $reason = $tag->getReason();
@@ -249,7 +249,7 @@ abstract class LinterStubsTestCase extends TestCase
         return 'Failed to parse tag: ' . \print_r($tag, true);
     }
 
-    private static function skipInCaseOfReasonPhraseContains(TagInterface $tag, string $message): void
+    protected static function skipInCaseOfReasonPhraseContains(TagInterface $tag, string $message): void
     {
         if (!$tag instanceof InvalidTag) {
             return;
