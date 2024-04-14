@@ -21,18 +21,12 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 
     public static function parse(string $value): static
     {
-        if (!\is_numeric($value)) {
-            return new static(0, $value);
-        }
-
         [$isNegative, $decimal] = self::split($value);
 
         return new static($isNegative ? -$decimal : $decimal, $value);
     }
 
     /**
-     * @param numeric-string $literal
-     *
      * @return array{bool, int}
      */
     private static function split(string $literal): array
