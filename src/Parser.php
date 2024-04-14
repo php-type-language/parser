@@ -25,22 +25,27 @@ use TypeLang\Parser\Exception\ParseException;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Node\Literal\IntLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
+use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 /**
- * @psalm-type GrammarConfigArray = array{
- *  initial: int<0, max>|non-empty-string,
- *  tokens: array{
- *      default: array<array-key, non-empty-string>
- *  },
- *  skip: list<non-empty-string>,
- *  transitions: array,
- *  grammar: array<int<0, max>|non-empty-string, RuleInterface>,
- *  reducers: array<int<0, max>|non-empty-string, callable(Context, mixed):mixed>
+ * @phpstan-type GrammarConfigArray array{
+ *     initial: array-key,
+ *     tokens: array{
+ *         default: array<non-empty-string, non-empty-string>,
+ *         ...
+ *     },
+ *     skip: list<non-empty-string>,
+ *     grammar: array<array-key, RuleInterface>,
+ *     reducers: array<array-key, callable(Context, mixed): mixed>,
+ *     transitions?: array<array-key, mixed>
  * }
  */
 final class Parser implements ParserInterface
 {
+    /**
+     * @var ParserCombinator<Node>
+     */
     private readonly ParserCombinator $parser;
 
     private readonly Lexer $lexer;
@@ -49,15 +54,17 @@ final class Parser implements ParserInterface
      * In-memory string literal pool.
      *
      * @var \WeakMap<TokenInterface, StringLiteralNode>
+     * @api
      */
-    private readonly \WeakMap $stringPool;
+    protected readonly \WeakMap $stringPool;
 
     /**
      * In-memory integer literal pool.
      *
      * @var \WeakMap<TokenInterface, IntLiteralNode>
+     * @api
      */
-    private readonly \WeakMap $integerPool;
+    protected readonly \WeakMap $integerPool;
 
     private readonly BuilderInterface $builder;
 
@@ -101,13 +108,10 @@ final class Parser implements ParserInterface
         public readonly bool $list = true,
         private readonly SourceFactoryInterface $sources = new SourceFactory(),
     ) {
-        /** @psalm-var GrammarConfigArray $grammar */
+        /** @phpstan-var GrammarConfigArray $grammar */
         $grammar = require __DIR__ . '/../resources/grammar.php';
 
-        /** @var \WeakMap<TokenInterface, StringLiteralNode> */
         $this->stringPool = new \WeakMap();
-
-        /** @var \WeakMap<TokenInterface, IntLiteralNode> */
         $this->integerPool = new \WeakMap();
 
         $this->builder = new Builder($grammar['reducers']);
@@ -116,10 +120,12 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @psalm-param GrammarConfigArray $grammar
+     * @phpstan-param GrammarConfigArray $grammar
+     * @return ParserCombinator<Node>
      */
     private function createParser(LexerInterface $lexer, array $grammar): ParserCombinator
     {
+        /** @var ParserCombinator<Node> */
         return new ParserCombinator(
             lexer: $lexer,
             grammar: $grammar['grammar'],
@@ -132,7 +138,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @psalm-param GrammarConfigArray $grammar
+     * @phpstan-param GrammarConfigArray $grammar
      */
     private function createLexer(array $grammar): Lexer
     {
@@ -143,9 +149,6 @@ final class Parser implements ParserInterface
         );
     }
 
-    /**
-     * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
-     */
     public function parse(#[Language('PHP')] mixed $source): TypeStatement
     {
         $this->lastProcessedTokenOffset = 0;

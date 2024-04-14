@@ -6,12 +6,10 @@ namespace TypeLang\Parser\Node\Literal;
 
 /**
  * @template-extends LiteralNode<null>
- *
- * @psalm-consistent-constructor
  */
 class NullLiteralNode extends LiteralNode
 {
-    final public function __construct(string $raw = null)
+    public function __construct(string $raw = null)
     {
         parent::__construct($raw ?? 'null');
     }

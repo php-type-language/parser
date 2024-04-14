@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Literal;
 
 /**
- * @template TValue of string
- * @template-extends LiteralNode<TValue>
+ * @template-extends LiteralNode<string>
  *
  * @psalm-consistent-constructor
- * @psalm-consistent-templates
+ * @phpstan-consistent-constructor
  */
 class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
@@ -36,9 +35,6 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         '\$' => "\$",
     ];
 
-    /**
-     * @param TValue $value
-     */
     final public function __construct(
         public readonly string $value,
         string $raw = null,
@@ -46,17 +42,9 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         parent::__construct($raw ?? $this->value);
     }
 
-    /**
-     * @param non-empty-string $value
-     *
-     * @return static<string>
-     * @psalm-suppress MoreSpecificImplementedParamType : Strengthening the
-     *                 precondition will violate the LSP, but in this case it is
-     *                 acceptable.
-     */
     public static function parse(string $value): static
     {
-        assert(\strlen($value) >= 2);
+        assert(\strlen($value) >= 2, new \InvalidArgumentException('Could not parse non-quoted string'));
 
         if ($value[0] === '"') {
             return static::createFromDoubleQuotedString($value);
@@ -67,16 +55,14 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
 
     /**
      * @param non-empty-string $value
-     *
-     * @return static<string>
      */
     public static function createFromDoubleQuotedString(string $value): static
     {
-        assert(\strlen($value) >= 2);
+        assert(\strlen($value) >= 2, new \InvalidArgumentException('Could not parse non-quoted string'));
 
         $body = \substr($value, 1, -1);
 
-        return static::parseEncodedValue(
+        return self::parseEncodedValue(
             string: \str_replace('\"', '"', $body),
             raw: $value,
         );
@@ -84,12 +70,10 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
 
     /**
      * @param non-empty-string $value
-     *
-     * @return static<string>
      */
     public static function createFromSingleQuotedString(string $value): static
     {
-        assert(\strlen($value) >= 2);
+        assert(\strlen($value) >= 2, new \InvalidArgumentException('Could not parse non-quoted string'));
 
         $body = \substr($value, 1, -1);
 
@@ -146,7 +130,9 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
      */
     private static function renderHexadecimalSequences(string $body): string
     {
-        $callee = static fn(array $matches): string => \chr(\hexdec((string) $matches[1]));
+        $callee = static fn(array $matches): string
+            => \chr((int) \hexdec((string) $matches[1]))
+        ;
 
         /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
@@ -161,11 +147,10 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
     private static function renderUtfSequences(string $body): string
     {
         $callee = static function (array $matches): string {
-            $code = \hexdec((string) $matches[1]);
+            $code = (int) \hexdec((string) $matches[1]);
 
-            if (\function_exists('\\mb_chr')
-                && ($result = \mb_chr($code)) !== false
-            ) {
+            // @phpstan-ignore-next-line : PHPStan false-positive mb_chr evaluation
+            if (\function_exists('\\mb_chr') && ($result = \mb_chr($code)) !== false) {
                 return $result;
             }
 

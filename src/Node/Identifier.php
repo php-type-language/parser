@@ -42,17 +42,14 @@ final class Identifier extends Node implements \Stringable
 
     /**
      * @param non-empty-string $value
-     *
-     * @psalm-suppress RedundantCondition
      */
     public function __construct(string $value)
     {
-        /** @psalm-suppress PropertyTypeCoercion */
-        $this->value = \trim($value);
+        $value = \trim($value);
 
-        assert($this->value !== '', new \InvalidArgumentException(
-            'Identifier value cannot be empty',
-        ));
+        assert($value !== '', new \InvalidArgumentException('Identifier value cannot be empty'));
+
+        $this->value = $value;
     }
 
     /**
@@ -128,13 +125,17 @@ final class Identifier extends Node implements \Stringable
         return $this->value;
     }
 
+    /**
+     * @return array{int<0, max>, non-empty-string}
+     */
     public function __serialize(): array
     {
         return [$this->offset, $this->value];
     }
 
     /**
-     * @psalm-suppress MixedAssignment
+     * @param array{0?: int<0, max>, 1?: non-empty-string} $data
+     * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void
     {

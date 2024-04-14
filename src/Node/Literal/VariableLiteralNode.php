@@ -5,46 +5,37 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Literal;
 
 /**
- * @template TValue of non-empty-string
- * @template-extends LiteralNode<TValue>
+ * @template-extends LiteralNode<non-empty-string>
  *
  * @psalm-consistent-constructor
- * @psalm-consistent-templates
+ * @phpstan-consistent-constructor
  */
 class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     /**
-     * @var TValue
+     * @var non-empty-string
      */
     private readonly string $value;
 
     /**
-     * @param TValue $value
+     * @param non-empty-string $value
      */
-    final public function __construct(string $value)
+    public function __construct(string $value)
     {
+        assert(\strlen($value) > 1, new \InvalidArgumentException(
+            'Variable name length must be greater than 1',
+        ));
+
         assert(\str_starts_with($value, '$'), new \InvalidArgumentException(
             'Variable name must start with "$" character',
         ));
 
-        assert(\strlen($value) >= 1, new \InvalidArgumentException(
-            'Variable name length must be greater than 0',
-        ));
-
-        /** @psalm-suppress PropertyTypeCoercion : Applied value is non-empty-string too */
+        // @phpstan-ignore-next-line : Variable name gte than 2
         $this->value = \substr($value, 1);
 
         parent::__construct($value);
     }
 
-    /**
-     * @param non-empty-string $value
-     *
-     * @return static<non-empty-string>
-     * @psalm-suppress MoreSpecificImplementedParamType : Strengthening the
-     *                 precondition will violate the LSP, but in this case it is
-     *                 acceptable.
-     */
     public static function parse(string $value): static
     {
         if (!\str_starts_with($value, '$')) {
@@ -54,9 +45,6 @@ class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInte
         return new static($value);
     }
 
-    /**
-     * @return TValue
-     */
     public function getValue(): string
     {
         return $this->value;

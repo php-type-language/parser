@@ -23,7 +23,9 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
      */
     public function first(): ?Node
     {
-        return \reset($this->items) ?: null;
+        $first = \reset($this->items);
+
+        return $first instanceof Node ? $first : null;
     }
 
     /**
@@ -31,7 +33,9 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
      */
     public function last(): ?Node
     {
-        return \end($this->items) ?: null;
+        $last = \end($this->items);
+
+        return $last instanceof Node ? $last : null;
     }
 
     public function getIterator(): \Traversable

@@ -16,13 +16,17 @@ abstract class GenericTypeStmt extends TypeStatement
         public TypeStatement $type,
     ) {}
 
+    /**
+     * @return array{int<0, max>, T}
+     */
     public function __serialize(): array
     {
         return [$this->offset, $this->type];
     }
 
     /**
-     * @psalm-suppress MixedAssignment
+     * @param array{0?: int<0, max>, 1?: T} $data
+     * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void
     {

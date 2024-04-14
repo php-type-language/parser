@@ -24,13 +24,11 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
      */
     final public function __construct(iterable|string|Identifier $name)
     {
-        /** @psalm-suppress InvalidPropertyAssignmentValue : Check will be done later */
-        $this->parts = $this->parseName($name);
+        $parts = $this->parseName($name);
 
-        /** @psalm-suppress RedundantCondition */
-        assert($this->parts !== [], new \InvalidArgumentException(
-            'Name parts count can not be empty',
-        ));
+        assert($parts !== [], new \InvalidArgumentException('Name parts count can not be empty'));
+
+        $this->parts = $parts;
     }
 
     /**
@@ -41,7 +39,7 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
     private function parseName(iterable|string|Identifier $name): array
     {
         if (\is_string($name)) {
-            $name = \array_filter(\explode('\\', $name));
+            $name = \array_filter(\explode('\\', $name), static fn(string $chunk): bool => $chunk !== '');
         }
 
         if (\is_iterable($name)) {
@@ -282,13 +280,17 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
         return $this->toString();
     }
 
+    /**
+     * @return array{int<0, max>, non-empty-list<Identifier>}
+     */
     public function __serialize(): array
     {
         return [$this->offset, $this->parts];
     }
 
     /**
-     * @psalm-suppress MixedAssignment
+     * @param array{0?: int<0, max>, 1?: non-empty-list<Identifier>} $data
+     * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void
     {

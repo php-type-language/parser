@@ -20,15 +20,12 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         TypeStatement $b,
         TypeStatement ...$other,
     ) {
-        /**
-         * @psalm-suppress PropertyTypeCoercion
-         * @psalm-suppress ArgumentTypeCoercion
-         */
+        // @phpstan-ignore-next-line : List of types cannot be empty
         $this->statements = [...$this->unwrap([$a, $b, ...$other])];
     }
 
     /**
-     * @param list<TypeStatement> $statements
+     * @param non-empty-list<TypeStatement> $statements
      *
      * @return iterable<array-key, TypeStatement>
      */
@@ -57,13 +54,17 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
         return \count($this->statements);
     }
 
+    /**
+     * @return array{int<0, max>, non-empty-list<T>}
+     */
     public function __serialize(): array
     {
         return [$this->offset, $this->statements];
     }
 
     /**
-     * @psalm-suppress MixedAssignment
+     * @param array{0?: int<0, max>, 1?: non-empty-list<T>} $data
+     * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void
     {

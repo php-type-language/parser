@@ -87,6 +87,9 @@ final class Traverser implements MutableTraverserInterface
         }
     }
 
+    /**
+     * @return iterable<array-key, mixed>
+     */
     private function getProperties(Node $node): iterable
     {
         return \get_object_vars($node);
@@ -112,6 +115,9 @@ final class Traverser implements MutableTraverserInterface
         }
     }
 
+    /**
+     * @param iterable<array-key, mixed> $nodes
+     */
     private function applyToIterable(iterable $nodes): void
     {
         foreach ($nodes as $node) {

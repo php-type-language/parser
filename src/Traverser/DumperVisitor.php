@@ -9,6 +9,11 @@ use TypeLang\Parser\Node\Node;
 abstract class DumperVisitor extends Visitor
 {
     /**
+     * @var non-empty-string
+     */
+    private const NODE_NAMESPACE_PREFIX = 'TypeLang\\Parser\\Node\\';
+
+    /**
      * @var int<0, max>
      */
     private int $depth = 0;
@@ -17,7 +22,7 @@ abstract class DumperVisitor extends Visitor
 
     public function __construct(bool $simplifyNames = true)
     {
-        $this->prefix = $simplifyNames ? 'TypeLang\\Parser\\Node\\' : '';
+        $this->prefix = $simplifyNames ? self::NODE_NAMESPACE_PREFIX : '';
     }
 
     abstract protected function write(string $data): void;
@@ -43,7 +48,7 @@ abstract class DumperVisitor extends Visitor
 
     public function leave(Node $node): void
     {
-        /** @psalm-suppress InvalidPropertyAssignmentValue : enter() has been executed before */
+        // @phpstan-ignore-next-line : $depth is always non-negative
         --$this->depth;
     }
 }

@@ -17,7 +17,13 @@ final class StreamDumperVisitor extends DumperVisitor
     ) {
         parent::__construct($simplifyNames);
 
-        $this->stream = \fopen($stream, 'ab+');
+        $resource = \fopen($stream, 'ab+');
+
+        if (!\is_resource($resource)) {
+            throw new \InvalidArgumentException(\sprintf('Could not open "%s" for writing', $stream));
+        }
+
+        $this->stream = $resource;
     }
 
     protected function write(string $data): void
