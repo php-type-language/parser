@@ -26,15 +26,6 @@ jobs:
           php-version: ${{ matrix.php }}
       - name: Validate Composer
         run: composer validate
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Restore Composer Cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php }}-composer-v2-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-v2-
       - name: Install Dependencies
         uses: nick-invision/retry@v2
         with:
