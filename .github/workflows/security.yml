@@ -35,8 +35,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-v2-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-v2-
       - name: Install Dependencies
         uses: nick-invision/retry@v2
         with:
