@@ -243,7 +243,7 @@ abstract class LinterStubsTestCase extends TestCase
         if ($tag instanceof InvalidTag) {
             $reason = $tag->getReason();
 
-            return (string) $reason . ': ' . (string) $tag->getDescription();
+            return $reason->getMessage() . ': ' . (string) $tag->getDescription();
         }
 
         return 'Failed to parse tag: ' . \print_r($tag, true);
