@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use Phplrt\Parser\BuilderInterface;
 use Phplrt\Parser\Context;
 use TypeLang\Parser\Node\Node;
-use Phplrt\Parser\BuilderInterface;
 
 /**
- * @internal This is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal TypeLang\Parser
  */
 final class Builder implements BuilderInterface

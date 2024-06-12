@@ -8,13 +8,14 @@ namespace TypeLang\Parser\Node\Literal;
  * @template-extends LiteralNode<bool>
  *
  * @psalm-consistent-constructor
+ *
  * @phpstan-consistent-constructor
  */
 class BoolLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     public function __construct(
         public readonly bool $value,
-        string $raw = null,
+        ?string $raw = null,
     ) {
         parent::__construct($raw ?? ($value ? 'true' : 'false'));
     }

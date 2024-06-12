@@ -9,7 +9,7 @@ namespace TypeLang\Parser\Node\Literal;
  */
 class NullLiteralNode extends LiteralNode
 {
-    public function __construct(string $raw = null)
+    public function __construct(?string $raw = null)
     {
         parent::__construct($raw ?? 'null');
     }

@@ -16,8 +16,8 @@ interface ParserInterface
     /**
      * Parses variadic sources into an abstract source tree (AST) node.
      *
-     * @throws ParserExceptionInterface In case of parsing exception occurs.
-     * @throws \Throwable In case of internal error occurs.
+     * @throws ParserExceptionInterface in case of parsing exception occurs
+     * @throws \Throwable in case of internal error occurs
      *
      * @psalm-suppress UndefinedAttributeClass : Optional (builtin) attribute usage
      */

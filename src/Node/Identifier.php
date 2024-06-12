@@ -135,6 +135,7 @@ final class Identifier extends Node implements \Stringable
 
     /**
      * @param array{0?: int<0, max>, 1?: non-empty-string} $data
+     *
      * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void

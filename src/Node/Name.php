@@ -103,7 +103,7 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
         return $this->isSimple() && $first->isBuiltin();
     }
 
-    public function slice(int $offset = 0, int $length = null): self
+    public function slice(int $offset = 0, ?int $length = null): self
     {
         return new static(\array_slice($this->parts, $offset, $length));
     }
@@ -290,6 +290,7 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
 
     /**
      * @param array{0?: int<0, max>, 1?: non-empty-list<Identifier>} $data
+     *
      * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void

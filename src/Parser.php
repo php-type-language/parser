@@ -54,6 +54,7 @@ final class Parser implements ParserInterface
      * In-memory string literal pool.
      *
      * @var \WeakMap<TokenInterface, StringLiteralNode>
+     *
      * @api
      */
     protected readonly \WeakMap $stringPool;
@@ -62,6 +63,7 @@ final class Parser implements ParserInterface
      * In-memory integer literal pool.
      *
      * @var \WeakMap<TokenInterface, IntLiteralNode>
+     *
      * @api
      */
     protected readonly \WeakMap $integerPool;
@@ -70,6 +72,7 @@ final class Parser implements ParserInterface
 
     /**
      * @var int<0, max>
+     *
      * @psalm-readonly-allow-private-mutation
      */
     public int $lastProcessedTokenOffset = 0;
@@ -79,22 +82,22 @@ final class Parser implements ParserInterface
      *       the option is {@see true}, the parser allows arbitrary text after
      *       the type definition. This mode allows you to recognize types
      *       specified in DocBlocks.
-     * @param bool $conditional Enables or disables support for
-     *        dependent/conditional types such as `T ? X : Y`.
-     * @param bool $shapes Enables or disables support for type shapes
-     *        such as `T{key: X}`.
-     * @param bool $callables Enables or disables support for callable types
-     *        such as `(X, Y): T`.
-     * @param bool $literals Enables or disables support for literal types such
-     *        as `42` or `"string"`.
-     * @param bool $generics Enables or disables support for template arguments
-     *        such as `T<X, Y>`.
-     * @param bool $union Enables or disables support for logical union types
-     *        such as `T | X`.
-     * @param bool $intersection Enables or disables support for logical
-     *        intersection types such as `T & X`.
-     * @param bool $list Enables or disables support for square bracket list
-     *        types such as `T[]`.
+     * @param bool $conditional enables or disables support for
+     *        dependent/conditional types such as `T ? X : Y`
+     * @param bool $shapes enables or disables support for type shapes
+     *        such as `T{key: X}`
+     * @param bool $callables enables or disables support for callable types
+     *        such as `(X, Y): T`
+     * @param bool $literals enables or disables support for literal types such
+     *        as `42` or `"string"`
+     * @param bool $generics enables or disables support for template arguments
+     *        such as `T<X, Y>`
+     * @param bool $union enables or disables support for logical union types
+     *        such as `T | X`
+     * @param bool $intersection enables or disables support for logical
+     *        intersection types such as `T & X`
+     * @param bool $list enables or disables support for square bracket list
+     *        types such as `T[]`
      */
     public function __construct(
         public readonly bool $tolerant = false,
@@ -121,6 +124,7 @@ final class Parser implements ParserInterface
 
     /**
      * @phpstan-param GrammarConfigArray $grammar
+     *
      * @return ParserCombinator<Node>
      */
     private function createParser(LexerInterface $lexer, array $grammar): ParserCombinator
@@ -196,7 +200,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @throws SourceExceptionInterface In case of source content reading error.
+     * @throws SourceExceptionInterface in case of source content reading error
      */
     private function unexpectedTokenError(UnexpectedTokenException $e, ReadableInterface $source): ParseException
     {
@@ -210,7 +214,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @throws SourceExceptionInterface In case of source content reading error.
+     * @throws SourceExceptionInterface in case of source content reading error
      */
     private function unrecognizedTokenError(UnrecognizedTokenException $e, ReadableInterface $source): ParseException
     {
@@ -224,7 +228,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @throws SourceExceptionInterface In case of source content reading error.
+     * @throws SourceExceptionInterface in case of source content reading error
      */
     private function semanticError(SemanticException $e, ReadableInterface $source): ParseException
     {
@@ -237,7 +241,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @throws SourceExceptionInterface In case of source content reading error.
+     * @throws SourceExceptionInterface in case of source content reading error
      */
     private function parserRuntimeError(ParserRuntimeExceptionInterface $e, ReadableInterface $source): ParseException
     {
@@ -250,7 +254,7 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @throws SourceExceptionInterface In case of source content reading error.
+     * @throws SourceExceptionInterface in case of source content reading error
      */
     private function internalError(\Throwable $e, ReadableInterface $source): ParseException
     {

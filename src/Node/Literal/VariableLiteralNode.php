@@ -8,6 +8,7 @@ namespace TypeLang\Parser\Node\Literal;
  * @template-extends LiteralNode<non-empty-string>
  *
  * @psalm-consistent-constructor
+ *
  * @phpstan-consistent-constructor
  */
 class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface

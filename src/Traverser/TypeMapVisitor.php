@@ -38,10 +38,12 @@ final class TypeMapVisitor extends Visitor
             case $node instanceof CallableTypeNode:
             case $node instanceof ConstMaskNode:
                 $node->name = $this->map($node->name);
+
                 return null;
 
             case $node instanceof ClassConstMaskNode:
                 $node->class = $this->map($node->class);
+
                 return null;
 
             default:

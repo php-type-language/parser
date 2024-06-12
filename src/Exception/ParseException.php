@@ -30,6 +30,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * unexpected source location.
      *
      * @param int<0, max> $offset
+     *
      * @throws SourceExceptionInterface
      */
     public static function fromUnexpectedToken(string $token, string $statement, int $offset): static
@@ -47,6 +48,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * This error occurs when unable to recognize tokens in source code.
      *
      * @param int<0, max> $offset
+     *
      * @throws SourceExceptionInterface
      */
     public static function fromUnrecognizedToken(string $token, string $statement, int $offset): static
@@ -62,6 +64,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param int<0, max> $offset
+     *
      * @throws SourceExceptionInterface
      */
     public static function fromUnrecognizedSyntaxError(string $statement, int $offset): static
@@ -76,6 +79,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param int<0, max> $offset
+     *
      * @throws SourceExceptionInterface
      */
     public static function fromSemanticError(string $message, string $statement, int $offset, int $code = 0): static
@@ -91,7 +95,7 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     public static function fromInternalError(string $statement, \Throwable $e): static
     {
-        $message = "An internal error occurred while parsing %s";
+        $message = 'An internal error occurred while parsing %s';
         $message = \sprintf($message, Formatter::source($statement));
 
         return new static($message, self::ERROR_CODE_INTERNAL_ERROR, $e);

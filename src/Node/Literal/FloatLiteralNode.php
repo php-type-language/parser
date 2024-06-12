@@ -8,13 +8,14 @@ namespace TypeLang\Parser\Node\Literal;
  * @template-extends LiteralNode<float>
  *
  * @psalm-consistent-constructor
+ *
  * @phpstan-consistent-constructor
  */
 class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     public function __construct(
         public readonly float $value,
-        string $raw = null,
+        ?string $raw = null,
     ) {
         parent::__construct($raw ?? (string) $this->value);
     }

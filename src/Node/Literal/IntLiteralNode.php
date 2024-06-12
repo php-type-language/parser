@@ -8,13 +8,14 @@ namespace TypeLang\Parser\Node\Literal;
  * @template-extends LiteralNode<int>
  *
  * @psalm-consistent-constructor
+ *
  * @phpstan-consistent-constructor
  */
 class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
     public function __construct(
         public readonly int $value,
-        string $raw = null,
+        ?string $raw = null,
     ) {
         parent::__construct($raw ?? (string) $this->value);
     }

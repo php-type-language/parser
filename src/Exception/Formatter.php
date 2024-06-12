@@ -9,7 +9,7 @@ use Phplrt\Lexer\Token\Token;
 use Phplrt\Position\Position;
 
 /**
- * @internal This is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal TypeLang\Parser\Exception
  */
 final class Formatter

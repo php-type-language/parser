@@ -8,7 +8,6 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 /**
  * @template TValue of mixed
- *
  * @template-implements LiteralNodeInterface<TValue>
  */
 abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface

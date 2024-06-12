@@ -46,7 +46,7 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
     }
 
     /**
-     * @return int<2, max> A logical statement must contain at least 2 elements.
+     * @return int<2, max> a logical statement must contain at least 2 elements
      */
     public function count(): int
     {
@@ -64,6 +64,7 @@ abstract class LogicalTypeNode extends TypeStatement implements \IteratorAggrega
 
     /**
      * @param array{0?: int<0, max>, 1?: non-empty-list<T>} $data
+     *
      * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void

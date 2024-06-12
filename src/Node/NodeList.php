@@ -6,7 +6,6 @@ namespace TypeLang\Parser\Node;
 
 /**
  * @template TNode of Node
- *
  * @template-implements \IteratorAggregate<array-key, TNode>
  */
 abstract class NodeList extends Node implements \IteratorAggregate, \Countable

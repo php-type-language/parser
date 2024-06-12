@@ -26,6 +26,7 @@ abstract class GenericTypeStmt extends TypeStatement
 
     /**
      * @param array{0?: int<0, max>, 1?: T} $data
+     *
      * @throws \UnexpectedValueException
      */
     public function __unserialize(array $data): void

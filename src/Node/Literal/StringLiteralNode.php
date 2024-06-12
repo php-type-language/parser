@@ -8,6 +8,7 @@ namespace TypeLang\Parser\Node\Literal;
  * @template-extends LiteralNode<string>
  *
  * @psalm-consistent-constructor
+ *
  * @phpstan-consistent-constructor
  */
 class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
@@ -32,12 +33,12 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         '\v' => "\v",
         '\e' => "\e",
         '\f' => "\f",
-        '\$' => "\$",
+        '\$' => '$',
     ];
 
     final public function __construct(
         public readonly string $value,
-        string $raw = null,
+        ?string $raw = null,
     ) {
         parent::__construct($raw ?? $this->value);
     }
@@ -83,7 +84,7 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         );
     }
 
-    private static function parseEncodedValue(string $string, string $raw = null): static
+    private static function parseEncodedValue(string $string, ?string $raw = null): static
     {
         $raw ??= $string;
 
