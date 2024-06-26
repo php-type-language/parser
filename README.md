@@ -27,7 +27,7 @@ TypeLang Parser is available as Composer repository and can be installed
 using the following command in a root of your project:
 
 ```sh
-$ composer require type-lang/parser
+composer require type-lang/parser
 ```
 
 ## Quick Start
