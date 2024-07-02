@@ -43,6 +43,14 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
         parent::__construct($raw ?? $this->value);
     }
 
+    public static function createFromValue(string $value): static
+    {
+        return new static(
+            value: $value,
+            raw: \sprintf('"%s"', \addcslashes($value, '"')),
+        );
+    }
+
     public static function parse(string $value): static
     {
         assert(\strlen($value) >= 2, new \InvalidArgumentException('Could not parse non-quoted string'));
