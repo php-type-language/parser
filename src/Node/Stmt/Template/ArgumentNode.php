@@ -9,6 +9,9 @@ use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Stmt\Attribute\AttributeGroupsListNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
+/**
+ * @deprecated Since 1.1, please use {@see TemplateArgumentNode} instead.
+ */
 class ArgumentNode extends Node
 {
     public ?Identifier $hint;

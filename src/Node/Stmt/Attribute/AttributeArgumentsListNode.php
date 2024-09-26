@@ -7,6 +7,6 @@ namespace TypeLang\Parser\Node\Stmt\Attribute;
 use TypeLang\Parser\Node\NodeList;
 
 /**
- * @template-extends NodeList<AttributeGroupNode>
+ * @template-extends NodeList<AttributeArgumentNode>
  */
-final class AttributeGroupsListNode extends NodeList {}
+class AttributeArgumentsListNode extends NodeList {}

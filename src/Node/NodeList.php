@@ -7,8 +7,12 @@ namespace TypeLang\Parser\Node;
 /**
  * @template TNode of Node
  * @template-implements \IteratorAggregate<array-key, TNode>
+ * @template-implements \ArrayAccess<int<0, max>, TNode>
  */
-abstract class NodeList extends Node implements \IteratorAggregate, \Countable
+abstract class NodeList extends Node implements
+    \IteratorAggregate,
+    \ArrayAccess,
+    \Countable
 {
     /**
      * @param list<TNode> $items
@@ -35,6 +39,47 @@ abstract class NodeList extends Node implements \IteratorAggregate, \Countable
         $last = \end($this->items);
 
         return $last instanceof Node ? $last : null;
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        // @phpstan-ignore-next-line
+        assert(\is_int($offset) && $offset >= 0);
+
+        return isset($this->items[$offset]);
+    }
+
+    public function offsetGet(mixed $offset): ?Node
+    {
+        // @phpstan-ignore-next-line
+        assert(\is_int($offset) && $offset >= 0);
+
+        return $this->items[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        // @phpstan-ignore-next-line
+        assert(\is_int($offset) && $offset >= 0);
+        // @phpstan-ignore-next-line
+        assert($value instanceof Node);
+
+        // @phpstan-ignore-next-line
+        $this->items[$offset] = $value;
+
+        if (!\array_is_list($this->items)) {
+            $this->items = \array_values($this->items);
+        }
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        // @phpstan-ignore-next-line
+        assert(\is_int($offset) && $offset >= 0);
+
+        $items = $this->items;
+        unset($items[$offset]);
+        $this->items = \array_values($items);
     }
 
     public function getIterator(): \Traversable

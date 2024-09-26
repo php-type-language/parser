@@ -30,8 +30,8 @@ use TypeLang\Parser\Node\Stmt\Shape\ImplicitFieldNode;
 use TypeLang\Parser\Node\Stmt\Shape\NamedFieldNode;
 use TypeLang\Parser\Node\Stmt\Shape\NumericFieldNode;
 use TypeLang\Parser\Node\Stmt\Shape\StringNamedFieldNode;
-use TypeLang\Parser\Node\Stmt\Template\ArgumentNode;
-use TypeLang\Parser\Node\Stmt\Template\ArgumentsListNode;
+use TypeLang\Parser\Node\Stmt\Template\TemplateArgumentNode;
+use TypeLang\Parser\Node\Stmt\Template\TemplateArgumentsListNode;
 use TypeLang\Parser\Node\Stmt\TernaryConditionNode;
 use TypeLang\Parser\Node\Stmt\TypesListNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
@@ -125,23 +125,23 @@ abstract class SerializationTestCase extends TestCase
         )];
 
         // Templates
-        yield self::className(ArgumentsListNode::class) => [new ArgumentsListNode([
-            new ArgumentNode(
+        yield self::className(TemplateArgumentsListNode::class) => [new TemplateArgumentsListNode([
+            new TemplateArgumentNode(
                 value: new NamedTypeNode('Some\Any'),
             ),
-            new ArgumentNode(
+            new TemplateArgumentNode(
                 value: new NamedTypeNode('Any\Test'),
                 hint: new Identifier('in'),
             ),
         ])];
 
-        yield self::className(ArgumentNode::class) => [new ArgumentNode(
+        yield self::className(TemplateArgumentNode::class) => [new TemplateArgumentNode(
             value: new NamedTypeNode('Any\Test'),
             hint: new Identifier('out'),
         )];
 
-        yield self::className(ArgumentNode::class)
-            . ' without hint' => [new ArgumentNode(
+        yield self::className(TemplateArgumentNode::class)
+            . ' without hint' => [new TemplateArgumentNode(
                 value: new NamedTypeNode('Any\Test'),
                 hint: new Identifier('out'),
             )];
@@ -183,11 +183,11 @@ abstract class SerializationTestCase extends TestCase
         yield self::className(NamedTypeNode::class) => [
             new NamedTypeNode(
                 name: new Name(new Identifier('int')),
-                arguments: $arguments = new ArgumentsListNode([
-                    new ArgumentNode(
+                arguments: $arguments = new TemplateArgumentsListNode([
+                    new TemplateArgumentNode(
                         value: new NamedTypeNode('int'),
                     ),
-                    new ArgumentNode(
+                    new TemplateArgumentNode(
                         value: new NamedTypeNode('int'),
                         hint: new Identifier('covariant')
                     ),

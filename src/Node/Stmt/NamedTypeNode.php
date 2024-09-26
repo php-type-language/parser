@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node\Stmt;
 use TypeLang\Parser\Node\Identifier;
 use TypeLang\Parser\Node\Name;
 use TypeLang\Parser\Node\Stmt\Shape\FieldsListNode;
-use TypeLang\Parser\Node\Stmt\Template\ArgumentsListNode;
+use TypeLang\Parser\Node\Stmt\Template\TemplateArgumentsListNode;
 
 class NamedTypeNode extends TypeStatement
 {
@@ -18,7 +18,7 @@ class NamedTypeNode extends TypeStatement
      */
     public function __construct(
         Name|Identifier|string $name,
-        public ?ArgumentsListNode $arguments = null,
+        public ?TemplateArgumentsListNode $arguments = null,
         public ?FieldsListNode $fields = null,
     ) {
         $this->name = $name instanceof Name ? $name : new Name($name);

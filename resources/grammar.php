@@ -135,7 +135,7 @@ return [
         new \Phplrt\Parser\Grammar\Concatenation([59]),
         new \Phplrt\Parser\Grammar\Optional(54),
         new \Phplrt\Parser\Grammar\Alternation([55, 56]),
-        new \Phplrt\Parser\Grammar\Concatenation([144]),
+        new \Phplrt\Parser\Grammar\Concatenation([154]),
         new \Phplrt\Parser\Grammar\Concatenation([67, 71, 72]),
         new \Phplrt\Parser\Grammar\Concatenation([86, 59]),
         new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
@@ -194,7 +194,7 @@ return [
         new \Phplrt\Parser\Grammar\Alternation([53, 99]),
         new \Phplrt\Parser\Grammar\Optional(115),
         new \Phplrt\Parser\Grammar\Concatenation([2, 116]),
-        new \Phplrt\Parser\Grammar\Concatenation([145]),
+        new \Phplrt\Parser\Grammar\Concatenation([155]),
         new \Phplrt\Parser\Grammar\Optional(121),
         new \Phplrt\Parser\Grammar\Concatenation([118, 119]),
         new \Phplrt\Parser\Grammar\Concatenation([124, 125, 126, 59, 127, 59]),
@@ -216,32 +216,42 @@ return [
         new \Phplrt\Parser\Grammar\Lexeme('T_ATTR_OPEN', false),
         new \Phplrt\Parser\Grammar\Optional(136),
         new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
-        new \Phplrt\Parser\Grammar\Concatenation([2]),
+        new \Phplrt\Parser\Grammar\Concatenation([2, 145]),
         new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
         new \Phplrt\Parser\Grammar\Concatenation([141, 140]),
         new \Phplrt\Parser\Grammar\Repetition(142, 0, INF),
+        new \Phplrt\Parser\Grammar\Concatenation([150, 146, 151, 152, 153]),
+        new \Phplrt\Parser\Grammar\Optional(144),
+        new \Phplrt\Parser\Grammar\Concatenation([59]),
+        new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        new \Phplrt\Parser\Grammar\Concatenation([147, 146]),
+        new \Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
+        new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
+        new \Phplrt\Parser\Grammar\Repetition(148, 0, INF),
+        new \Phplrt\Parser\Grammar\Optional(149),
+        new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
         new \Phplrt\Parser\Grammar\Concatenation([123]),
-        new \Phplrt\Parser\Grammar\Concatenation([146, 149]),
-        new \Phplrt\Parser\Grammar\Concatenation([150, 153]),
+        new \Phplrt\Parser\Grammar\Concatenation([156, 159]),
+        new \Phplrt\Parser\Grammar\Concatenation([160, 163]),
         new \Phplrt\Parser\Grammar\Lexeme('T_OR', false),
-        new \Phplrt\Parser\Grammar\Concatenation([147, 145]),
-        new \Phplrt\Parser\Grammar\Optional(148),
-        new \Phplrt\Parser\Grammar\Concatenation([154]),
+        new \Phplrt\Parser\Grammar\Concatenation([157, 155]),
+        new \Phplrt\Parser\Grammar\Optional(158),
+        new \Phplrt\Parser\Grammar\Concatenation([164]),
         new \Phplrt\Parser\Grammar\Lexeme('T_AMP', false),
-        new \Phplrt\Parser\Grammar\Concatenation([151, 146]),
-        new \Phplrt\Parser\Grammar\Optional(152),
-        new \Phplrt\Parser\Grammar\Alternation([157, 155]),
-        new \Phplrt\Parser\Grammar\Concatenation([158, 162]),
+        new \Phplrt\Parser\Grammar\Concatenation([161, 156]),
+        new \Phplrt\Parser\Grammar\Optional(162),
+        new \Phplrt\Parser\Grammar\Alternation([167, 165]),
+        new \Phplrt\Parser\Grammar\Concatenation([168, 172]),
         new \Phplrt\Parser\Grammar\Lexeme('T_QMARK', true),
-        new \Phplrt\Parser\Grammar\Concatenation([156, 155]),
-        new \Phplrt\Parser\Grammar\Alternation([165, 29, 20, 66, 117]),
+        new \Phplrt\Parser\Grammar\Concatenation([166, 165]),
+        new \Phplrt\Parser\Grammar\Alternation([175, 29, 20, 66, 117]),
         new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_OPEN', true),
         new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
-        new \Phplrt\Parser\Grammar\Concatenation([159, 160]),
-        new \Phplrt\Parser\Grammar\Repetition(161, 0, INF),
+        new \Phplrt\Parser\Grammar\Concatenation([169, 170]),
+        new \Phplrt\Parser\Grammar\Repetition(171, 0, INF),
         new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
         new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
-        new \Phplrt\Parser\Grammar\Concatenation([163, 59, 164]),
+        new \Phplrt\Parser\Grammar\Concatenation([173, 59, 174]),
     ],
     'reducers' => [
         0 => static function (\Phplrt\Parser\Context $ctx, $children) {
@@ -363,7 +373,7 @@ return [
                 $hint = \reset($children);
             }
 
-            return new Node\Stmt\Template\ArgumentNode(
+            return new Node\Stmt\Template\TemplateArgumentNode(
                 $type,
                 $hint,
                 $attributes,
@@ -377,7 +387,7 @@ return [
                 throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
             }
 
-            return new Node\Stmt\Template\ArgumentsListNode($children);
+            return new Node\Stmt\Template\TemplateArgumentsListNode($children);
         },
         54 => static function (\Phplrt\Parser\Context $ctx, $children) {
             return new Node\Stmt\Attribute\AttributeGroupsListNode($children);
@@ -618,7 +628,13 @@ return [
                 $children[0],
             );
         },
-        145 => function (\Phplrt\Parser\Context $ctx, $children) {
+        144 => static function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\Stmt\Attribute\AttributeArgumentsListNode($children);
+        },
+        146 => static function (\Phplrt\Parser\Context $ctx, $children) {
+            return new Node\Stmt\Attribute\AttributeArgumentNode($children[0]);
+        },
+        155 => function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
@@ -632,7 +648,7 @@ return [
 
             return $children;
         },
-        146 => function (\Phplrt\Parser\Context $ctx, $children) {
+        156 => function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 
@@ -646,14 +662,14 @@ return [
 
             return $children;
         },
-        154 => static function (\Phplrt\Parser\Context $ctx, $children) {
+        164 => static function (\Phplrt\Parser\Context $ctx, $children) {
             if (\is_array($children)) {
                 return new Node\Stmt\NullableTypeNode($children[1]);
             }
 
             return $children;
         },
-        155 => function (\Phplrt\Parser\Context $ctx, $children) {
+        165 => function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 

@@ -4,7 +4,7 @@ TemplateArguments -> {
         throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
     }
 
-    return new Node\Stmt\Template\ArgumentsListNode($children);
+    return new Node\Stmt\Template\TemplateArgumentsListNode($children);
 }
   : ::T_ANGLE_BRACKET_OPEN::
       TemplateArgument() (
@@ -34,7 +34,7 @@ TemplateArgument -> {
         $hint = \reset($children);
     }
 
-    return new Node\Stmt\Template\ArgumentNode(
+    return new Node\Stmt\Template\TemplateArgumentNode(
         $type,
         $hint,
         $attributes,

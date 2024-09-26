@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
+use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Contracts\Source\SourceExceptionInterface;
 
 class ParseException extends \LogicException implements ParserExceptionInterface
@@ -78,19 +79,17 @@ class ParseException extends \LogicException implements ParserExceptionInterface
     }
 
     /**
-     * @param int<0, max> $offset
-     *
      * @throws SourceExceptionInterface
      */
-    public static function fromSemanticError(string $message, string $statement, int $offset, int $code = 0): static
+    public static function fromSemanticError(SemanticException $e, ReadableInterface $source): static
     {
         $message = \vsprintf('%s in %s %s', [
-            \ucfirst($message),
-            Formatter::source($statement),
-            Formatter::suffix($statement, $offset),
+            \ucfirst($e->getMessage()),
+            Formatter::source($source->getContents()),
+            Formatter::suffix($source->getContents(), $e->getOffset()),
         ]);
 
-        return new static($message, self::ERROR_CODE_SEMANTIC_ERROR_BASE + $code);
+        return new static($message, self::ERROR_CODE_SEMANTIC_ERROR_BASE + $e->getCode());
     }
 
     public static function fromInternalError(string $statement, \Throwable $e): static

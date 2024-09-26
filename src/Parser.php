@@ -238,12 +238,7 @@ final class Parser implements ParserInterface
      */
     private function semanticError(SemanticException $e, ReadableInterface $source): ParseException
     {
-        return ParseException::fromSemanticError(
-            message: $e->getMessage(),
-            statement: $source->getContents(),
-            offset: $e->getOffset(),
-            code: $e->getCode(),
-        );
+        return ParseException::fromSemanticError($e, $source);
     }
 
     /**

@@ -24,5 +24,21 @@ Attribute -> {
         $children[0],
     );
 }
-  : Name()
+  : Name() AttributeArguments()?
+  ;
+
+AttributeArguments -> {
+    return new Node\Stmt\Attribute\AttributeArgumentsListNode($children);
+}
+  : ::T_PARENTHESIS_OPEN::
+      AttributeArgument() (
+        ::T_COMMA:: AttributeArgument()
+      )* ::T_COMMA::?
+    ::T_PARENTHESIS_CLOSE::
+  ;
+
+AttributeArgument -> {
+    return new Node\Stmt\Attribute\AttributeArgumentNode($children[0]);
+}
+  : Type()
   ;
