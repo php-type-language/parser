@@ -83,21 +83,25 @@ final class Parser implements ParserInterface
      *       the type definition. This mode allows you to recognize types
      *       specified in DocBlocks.
      * @param bool $conditional enables or disables support for
-     *        dependent/conditional types such as `T ? X : Y`
+     *        dependent/conditional types such as `T ? U : V`
      * @param bool $shapes enables or disables support for type shapes
-     *        such as `T{key: X}`
+     *        such as `T{key: U}`
      * @param bool $callables enables or disables support for callable types
-     *        such as `(X, Y): T`
+     *        such as `(T, U): V`
      * @param bool $literals enables or disables support for literal types such
      *        as `42` or `"string"`
      * @param bool $generics enables or disables support for template arguments
-     *        such as `T<X, Y>`
+     *        such as `T<U, V>`
      * @param bool $union enables or disables support for logical union types
-     *        such as `T | X`
+     *        such as `T | U`
      * @param bool $intersection enables or disables support for logical
-     *        intersection types such as `T & X`
+     *        intersection types such as `T & U`
      * @param bool $list enables or disables support for square bracket list
      *        types such as `T[]`
+     * @param bool $hints enables or disables support for template argument
+     *        hints such as `T<out U, in V>`
+     * @param bool $attributes enables or disables support for attributes
+     *        such as `#[attr]`
      */
     public function __construct(
         public readonly bool $tolerant = false,
@@ -109,6 +113,8 @@ final class Parser implements ParserInterface
         public readonly bool $union = true,
         public readonly bool $intersection = true,
         public readonly bool $list = true,
+        public readonly bool $hints = true,
+        public readonly bool $attributes = true,
         private readonly SourceFactoryInterface $sources = new SourceFactory(),
     ) {
         /** @phpstan-var GrammarConfigArray $grammar */

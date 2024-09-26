@@ -13,6 +13,7 @@
 %include grammar/shape-fields           // array { key: int, ...<TKey, TValue> }
 %include grammar/named-type             // Map<int<0, max>, non-empty-string>
 %include grammar/ternary                // T is A ? B : C
+%include grammar/attribute              // #[attr]
 
 %pragma root Type
 

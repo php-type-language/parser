@@ -66,9 +66,23 @@ ShapeFieldsList -> {
     )*
   ;
 
-ShapeField
-  : ExplicitField()
-  | ImplicitField()
+ShapeField -> {
+    $result = \end($children);
+
+    if ($children[0] instanceof Node\Stmt\Attribute\AttributeGroupsListNode) {
+        if ($this->attributes === false) {
+            throw FeatureNotAllowedException::fromFeature('shape field attributes', $offset);
+        }
+
+        $result->attributes = $children[0];
+    }
+
+    return $result;
+}
+  : AttributeGroupsList()? (
+      ExplicitField()
+      | ImplicitField()
+    )
   ;
 
 ExplicitField -> {

@@ -1,0 +1,28 @@
+
+AttributeGroupsList -> {
+    return new Node\Stmt\Attribute\AttributeGroupsListNode($children);
+}
+  : AttributeGroup()+
+  ;
+
+AttributeGroup -> {
+    return new Node\Stmt\Attribute\AttributeGroupNode($children);
+}
+  : ::T_ATTR_OPEN::
+        AttributesList() ::T_COMMA::?
+    ::T_SQUARE_BRACKET_CLOSE::
+  ;
+
+AttributesList
+  : Attribute() (
+      ::T_COMMA:: Attribute()
+    )*
+  ;
+
+Attribute -> {
+    return new Node\Stmt\Attribute\AttributeNode(
+        $children[0],
+    );
+}
+  : Name()
+  ;

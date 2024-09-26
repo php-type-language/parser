@@ -32,6 +32,7 @@
 %token  T_PARENTHESIS_CLOSE     \)
 %token  T_BRACE_OPEN            \{
 %token  T_BRACE_CLOSE           \}
+%token  T_ATTR_OPEN             #\[
 %token  T_SQUARE_BRACKET_OPEN   \[
 %token  T_SQUARE_BRACKET_CLOSE  \]
 %token  T_COMMA                 ,

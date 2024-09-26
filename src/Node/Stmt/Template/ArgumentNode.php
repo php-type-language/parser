@@ -6,6 +6,7 @@ namespace TypeLang\Parser\Node\Stmt\Template;
 
 use TypeLang\Parser\Node\Identifier;
 use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\Stmt\Attribute\AttributeGroupsListNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 class ArgumentNode extends Node
@@ -18,6 +19,7 @@ class ArgumentNode extends Node
     public function __construct(
         public TypeStatement $value,
         Identifier|string|null $hint = null,
+        public ?AttributeGroupsListNode $attributes = null,
     ) {
         $this->hint = \is_string($hint) ? new Identifier($hint) : $hint;
     }
