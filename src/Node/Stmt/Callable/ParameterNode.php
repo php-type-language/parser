@@ -6,6 +6,7 @@ namespace TypeLang\Parser\Node\Stmt\Callable;
 
 use TypeLang\Parser\Node\Literal\VariableLiteralNode;
 use TypeLang\Parser\Node\Node;
+use TypeLang\Parser\Node\Stmt\Attribute\AttributeGroupsListNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 final class ParameterNode extends Node implements \Stringable
@@ -16,6 +17,7 @@ final class ParameterNode extends Node implements \Stringable
         public bool $output = false,
         public bool $variadic = false,
         public bool $optional = false,
+        public ?AttributeGroupsListNode $attributes = null,
     ) {
         assert($type !== null || $name !== null, new \TypeError(
             'Required indication of the type or name of the parameter (one of)',

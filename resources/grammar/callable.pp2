@@ -26,7 +26,24 @@ CallableType -> {
 CallableParameters -> {
     return new Node\Stmt\Callable\ParametersListNode($children);
 }
-  : OptionalCallableParameter() (::T_COMMA:: OptionalCallableParameter())* ::T_COMMA::?
+  : CallableParameter() (::T_COMMA:: CallableParameter())* ::T_COMMA::?
+  ;
+
+CallableParameter -> {
+    $result = \end($children);
+
+    if ($children[0] instanceof Node\Stmt\Attribute\AttributeGroupsListNode) {
+        if ($this->attributes === false) {
+            throw FeatureNotAllowedException::fromFeature('callable parameter attributes', $offset);
+        }
+
+        $result->attributes = $children[0];
+    }
+
+    return $result;
+}
+  : AttributeGroupsList()?
+    OptionalCallableParameter()
   ;
 
 OptionalCallableParameter -> {
