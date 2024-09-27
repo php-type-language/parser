@@ -55,7 +55,8 @@ final class Parser implements ParserInterface
      *
      * @var \WeakMap<TokenInterface, StringLiteralNode>
      *
-     * @api
+     * @api an annotation for another PhpStorm bug fix...
+     * @internal ...but it is truly an internal property
      */
     protected readonly \WeakMap $stringPool;
 
@@ -64,7 +65,8 @@ final class Parser implements ParserInterface
      *
      * @var \WeakMap<TokenInterface, IntLiteralNode>
      *
-     * @api
+     * @api an annotation for another PhpStorm bug fix...
+     * @internal ...but it is truly an internal property
      */
     protected readonly \WeakMap $integerPool;
 
