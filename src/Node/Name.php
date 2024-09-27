@@ -17,7 +17,7 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
     /**
      * @var non-empty-list<Identifier>
      */
-    private readonly array $parts;
+    public readonly array $parts;
 
     /**
      * @param iterable<array-key, Identifier|non-empty-string>|non-empty-string|Identifier $name
