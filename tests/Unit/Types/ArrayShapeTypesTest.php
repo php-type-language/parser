@@ -14,16 +14,20 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{a,b,c}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(a)
+                      Identifier(a)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(b)
+                      Identifier(b)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(c)
+                      Identifier(c)
             OUTPUT);
     }
 
@@ -32,6 +36,7 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
             OUTPUT);
     }
@@ -41,16 +46,20 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{a,b,c,...}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(unsealed)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(a)
+                      Identifier(a)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(b)
+                      Identifier(b)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(c)
+                      Identifier(c)
             OUTPUT);
     }
 
@@ -59,10 +68,12 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{int}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
+                      Identifier(int)
             OUTPUT);
     }
 
@@ -71,13 +82,16 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{int, string}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
+                      Identifier(int)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(string)
+                      Identifier(string)
             OUTPUT);
     }
 
@@ -86,17 +100,22 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{Some\Any{int, string}}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\ImplicitFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(Some\Any)
+                      Identifier(Some)
+                      Identifier(Any)
                     Stmt\Shape\FieldsListNode(sealed)
                       Stmt\Shape\ImplicitFieldNode(required)
                         Stmt\NamedTypeNode
                           Name(int)
+                            Identifier(int)
                       Stmt\Shape\ImplicitFieldNode(required)
                         Stmt\NamedTypeNode
                           Name(string)
+                            Identifier(string)
             OUTPUT);
     }
 
@@ -105,10 +124,12 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{name:int}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\NamedFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
+                      Identifier(int)
                   Identifier(name)
             OUTPUT);
     }
@@ -118,10 +139,12 @@ class ArrayShapeTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array{"name":int}', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\StringNamedFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(int)
+                      Identifier(int)
                   Literal\StringLiteralNode("name")
             OUTPUT);
     }
@@ -145,22 +168,27 @@ class ArrayShapeTypesTest extends TypesTestCase
             PHP, <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
+                Identifier(array)
               Stmt\Shape\FieldsListNode(sealed)
                 Stmt\Shape\NamedFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(a)
+                      Identifier(a)
                   Identifier(required)
                 Stmt\Shape\NamedFieldNode(optional)
                   Stmt\NamedTypeNode
                     Name(b)
+                      Identifier(b)
                   Identifier(optional)
                 Stmt\Shape\StringNamedFieldNode(required)
                   Stmt\NamedTypeNode
                     Name(c)
+                      Identifier(c)
                   Literal\StringLiteralNode("string_required")
                 Stmt\Shape\StringNamedFieldNode(optional)
                   Stmt\NamedTypeNode
                     Name(d)
+                      Identifier(d)
                   Literal\StringLiteralNode("string_optional")
             OUTPUT);
     }

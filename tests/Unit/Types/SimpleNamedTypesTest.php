@@ -14,6 +14,7 @@ class SimpleNamedTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('ExampleName', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(ExampleName)
+                Identifier(ExampleName)
             OUTPUT);
     }
 
@@ -22,6 +23,7 @@ class SimpleNamedTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('example-name', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(example-name)
+                Identifier(example-name)
             OUTPUT);
     }
 
@@ -37,6 +39,7 @@ class SimpleNamedTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('example-', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(example-)
+                Identifier(example-)
             OUTPUT);
     }
 
@@ -45,6 +48,8 @@ class SimpleNamedTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('Some\\Any', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(Some\Any)
+                Identifier(Some)
+                Identifier(Any)
             OUTPUT);
     }
 
@@ -53,6 +58,8 @@ class SimpleNamedTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('\\Some\\Any', <<<'OUTPUT'
             Stmt\NamedTypeNode
               FullQualifiedName(\Some\Any)
+                Identifier(Some)
+                Identifier(Any)
             OUTPUT);
     }
 
@@ -61,6 +68,8 @@ class SimpleNamedTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('Some-Any\\Any', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(Some-Any\Any)
+                Identifier(Some-Any)
+                Identifier(Any)
             OUTPUT);
     }
 

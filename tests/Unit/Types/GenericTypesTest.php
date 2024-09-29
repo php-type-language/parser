@@ -14,16 +14,20 @@ class GenericTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array<a,b,c>', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Template\ArgumentsListNode
-                Stmt\Template\ArgumentNode
+                Identifier(array)
+              Stmt\Template\TemplateArgumentsListNode
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(a)
-                Stmt\Template\ArgumentNode
+                      Identifier(a)
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(b)
-                Stmt\Template\ArgumentNode
+                      Identifier(b)
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(c)
+                      Identifier(c)
             OUTPUT);
     }
 
@@ -32,10 +36,12 @@ class GenericTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array<int>', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Template\ArgumentsListNode
-                Stmt\Template\ArgumentNode
+                Identifier(array)
+              Stmt\Template\TemplateArgumentsListNode
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(int)
+                      Identifier(int)
             OUTPUT);
     }
 
@@ -44,13 +50,16 @@ class GenericTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array<int, string>', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Template\ArgumentsListNode
-                Stmt\Template\ArgumentNode
+                Identifier(array)
+              Stmt\Template\TemplateArgumentsListNode
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(int)
-                Stmt\Template\ArgumentNode
+                      Identifier(int)
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(string)
+                      Identifier(string)
             OUTPUT);
     }
 
@@ -59,17 +68,22 @@ class GenericTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array<Some\Any<int, string>>', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Template\ArgumentsListNode
-                Stmt\Template\ArgumentNode
+                Identifier(array)
+              Stmt\Template\TemplateArgumentsListNode
+                Stmt\Template\TemplateArgumentNode
                   Stmt\NamedTypeNode
                     Name(Some\Any)
-                    Stmt\Template\ArgumentsListNode
-                      Stmt\Template\ArgumentNode
+                      Identifier(Some)
+                      Identifier(Any)
+                    Stmt\Template\TemplateArgumentsListNode
+                      Stmt\Template\TemplateArgumentNode
                         Stmt\NamedTypeNode
                           Name(int)
-                      Stmt\Template\ArgumentNode
+                            Identifier(int)
+                      Stmt\Template\TemplateArgumentNode
                         Stmt\NamedTypeNode
                           Name(string)
+                            Identifier(string)
             OUTPUT);
     }
 
@@ -78,15 +92,18 @@ class GenericTypesTest extends TypesTestCase
         $this->assertTypeStatementSame('array<out T, in U>', <<<'OUTPUT'
             Stmt\NamedTypeNode
               Name(array)
-              Stmt\Template\ArgumentsListNode
-                Stmt\Template\ArgumentNode
+                Identifier(array)
+              Stmt\Template\TemplateArgumentsListNode
+                Stmt\Template\TemplateArgumentNode
                   Identifier(out)
                   Stmt\NamedTypeNode
                     Name(T)
-                Stmt\Template\ArgumentNode
+                      Identifier(T)
+                Stmt\Template\TemplateArgumentNode
                   Identifier(in)
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
             OUTPUT);
     }
 }

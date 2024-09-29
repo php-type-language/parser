@@ -27,11 +27,13 @@ class TernaryTypesTest extends TypesTestCase
         yield 'T1' => ['T1', <<<'STMT'
             Stmt\NamedTypeNode
               Name(T1)
+                Identifier(T1)
             STMT];
 
         yield 'foo()' => ['foo()', <<<'STMT'
             Stmt\CallableTypeNode
               Name(foo)
+                Identifier(foo)
               Stmt\Callable\ParametersListNode
             STMT];
 
@@ -68,8 +70,10 @@ class TernaryTypesTest extends TypesTestCase
                     %s
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
                   Stmt\NamedTypeNode
                     Name(V)
+                      Identifier(V)
                 OUTPUT, [
                     self::padding($t1Ast, 2),
                     self::padding($t2Ast, 2),
@@ -88,8 +92,10 @@ class TernaryTypesTest extends TypesTestCase
                     %s
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
                   Stmt\NamedTypeNode
                     Name(V)
+                      Identifier(V)
                 OUTPUT, [
                     self::padding($t1Ast, 2),
                     self::padding($t2Ast, 2),
@@ -108,8 +114,10 @@ class TernaryTypesTest extends TypesTestCase
                     %s
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
                   Stmt\NamedTypeNode
                     Name(V)
+                      Identifier(V)
                 OUTPUT, [
                     self::padding($t1Ast, 2),
                     self::padding($t2Ast, 2),
@@ -128,8 +136,10 @@ class TernaryTypesTest extends TypesTestCase
                     %s
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
                   Stmt\NamedTypeNode
                     Name(V)
+                      Identifier(V)
                 OUTPUT, [
                     self::padding($t1Ast, 2),
                     self::padding($t2Ast, 2),
@@ -148,8 +158,10 @@ class TernaryTypesTest extends TypesTestCase
                     %s
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
                   Stmt\NamedTypeNode
                     Name(V)
+                      Identifier(V)
                 OUTPUT, [
                     self::padding($t1Ast, 2),
                     self::padding($t2Ast, 2),
@@ -168,8 +180,10 @@ class TernaryTypesTest extends TypesTestCase
                     %s
                   Stmt\NamedTypeNode
                     Name(U)
+                      Identifier(U)
                   Stmt\NamedTypeNode
                     Name(V)
+                      Identifier(V)
                 OUTPUT, [
                     self::padding($t1Ast, 2),
                     self::padding($t2Ast, 2),
