@@ -48,7 +48,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 
         // One of: [ 0123, 0o23, 0x00, 0b01 ]
         if ($literal[0] === '0' && isset($literal[1])) {
-            return [$isNegative, (match ($literal[1]) {
+            return [$isNegative, match ($literal[1]) {
                 // hexadecimal
                 'x', 'X' => \hexdec(\substr($literal, 2)),
                 // binary
@@ -57,7 +57,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
                 'o', 'O' => \octdec(\substr($literal, 2)),
                 // octal (legacy)
                 default => \octdec($literal),
-            })];
+            }];
         }
 
         return [$isNegative, $literal];
