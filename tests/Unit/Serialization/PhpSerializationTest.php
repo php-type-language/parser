@@ -44,9 +44,9 @@ final class PhpSerializationTest extends SerializationTestCase
         }
 
         self::assertLessThanOrEqual(
-            expected: \strlen($serializedExpected),
-            actual: \strlen($serializedActual),
-            message: \sprintf(
+            \strlen($serializedExpected),
+            \strlen($serializedActual),
+            \sprintf(
                 'Saved %d bytes, but actual is %d bytes',
                 \strlen($serializedExpected),
                 \strlen($serializedActual),
