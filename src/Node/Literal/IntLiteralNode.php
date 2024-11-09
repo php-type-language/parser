@@ -22,13 +22,21 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 
     public static function parse(string $value): static
     {
-        [$isNegative, $decimal] = self::split($value);
+        [$negative, $numeric] = self::split($value);
 
-        return new static($isNegative ? -$decimal : $decimal, $value);
+        if ($negative) {
+            if ((string) \PHP_INT_MIN === '-' . $numeric) {
+                return new static(\PHP_INT_MIN, $value);
+            }
+
+            return new static((int) ('-' . $numeric), $value);
+        }
+
+        return new static((int) $numeric, $value);
     }
 
     /**
-     * @return array{bool, int}
+     * @return array{bool, numeric-string}
      */
     private static function split(string $literal): array
     {
@@ -40,7 +48,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 
         // One of: [ 0123, 0o23, 0x00, 0b01 ]
         if ($literal[0] === '0' && isset($literal[1])) {
-            return [$isNegative, (int) (match ($literal[1]) {
+            return [$isNegative, (match ($literal[1]) {
                 // hexadecimal
                 'x', 'X' => \hexdec(\substr($literal, 2)),
                 // binary
@@ -52,7 +60,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
             })];
         }
 
-        return [$isNegative, (int) $literal];
+        return [$isNegative, $literal];
     }
 
     public function getValue(): int
