@@ -42,13 +42,14 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
     {
         $literal = \str_replace('_', '', $literal);
 
-        if ($isNegative = ($literal[0] === '-')) {
+        if ($negative = ($literal[0] === '-')) {
             $literal = \substr($literal, 1);
         }
 
         // One of: [ 0123, 0o23, 0x00, 0b01 ]
         if ($literal[0] === '0' && isset($literal[1])) {
-            return [$isNegative, match ($literal[1]) {
+            /** @var array{bool, numeric-string} */
+            return [$negative, match ($literal[1]) {
                 // hexadecimal
                 'x', 'X' => \base_convert(\substr($literal, 2), 16, 10),
                 // binary
@@ -60,7 +61,8 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
             }];
         }
 
-        return [$isNegative, $literal];
+        /** @var array{bool, numeric-string} */
+        return [$negative, $literal];
     }
 
     public function getValue(): int
