@@ -13,26 +13,39 @@ namespace TypeLang\Parser\Node\Literal;
  */
 class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 {
+    /**
+     * @var numeric-string
+     */
+    public readonly string $decimal;
+
+    /**
+     * @param numeric-string|null $decimal
+     */
     public function __construct(
         public readonly int $value,
         ?string $raw = null,
+        ?string $decimal = null,
     ) {
+        $this->decimal = $decimal ?? (string) $this->value;
+
         parent::__construct($raw ?? (string) $this->value);
     }
 
     public static function parse(string $value): static
     {
-        [$negative, $numeric] = self::split($value);
+        [$negative, $decimal] = self::split($value);
+
+        $converted = '-' . $decimal;
 
         if ($negative) {
-            if ((string) \PHP_INT_MIN === '-' . $numeric) {
-                return new static(\PHP_INT_MIN, $value);
+            if ((string) \PHP_INT_MIN === '-' . $decimal) {
+                return new static(\PHP_INT_MIN, $value, $converted);
             }
 
-            return new static((int) ('-' . $numeric), $value);
+            return new static((int) ('-' . $decimal), $value, $converted);
         }
 
-        return new static((int) $numeric, $value);
+        return new static((int) $decimal, $value, $converted);
     }
 
     /**
@@ -63,6 +76,14 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
 
         /** @var array{bool, numeric-string} */
         return [$negative, $literal];
+    }
+
+    /**
+     * @return numeric-string
+     */
+    public function getValueAsDecimalString(): string
+    {
+        return $this->decimal;
     }
 
     public function getValue(): int
