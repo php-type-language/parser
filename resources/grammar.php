@@ -707,7 +707,7 @@ return [
                     // In case of offset access type
                     case $child instanceof Node\Stmt\TypeStatement:
                         if ($this->offsets === false) {
-                            throw FeatureNotAllowedException::fromFeature('square bracket type offsets', $offset);
+                            throw FeatureNotAllowedException::fromFeature('type offsets', $offset);
                         }
 
                         $statement = new Node\Stmt\TypeOffsetAccessNode($statement, $child);
