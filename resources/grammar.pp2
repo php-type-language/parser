@@ -133,7 +133,7 @@ TypesList -> {
                 $statement = new Node\Stmt\TypesListNode($statement);
                 break;
             // In case of offset access type
-            case $child instanceof Node\Stmt\NamedTypeNode:
+            case $child instanceof Node\Stmt\TypeStatement:
                 if ($this->offsets === false) {
                     throw FeatureNotAllowedException::fromFeature('square bracket type offsets', $offset);
                 }
@@ -141,7 +141,10 @@ TypesList -> {
                 $statement = new Node\Stmt\TypeOffsetAccessNode($statement, $child);
                 break;
             default:
-                throw new SemanticException($offset, 'Unexpected square bracket node type');
+                throw new SemanticException($offset, \sprintf(
+                    'Internal error, unexpected square bracket sub-node %s',
+                    \get_debug_type($child),
+                ));
         }
     }
 
