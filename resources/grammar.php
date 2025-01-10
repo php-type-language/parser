@@ -243,17 +243,18 @@ return [
         new \Phplrt\Parser\Grammar\Concatenation([163, 158]),
         new \Phplrt\Parser\Grammar\Optional(164),
         new \Phplrt\Parser\Grammar\Alternation([169, 167]),
-        new \Phplrt\Parser\Grammar\Concatenation([170, 174]),
+        new \Phplrt\Parser\Grammar\Concatenation([170, 172]),
         new \Phplrt\Parser\Grammar\Lexeme('T_QMARK', true),
         new \Phplrt\Parser\Grammar\Concatenation([168, 167]),
-        new \Phplrt\Parser\Grammar\Alternation([177, 29, 20, 66, 119]),
+        new \Phplrt\Parser\Grammar\Alternation([178, 29, 20, 66, 119]),
+        new \Phplrt\Parser\Grammar\Concatenation([173, 174, 175]),
+        new \Phplrt\Parser\Grammar\Repetition(171, 0, INF),
         new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_OPEN', true),
+        new \Phplrt\Parser\Grammar\Optional(59),
         new \Phplrt\Parser\Grammar\Lexeme('T_SQUARE_BRACKET_CLOSE', false),
-        new \Phplrt\Parser\Grammar\Concatenation([171, 172]),
-        new \Phplrt\Parser\Grammar\Repetition(173, 0, INF),
         new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_OPEN', false),
         new \Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
-        new \Phplrt\Parser\Grammar\Concatenation([175, 59, 176]),
+        new \Phplrt\Parser\Grammar\Concatenation([176, 59, 177]),
     ],
     'reducers' => [
         0 => static function (\Phplrt\Parser\Context $ctx, $children) {
@@ -693,16 +694,33 @@ return [
 
             $statement = \array_shift($children);
 
-            for ($i = 0, $length = \count($children); $i < $length; ++$i) {
-                if ($this->list === false) {
-                    throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
-                }
+            foreach ($children as $child) {
+                switch (true) {
+                    // In case of list type
+                    case $child === true:
+                        if ($this->list === false) {
+                            throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
+                        }
 
-                $statement = new Node\Stmt\TypesListNode($statement);
-                $statement->offset = $children[$i]->getOffset();
+                        $statement = new Node\Stmt\TypesListNode($statement);
+                        break;
+                    // In case of offset access type
+                    case $child instanceof Node\Stmt\NamedTypeNode:
+                        if ($this->offsets === false) {
+                            throw FeatureNotAllowedException::fromFeature('square bracket type offsets', $offset);
+                        }
+
+                        $statement = new Node\Stmt\TypeOffsetAccessNode($statement, $child);
+                        break;
+                    default:
+                        throw new SemanticException($offset, 'Unexpected square bracket node type');
+                }
             }
 
             return $statement;
+        },
+        171 => static function (\Phplrt\Parser\Context $ctx, $children) {
+            return $children[1] ?? true;
         },
     ],
 ];

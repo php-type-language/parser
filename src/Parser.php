@@ -102,6 +102,8 @@ final class Parser implements ParserInterface
      *        intersection types such as `T & U`
      * @param bool $list enables or disables support for square bracket list
      *        types such as `T[]`
+     * @param bool $offsets enables or disables support for square bracket
+     *        offset access types such as `T[U]`
      * @param bool $hints enables or disables support for template argument
      *        hints such as `T<out U, in V>`
      * @param bool $attributes enables or disables support for attributes
@@ -117,6 +119,7 @@ final class Parser implements ParserInterface
         public readonly bool $union = true,
         public readonly bool $intersection = true,
         public readonly bool $list = true,
+        public readonly bool $offsets = true,
         public readonly bool $hints = true,
         public readonly bool $attributes = true,
         private readonly SourceFactoryInterface $sources = new SourceFactory(),

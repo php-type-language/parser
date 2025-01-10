@@ -122,21 +122,43 @@ PrefixedNullableType -> {
 TypesList -> {
     $statement = \array_shift($children);
 
-    for ($i = 0, $length = \count($children); $i < $length; ++$i) {
-        if ($this->list === false) {
-            throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
-        }
+    foreach ($children as $child) {
+        switch (true) {
+            // In case of list type
+            case $child === true:
+                if ($this->list === false) {
+                    throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
+                }
 
-        $statement = new Node\Stmt\TypesListNode($statement);
-        $statement->offset = $children[$i]->getOffset();
+                $statement = new Node\Stmt\TypesListNode($statement);
+                break;
+            // In case of offset access type
+            case $child instanceof Node\Stmt\NamedTypeNode:
+                if ($this->offsets === false) {
+                    throw FeatureNotAllowedException::fromFeature('square bracket type offsets', $offset);
+                }
+
+                $statement = new Node\Stmt\TypeOffsetAccessNode($statement, $child);
+                break;
+            default:
+                throw new SemanticException($offset, 'Unexpected square bracket node type');
+        }
     }
 
     return $statement;
 }
-  : PrimaryType() (
-      <T_SQUARE_BRACKET_OPEN>
-      ::T_SQUARE_BRACKET_CLOSE::
-    )*
+  : PrimaryType()
+    TypeListOrOffsetSuffix()*
+  ;
+
+// - Returns `true` in case of a list type (`T[]`).
+// - Returns `NamedTypeNode` in case of an offset access type (`T[Y]`).
+TypeListOrOffsetSuffix -> {
+    return $children[1] ?? true;
+}
+  : <T_SQUARE_BRACKET_OPEN>
+      Type()?
+    ::T_SQUARE_BRACKET_CLOSE::
   ;
 
 PrimaryType
