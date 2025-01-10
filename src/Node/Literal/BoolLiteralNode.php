@@ -7,8 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template-extends LiteralNode<bool>
  *
- * @psalm-consistent-constructor
- *
  * @phpstan-consistent-constructor
  */
 class BoolLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface

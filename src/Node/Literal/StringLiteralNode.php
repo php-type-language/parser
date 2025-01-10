@@ -7,8 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template-extends LiteralNode<string>
  *
- * @psalm-consistent-constructor
- *
  * @phpstan-consistent-constructor
  */
 class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
@@ -143,7 +141,6 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
             => \chr((int) \hexdec((string) $matches[1]))
         ;
 
-        /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
 
@@ -184,7 +181,6 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
                 . \chr(0x80 | $code & 0x3F);
         };
 
-        /** @psalm-suppress InvalidArgument */
         return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
     }
 

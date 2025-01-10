@@ -76,8 +76,6 @@ final class Parser implements ParserInterface
 
     /**
      * @var int<0, max>
-     *
-     * @psalm-readonly-allow-private-mutation
      */
     public int $lastProcessedTokenOffset = 0;
 

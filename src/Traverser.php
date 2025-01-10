@@ -50,9 +50,6 @@ final class Traverser implements MutableTraverserInterface
         return new self($visitors);
     }
 
-    /**
-     * @psalm-immutable
-     */
     public function with(VisitorInterface $visitor, bool $prepend = false): self
     {
         $self = clone $this;
@@ -101,7 +98,6 @@ final class Traverser implements MutableTraverserInterface
             $command = $visitor->enter($node);
 
             if ($command === null) {
-                /** @psalm-suppress MixedAssignment */
                 foreach ($this->getProperties($node) as $property) {
                     if ($property instanceof Node) {
                         $this->applyToNode($property);

@@ -9,9 +9,6 @@ use TypeLang\Parser\Traverser\VisitorInterface;
 
 interface TraverserInterface
 {
-    /**
-     * @psalm-immutable
-     */
     public function with(VisitorInterface $visitor, bool $prepend = false): self;
 
     /**

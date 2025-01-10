@@ -7,8 +7,6 @@ namespace TypeLang\Parser\Node\Literal;
 /**
  * @template-extends LiteralNode<float>
  *
- * @psalm-consistent-constructor
- *
  * @phpstan-consistent-constructor
  */
 class FloatLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
