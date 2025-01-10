@@ -396,7 +396,7 @@ return [
             return new Node\Stmt\Attribute\AttributeGroupsListNode($children);
         },
         60 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            return new Node\Stmt\Callable\ParametersListNode($children);
+            return new Node\Stmt\Callable\CallableParametersListNode($children);
         },
         66 => function (\Phplrt\Parser\Context $ctx, $children) {
             // The "$offset" variable is an auto-generated
@@ -410,7 +410,7 @@ return [
 
             $parameters = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ParametersListNode
                 ? \array_shift($children)
-                : new Node\Stmt\Callable\ParametersListNode();
+                : new Node\Stmt\Callable\CallableParametersListNode();
 
             return new Node\Stmt\CallableTypeNode(
                 name: $name,
@@ -472,7 +472,7 @@ return [
             return $children[1];
         },
         80 => static function (\Phplrt\Parser\Context $ctx, $children) {
-            $argument = new Node\Stmt\Callable\ParameterNode($children[0]);
+            $argument = new Node\Stmt\Callable\CallableParameterNode($children[0]);
 
             if (\count($children) !== 1) {
                 $argument->output = true;
