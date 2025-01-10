@@ -8,7 +8,7 @@ CallableType -> {
 
     $parameters = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ParametersListNode
         ? \array_shift($children)
-        : new Node\Stmt\Callable\ParametersListNode();
+        : new Node\Stmt\Callable\CallableParametersListNode();
 
     return new Node\Stmt\CallableTypeNode(
         name: $name,
@@ -24,7 +24,7 @@ CallableType -> {
   ;
 
 CallableParameters -> {
-    return new Node\Stmt\Callable\ParametersListNode($children);
+    return new Node\Stmt\Callable\CallableParametersListNode($children);
 }
   : CallableParameter() (::T_COMMA:: CallableParameter())* ::T_COMMA::?
   ;
@@ -91,7 +91,7 @@ VariadicCallableParameter -> {
   ;
 
 OutputCallableParameter -> {
-    $argument = new Node\Stmt\Callable\ParameterNode($children[0]);
+    $argument = new Node\Stmt\Callable\CallableParameterNode($children[0]);
 
     if (\count($children) !== 1) {
         $argument->output = true;

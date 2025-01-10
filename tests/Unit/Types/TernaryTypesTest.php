@@ -34,7 +34,7 @@ class TernaryTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(foo)
                 Identifier(foo)
-              Stmt\Callable\ParametersListNode
+              Stmt\Callable\CallableParametersListNode
             STMT];
 
         yield '$this' => ['$this', <<<'STMT'

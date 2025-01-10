@@ -433,12 +433,12 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(callable)
                 Identifier(callable)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(simple)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)
-                Stmt\Callable\ParameterNode(simple)
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)
@@ -450,12 +450,12 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(callable)
                 Identifier(callable)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(simple)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)
-                Stmt\Callable\ParameterNode(optional)
+                Stmt\Callable\CallableParameterNode(optional)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)
@@ -467,13 +467,13 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(callable)
                 Identifier(callable)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(simple)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)
                   Literal\VariableLiteralNode($foo)
-                Stmt\Callable\ParameterNode(simple)
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(string)
                       Identifier(string)
@@ -486,8 +486,8 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(callable)
                 Identifier(callable)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(output)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(output)
                   Stmt\NamedTypeNode
                     Name(string)
                       Identifier(string)
@@ -500,8 +500,8 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(callable)
                 Identifier(callable)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(variadic)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(variadic)
                   Stmt\NamedTypeNode
                     Name(float)
                       Identifier(float)
@@ -516,8 +516,8 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               Name(callable)
                 Identifier(callable)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(variadic)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(variadic)
                   Stmt\NamedTypeNode
                     Name(float)
                       Identifier(float)
@@ -531,12 +531,12 @@ final class PhpStanTypesTest extends TypesTestCase
             Stmt\CallableTypeNode
               FullQualifiedName(\Closure)
                 Identifier(Closure)
-              Stmt\Callable\ParametersListNode
-                Stmt\Callable\ParameterNode(simple)
+              Stmt\Callable\CallableParametersListNode
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)
-                Stmt\Callable\ParameterNode(simple)
+                Stmt\Callable\CallableParameterNode(simple)
                   Stmt\NamedTypeNode
                     Name(int)
                       Identifier(int)

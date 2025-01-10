@@ -9,7 +9,10 @@ use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Node\Stmt\Attribute\AttributeGroupsListNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
-final class ParameterNode extends Node implements \Stringable
+/**
+ * @deprecated Since 1.3, please use {@see CallableParameterNode} instead.
+ */
+class ParameterNode extends Node implements \Stringable
 {
     public function __construct(
         public ?TypeStatement $type = null,
