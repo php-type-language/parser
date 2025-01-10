@@ -35,17 +35,17 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
     {
         [$negative, $decimal] = self::split($value);
 
-        $converted = '-' . $decimal;
+        $inverse = '-' . $decimal;
 
         if ($negative) {
-            if ((string) \PHP_INT_MIN === '-' . $decimal) {
-                return new static(\PHP_INT_MIN, $value, $converted);
+            if ((string) \PHP_INT_MIN === $inverse) {
+                return new static(\PHP_INT_MIN, $value, $inverse);
             }
 
-            return new static((int) ('-' . $decimal), $value, $converted);
+            return new static((int) $inverse, $value, $inverse);
         }
 
-        return new static((int) $decimal, $value, $converted);
+        return new static((int) $decimal, $value, $decimal);
     }
 
     /**
