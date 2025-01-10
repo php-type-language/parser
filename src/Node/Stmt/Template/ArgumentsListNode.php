@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node\Stmt\Template;
 use TypeLang\Parser\Node\NodeList;
 
 /**
- * @template T of ArgumentNode
+ * @template T of ArgumentNode = ArgumentNode
  * @template-extends NodeList<T>
  *
  * @deprecated Since 1.1, please use {@see TemplateArgumentsListNode} instead.

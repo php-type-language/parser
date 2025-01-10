@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Node\Literal;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 /**
- * @template TValue of mixed
+ * @template TValue of mixed = mixed
  * @template-implements LiteralNodeInterface<TValue>
  */
 abstract class LiteralNode extends TypeStatement implements LiteralNodeInterface

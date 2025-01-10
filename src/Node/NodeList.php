@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node;
 
 /**
- * @template TNode of Node
+ * @template TNode of Node = Node
  * @template-implements \IteratorAggregate<array-key, TNode>
  * @template-implements \ArrayAccess<int<0, max>, TNode>
  */

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Literal;
 
 /**
- * @template TValue of mixed
+ * @template TValue of mixed = mixed
  */
 interface LiteralNodeInterface extends \Stringable
 {

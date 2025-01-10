@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Node\Stmt;
 
 /**
- * @template T of TypeStatement
+ * @template T of TypeStatement = TypeStatement
  */
 abstract class GenericTypeStmt extends TypeStatement
 {

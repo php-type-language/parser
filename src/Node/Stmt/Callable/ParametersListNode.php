@@ -7,7 +7,8 @@ namespace TypeLang\Parser\Node\Stmt\Callable;
 use TypeLang\Parser\Node\NodeList;
 
 /**
- * @template-extends NodeList<ParameterNode>
+ * @template T of ParameterNode = ParameterNode
+ * @template-extends NodeList<T>
  *
  * @deprecated Since 1.3, please use {@see CallableParametersListNode} instead.
  */
