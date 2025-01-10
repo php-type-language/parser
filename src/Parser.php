@@ -37,7 +37,7 @@ use TypeLang\Parser\Node\Stmt\TypeStatement;
  *     },
  *     skip: list<non-empty-string>,
  *     grammar: array<array-key, RuleInterface>,
- *     reducers: array<array-key, callable(Context, mixed): mixed>,
+ *     reducers: array<int<0, max>|non-empty-string, callable(Context, mixed): mixed>,
  *     transitions?: array<array-key, mixed>
  * }
  */

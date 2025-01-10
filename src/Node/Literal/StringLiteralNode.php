@@ -137,11 +137,8 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
      */
     private static function renderHexadecimalSequences(string $body): string
     {
-        $callee = static fn(array $matches): string
-            => \chr((int) \hexdec((string) $matches[1]))
-        ;
-
-        return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, $callee, $body) ?? $body;
+        return @\preg_replace_callback(self::HEX_SEQUENCE_PATTERN, static fn(array $matches): string
+            => \chr((int) \hexdec($matches[1])), $body) ?? $body;
     }
 
     /**
@@ -152,8 +149,8 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
      */
     private static function renderUtfSequences(string $body): string
     {
-        $callee = static function (array $matches): string {
-            $code = (int) \hexdec((string) $matches[1]);
+        return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, static function (array $matches): string {
+            $code = (int) \hexdec($matches[1]);
 
             // @phpstan-ignore-next-line : PHPStan false-positive mb_chr evaluation
             if (\function_exists('\\mb_chr') && ($result = \mb_chr($code)) !== false) {
@@ -179,9 +176,7 @@ class StringLiteralNode extends LiteralNode implements ParsableLiteralNodeInterf
                 . \chr(0x80 | $code >> 12 & 0x3F)
                 . \chr(0x80 | $code >> 6 & 0x3F)
                 . \chr(0x80 | $code & 0x3F);
-        };
-
-        return @\preg_replace_callback(self::UTF_SEQUENCE_PATTERN, $callee, $body) ?? $body;
+        }, $body) ?? $body;
     }
 
     public function getValue(): string

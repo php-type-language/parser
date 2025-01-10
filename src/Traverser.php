@@ -112,7 +112,7 @@ final class Traverser implements MutableTraverserInterface
     }
 
     /**
-     * @param iterable<array-key, mixed> $nodes
+     * @param iterable<mixed, mixed> $nodes
      */
     private function applyToIterable(iterable $nodes): void
     {
