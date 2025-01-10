@@ -44,7 +44,7 @@ trait InteractWithParser
         return \trim($visitor->getOutput());
     }
 
-    protected function expectParseError(string $message = null): void
+    protected function expectParseError(?string $message = null): void
     {
         $this->expectException(ParseException::class);
 

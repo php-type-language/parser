@@ -589,7 +589,7 @@ final class PhpStanTypesTest extends TypesTestCase
     }
 
     #[DataProvider('typesDataProvider')]
-    public function testTypes(string $type, string $expected = null): void
+    public function testTypes(string $type, ?string $expected = null): void
     {
         $this->assertTypeStatementSame($type, $expected ?? <<<AST
             Stmt\NamedTypeNode
