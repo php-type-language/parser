@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  psalm:
+  phpcs:
     name: Code Style
     runs-on: ${{ matrix.os }}
     strategy:
