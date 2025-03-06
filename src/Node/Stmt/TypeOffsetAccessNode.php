@@ -6,9 +6,9 @@ namespace TypeLang\Parser\Node\Stmt;
 
 /**
  * @template T of TypeStatement = TypeStatement
- * @template-extends GenericTypeStmt<T>
+ * @template-extends GenericTypeNode<T>
  */
-class TypeOffsetAccessNode extends GenericTypeStmt
+class TypeOffsetAccessNode extends GenericTypeNode
 {
     public function __construct(
         TypeStatement $type,

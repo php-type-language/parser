@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
-use JetBrains\PhpStorm\Language;
 use Phplrt\Contracts\Lexer\LexerInterface;
 use Phplrt\Contracts\Lexer\TokenInterface;
 use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
@@ -128,9 +127,39 @@ final class Parser implements ParserInterface
         $this->stringPool = new \WeakMap();
         $this->integerPool = new \WeakMap();
 
-        $this->builder = new Builder($grammar['reducers']);
+        $this->builder = $this->createBuilder($grammar['reducers']);
         $this->lexer = $this->createLexer($grammar);
         $this->parser = $this->createParser($this->lexer, $grammar);
+    }
+
+    /**
+     * @param array<int<0, max>|non-empty-string, callable(Context, mixed):mixed> $reducers
+     */
+    private function createBuilder(array $reducers): BuilderInterface
+    {
+        return new class($reducers) implements BuilderInterface {
+            /**
+             * @param array<int<0, max>|non-empty-string, callable(Context, mixed):mixed> $reducers
+             */
+            public function __construct(
+                private readonly array $reducers,
+            ) {}
+
+            public function build(Context $context, mixed $result): mixed
+            {
+                if (!isset($this->reducers[$context->state])) {
+                    return $result;
+                }
+
+                $result = ($this->reducers[$context->state])($context, $result);
+
+                if ($result instanceof Node && $result->offset === 0) {
+                    $result->offset = $context->lastProcessedToken->getOffset();
+                }
+
+                return $result;
+            }
+        };
     }
 
     /**
@@ -164,7 +193,7 @@ final class Parser implements ParserInterface
         );
     }
 
-    public function parse(#[Language('PHP')] mixed $source): TypeStatement
+    public function parse(mixed $source): TypeStatement
     {
         $this->lastProcessedTokenOffset = 0;
 

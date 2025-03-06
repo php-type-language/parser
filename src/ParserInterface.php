@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
-use JetBrains\PhpStorm\Language;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
@@ -19,5 +18,5 @@ interface ParserInterface
      * @throws ParserExceptionInterface in case of parsing exception occurs
      * @throws \Throwable in case of internal error occurs
      */
-    public function parse(#[Language('PHP')] mixed $source): TypeStatement;
+    public function parse(mixed $source): TypeStatement;
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<meta-storm xmlns="meta-storm">
+    <definitions>
+
+        <classConstructor class="\TypeLang\Parser\ParserInterface"
+                          argument="1">
+            <languageInjection language="InjectablePHP" />
+        </classConstructor>
+
+        <classConstructor class="\TypeLang\Parser\Parser"
+                          argument="1">
+            <languageInjection language="InjectablePHP" />
+        </classConstructor>
+
+        <classConstructor class="\TypeLang\Parser\InMemoryCachedParser"
+                          argument="1">
+            <languageInjection language="InjectablePHP" />
+        </classConstructor>
+
+    </definitions>
+</meta-storm>

@@ -6,6 +6,6 @@ namespace TypeLang\Parser\Node\Stmt;
 
 /**
  * @template T of TypeStatement = TypeStatement
- * @template-extends GenericTypeNode<TypeStatement>
+ * @template-extends GenericTypeStmt<T>
  */
-class NullableTypeNode extends GenericTypeNode {}
+abstract class GenericTypeNode extends GenericTypeStmt {}

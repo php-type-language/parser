@@ -14,6 +14,8 @@ use TypeLang\Parser\Node\Literal\NullLiteralNode;
 use TypeLang\Parser\Node\Literal\StringLiteralNode;
 use TypeLang\Parser\Node\Literal\VariableLiteralNode;
 use TypeLang\Parser\Node\Name;
+use TypeLang\Parser\Node\Stmt\Callable\CallableParameterNode;
+use TypeLang\Parser\Node\Stmt\Callable\CallableParametersListNode;
 use TypeLang\Parser\Node\Stmt\Callable\ParameterNode;
 use TypeLang\Parser\Node\Stmt\Callable\ParametersListNode;
 use TypeLang\Parser\Node\Stmt\CallableTypeNode;
@@ -33,6 +35,7 @@ use TypeLang\Parser\Node\Stmt\Shape\StringNamedFieldNode;
 use TypeLang\Parser\Node\Stmt\Template\TemplateArgumentNode;
 use TypeLang\Parser\Node\Stmt\Template\TemplateArgumentsListNode;
 use TypeLang\Parser\Node\Stmt\TernaryConditionNode;
+use TypeLang\Parser\Node\Stmt\TypeOffsetAccessNode;
 use TypeLang\Parser\Node\Stmt\TypesListNode;
 use TypeLang\Parser\Node\Stmt\UnionTypeNode;
 use TypeLang\Parser\Tests\Unit\TestCase;
@@ -266,13 +269,28 @@ abstract class SerializationTestCase extends TestCase
             ),
         ];
 
+        yield self::className(TypeOffsetAccessNode::class) => [
+            new TypeOffsetAccessNode(
+                type: new NamedTypeNode('array'),
+                access: new NamedTypeNode('mixed')
+            ),
+        ];
+
         // Statements :: Callable
         yield self::className(ParameterNode::class) => [$param = new ParameterNode(
             type: new NamedTypeNode(new Name('int')),
             name: new VariableLiteralNode('$test'),
-            output: true,
+            output: false,
             variadic: true,
-            optional: true,
+            optional: false,
+        )];
+
+        yield self::className(CallableParameterNode::class) => [$param = new CallableParameterNode(
+            type: new NamedTypeNode(new Name('int')),
+            name: new VariableLiteralNode('$test'),
+            output: false,
+            variadic: true,
+            optional: false,
         )];
 
         yield self::className(ParameterNode::class)
@@ -280,7 +298,16 @@ abstract class SerializationTestCase extends TestCase
                 type: new NamedTypeNode(new Name('int')),
             )];
 
+        yield self::className(CallableParameterNode::class)
+            . ' without name' => [$param = new CallableParameterNode(
+                type: new NamedTypeNode(new Name('int')),
+            )];
+
         yield self::className(ParametersListNode::class) => [$paramList = new ParametersListNode(
+            items: [$param],
+        )];
+
+        yield self::className(CallableParametersListNode::class) => [$paramList = new CallableParametersListNode(
             items: [$param],
         )];
 
