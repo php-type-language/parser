@@ -137,7 +137,7 @@ final class Parser implements ParserInterface
      */
     private function createBuilder(array $reducers): BuilderInterface
     {
-        return new class($reducers) implements BuilderInterface {
+        return new class ($reducers) implements BuilderInterface {
             /**
              * @param array<int<0, max>|non-empty-string, callable(Context, mixed):mixed> $reducers
              */
