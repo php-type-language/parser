@@ -50,7 +50,9 @@ CallableParameter
   : MaybeDefaultCallableParameter()
   ;
 
-// Parses "<param>" or "<param> =" expression
+// Expects expression:
+// - "<param>"
+// - "<param> ="
 MaybeDefaultCallableParameter -> {
     if (\count($children) === 1) {
         return $children[0];
@@ -63,15 +65,84 @@ MaybeDefaultCallableParameter -> {
     $children[0]->optional = true;
     return $children[0];
 }
-  : MaybeNamedCallableParameter() <T_ASSIGN>?
+  : ( MaybePrefixedVariadicTypedNamedCallableParameter()
+    | MaybeModifiersNamedCallableParameter() )
+    <T_ASSIGN>?
   ;
 
-// Parses "$variable" or "<param> $variable", or "<param>" expression
-MaybeNamedCallableParameter -> {
-    if ($children instanceof Node\Stmt\Callable\CallableParameterNode) {
+// Expects expression:
+// - "&...<var_param>"
+// - "...&<var_param>"
+// - "...<var_param>"
+// - "&<var_param>"
+// - "<var_param>"
+MaybeModifiersNamedCallableParameter -> {
+    if (!\is_array($children)) {
         return $children;
     }
 
+    $result = \end($children);
+
+    foreach ($children as $modifier) {
+        if ($modifier instanceof \Phplrt\Contracts\Lexer\TokenInterface) {
+            switch ($modifier->getName()) {
+                case 'T_AMP':
+                    $result->output = true;
+                    break;
+                case 'T_ELLIPSIS':
+                    if ($result->variadic) {
+                        throw SemanticException::fromVariadicRedefinition($offset);
+                    }
+                    $result->variadic = true;
+                    break;
+            }
+        }
+    }
+
+    return $result;
+}
+  : <T_AMP> <T_ELLIPSIS> MaybeSuffixedVariadicNamedCallableParameter()
+  | <T_ELLIPSIS> <T_AMP> MaybeSuffixedVariadicNamedCallableParameter()
+  | <T_ELLIPSIS> MaybeSuffixedVariadicNamedCallableParameter()
+  | <T_AMP> MaybeSuffixedVariadicNamedCallableParameter()
+  | MaybeSuffixedVariadicNamedCallableParameter()
+  ;
+
+// Expects expression:
+// - "$<var>..."
+// - "$<var>"
+MaybeSuffixedVariadicNamedCallableParameter -> {
+    $result = new Node\Stmt\Callable\CallableParameterNode(null, $children[0]);
+
+    if (\count($children) !== 1) {
+        $result->variadic = true;
+    }
+
+    return $result;
+}
+  : VariableLiteral()
+    <T_ELLIPSIS>?
+  ;
+
+MaybePrefixedVariadicTypedNamedCallableParameter -> {
+    if (\count($children) === 1) {
+        return $children[0];
+    }
+
+    if ($children[1]->variadic) {
+        throw SemanticException::fromVariadicRedefinition($offset);
+    }
+
+    $children[1]->variadic = true;
+    return $children[1];
+}
+  : <T_ELLIPSIS>? MaybeTypedNamedCallableParameter()
+  ;
+
+// Expects expression:
+// - "<typed_param> $<var>"
+// - "<typed_param>"
+MaybeTypedNamedCallableParameter -> {
     if (\count($children) === 1) {
         return $children[0];
     }
@@ -79,46 +150,48 @@ MaybeNamedCallableParameter -> {
     $children[0]->name = $children[1];
     return $children[0];
 }
-  : MaybeVariableCallableParameter()
-  | MaybeVariadicCallableParameter() VariableLiteral()?
+  : MaybeModifiersTypedCallableParameter()
+    VariableLiteral()?
   ;
 
-// Parses "$variable" expression
-MaybeVariableCallableParameter -> {
-    return new Node\Stmt\Callable\CallableParameterNode(null, $children[0]);
+// Expects expression:
+// - "<type>...&"
+// - "<type>&..."
+// - "<type>&"
+// - "<type>..."
+// - "<type>"
+MaybeModifiersTypedCallableParameter -> {
+    $result = \reset($children);
+
+    foreach ($children as $modifier) {
+        if ($modifier instanceof \Phplrt\Contracts\Lexer\TokenInterface) {
+            switch ($modifier->getName()) {
+                case 'T_AMP':
+                    $result->output = true;
+                    break;
+                case 'T_ELLIPSIS':
+                    if ($result->variadic) {
+                        throw SemanticException::fromVariadicRedefinition($offset);
+                    }
+                    $result->variadic = true;
+                    break;
+            }
+        }
+    }
+
+    return $result;
 }
-  : VariableLiteral()
+  : TypedCallableParameter()
+    ( <T_AMP> <T_ELLIPSIS>?
+    | <T_ELLIPSIS> <T_AMP>? )?
   ;
 
-// Parses "...<param>" or "<param>...", or "<param>" expression
-MaybeVariadicCallableParameter -> {
-    if (count($children) === 1) {
-        return $children[0];
-    }
-
-    if ($children[0] instanceof Node\Stmt\Callable\ParameterNode) {
-        $children[0]->variadic = true;
-        return $children[0];
-    }
-
-    $children[1]->variadic = true;
-    return $children[1];
+// Expects expression:
+// - "<type>"
+TypedCallableParameter -> {
+    return new Node\Stmt\Callable\CallableParameterNode($children[0]);
 }
-  : <T_ELLIPSIS> MaybeOutputCallableParameter()   // Prefixed variadic argument (Psalm format)
-  | MaybeOutputCallableParameter() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
-  ;
-
-// Parses "<param>&" or "<param>" expression
-MaybeOutputCallableParameter -> {
-    $argument = new Node\Stmt\Callable\CallableParameterNode($children[0]);
-
-    if (\count($children) !== 1) {
-        $argument->output = true;
-    }
-
-    return $argument;
-}
-  : Type() <T_AMP>?
+  : Type()
   ;
 
 CallableReturnType
