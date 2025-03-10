@@ -101,27 +101,19 @@ MaybeModifiersNamedCallableParameter -> {
 
     return $result;
 }
-  : <T_AMP> <T_ELLIPSIS> MaybeSuffixedVariadicNamedCallableParameter()
-  | <T_ELLIPSIS> <T_AMP> MaybeSuffixedVariadicNamedCallableParameter()
-  | <T_ELLIPSIS> MaybeSuffixedVariadicNamedCallableParameter()
-  | <T_AMP> MaybeSuffixedVariadicNamedCallableParameter()
-  | MaybeSuffixedVariadicNamedCallableParameter()
+  : <T_AMP> <T_ELLIPSIS> MaybeNamedCallableParameter()
+  | <T_ELLIPSIS> <T_AMP> MaybeNamedCallableParameter()
+  | <T_ELLIPSIS> MaybeNamedCallableParameter()
+  | <T_AMP> MaybeNamedCallableParameter()
+  | MaybeNamedCallableParameter()
   ;
 
 // Expects expression:
-// - "$<var>..."
 // - "$<var>"
-MaybeSuffixedVariadicNamedCallableParameter -> {
-    $result = new Node\Stmt\Callable\CallableParameterNode(null, $children[0]);
-
-    if (\count($children) !== 1) {
-        $result->variadic = true;
-    }
-
-    return $result;
+MaybeNamedCallableParameter -> {
+    return new Node\Stmt\Callable\CallableParameterNode(null, $children[0]);
 }
   : VariableLiteral()
-    <T_ELLIPSIS>?
   ;
 
 MaybePrefixedVariadicTypedNamedCallableParameter -> {
