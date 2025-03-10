@@ -43,11 +43,16 @@ CallableParameter -> {
     return $result;
 }
   : AttributeGroupsList()?
-    OptionalCallableParameter()
+    CallableParameter()
   ;
 
-OptionalCallableParameter -> {
-    if (!isset($children[1])) {
+CallableParameter
+  : MaybeDefaultCallableParameter()
+  ;
+
+// Parses "<param>" or "<param> =" expression
+MaybeDefaultCallableParameter -> {
+    if (\count($children) === 1) {
         return $children[0];
     }
 
@@ -58,23 +63,36 @@ OptionalCallableParameter -> {
     $children[0]->optional = true;
     return $children[0];
 }
-  : NamedCallableParameter() <T_ASSIGN>?
+  : MaybeNamedCallableParameter() <T_ASSIGN>?
   ;
 
-NamedCallableParameter -> {
-    if (\count($children) === 1) {
+// Parses "$variable" or "<param> $variable", or "<param>" expression
+MaybeNamedCallableParameter -> {
+    if ($children instanceof Node\Stmt\Callable\CallableParameterNode) {
+        return $children;
+    }
 
+    if (\count($children) === 1) {
         return $children[0];
     }
 
     $children[0]->name = $children[1];
     return $children[0];
 }
-  : VariadicCallableParameter() VariableLiteral()?
+  : MaybeVariableCallableParameter()
+  | MaybeVariadicCallableParameter() VariableLiteral()?
   ;
 
-VariadicCallableParameter -> {
-    if (!isset($children[1])) {
+// Parses "$variable" expression
+MaybeVariableCallableParameter -> {
+    return new Node\Stmt\Callable\CallableParameterNode(null, $children[0]);
+}
+  : VariableLiteral()
+  ;
+
+// Parses "...<param>" or "<param>...", or "<param>" expression
+MaybeVariadicCallableParameter -> {
+    if (count($children) === 1) {
         return $children[0];
     }
 
@@ -86,11 +104,12 @@ VariadicCallableParameter -> {
     $children[1]->variadic = true;
     return $children[1];
 }
-  : <T_ELLIPSIS> OutputCallableParameter()   // Prefixed variadic argument (Psalm format)
-  | OutputCallableParameter() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
+  : <T_ELLIPSIS> MaybeOutputCallableParameter()   // Prefixed variadic argument (Psalm format)
+  | MaybeOutputCallableParameter() <T_ELLIPSIS>?  // Suffixed variadic argument (PhpStan + Psalm)
   ;
 
-OutputCallableParameter -> {
+// Parses "<param>&" or "<param>" expression
+MaybeOutputCallableParameter -> {
     $argument = new Node\Stmt\Callable\CallableParameterNode($children[0]);
 
     if (\count($children) !== 1) {
