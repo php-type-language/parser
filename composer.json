@@ -26,7 +26,8 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^10.5|^11.0|^12.0",
-        "symfony/var-dumper": "^6.4|^7.0"
+        "symfony/var-dumper": "^6.4|^7.0",
+        "type-lang/printer": "^1.3"
     },
     "autoload-dev": {
         "psr-4": {

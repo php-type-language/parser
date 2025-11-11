@@ -207,7 +207,7 @@ return [
         new \Phplrt\Parser\Grammar\Concatenation([133]),
         new \Phplrt\Parser\Grammar\Optional(54),
         new \Phplrt\Parser\Grammar\Alternation([127, 128]),
-        new \Phplrt\Parser\Grammar\Alternation([3, 23, 21]),
+        new \Phplrt\Parser\Grammar\Alternation([18, 19, 3, 23, 21]),
         new \Phplrt\Parser\Grammar\Lexeme('T_QMARK', true),
         new \Phplrt\Parser\Grammar\Concatenation([59]),
         new \Phplrt\Parser\Grammar\Optional(132),
@@ -558,7 +558,7 @@ return [
 
             foreach ($children as $field) {
                 if ($field instanceof Node\Stmt\Shape\ExplicitFieldNode) {
-                    $key = $field->getKey();
+                    $key = $field->getHashString();
 
                     if (\in_array($key, $explicit, true)) {
                         throw SemanticException::fromShapeFieldDuplication($key, $field->offset);
@@ -632,6 +632,10 @@ return [
                     => new Node\Stmt\Shape\NumericFieldNode($name, $value, $optional),
                 $name instanceof Node\Literal\StringLiteralNode
                     => new Node\Stmt\Shape\StringNamedFieldNode($name, $value, $optional),
+                $name instanceof Node\Stmt\ClassConstMaskNode
+                    => new Node\Stmt\Shape\ClassConstMaskFieldNode($name, $value, $optional),
+                $name instanceof Node\Stmt\ConstMaskNode
+                    => new Node\Stmt\Shape\ConstMaskFieldNode($name, $value, $optional),
                 default => new Node\Stmt\Shape\NamedFieldNode($name, $value, $optional),
             };
         },

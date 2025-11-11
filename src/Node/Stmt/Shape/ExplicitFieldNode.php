@@ -6,5 +6,16 @@ namespace TypeLang\Parser\Node\Stmt\Shape;
 
 abstract class ExplicitFieldNode extends FieldNode
 {
-    abstract public function getKey(): int|string;
+    /**
+     * @deprecated Please use {@see getHashString()} instead
+     */
+    public function getKey(): int|string
+    {
+        return $this->getHashString();
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    abstract public function getHashString(): string;
 }

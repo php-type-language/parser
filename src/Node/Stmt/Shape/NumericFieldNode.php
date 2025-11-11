@@ -23,4 +23,9 @@ final class NumericFieldNode extends ExplicitFieldNode
     {
         return $this->key->getValue();
     }
+
+    public function getHashString(): string
+    {
+        return \hash('xxh3', self::class . ':' . $this->key->getRawValue());
+    }
 }

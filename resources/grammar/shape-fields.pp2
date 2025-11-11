@@ -43,7 +43,7 @@ ShapeFieldsList -> {
 
     foreach ($children as $field) {
         if ($field instanceof Node\Stmt\Shape\ExplicitFieldNode) {
-            $key = $field->getKey();
+            $key = $field->getHashString();
 
             if (\in_array($key, $explicit, true)) {
                 throw SemanticException::fromShapeFieldDuplication($key, $field->offset);
@@ -97,6 +97,10 @@ ExplicitField -> {
             => new Node\Stmt\Shape\NumericFieldNode($name, $value, $optional),
         $name instanceof Node\Literal\StringLiteralNode
             => new Node\Stmt\Shape\StringNamedFieldNode($name, $value, $optional),
+        $name instanceof Node\Stmt\ClassConstMaskNode
+            => new Node\Stmt\Shape\ClassConstMaskFieldNode($name, $value, $optional),
+        $name instanceof Node\Stmt\ConstMaskNode
+            => new Node\Stmt\Shape\ConstMaskFieldNode($name, $value, $optional),
         default => new Node\Stmt\Shape\NamedFieldNode($name, $value, $optional),
     };
 }
@@ -110,7 +114,9 @@ ImplicitField -> {
   ;
 
 ShapeKey
-  : Identifier()
+  : ConstMaskLiteral()
+  | ClassConstLiteral()
+  | Identifier()
   | IntLiteral()
   | StringLiteral()
   ;
