@@ -185,6 +185,18 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
     }
 
     /**
+     * Convert name to unqualified name instance.
+     */
+    public function toUnqualified(): self
+    {
+        if ($this instanceof FullQualifiedName) {
+            return new self($this->parts);
+        }
+
+        return clone $this;
+    }
+
+    /**
      * @return non-empty-list<Identifier>
      */
     public function getParts(): array
@@ -243,6 +255,16 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
      */
     public function toString(): string
     {
+        return $this->toUnqualifiedString();
+    }
+
+    /**
+     * Returns name as unqualified (without the initial `\\`) string.
+     *
+     * @return non-empty-string
+     */
+    public function toUnqualifiedString(): string
+    {
         return \implode(self::NAMESPACE_DELIMITER, $this->getPartsAsString());
     }
 
@@ -254,6 +276,16 @@ class Name extends Node implements \IteratorAggregate, \Countable, \Stringable
     public function toLowerString(): string
     {
         return \strtolower($this->toString());
+    }
+
+    /**
+     * Returns lowercased name as unqualified (without the initial `\\`) string.
+     *
+     * @return non-empty-string
+     */
+    public function toUnqualifiedLowerString(): string
+    {
+        return \strtolower($this->toUnqualifiedString());
     }
 
     /**
