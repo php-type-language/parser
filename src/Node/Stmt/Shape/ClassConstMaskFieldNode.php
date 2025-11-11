@@ -6,6 +6,7 @@ namespace TypeLang\Parser\Node\Stmt\Shape;
 
 use TypeLang\Parser\Node\Stmt\Attribute\AttributeGroupsListNode;
 use TypeLang\Parser\Node\Stmt\ClassConstMaskNode;
+use TypeLang\Parser\Node\Stmt\ClassConstNode;
 use TypeLang\Parser\Node\Stmt\TypeStatement;
 
 final class ClassConstMaskFieldNode extends ExplicitFieldNode
@@ -19,12 +20,15 @@ final class ClassConstMaskFieldNode extends ExplicitFieldNode
         parent::__construct($of, $optional, $attributes);
     }
 
-    public function getHashString(): string
+    public function getKey(): int|string
     {
-        $key = $this->key::class . ':'
-            . $this->key->class->toString()
+        $result = $this->key->class->toString()
             . '::' . $this->key->constant?->toString();
 
-        return \hash('xxh3', $key);
+        if ($this->key instanceof ClassConstNode) {
+            return $result;
+        }
+
+        return $result . '*';
     }
 }

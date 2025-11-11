@@ -19,11 +19,8 @@ final class ConstMaskFieldNode extends ExplicitFieldNode
         parent::__construct($of, $optional, $attributes);
     }
 
-    public function getHashString(): string
+    public function getKey(): string
     {
-        $key = $this->key::class . ':'
-            . $this->key->name->toString();
-
-        return \hash('xxh3', $key);
+        return (string) $this->key;
     }
 }

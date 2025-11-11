@@ -558,7 +558,7 @@ return [
 
             foreach ($children as $field) {
                 if ($field instanceof Node\Stmt\Shape\ExplicitFieldNode) {
-                    $key = $field->getHashString();
+                    $key = $field->getKey();
 
                     if (\in_array($key, $explicit, true)) {
                         throw SemanticException::fromShapeFieldDuplication($key, $field->offset);

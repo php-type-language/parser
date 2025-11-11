@@ -19,8 +19,8 @@ final class StringNamedFieldNode extends ExplicitFieldNode
         parent::__construct($of, $optional, $attributes);
     }
 
-    public function getHashString(): string
+    public function getKey(): string
     {
-        return \hash('xxh3', self::class . ':' . $this->key->getValue());
+        return $this->key->getValue();
     }
 }
