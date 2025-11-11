@@ -22,6 +22,27 @@ abstract class NodeList extends Node implements
     ) {}
 
     /**
+     * Returns the ordinal number (position) of an element {@see TNode} in
+     * a node list, starting with index 0.
+     *
+     * Returns {@see null} if the element {@see TNode} does not belong
+     * to the node list.
+     *
+     * @param TNode $node
+     * @return int<0, max>|null
+     */
+    public function findIndex(object $node): ?int
+    {
+        $index = \array_search($node, $this->items, true);
+
+        if (\is_int($index)) {
+            return $index;
+        }
+
+        return null;
+    }
+
+    /**
      * @return TNode|null
      */
     public function first(): ?Node
