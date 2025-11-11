@@ -29,6 +29,7 @@ abstract class NodeList extends Node implements
      * to the node list.
      *
      * @param TNode $node
+     *
      * @return int<0, max>|null
      */
     public function findIndex(object $node): ?int

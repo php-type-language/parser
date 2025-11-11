@@ -5,8 +5,8 @@ $files = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PER-CS2.0' => true,
-        '@PER-CS2.0:risky' => true,
+        '@PER-CS3x0' => true,
+        '@PER-CS3x0:risky' => true,
         'strict_param' => true,
         'align_multiline_comment' => true,
         'array_syntax' => [
