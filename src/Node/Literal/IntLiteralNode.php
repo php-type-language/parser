@@ -40,6 +40,7 @@ class IntLiteralNode extends LiteralNode implements ParsableLiteralNodeInterface
                 return new static(\PHP_INT_MIN, $value, $inverse);
             }
 
+            /** @phpstan-ignore-next-line : An "$inverse" variable contain numeric-string */
             return new static((int) $inverse, $value, $inverse);
         }
 

@@ -20,7 +20,7 @@ final class ClassConstMaskFieldNode extends ExplicitFieldNode
         parent::__construct($of, $optional, $attributes);
     }
 
-    public function getKey(): int|string
+    public function getKey(): string
     {
         $result = $this->key->class->toString()
             . '::' . $this->key->constant?->toString();

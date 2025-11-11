@@ -46,6 +46,7 @@ class VariableLiteralNode extends LiteralNode implements ParsableLiteralNodeInte
 
     public function getValue(): string
     {
+        /** @var non-empty-string */
         return $this->value;
     }
 }
