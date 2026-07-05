@@ -26,7 +26,9 @@ CallableType -> {
 CallableParameters -> {
     return new Type\Callable\CallableParameterListNode($children);
 }
-  : CallableParameter() (::T_COMMA:: CallableParameter())* ::T_COMMA::?
+  : CallableParameter()
+    ( ::T_COMMA:: CallableParameter() )*
+    ::T_COMMA::?
   ;
 
 CallableParameter -> {
@@ -43,11 +45,7 @@ CallableParameter -> {
     return $result;
 }
   : AttributeGroupsList()?
-    CallableParameter()
-  ;
-
-CallableParameter
-  : MaybeDefaultCallableParameter()
+    MaybeDefaultCallableParameter()
   ;
 
 // Expects expression:

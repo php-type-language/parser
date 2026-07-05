@@ -139,14 +139,14 @@ return [
         new Phplrt\Parser\Grammar\Lexeme('T_PARENTHESIS_CLOSE', false),
         new Phplrt\Parser\Grammar\Optional(61),
         new Phplrt\Parser\Grammar\Concatenation([2, 62, 63, 64, 65]),
-        new Phplrt\Parser\Grammar\Concatenation([74]),
+        new Phplrt\Parser\Grammar\Concatenation([74, 73]),
         new Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
         new Phplrt\Parser\Grammar\Concatenation([68, 67]),
         new Phplrt\Parser\Grammar\Lexeme('T_COMMA', false),
         new Phplrt\Parser\Grammar\Repetition(69, 0, INF),
         new Phplrt\Parser\Grammar\Optional(70),
-        new Phplrt\Parser\Grammar\Optional(54),
         new Phplrt\Parser\Grammar\Concatenation([78, 79]),
+        new Phplrt\Parser\Grammar\Optional(54),
         new Phplrt\Parser\Grammar\Concatenation([93, 92]),
         new Phplrt\Parser\Grammar\Alternation([83, 86, 88, 90, 80]),
         new Phplrt\Parser\Grammar\Lexeme('T_ASSIGN', true),
@@ -450,7 +450,7 @@ return [
 
             return $result;
         },
-        74 => static function (Phplrt\Parser\Context $ctx, $children) {
+        73 => static function (Phplrt\Parser\Context $ctx, $children) {
             // The "$offset" variable is an auto-generated
             $offset = $ctx->lastProcessedToken->getOffset();
 

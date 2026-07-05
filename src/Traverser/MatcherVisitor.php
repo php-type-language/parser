@@ -8,10 +8,10 @@ use TypeLang\Type\Node;
 
 class MatcherVisitor extends Visitor
 {
-    public private(set) ?Node $found = null;
+    public private(set) ?Node $node = null;
 
     public bool $isFound {
-        get => $this->found !== null;
+        get => $this->node !== null;
     }
 
     private bool $shouldContinue = false;
@@ -27,18 +27,18 @@ class MatcherVisitor extends Visitor
 
     public function before(): void
     {
-        $this->found = null;
+        $this->node = null;
     }
 
     public function enter(Node $node): ?Command
     {
-        if ($this->found !== null || $this->shouldContinue) {
+        if ($this->node !== null || $this->shouldContinue) {
             return Command::SkipChildren;
         }
 
         if (($this->matcher)($node)) {
             $this->shouldContinue = true;
-            $this->found = $node;
+            $this->node = $node;
 
             return Command::SkipChildren;
         }
