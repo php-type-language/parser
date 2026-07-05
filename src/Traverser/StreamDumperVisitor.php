@@ -6,6 +6,8 @@ namespace TypeLang\Parser\Traverser;
 
 final class StreamDumperVisitor extends DumperVisitor
 {
+    public const string DEFAULT_OUTPUT_STREAM = 'php://stderr';
+
     /**
      * @var resource
      */
@@ -13,7 +15,7 @@ final class StreamDumperVisitor extends DumperVisitor
 
     public function __construct(
         bool $simplifyNames = true,
-        string $stream = 'php://stderr',
+        string $stream = self::DEFAULT_OUTPUT_STREAM,
     ) {
         parent::__construct($simplifyNames);
 

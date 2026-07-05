@@ -5,19 +5,19 @@ Name
   ;
 
 FullQualifiedName -> {
-    return new Node\FullQualifiedName($children);
+    return new Type\Name($children, true);
 }
   : ::T_NS_DELIMITER:: Identifier() (::T_NS_DELIMITER:: Identifier())*
   ;
 
 RelativeName -> {
-    return new Node\Name($children);
+    return new Type\Name($children, false);
 }
   : Identifier() (::T_NS_DELIMITER:: Identifier())*
   ;
 
 Identifier -> {
-    return new Node\Identifier($children->getValue());
+    return Type\Identifier::createFromString($children->getValue());
 }
   : <T_NAME>
   | <T_NAME_WITH_SPACE>
@@ -27,7 +27,7 @@ Identifier -> {
   ;
 
 IdentifierWithExtraSpace -> {
-    return new Node\Identifier($children->getValue());
+    return Type\Identifier::createFromString($children->getValue());
 }
     : <T_NAME_WITH_SPACE>
     ;

@@ -1,10 +1,10 @@
 
 TemplateArguments -> {
-    if ($this->generics === false) {
+    if ($this->features->generics === false) {
         throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
     }
 
-    return new Node\Stmt\Template\TemplateArgumentsListNode($children);
+    return new Type\Template\TemplateArgumentListNode($children);
 }
   : ::T_ANGLE_BRACKET_OPEN::
       TemplateArgument() (
@@ -16,8 +16,8 @@ TemplateArguments -> {
 TemplateArgument -> {
     $hint = $attributes = null;
 
-    if (\reset($children) instanceof Node\Stmt\Attribute\AttributeGroupsListNode) {
-        if ($this->attributes === false) {
+    if (\reset($children) instanceof Type\Attribute\AttributeGroupListNode) {
+        if ($this->features->attributes === false) {
             throw FeatureNotAllowedException::fromFeature('template argument attributes', $offset);
         }
 
@@ -27,14 +27,14 @@ TemplateArgument -> {
     $type = \array_pop($children);
 
     if (\reset($children) !== false) {
-        if ($this->hints === false) {
+        if ($this->features->hints === false) {
             throw FeatureNotAllowedException::fromFeature('template argument hints', $offset);
         }
 
         $hint = \reset($children);
     }
 
-    return new Node\Stmt\Template\TemplateArgumentNode(
+    return new Type\Template\TemplateArgumentNode(
         $type,
         $hint,
         $attributes,

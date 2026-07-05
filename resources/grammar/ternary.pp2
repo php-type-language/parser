@@ -6,32 +6,32 @@ TernaryExpressionOrLogicalType -> {
         return $children[0];
     }
 
-    if ($this->conditional === false) {
+    if ($this->features->conditions === false) {
         throw FeatureNotAllowedException::fromFeature('conditional expressions', $offset);
     }
 
     $condition = match ($children[1]->getName()) {
-        'T_EQ' => new Node\Stmt\Condition\EqualConditionNode(
+        'T_EQ' => new Type\Condition\EqualConditionNode(
             $children[0],
             $children[2],
         ),
-        'T_NEQ' => new Node\Stmt\Condition\NotEqualConditionNode(
+        'T_NEQ' => new Type\Condition\NotEqualConditionNode(
             $children[0],
             $children[2],
         ),
-        'T_GTE' => new Node\Stmt\Condition\GreaterOrEqualThanConditionNode(
+        'T_GTE' => new Type\Condition\GreaterThanOrEqualConditionNode(
             $children[0],
             $children[2],
         ),
-        'T_ANGLE_BRACKET_CLOSE' => new Node\Stmt\Condition\GreaterThanConditionNode(
+        'T_ANGLE_BRACKET_CLOSE' => new Type\Condition\GreaterThanConditionNode(
             $children[0],
             $children[2],
         ),
-        'T_LTE' => new Node\Stmt\Condition\LessOrEqualThanConditionNode(
+        'T_LTE' => new Type\Condition\LessThanOrEqualConditionNode(
             $children[0],
             $children[2],
         ),
-        'T_ANGLE_BRACKET_OPEN' => new Node\Stmt\Condition\LessThanConditionNode(
+        'T_ANGLE_BRACKET_OPEN' => new Type\Condition\LessThanConditionNode(
             $children[0],
             $children[2],
         ),
@@ -41,7 +41,7 @@ TernaryExpressionOrLogicalType -> {
         ),
     };
 
-    return new Node\Stmt\TernaryConditionNode(
+    return new Type\TernaryExpressionNode(
         $condition,
         $children[3],
         $children[4],

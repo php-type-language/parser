@@ -34,7 +34,7 @@ if (!class_exists(Compiler::class)) {
 $grammar = (new Compiler())
     ->load(new SplFileInfo(__DIR__ . '/../resources/grammar.pp2'))
     ->build()
-        ->withClassReference('TypeLang\\Parser\\Node')
+        ->withClassReference('TypeLang\\Type')
         ->withClassReference('TypeLang\\Parser\\Exception')
         ->withClassReference('TypeLang\\Parser\\Exception\\SemanticException')
         ->withClassReference('TypeLang\\Parser\\Exception\\FeatureNotAllowedException')

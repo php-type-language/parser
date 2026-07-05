@@ -5,7 +5,7 @@
 ---
 
 <p align="center">
-    <a href="https://packagist.org/packages/type-lang/parser"><img src="https://poser.pugx.org/type-lang/parser/require/php?style=for-the-badge" alt="PHP 8.1+"></a>
+    <a href="https://packagist.org/packages/type-lang/parser"><img src="https://poser.pugx.org/type-lang/parser/require/php?style=for-the-badge" alt="PHP 8.4+"></a>
     <a href="https://packagist.org/packages/type-lang/parser"><img src="https://poser.pugx.org/type-lang/parser/version?style=for-the-badge" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/type-lang/parser"><img src="https://poser.pugx.org/type-lang/parser/v/unstable?style=for-the-badge" alt="Latest Unstable Version"></a>
     <a href="https://raw.githubusercontent.com/php-type-language/parser/blob/master/LICENSE"><img src="https://poser.pugx.org/type-lang/parser/license?style=for-the-badge" alt="License MIT"></a>
@@ -36,7 +36,7 @@ composer require type-lang/parser
 ## Quick Start
 
 ```php
-$parser = new \TypeLang\Parser\Parser();
+$parser = new \TypeLang\Parser\TypeParser();
 
 $type = $parser->parse(<<<'PHP'
     array{
@@ -51,45 +51,45 @@ var_dump($type);
 Expected Output:
 
 ```php
-TypeLang\Parser\Node\Stmt\NamedTypeNode {
+TypeLang\Type\NamedTypeNode {
   +offset: 0
-  +name: TypeLang\Parser\Node\Name {
+  +name: TypeLang\Type\Name {
     +offset: 0
     -parts: array:1 [
-      0 => TypeLang\Parser\Node\Identifier {
+      0 => TypeLang\Type\Identifier {
         +offset: 0
         +value: "array"
       }
     ]
   }
   +arguments: null
-  +fields: TypeLang\Parser\Node\Stmt\Shape\FieldsListNode {
+  +fields: TypeLang\Type\Shape\FieldsListNode {
     +offset: 11
     +items: array:1 [
-      0 => TypeLang\Parser\Node\Stmt\Shape\NamedFieldNode {
+      0 => TypeLang\Type\Shape\NamedFieldNode {
         +offset: 11
-        +type: TypeLang\Parser\Node\Stmt\CallableTypeNode {
+        +type: TypeLang\Type\CallableTypeNode {
           +offset: 16
-          +name: TypeLang\Parser\Node\Name {
+          +name: TypeLang\Type\Name {
             +offset: 16
             -parts: array:1 [
-              0 => TypeLang\Parser\Node\Identifier {
+              0 => TypeLang\Type\Identifier {
                 +offset: 16
                 +value: "callable"
               }
             ]
           }
-          +parameters: TypeLang\Parser\Node\Stmt\Callable\ParametersListNode {
+          +parameters: TypeLang\Type\Callable\ParametersListNode {
             +offset: 25
             +items: array:2 [
-              0 => TypeLang\Parser\Node\Stmt\Callable\ParameterNode {
+              0 => TypeLang\Type\Callable\ParameterNode {
                 +offset: 25
-                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
+                +type: TypeLang\Type\NamedTypeNode {
                   +offset: 25
-                  +name: TypeLang\Parser\Node\Name {
+                  +name: TypeLang\Type\Name {
                     +offset: 25
                     -parts: array:1 [
-                      0 => TypeLang\Parser\Node\Identifier {
+                      0 => TypeLang\Type\Identifier {
                         +offset: 25
                         +value: "Example"
                       }
@@ -103,14 +103,14 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {
                 +variadic: false
                 +optional: false
               }
-              1 => TypeLang\Parser\Node\Stmt\Callable\ParameterNode {
+              1 => TypeLang\Type\Callable\ParameterNode {
                 +offset: 34
-                +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
+                +type: TypeLang\Type\NamedTypeNode {
                   +offset: 34
-                  +name: TypeLang\Parser\Node\Name {
+                  +name: TypeLang\Type\Name {
                     +offset: 34
                     -parts: array:1 [
-                      0 => TypeLang\Parser\Node\Identifier {
+                      0 => TypeLang\Type\Identifier {
                         +offset: 34
                         +value: "int"
                       }
@@ -126,12 +126,12 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {
               }
             ]
           }
-          +type: TypeLang\Parser\Node\Stmt\NamedTypeNode {
+          +type: TypeLang\Type\NamedTypeNode {
             +offset: 40
-            +name: TypeLang\Parser\Node\Name {
+            +name: TypeLang\Type\Name {
               +offset: 40
               -parts: array:1 [
-                0 => TypeLang\Parser\Node\Identifier {
+                0 => TypeLang\Type\Identifier {
                   +offset: 40
                   +value: "mixed"
                 }
@@ -142,7 +142,7 @@ TypeLang\Parser\Node\Stmt\NamedTypeNode {
           }
         }
         +optional: false
-        +key: TypeLang\Parser\Node\Identifier {
+        +key: TypeLang\Type\Identifier {
           +offset: 11
           +value: "key"
         }

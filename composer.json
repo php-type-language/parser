@@ -9,7 +9,8 @@
         "issues": "https://github.com/php-type-language/parser/issues"
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.4",
+        "type-lang/types": "^2.0",
         "phplrt/lexer": "^3.7",
         "phplrt/parser": "^3.7",
         "phplrt/source": "^3.7"
@@ -20,14 +21,10 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.89",
         "jetbrains/phpstorm-attributes": "^1.2",
         "phplrt/compiler": "^3.7",
-        "phpstan/phpstan": "^2.1",
-        "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^10.5|^11.0|^12.0",
-        "symfony/var-dumper": "^6.4|^7.0",
-        "type-lang/printer": "^1.3"
+        "phpstan/phpstan": "^2.2",
+        "phpunit/phpunit": "^12.0|^13.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -36,33 +33,17 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev",
-            "dev-main": "1.x-dev"
+            "dev-master": "2.x-dev",
+            "dev-main": "2.x-dev"
         }
     },
     "config": {
         "sort-packages": true,
         "platform-check": true,
         "bin-compat": "full",
-        "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
         }
-    },
-    "scripts": {
-        "build": "@php bin/build",
-
-        "test": ["@test:unit", "@test:functional"],
-        "test:unit": "phpunit --testdox --testsuite=unit",
-        "test:functional": "phpunit --testsuite=functional",
-
-        "linter": "@linter:check",
-        "linter:check": "phpstan analyse --configuration phpstan.neon",
-        "linter:baseline": "phpstan analyse --configuration phpstan.neon --generate-baseline",
-
-        "phpcs": "@phpcs:check",
-        "phpcs:check": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --dry-run --verbose --diff",
-        "phpcs:fix": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --verbose --diff"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

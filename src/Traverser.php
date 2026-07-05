@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
-use TypeLang\Parser\Node\Node;
 use TypeLang\Parser\Traverser\VisitorInterface;
+use TypeLang\Type\Node;
 
 final class Traverser implements MutableTraverserInterface
 {
@@ -26,10 +26,8 @@ final class Traverser implements MutableTraverserInterface
 
     /**
      * @template TArgVisitor of VisitorInterface
-     *
      * @param TArgVisitor $visitor
      * @param iterable<array-key, Node> $nodes
-     *
      * @return TArgVisitor
      */
     public static function through(VisitorInterface $visitor, iterable $nodes): VisitorInterface
@@ -89,7 +87,15 @@ final class Traverser implements MutableTraverserInterface
      */
     private function getProperties(Node $node): iterable
     {
-        return \get_object_vars($node);
+        $reflection = new \ReflectionObject($node);
+
+        foreach ($reflection->getProperties() as $property) {
+            if ($property->isStatic() || $property->hasHooks()) {
+                continue;
+            }
+
+            yield $property->getName() => $property->getValue($node);
+        }
     }
 
     private function applyToNode(Node $node): void

@@ -64,11 +64,11 @@ LogicalType
 
 UnionType -> {
     if (\count($children) === 2) {
-        if ($this->union === false) {
+        if ($this->features->unions === false) {
             throw FeatureNotAllowedException::fromFeature('union types', $offset);
         }
 
-        return new Node\Stmt\UnionTypeNode($children[0], $children[1]);
+        return new Type\UnionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -78,11 +78,11 @@ UnionType -> {
 
 IntersectionType -> {
     if (\count($children) === 2) {
-        if ($this->intersection === false) {
+        if ($this->features->intersections === false) {
             throw FeatureNotAllowedException::fromFeature('intersection types', $offset);
         }
 
-        return new Node\Stmt\IntersectionTypeNode($children[0], $children[1]);
+        return new Type\IntersectionTypeNode($children[0], $children[1]);
     }
 
     return $children;
@@ -110,7 +110,7 @@ UnaryType
 // stmt = ?Type
 PrefixedNullableType -> {
     if (\is_array($children)) {
-        return new Node\Stmt\NullableTypeNode($children[1]);
+        return new Type\NullableTypeNode($children[1]);
     }
 
     return $children;
@@ -126,19 +126,19 @@ TypesList -> {
         switch (true) {
             // In case of list type
             case $child === true:
-                if ($this->list === false) {
+                if ($this->features->lists === false) {
                     throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
                 }
 
-                $statement = new Node\Stmt\TypesListNode($statement);
+                $statement = new Type\TypesListNode($statement);
                 break;
             // In case of offset access type
-            case $child instanceof Node\Stmt\TypeStatement:
-                if ($this->offsets === false) {
+            case $child instanceof Type\TypeNode:
+                if ($this->features->offsets === false) {
                     throw FeatureNotAllowedException::fromFeature('type offsets', $offset);
                 }
 
-                $statement = new Node\Stmt\TypeOffsetAccessNode($statement, $child);
+                $statement = new Type\TypeOffsetAccessNode($statement, $child);
                 break;
             default:
                 throw new SemanticException($offset, \sprintf(

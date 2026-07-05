@@ -6,7 +6,7 @@ Literal
   ;
 
 RawLiteral -> {
-    if ($this->literals === false) {
+    if ($this->features->literals === false) {
         throw FeatureNotAllowedException::fromFeature('literal values', $offset);
     }
     return $children;
@@ -19,14 +19,14 @@ RawLiteral -> {
   ;
 
 VariableLiteral -> {
-    return Node\Literal\VariableLiteralNode::parse($token->getValue());
+    return Type\Literal\VariableLiteralNode::parse($token->getValue());
 }
   : <T_VARIABLE>
   | <T_THIS>
   ;
 
 ThisLiteral -> {
-    return Node\Literal\VariableLiteralNode::parse($token->getValue());
+    return Type\Literal\VariableLiteralNode::parse($token->getValue());
 }
   : <T_THIS>
   ;
@@ -37,19 +37,19 @@ StringLiteral -> { return $this->stringPool[$token] ??= $children; }
   ;
 
 DoubleQuotedStringLiteral -> {
-    return Node\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
+    return Type\Literal\StringLiteralNode::createFromDoubleQuotedString($token->getValue());
 }
   : <T_DQ_STRING_LITERAL>
   ;
 
 SingleQuotedStringLiteral -> {
-    return Node\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
+    return Type\Literal\StringLiteralNode::createFromSingleQuotedString($token->getValue());
 }
   : <T_SQ_STRING_LITERAL>
   ;
 
 FloatLiteral -> {
-    return Node\Literal\FloatLiteralNode::parse($token->getValue());
+    return Type\Literal\FloatLiteralNode::parse($token->getValue());
 }
   : <T_PFX_FLOAT_LITERAL>
   | <T_SFX_FLOAT_LITERAL>
@@ -57,7 +57,7 @@ FloatLiteral -> {
   ;
 
 IntLiteral -> {
-    return $this->integerPool[$token] ??= Node\Literal\IntLiteralNode::parse($token->getValue());
+    return $this->integerPool[$token] ??= Type\Literal\IntLiteralNode::parse($token->getValue());
 }
   : <T_BIN_INT_LITERAL>
   | <T_OCT_INT_LITERAL>
@@ -66,19 +66,19 @@ IntLiteral -> {
   ;
 
 BoolLiteral -> {
-    return Node\Literal\BoolLiteralNode::parse($token->getValue());
+    return Type\Literal\BoolLiteralNode::parse($token->getValue());
 }
   : <T_BOOL_LITERAL>
   ;
 
 NullLiteral -> {
-    return new Node\Literal\NullLiteralNode($children->getValue());
+    return new Type\Literal\NullLiteralNode($children->getValue());
 }
   : <T_NULL_LITERAL>
   ;
 
 ConstMaskLiteral -> {
-    return new Node\Stmt\ConstMaskNode($children[0]);
+    return new Type\ConstMaskNode($children[0]);
 }
   : Name() ::T_ASTERISK::
   ;
@@ -86,22 +86,22 @@ ConstMaskLiteral -> {
 ClassConstLiteral -> {
     // <ClassName> :: <ConstPrefix> "*"
     if (\count($children) === 3) {
-        return new Node\Stmt\ClassConstMaskNode(
+        return new Type\ClassConstMaskNode(
             $children[0],
             $children[1],
         );
     }
 
     // <ClassName> :: <ConstName>
-    if ($children[1] instanceof Node\Identifier) {
-        return new Node\Stmt\ClassConstNode(
+    if ($children[1] instanceof Type\Identifier) {
+        return new Type\ClassConstNode(
             $children[0],
             $children[1],
         );
     }
 
     // <ClassName> :: "*"
-    return new Node\Stmt\ClassConstMaskNode($children[0]);
+    return new Type\ClassConstMaskNode($children[0]);
 }
   : Name() ::T_DOUBLE_COLON::
     ( Identifier() <T_ASTERISK>

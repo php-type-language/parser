@@ -9,17 +9,17 @@ use Phplrt\Contracts\Source\SourceExceptionInterface;
 
 class ParseException extends \LogicException implements ParserExceptionInterface
 {
-    final public const ERROR_CODE_UNEXPECTED_TOKEN = 0x01;
+    final public const int ERROR_CODE_UNEXPECTED_TOKEN = 0x01;
 
-    final public const ERROR_CODE_UNRECOGNIZED_TOKEN = 0x02;
+    final public const int ERROR_CODE_UNRECOGNIZED_TOKEN = 0x02;
 
-    final public const ERROR_CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
+    final public const int ERROR_CODE_UNEXPECTED_SYNTAX_ERROR = 0x03;
 
-    final public const ERROR_CODE_INTERNAL_ERROR = 0x05;
+    final public const int ERROR_CODE_INTERNAL_ERROR = 0x05;
 
-    final public const ERROR_CODE_SEMANTIC_ERROR_BASE = 0x06;
+    final public const int ERROR_CODE_SEMANTIC_ERROR_BASE = 0x06;
 
-    protected const CODE_LAST = self::ERROR_CODE_SEMANTIC_ERROR_BASE;
+    protected const int CODE_LAST = self::ERROR_CODE_SEMANTIC_ERROR_BASE;
 
     final public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
     {
@@ -31,7 +31,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * unexpected source location.
      *
      * @param int<0, max> $offset
-     *
      * @throws SourceExceptionInterface
      */
     public static function fromUnexpectedToken(string $token, string $statement, int $offset): static
@@ -49,7 +48,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
      * This error occurs when unable to recognize tokens in source code.
      *
      * @param int<0, max> $offset
-     *
      * @throws SourceExceptionInterface
      */
     public static function fromUnrecognizedToken(string $token, string $statement, int $offset): static
@@ -65,7 +63,6 @@ class ParseException extends \LogicException implements ParserExceptionInterface
 
     /**
      * @param int<0, max> $offset
-     *
      * @throws SourceExceptionInterface
      */
     public static function fromUnrecognizedSyntaxError(string $statement, int $offset): static

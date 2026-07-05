@@ -2,15 +2,17 @@
 *.pp eol=lf linguist-language=EBNF
 *.pp2 eol=lf linguist-language=EBNF
 
+# GIT
 .editorconfig export-ignore
-.php-cs-fixer.php export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 
+# Tools
+.php-cs-fixer.php export-ignore
+phpstan.neon export-ignore
+
+# Tests + CI
 phpunit.xml export-ignore
-psalm.xml export-ignore
-rector.php export-ignore
 
 /.github export-ignore
-/example export-ignore
 /tests export-ignore

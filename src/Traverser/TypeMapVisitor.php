@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Traverser;
 
-use TypeLang\Parser\Node\Name;
-use TypeLang\Parser\Node\Node;
-use TypeLang\Parser\Node\Stmt\CallableTypeNode;
-use TypeLang\Parser\Node\Stmt\ClassConstMaskNode;
-use TypeLang\Parser\Node\Stmt\ConstMaskNode;
-use TypeLang\Parser\Node\Stmt\NamedTypeNode;
+use TypeLang\Type\CallableTypeNode;
+use TypeLang\Type\ClassConstMaskNode;
+use TypeLang\Type\ClassConstNode;
+use TypeLang\Type\ConstMaskNode;
+use TypeLang\Type\Name;
+use TypeLang\Type\NamedTypeNode;
+use TypeLang\Type\Node;
 
 final class TypeMapVisitor extends Visitor
 {
@@ -41,6 +42,7 @@ final class TypeMapVisitor extends Visitor
 
                 return null;
 
+            case $node instanceof ClassConstNode:
             case $node instanceof ClassConstMaskNode:
                 $node->class = $this->map($node->class);
 

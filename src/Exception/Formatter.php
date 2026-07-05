@@ -41,7 +41,6 @@ final class Formatter
 
     /**
      * @param int<0, max> $offset
-     *
      * @return non-empty-string
      */
     public static function suffix(string $statement, int $offset): string

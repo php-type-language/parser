@@ -1,12 +1,12 @@
 
 AttributeGroupsList -> {
-    return new Node\Stmt\Attribute\AttributeGroupsListNode($children);
+    return new Type\Attribute\AttributeGroupListNode($children);
 }
   : AttributeGroup()+
   ;
 
 AttributeGroup -> {
-    return new Node\Stmt\Attribute\AttributeGroupNode($children);
+    return new Type\Attribute\AttributeGroupNode($children);
 }
   : ::T_ATTR_OPEN::
         AttributesList() ::T_COMMA::?
@@ -20,7 +20,7 @@ AttributesList
   ;
 
 Attribute -> {
-    return new Node\Stmt\Attribute\AttributeNode(
+    return new Type\Attribute\AttributeNode(
         $children[0],
     );
 }
@@ -28,7 +28,7 @@ Attribute -> {
   ;
 
 AttributeArguments -> {
-    return new Node\Stmt\Attribute\AttributeArgumentsListNode($children);
+    return new Type\Attribute\AttributeArgumentListNode($children);
 }
   : ::T_PARENTHESIS_OPEN::
       AttributeArgument() (
@@ -38,7 +38,7 @@ AttributeArguments -> {
   ;
 
 AttributeArgument -> {
-    return new Node\Stmt\Attribute\AttributeArgumentNode($children[0]);
+    return new Type\Attribute\AttributeArgumentNode($children[0]);
 }
   : Type()
   ;

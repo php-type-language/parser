@@ -3,24 +3,24 @@
 
 %token  T_DQ_STRING_LITERAL     "([^"\\]*(?:\\.[^"\\]*)*)"
 %token  T_SQ_STRING_LITERAL     '([^'\\]*(?:\\.[^'\\]*)*)'
-%token  T_PFX_FLOAT_LITERAL     \-?(?i)[0-9]++\.[0-9]*+(?:e-?[0-9]++)?
-%token  T_SFX_FLOAT_LITERAL     \-?(?i)[0-9]*+\.[0-9]++(?:e-?[0-9]++)?
-%token  T_EXP_LITERAL           \-?(?i)[0-9]++e-?[0-9]++
-%token  T_BIN_INT_LITERAL       \-?(?i)0b[0-1_]++
-%token  T_OCT_INT_LITERAL       \-?(?i)0o[0-7_]++
-%token  T_HEX_INT_LITERAL       \-?(?i)0x[0-9a-f_]++
-%token  T_DEC_INT_LITERAL       \-?(?i)[0-9][0-9_]*+
+%token  T_PFX_FLOAT_LITERAL     \-?[0-9]++\.[0-9]*+(?:[eE]-?[0-9]++)?
+%token  T_SFX_FLOAT_LITERAL     \-?[0-9]*+\.[0-9]++(?:[eE]-?[0-9]++)?
+%token  T_EXP_LITERAL           \-?[0-9]++[eE]-?[0-9]++
+%token  T_BIN_INT_LITERAL       \-?0[bB][01_]++
+%token  T_OCT_INT_LITERAL       \-?0[oO][0-7_]++
+%token  T_HEX_INT_LITERAL       \-?0[xX][0-9a-fA-F_]++
+%token  T_DEC_INT_LITERAL       \-?[0-9][0-9_]*+
 %token  T_BOOL_LITERAL          (?i)(?:true|false)(?![a-zA-Z0-9\-_\x80-\xff])
-%token  T_NULL_LITERAL          (?i)(?:null)(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_NULL_LITERAL          (?i)null(?![a-zA-Z0-9\-_\x80-\xff])
 
 // Identifier
 
-%token  T_NEQ                   (?i)is\h+not(?![a-zA-Z0-9\-_\x80-\xff])
+%token  T_NEQ                   (?i)is\h++not(?![a-zA-Z0-9\-_\x80-\xff])
 %token  T_EQ                    (?i)is(?![a-zA-Z0-9\-_\x80-\xff])
 %token  T_THIS                  \$this\b
-%token  T_VARIABLE              \$[a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
-%token  T_NAME_WITH_SPACE       [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*\s+?
-%token  T_NAME                  [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*
+%token  T_VARIABLE              \$[a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*+
+%token  T_NAME_WITH_SPACE       [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*+\s++
+%token  T_NAME                  [a-zA-Z_\x80-\xff][a-zA-Z0-9\-_\x80-\xff]*+
 
 // Special Chars
 
@@ -50,6 +50,6 @@
 
 // Other
 
-%skip   T_COMMENT               (//|#).+?$
+%skip   T_COMMENT               (?://|#)[^\r\n]*+
 %skip   T_DOC_COMMENT           /\*.*?\*/
-%skip   T_WHITESPACE            (\xfe\xff|\x20|\x09|\x0a|\x0d)+
+%skip   T_WHITESPACE            \s++

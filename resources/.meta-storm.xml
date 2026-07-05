@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <meta-storm xmlns="meta-storm">
     <definitions>
-
-        <classConstructor class="\TypeLang\Parser\ParserInterface"
-                          argument="1">
+        <classMethod class="\TypeLang\Parser\ParserInterface"
+                     method="parse"
+                     argument="0">
             <languageInjection language="InjectablePHP" />
-        </classConstructor>
+        </classMethod>
 
-        <classConstructor class="\TypeLang\Parser\Parser"
-                          argument="1">
+        <classMethod class="\TypeLang\Parser\Parser"
+                     method="parse"
+                     argument="0">
             <languageInjection language="InjectablePHP" />
-        </classConstructor>
+        </classMethod>
 
-        <classConstructor class="\TypeLang\Parser\InMemoryCachedParser"
-                          argument="1">
+        <classMethod class="\TypeLang\Parser\InMemoryCachedParser"
+                     method="parse"
+                     argument="0">
             <languageInjection language="InjectablePHP" />
-        </classConstructor>
+        </classMethod>
 
+        <classMethod class="\TypeLang\Parser\ParserInterface"
+                     method="parseTolerant"
+                     argument="0">
+            <languageInjection language="InjectablePHP" />
+        </classMethod>
+
+        <classMethod class="\TypeLang\Parser\Parser"
+                     method="parseTolerant"
+                     argument="0">
+            <languageInjection language="InjectablePHP" />
+        </classMethod>
+
+        <classMethod class="\TypeLang\Parser\InMemoryCachedParser"
+                     method="parseTolerant"
+                     argument="0">
+            <languageInjection language="InjectablePHP" />
+        </classMethod>
     </definitions>
 </meta-storm>

@@ -9,7 +9,6 @@ class FeatureNotAllowedException extends SemanticException
     /**
      * @param non-empty-string $name
      * @param int<0, max> $offset
-     *
      * @return static
      */
     public static function fromFeature(string $name, int $offset = 0): self

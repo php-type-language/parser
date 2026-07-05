@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Traverser;
 
-use TypeLang\Parser\Node\Node;
+use TypeLang\Type\Node;
 
 abstract class Visitor implements VisitorInterface
 {

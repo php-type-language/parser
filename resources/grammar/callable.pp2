@@ -2,15 +2,15 @@
 CallableType -> {
     $name = \array_shift($children);
 
-    if ($this->callables === false) {
+    if ($this->features->callables === false) {
         throw FeatureNotAllowedException::fromFeature('callable types', $offset);
     }
 
-    $parameters = isset($children[0]) && $children[0] instanceof Node\Stmt\Callable\ParametersListNode
+    $parameters = isset($children[0]) && $children[0] instanceof Type\Callable\CallableParameterListNode
         ? \array_shift($children)
-        : new Node\Stmt\Callable\CallableParametersListNode();
+        : new Type\Callable\CallableParameterListNode();
 
-    return new Node\Stmt\CallableTypeNode(
+    return new Type\CallableTypeNode(
         name: $name,
         parameters: $parameters,
         type: $children[0] ?? null,
@@ -24,7 +24,7 @@ CallableType -> {
   ;
 
 CallableParameters -> {
-    return new Node\Stmt\Callable\CallableParametersListNode($children);
+    return new Type\Callable\CallableParameterListNode($children);
 }
   : CallableParameter() (::T_COMMA:: CallableParameter())* ::T_COMMA::?
   ;
@@ -32,8 +32,8 @@ CallableParameters -> {
 CallableParameter -> {
     $result = \end($children);
 
-    if ($children[0] instanceof Node\Stmt\Attribute\AttributeGroupsListNode) {
-        if ($this->attributes === false) {
+    if ($children[0] instanceof Type\Attribute\AttributeGroupListNode) {
+        if ($this->features->attributes === false) {
             throw FeatureNotAllowedException::fromFeature('callable parameter attributes', $offset);
         }
 
@@ -58,11 +58,11 @@ MaybeDefaultCallableParameter -> {
         return $children[0];
     }
 
-    if ($children[0]->variadic) {
+    if ($children[0]->isVariadic) {
         throw SemanticException::fromVariadicWithDefault($offset);
     }
 
-    $children[0]->optional = true;
+    $children[0]->isOptional = true;
     return $children[0];
 }
   : ( MaybePrefixedVariadicTypedNamedCallableParameter()
@@ -87,13 +87,13 @@ MaybeModifiersNamedCallableParameter -> {
         if ($modifier instanceof \Phplrt\Contracts\Lexer\TokenInterface) {
             switch ($modifier->getName()) {
                 case 'T_AMP':
-                    $result->output = true;
+                    $result->isOutput = true;
                     break;
                 case 'T_ELLIPSIS':
-                    if ($result->variadic) {
+                    if ($result->isVariadic) {
                         throw SemanticException::fromVariadicRedefinition($offset);
                     }
-                    $result->variadic = true;
+                    $result->isVariadic = true;
                     break;
             }
         }
@@ -111,7 +111,7 @@ MaybeModifiersNamedCallableParameter -> {
 // Expects expression:
 // - "$<var>"
 MaybeNamedCallableParameter -> {
-    return new Node\Stmt\Callable\CallableParameterNode(null, $children[0]);
+    return new Type\Callable\CallableParameterNode(null, $children[0]);
 }
   : VariableLiteral()
   ;
@@ -121,11 +121,11 @@ MaybePrefixedVariadicTypedNamedCallableParameter -> {
         return $children[0];
     }
 
-    if ($children[1]->variadic) {
+    if ($children[1]->isVariadic) {
         throw SemanticException::fromVariadicRedefinition($offset);
     }
 
-    $children[1]->variadic = true;
+    $children[1]->isVariadic = true;
     return $children[1];
 }
   : <T_ELLIPSIS>? MaybeTypedNamedCallableParameter()
@@ -159,13 +159,13 @@ MaybeModifiersTypedCallableParameter -> {
         if ($modifier instanceof \Phplrt\Contracts\Lexer\TokenInterface) {
             switch ($modifier->getName()) {
                 case 'T_AMP':
-                    $result->output = true;
+                    $result->isOutput = true;
                     break;
                 case 'T_ELLIPSIS':
-                    if ($result->variadic) {
+                    if ($result->isVariadic) {
                         throw SemanticException::fromVariadicRedefinition($offset);
                     }
-                    $result->variadic = true;
+                    $result->isVariadic = true;
                     break;
             }
         }
@@ -181,7 +181,7 @@ MaybeModifiersTypedCallableParameter -> {
 // Expects expression:
 // - "<type>"
 TypedCallableParameter -> {
-    return new Node\Stmt\Callable\CallableParameterNode($children[0]);
+    return new Type\Callable\CallableParameterNode($children[0]);
 }
   : Type()
   ;

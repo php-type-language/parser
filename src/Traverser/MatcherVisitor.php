@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Traverser;
 
-use TypeLang\Parser\Node\Node;
+use TypeLang\Type\Node;
 
 class MatcherVisitor extends Visitor
 {
-    private ?Node $found = null;
+    public private(set) ?Node $found = null;
+
+    public bool $isFound {
+        get => $this->found !== null;
+    }
 
     private bool $shouldContinue = false;
 
@@ -20,16 +24,6 @@ class MatcherVisitor extends Visitor
         private readonly \Closure $matcher,
         private readonly ?\Closure $break = null,
     ) {}
-
-    public function isFound(): bool
-    {
-        return $this->found !== null;
-    }
-
-    public function getFoundNode(): ?Node
-    {
-        return $this->found;
-    }
 
     public function before(): void
     {
