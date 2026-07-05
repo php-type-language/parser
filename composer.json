@@ -24,7 +24,7 @@
         "jetbrains/phpstorm-attributes": "^1.2",
         "phplrt/compiler": "^3.7",
         "phpstan/phpstan": "^2.2",
-        "phpunit/phpunit": "^13.0"
+        "phpunit/phpunit": "^13.2"
     },
     "autoload-dev": {
         "psr-4": {
