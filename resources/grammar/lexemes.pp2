@@ -37,13 +37,11 @@
 %token  T_SQUARE_BRACKET_CLOSE  \]
 %token  T_COMMA                 ,
 %token  T_ELLIPSIS              \.\.\.
-%token  T_SEMICOLON             ;
 %token  T_DOUBLE_COLON          ::
 %token  T_COLON                 :
 %token  T_ASSIGN                =
 %token  T_NS_DELIMITER          \\
 %token  T_QMARK                 \?
-%token  T_NOT                   \!
 %token  T_OR                    \|
 %token  T_AMP                   &
 %token  T_ASTERISK              \*
