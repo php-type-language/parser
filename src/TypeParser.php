@@ -9,11 +9,16 @@ use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Contracts\Source\SourceExceptionInterface;
 use Phplrt\Contracts\Source\SourceFactoryInterface;
-use Phplrt\Parser\Exception\UnexpectedTokenException;
-use Phplrt\Parser\Exception\UnrecognizedTokenException;
+use Phplrt\Parser\Exception\UnexpectedTokenException as LexerUnexpectedTokenException;
+use Phplrt\Parser\Exception\UnrecognizedTokenException as LexerUnrecognizedTokenException;
 use Phplrt\Source\SourceFactory;
+use TypeLang\Parser\Exception\InternalParseException;
 use TypeLang\Parser\Exception\ParseException;
 use TypeLang\Parser\Exception\SemanticException;
+use TypeLang\Parser\Exception\SemanticParseException;
+use TypeLang\Parser\Exception\UnexpectedTokenException;
+use TypeLang\Parser\Exception\UnrecognizedSyntaxException;
+use TypeLang\Parser\Exception\UnrecognizedTokenException;
 use TypeLang\Parser\Internal\ExecutionContext;
 use TypeLang\Type\TypeNode;
 
@@ -68,13 +73,11 @@ final class TypeParser implements TypeParserInterface
             $instance = $this->sources->create($source);
 
             try {
-                return $context->parse($instance) ?? throw new ParseException(
-                    message: 'Could not read type statement',
-                    code: ParseException::ERROR_CODE_INTERNAL_ERROR,
-                );
-            } catch (UnexpectedTokenException $e) {
+                return $context->parse($instance)
+                    ?? throw InternalParseException::becauseTypeStatementIsUnreadable();
+            } catch (LexerUnexpectedTokenException $e) {
                 throw $this->unexpectedTokenError($e, $instance);
-            } catch (UnrecognizedTokenException $e) {
+            } catch (LexerUnrecognizedTokenException $e) {
                 throw $this->unrecognizedTokenError($e, $instance);
             } catch (ParserRuntimeExceptionInterface $e) {
                 throw $this->parserRuntimeError($e, $instance);
@@ -84,22 +87,18 @@ final class TypeParser implements TypeParserInterface
                 throw $this->internalError($e, $instance);
             }
         } catch (SourceExceptionInterface $e) {
-            throw new ParseException(
-                message: $e->getMessage(),
-                code: ParseException::ERROR_CODE_INTERNAL_ERROR,
-                previous: $e,
-            );
+            throw InternalParseException::becauseSourceIsUnreadable($e);
         }
     }
 
     /**
      * @throws SourceExceptionInterface in case of source content reading error
      */
-    private function unexpectedTokenError(UnexpectedTokenException $e, ReadableInterface $source): ParseException
+    private function unexpectedTokenError(LexerUnexpectedTokenException $e, ReadableInterface $source): ParseException
     {
         $token = $e->getToken();
 
-        return ParseException::fromUnexpectedToken(
+        return UnexpectedTokenException::becauseTokenIsUnexpected(
             token: $token->getValue(),
             statement: $source->getContents(),
             offset: $token->getOffset(),
@@ -109,11 +108,11 @@ final class TypeParser implements TypeParserInterface
     /**
      * @throws SourceExceptionInterface in case of source content reading error
      */
-    private function unrecognizedTokenError(UnrecognizedTokenException $e, ReadableInterface $source): ParseException
+    private function unrecognizedTokenError(LexerUnrecognizedTokenException $e, ReadableInterface $source): ParseException
     {
         $token = $e->getToken();
 
-        return ParseException::fromUnrecognizedToken(
+        return UnrecognizedTokenException::becauseTokenIsUnrecognized(
             token: $token->getValue(),
             statement: $source->getContents(),
             offset: $token->getOffset(),
@@ -125,7 +124,7 @@ final class TypeParser implements TypeParserInterface
      */
     private function semanticError(SemanticException $e, ReadableInterface $source): ParseException
     {
-        return ParseException::fromSemanticError($e, $source);
+        return SemanticParseException::becauseSemanticErrorOccurs($e, $source);
     }
 
     /**
@@ -135,7 +134,7 @@ final class TypeParser implements TypeParserInterface
     {
         $token = $e->getToken();
 
-        return ParseException::fromUnrecognizedSyntaxError(
+        return UnrecognizedSyntaxException::becauseSyntaxIsUnrecognized(
             statement: $source->getContents(),
             offset: $token->getOffset(),
         );
@@ -146,7 +145,7 @@ final class TypeParser implements TypeParserInterface
      */
     private function internalError(\Throwable $e, ReadableInterface $source): ParseException
     {
-        return ParseException::fromInternalError(
+        return InternalParseException::becauseInternalErrorOccurs(
             statement: $source->getContents(),
             e: $e,
         );

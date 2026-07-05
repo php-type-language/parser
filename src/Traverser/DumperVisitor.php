@@ -11,19 +11,16 @@ abstract class DumperVisitor extends Visitor
     /**
      * @var non-empty-string
      */
-    private const string NODE_NAMESPACE_PREFIX = 'TypeLang\\Type\\';
+    public const string DEFAULT_SIMPLIFIED_NODE_NAMESPACE = 'TypeLang\\Type\\';
 
     /**
      * @var int<0, max>
      */
     private int $depth = 0;
 
-    private readonly string $prefix;
-
-    public function __construct(bool $simplifyNames = true)
-    {
-        $this->prefix = $simplifyNames ? self::NODE_NAMESPACE_PREFIX : '';
-    }
+    public function __construct(
+        private readonly string $simplifyNodeNamespace = self::DEFAULT_SIMPLIFIED_NODE_NAMESPACE,
+    ) {}
 
     abstract protected function write(string $data): void;
 
@@ -35,7 +32,7 @@ abstract class DumperVisitor extends Visitor
     public function enter(Node $node): ?Command
     {
         $prefix = \str_repeat('  ', $this->depth++);
-        $suffix = \str_replace($this->prefix, '', $node::class);
+        $suffix = \str_replace($this->simplifyNodeNamespace, '', $node::class);
 
         if ($node instanceof \Stringable) {
             $suffix .= \sprintf('(%s)', (string) $node);

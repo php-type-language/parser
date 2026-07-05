@@ -36,8 +36,6 @@ $grammar = (new Compiler())
     ->build()
         ->withClassReference('TypeLang\\Type')
         ->withClassReference('TypeLang\\Parser\\Exception')
-        ->withClassReference('TypeLang\\Parser\\Exception\\SemanticException')
-        ->withClassReference('TypeLang\\Parser\\Exception\\FeatureNotAllowedException')
     ->generate();
 
 file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar);

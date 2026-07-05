@@ -7,7 +7,7 @@ TernaryExpressionOrLogicalType -> {
     }
 
     if ($this->features->conditions === false) {
-        throw FeatureNotAllowedException::fromFeature('conditional expressions', $offset);
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('conditional expressions', $offset);
     }
 
     $condition = match ($children[1]->getName()) {
@@ -35,7 +35,7 @@ TernaryExpressionOrLogicalType -> {
             $children[0],
             $children[2],
         ),
-        default => throw SemanticException::fromInvalidConditionalOperator(
+        default => throw Exception\InvalidConditionalOperatorException::becauseConditionalOperatorIsInvalid(
             $children[1]->getValue(),
             $offset,
         ),

@@ -45,6 +45,12 @@
             "*": "dist"
         }
     },
+    "scripts-aliases": {
+        "test:unit": ["test", "phpunit", "unit"]
+    },
+    "scripts": {
+        "test:unit": "phpunit --testdox"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

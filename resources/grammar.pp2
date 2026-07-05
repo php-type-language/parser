@@ -65,7 +65,7 @@ LogicalType
 UnionType -> {
     if (\count($children) === 2) {
         if ($this->features->unions === false) {
-            throw FeatureNotAllowedException::fromFeature('union types', $offset);
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('union types', $offset);
         }
 
         return new Type\UnionTypeNode($children[0], $children[1]);
@@ -79,7 +79,7 @@ UnionType -> {
 IntersectionType -> {
     if (\count($children) === 2) {
         if ($this->features->intersections === false) {
-            throw FeatureNotAllowedException::fromFeature('intersection types', $offset);
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('intersection types', $offset);
         }
 
         return new Type\IntersectionTypeNode($children[0], $children[1]);
@@ -127,7 +127,7 @@ TypesList -> {
             // In case of list type
             case $child === true:
                 if ($this->features->lists === false) {
-                    throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('square bracket list types', $offset);
                 }
 
                 $statement = new Type\TypesListNode($statement);
@@ -135,16 +135,16 @@ TypesList -> {
             // In case of offset access type
             case $child instanceof Type\TypeNode:
                 if ($this->features->offsets === false) {
-                    throw FeatureNotAllowedException::fromFeature('type offsets', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('type offsets', $offset);
                 }
 
                 $statement = new Type\TypeOffsetAccessNode($statement, $child);
                 break;
             default:
-                throw new SemanticException($offset, \sprintf(
-                    'Internal error, unexpected square bracket sub-node %s',
+                throw Exception\InternalSemanticException::becauseSubNodeIsUnexpected(
                     \get_debug_type($child),
-                ));
+                    $offset,
+                );
         }
     }
 

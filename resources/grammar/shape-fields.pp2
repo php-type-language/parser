@@ -5,7 +5,7 @@ ShapeFields -> {
     }
 
     if ($this->features->shapes === false) {
-        throw FeatureNotAllowedException::fromFeature('shape fields', $offset);
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('shape fields', $offset);
     }
 
     $parameters = null;
@@ -46,7 +46,7 @@ ShapeFieldsList -> {
             $key = $field->index;
 
             if (\in_array($key, $explicit, true)) {
-                throw SemanticException::fromShapeFieldDuplication($key, $field->offset);
+                throw Exception\ShapeFieldDuplicationException::becauseShapeFieldIsDuplicated($key, $field->offset);
             }
 
             $explicit[] = $key;
@@ -56,7 +56,7 @@ ShapeFieldsList -> {
     }
 
     if ($explicit !== [] && $implicit) {
-        throw SemanticException::fromShapeMixedKeys($offset);
+        throw Exception\ShapeKeysMixingException::becauseShapeKeysAreMixed($offset);
     }
 
     return new Type\Shape\FieldsListNode($children);
@@ -71,7 +71,7 @@ ShapeField -> {
 
     if ($children[0] instanceof Type\Attribute\AttributeGroupListNode) {
         if ($this->features->attributes === false) {
-            throw FeatureNotAllowedException::fromFeature('shape field attributes', $offset);
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('shape field attributes', $offset);
         }
 
         $result->attributes = $children[0];

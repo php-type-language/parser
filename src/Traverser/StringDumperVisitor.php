@@ -6,18 +6,13 @@ namespace TypeLang\Parser\Traverser;
 
 final class StringDumperVisitor extends DumperVisitor
 {
-    private string $output = '';
+    public private(set) string $output = '';
 
     public function before(): void
     {
         $this->reset();
 
         parent::before();
-    }
-
-    public function getOutput(): string
-    {
-        return $this->output;
     }
 
     public function reset(): void

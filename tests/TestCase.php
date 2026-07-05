@@ -76,7 +76,7 @@ abstract class TestCase extends BaseTestCase
         Traverser::new([$visitor = new Traverser\StringDumperVisitor()])
             ->traverse([$statement]);
 
-        return \trim($visitor->getOutput());
+        return \trim($visitor->output);
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function tolerantParseAndPrint(#[Language('PHP')] string $code, array $options = []): string
     {
-        $result = $this->tolerant($code, $options);
+        $result = $this->parseTolerant($code, $options);
 
         return $this->print($result->type);
     }

@@ -3,7 +3,7 @@ CallableType -> {
     $name = \array_shift($children);
 
     if ($this->features->callables === false) {
-        throw FeatureNotAllowedException::fromFeature('callable types', $offset);
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('callable types', $offset);
     }
 
     $parameters = isset($children[0]) && $children[0] instanceof Type\Callable\CallableParameterListNode
@@ -34,7 +34,7 @@ CallableParameter -> {
 
     if ($children[0] instanceof Type\Attribute\AttributeGroupListNode) {
         if ($this->features->attributes === false) {
-            throw FeatureNotAllowedException::fromFeature('callable parameter attributes', $offset);
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('callable parameter attributes', $offset);
         }
 
         $result->attributes = $children[0];
@@ -59,7 +59,7 @@ MaybeDefaultCallableParameter -> {
     }
 
     if ($children[0]->isVariadic) {
-        throw SemanticException::fromVariadicWithDefault($offset);
+        throw Exception\VariadicWithDefaultException::becauseVariadicHasDefault($offset);
     }
 
     $children[0]->isOptional = true;
@@ -91,7 +91,7 @@ MaybeModifiersNamedCallableParameter -> {
                     break;
                 case 'T_ELLIPSIS':
                     if ($result->isVariadic) {
-                        throw SemanticException::fromVariadicRedefinition($offset);
+                        throw Exception\VariadicRedefinitionException::becauseVariadicIsRedefined($offset);
                     }
                     $result->isVariadic = true;
                     break;
@@ -122,7 +122,7 @@ MaybePrefixedVariadicTypedNamedCallableParameter -> {
     }
 
     if ($children[1]->isVariadic) {
-        throw SemanticException::fromVariadicRedefinition($offset);
+        throw Exception\VariadicRedefinitionException::becauseVariadicIsRedefined($offset);
     }
 
     $children[1]->isVariadic = true;
@@ -163,7 +163,7 @@ MaybeModifiersTypedCallableParameter -> {
                     break;
                 case 'T_ELLIPSIS':
                     if ($result->isVariadic) {
-                        throw SemanticException::fromVariadicRedefinition($offset);
+                        throw Exception\VariadicRedefinitionException::becauseVariadicIsRedefined($offset);
                     }
                     $result->isVariadic = true;
                     break;

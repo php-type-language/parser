@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser;
 
+use TypeLang\Parser\Traverser\PropertyAccessor\PropertyAccessorInterface;
+use TypeLang\Parser\Traverser\PropertyAccessor\SimplePropertyAccessor;
 use TypeLang\Parser\Traverser\VisitorInterface;
 use TypeLang\Type\Node;
 
-final class Traverser implements MutableTraverserInterface
+final class Traverser implements TraverserInterface
 {
     /**
      * @var list<VisitorInterface>
@@ -15,13 +17,13 @@ final class Traverser implements MutableTraverserInterface
     private array $visitors = [];
 
     /**
-     * @param list<VisitorInterface> $visitors
+     * @param iterable<mixed, VisitorInterface> $visitors
      */
-    public function __construct(iterable $visitors = [])
-    {
-        foreach ($visitors as $visitor) {
-            $this->append($visitor);
-        }
+    public function __construct(
+        iterable $visitors = [],
+        private PropertyAccessorInterface $propertyAccessor = new SimplePropertyAccessor(),
+    ) {
+        $this->visitors = \iterator_to_array($visitors, false);
     }
 
     /**
@@ -48,25 +50,28 @@ final class Traverser implements MutableTraverserInterface
         return new self($visitors);
     }
 
+    /**
+     * Gets a new {@see Traverser} with the specified property accessor.
+     */
+    public function withPropertyAccessor(PropertyAccessorInterface $propertyAccessor): self
+    {
+        $self = clone $this;
+        $self->propertyAccessor = $propertyAccessor;
+
+        return $self;
+    }
+
     public function with(VisitorInterface $visitor, bool $prepend = false): self
     {
         $self = clone $this;
 
-        return $prepend ? $self->prepend($visitor) : $self->append($visitor);
-    }
+        if ($prepend) {
+            \array_unshift($self->visitors, $visitor);
+        } else {
+            $self->visitors[] = $visitor;
+        }
 
-    public function append(VisitorInterface $visitor): self
-    {
-        $this->visitors[] = $visitor;
-
-        return $this;
-    }
-
-    public function prepend(VisitorInterface $visitor): self
-    {
-        \array_unshift($this->visitors, $visitor);
-
-        return $this;
+        return $self;
     }
 
     public function traverse(iterable $nodes): void
@@ -82,29 +87,13 @@ final class Traverser implements MutableTraverserInterface
         }
     }
 
-    /**
-     * @return iterable<array-key, mixed>
-     */
-    private function getProperties(Node $node): iterable
-    {
-        $reflection = new \ReflectionObject($node);
-
-        foreach ($reflection->getProperties() as $property) {
-            if ($property->isStatic() || $property->hasHooks()) {
-                continue;
-            }
-
-            yield $property->getName() => $property->getValue($node);
-        }
-    }
-
     private function applyToNode(Node $node): void
     {
         foreach ($this->visitors as $visitor) {
             $command = $visitor->enter($node);
 
             if ($command === null) {
-                foreach ($this->getProperties($node) as $property) {
+                foreach ($this->propertyAccessor->unwrap($node) as $property) {
                     if ($property instanceof Node) {
                         $this->applyToNode($property);
                     } elseif (\is_iterable($property)) {

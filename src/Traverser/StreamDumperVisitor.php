@@ -14,10 +14,10 @@ final class StreamDumperVisitor extends DumperVisitor
     private readonly mixed $stream;
 
     public function __construct(
-        bool $simplifyNames = true,
+        string $simplifyNodeNamespace = self::DEFAULT_SIMPLIFIED_NODE_NAMESPACE,
         string $stream = self::DEFAULT_OUTPUT_STREAM,
     ) {
-        parent::__construct($simplifyNames);
+        parent::__construct($simplifyNodeNamespace);
 
         $resource = \fopen($stream, 'ab+');
 

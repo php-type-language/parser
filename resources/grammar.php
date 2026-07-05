@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use TypeLang\Parser\Exception\FeatureNotAllowedException;
-use TypeLang\Parser\Exception\SemanticException;
+use TypeLang\Parser\Exception;
 use TypeLang\Type;
 
 /**
@@ -292,7 +291,7 @@ return [
             $offset = $ctx->lastProcessedToken->getOffset();
 
             if ($this->features->literals === false) {
-                throw FeatureNotAllowedException::fromFeature('literal values', $offset);
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('literal values', $offset);
             }
 
             return $children;
@@ -379,7 +378,7 @@ return [
 
             if (\reset($children) instanceof Type\Attribute\AttributeGroupListNode) {
                 if ($this->features->attributes === false) {
-                    throw FeatureNotAllowedException::fromFeature('template argument attributes', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template argument attributes', $offset);
                 }
 
                 $attributes = \array_shift($children);
@@ -389,7 +388,7 @@ return [
 
             if (\reset($children) !== false) {
                 if ($this->features->hints === false) {
-                    throw FeatureNotAllowedException::fromFeature('template argument hints', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template argument hints', $offset);
                 }
 
                 $hint = \reset($children);
@@ -406,7 +405,7 @@ return [
             $offset = $ctx->lastProcessedToken->getOffset();
 
             if ($this->features->generics === false) {
-                throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template arguments', $offset);
             }
 
             return new Type\Template\TemplateArgumentListNode($children);
@@ -424,7 +423,7 @@ return [
             $name = \array_shift($children);
 
             if ($this->features->callables === false) {
-                throw FeatureNotAllowedException::fromFeature('callable types', $offset);
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('callable types', $offset);
             }
 
             $parameters = isset($children[0]) && $children[0] instanceof Type\Callable\CallableParameterListNode
@@ -445,7 +444,7 @@ return [
 
             if ($children[0] instanceof Type\Attribute\AttributeGroupListNode) {
                 if ($this->features->attributes === false) {
-                    throw FeatureNotAllowedException::fromFeature('callable parameter attributes', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('callable parameter attributes', $offset);
                 }
 
                 $result->attributes = $children[0];
@@ -462,7 +461,7 @@ return [
             }
 
             if ($children[0]->isVariadic) {
-                throw SemanticException::fromVariadicWithDefault($offset);
+                throw Exception\VariadicWithDefaultException::becauseVariadicHasDefault($offset);
             }
 
             $children[0]->isOptional = true;
@@ -478,7 +477,7 @@ return [
             }
 
             if ($children[1]->isVariadic) {
-                throw SemanticException::fromVariadicRedefinition($offset);
+                throw Exception\VariadicRedefinitionException::becauseVariadicIsRedefined($offset);
             }
 
             $children[1]->isVariadic = true;
@@ -503,7 +502,7 @@ return [
                             break;
                         case 'T_ELLIPSIS':
                             if ($result->isVariadic) {
-                                throw SemanticException::fromVariadicRedefinition($offset);
+                                throw Exception\VariadicRedefinitionException::becauseVariadicIsRedefined($offset);
                             }
                             $result->isVariadic = true;
                             break;
@@ -539,7 +538,7 @@ return [
                             break;
                         case 'T_ELLIPSIS':
                             if ($result->isVariadic) {
-                                throw SemanticException::fromVariadicRedefinition($offset);
+                                throw Exception\VariadicRedefinitionException::becauseVariadicIsRedefined($offset);
                             }
                             $result->isVariadic = true;
                             break;
@@ -564,7 +563,7 @@ return [
                     $key = $field->index;
 
                     if (\in_array($key, $explicit, true)) {
-                        throw SemanticException::fromShapeFieldDuplication($key, $field->offset);
+                        throw Exception\ShapeFieldDuplicationException::becauseShapeFieldIsDuplicated($key, $field->offset);
                     }
 
                     $explicit[] = $key;
@@ -574,7 +573,7 @@ return [
             }
 
             if ($explicit !== [] && $implicit) {
-                throw SemanticException::fromShapeMixedKeys($offset);
+                throw Exception\ShapeKeysMixingException::becauseShapeKeysAreMixed($offset);
             }
 
             return new Type\Shape\FieldsListNode($children);
@@ -588,7 +587,7 @@ return [
             }
 
             if ($this->features->shapes === false) {
-                throw FeatureNotAllowedException::fromFeature('shape fields', $offset);
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('shape fields', $offset);
             }
 
             $parameters = null;
@@ -615,7 +614,7 @@ return [
 
             if ($children[0] instanceof Type\Attribute\AttributeGroupListNode) {
                 if ($this->features->attributes === false) {
-                    throw FeatureNotAllowedException::fromFeature('shape field attributes', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('shape field attributes', $offset);
                 }
 
                 $result->attributes = $children[0];
@@ -677,7 +676,7 @@ return [
             }
 
             if ($this->features->conditions === false) {
-                throw FeatureNotAllowedException::fromFeature('conditional expressions', $offset);
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('conditional expressions', $offset);
             }
 
             $condition = match ($children[1]->getName()) {
@@ -705,7 +704,7 @@ return [
                     $children[0],
                     $children[2],
                 ),
-                default => throw SemanticException::fromInvalidConditionalOperator(
+                default => throw Exception\InvalidConditionalOperatorException::becauseConditionalOperatorIsInvalid(
                     $children[1]->getValue(),
                     $offset,
                 ),
@@ -737,7 +736,7 @@ return [
 
             if (\count($children) === 2) {
                 if ($this->features->unions === false) {
-                    throw FeatureNotAllowedException::fromFeature('union types', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('union types', $offset);
                 }
 
                 return new Type\UnionTypeNode($children[0], $children[1]);
@@ -751,7 +750,7 @@ return [
 
             if (\count($children) === 2) {
                 if ($this->features->intersections === false) {
-                    throw FeatureNotAllowedException::fromFeature('intersection types', $offset);
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('intersection types', $offset);
                 }
 
                 return new Type\IntersectionTypeNode($children[0], $children[1]);
@@ -777,7 +776,7 @@ return [
                     // In case of list type
                     case $child === true:
                         if ($this->features->lists === false) {
-                            throw FeatureNotAllowedException::fromFeature('square bracket list types', $offset);
+                            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('square bracket list types', $offset);
                         }
 
                         $statement = new Type\TypesListNode($statement);
@@ -785,16 +784,16 @@ return [
                         // In case of offset access type
                     case $child instanceof Type\TypeNode:
                         if ($this->features->offsets === false) {
-                            throw FeatureNotAllowedException::fromFeature('type offsets', $offset);
+                            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('type offsets', $offset);
                         }
 
                         $statement = new Type\TypeOffsetAccessNode($statement, $child);
                         break;
                     default:
-                        throw new SemanticException($offset, \sprintf(
-                            'Internal error, unexpected square bracket sub-node %s',
+                        throw Exception\InternalSemanticException::becauseSubNodeIsUnexpected(
                             \get_debug_type($child),
-                        ));
+                            $offset,
+                        );
                 }
             }
 

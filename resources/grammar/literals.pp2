@@ -7,7 +7,7 @@ Literal
 
 RawLiteral -> {
     if ($this->features->literals === false) {
-        throw FeatureNotAllowedException::fromFeature('literal values', $offset);
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('literal values', $offset);
     }
     return $children;
 }

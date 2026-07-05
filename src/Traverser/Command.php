@@ -6,5 +6,5 @@ namespace TypeLang\Parser\Traverser;
 
 enum Command
 {
-    case SKIP_CHILDREN;
+    case SkipChildren;
 }

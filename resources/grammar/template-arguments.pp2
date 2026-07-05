@@ -1,7 +1,7 @@
 
 TemplateArguments -> {
     if ($this->features->generics === false) {
-        throw FeatureNotAllowedException::fromFeature('template arguments', $offset);
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template arguments', $offset);
     }
 
     return new Type\Template\TemplateArgumentListNode($children);
@@ -18,7 +18,7 @@ TemplateArgument -> {
 
     if (\reset($children) instanceof Type\Attribute\AttributeGroupListNode) {
         if ($this->features->attributes === false) {
-            throw FeatureNotAllowedException::fromFeature('template argument attributes', $offset);
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template argument attributes', $offset);
         }
 
         $attributes = \array_shift($children);
@@ -28,7 +28,7 @@ TemplateArgument -> {
 
     if (\reset($children) !== false) {
         if ($this->features->hints === false) {
-            throw FeatureNotAllowedException::fromFeature('template argument hints', $offset);
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template argument hints', $offset);
         }
 
         $hint = \reset($children);

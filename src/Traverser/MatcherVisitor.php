@@ -33,20 +33,20 @@ class MatcherVisitor extends Visitor
     public function enter(Node $node): ?Command
     {
         if ($this->found !== null || $this->shouldContinue) {
-            return Command::SKIP_CHILDREN;
+            return Command::SkipChildren;
         }
 
         if (($this->matcher)($node)) {
             $this->shouldContinue = true;
             $this->found = $node;
 
-            return Command::SKIP_CHILDREN;
+            return Command::SkipChildren;
         }
 
         if ($this->break !== null && ($this->break)($node)) {
             $this->shouldContinue = true;
 
-            return Command::SKIP_CHILDREN;
+            return Command::SkipChildren;
         }
 
         return null;
