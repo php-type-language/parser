@@ -41,7 +41,7 @@ use TypeLang\Type\Name;
  * // > }
  * ```
  */
-final readonly class PhpUseStatementsTransformer implements TransformerInterface
+final readonly class PhpUseStatementsTransformer
 {
     /**
      * @var array<non-empty-lowercase-string, Name>
@@ -51,8 +51,9 @@ final readonly class PhpUseStatementsTransformer implements TransformerInterface
     /**
      * @param iterable<non-empty-string|array-key, non-empty-string|Name> $replacements
      */
-    public function __construct(iterable $replacements)
-    {
+    public function __construct(
+        iterable $replacements,
+    ) {
         $this->replacements = $this->format($replacements);
     }
 
@@ -83,6 +84,10 @@ final readonly class PhpUseStatementsTransformer implements TransformerInterface
 
     public function __invoke(Name $name): ?Name
     {
+        if ($name->isBuiltin || $name->isSpecial || $name->isFullyQualified) {
+            return null;
+        }
+
         $first = \strtolower($name->first->toString());
         $prefix = $this->replacements[$first] ?? null;
 
