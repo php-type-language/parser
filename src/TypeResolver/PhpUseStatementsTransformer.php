@@ -82,9 +82,29 @@ final readonly class PhpUseStatementsTransformer
         return $result;
     }
 
+    private static function isNonSubstituted(Name $name): bool
+    {
+        // FQN names must not be replaced
+        if ($name->isFullyQualified) {
+            return true;
+        }
+
+        // Non-FQN names prefixed with "namespace" must not be replaced
+        if (!$name->isSimple) {
+            return $name->first->toLowerString() === 'namespace';
+        }
+
+        $first = $name->first;
+
+        // builtin types must not be replaced
+        return $first->isBuiltin
+            // special types also must not be replaced
+            || $first->isSpecial;
+    }
+
     public function __invoke(Name $name): ?Name
     {
-        if ($name->isBuiltin || $name->isSpecial || $name->isFullyQualified) {
+        if (self::isNonSubstituted($name)) {
             return null;
         }
 
