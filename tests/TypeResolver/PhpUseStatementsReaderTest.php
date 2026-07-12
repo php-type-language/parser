@@ -104,8 +104,8 @@ final class PhpUseStatementsReaderTest extends TypeResolverTestCase
     public function testReadsImportsSharedBySeveralClassesInOneFile(): void
     {
         self::assertSame([
-            'Some\Shared',
             'Alias' => 'Some\Other',
+            'Some\Shared',
         ], $this->read(TwoClassesInFileStub::class));
     }
 
