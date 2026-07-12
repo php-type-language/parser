@@ -14,138 +14,62 @@
 
 ---
 
-Reference implementation for TypeLang Parser.
+The reference parser for **TypeLang** — a declarative type language inspired by
+static analyzers like [PHPStan](https://phpstan.org/) and [Psalm](https://psalm.dev/docs/).
 
-**TypeLang** is a declarative type language inspired by static analyzers
-like [PHPStan](https://phpstan.org/) and [Psalm](https://psalm.dev/docs/).
+It reads a type declaration string and builds an AST of `TypeLang\Type\*` nodes,
+checking the grammar along the way. The node classes themselves live in the
+separate [`type-lang/types`](https://packagist.org/packages/type-lang/types) package.
 
-Read [documentation pages](https://typelang.dev) for more information.
+- Full documentation is [available at typelang.dev](https://typelang.dev).
+- Language specification is [available here](https://typelang.dev/static/spec.html).
 
 ## Installation
 
-TypeLang Parser is available as Composer repository and can be installed
-using the following command in a root of your project:
+Install the package via [Composer](https://getcomposer.org):
 
 ```sh
 composer require type-lang/parser
 ```
 
-## Quick Start
+**Requirements:** 
+- PHP 8.4+
+
+## Usage
+
+`TypeLang\Parser\TypeParser` is the entry point. Its `parse()` method turns a
+type declaration into a `TypeLang\Type\TypeNode`:
 
 ```php
-$parser = new \TypeLang\Parser\TypeParser();
+$parser = new TypeLang\Parser\TypeParser();
 
-$type = $parser->parse(<<<'PHP'
-    array{
-        key: callable(Example, int): mixed,
-        ...
-    }
-    PHP);
+$type = $parser->parse('array{ key: int }');
 
 var_dump($type);
+// object(TypeLang\Type\NamedTypeNode) {
+//   ["name"]   => "array"
+//   ["fields"] => object(TypeLang\Type\Shape\FieldsListNode) { ... }
+//   ...
+// }
 ```
 
-Expected Output:
+Every node exposes an `$offset` (byte offset in the source) plus a handful of
+properties describing its kind.
+
+### Strict vs. Tolerant Parsing
+
+- `parse(): TypeNode` — strict mode; requires the whole input to be a valid
+  type and throws a `ParserExceptionInterface` on the first error.
+- `parseTolerant(): ParsedResult` — parses as much as it can and reports how far
+  it consumed the source. Useful for phpdoc, where a type is followed by a
+  free-text description.
 
 ```php
-TypeLang\Type\NamedTypeNode {
-  +offset: 0
-  +name: TypeLang\Type\Name {
-    +offset: 0
-    -parts: array:1 [
-      0 => TypeLang\Type\Identifier {
-        +offset: 0
-        +value: "array"
-      }
-    ]
-  }
-  +arguments: null
-  +fields: TypeLang\Type\Shape\FieldsListNode {
-    +offset: 11
-    +items: array:1 [
-      0 => TypeLang\Type\Shape\NamedFieldNode {
-        +offset: 11
-        +type: TypeLang\Type\CallableTypeNode {
-          +offset: 16
-          +name: TypeLang\Type\Name {
-            +offset: 16
-            -parts: array:1 [
-              0 => TypeLang\Type\Identifier {
-                +offset: 16
-                +value: "callable"
-              }
-            ]
-          }
-          +parameters: TypeLang\Type\Callable\ParametersListNode {
-            +offset: 25
-            +items: array:2 [
-              0 => TypeLang\Type\Callable\ParameterNode {
-                +offset: 25
-                +type: TypeLang\Type\NamedTypeNode {
-                  +offset: 25
-                  +name: TypeLang\Type\Name {
-                    +offset: 25
-                    -parts: array:1 [
-                      0 => TypeLang\Type\Identifier {
-                        +offset: 25
-                        +value: "Example"
-                      }
-                    ]
-                  }
-                  +arguments: null
-                  +fields: null
-                }
-                +name: null
-                +output: false
-                +variadic: false
-                +optional: false
-              }
-              1 => TypeLang\Type\Callable\ParameterNode {
-                +offset: 34
-                +type: TypeLang\Type\NamedTypeNode {
-                  +offset: 34
-                  +name: TypeLang\Type\Name {
-                    +offset: 34
-                    -parts: array:1 [
-                      0 => TypeLang\Type\Identifier {
-                        +offset: 34
-                        +value: "int"
-                      }
-                    ]
-                  }
-                  +arguments: null
-                  +fields: null
-                }
-                +name: null
-                +output: false
-                +variadic: false
-                +optional: false
-              }
-            ]
-          }
-          +type: TypeLang\Type\NamedTypeNode {
-            +offset: 40
-            +name: TypeLang\Type\Name {
-              +offset: 40
-              -parts: array:1 [
-                0 => TypeLang\Type\Identifier {
-                  +offset: 40
-                  +value: "mixed"
-                }
-              ]
-            }
-            +arguments: null
-            +fields: null
-          }
-        }
-        +optional: false
-        +key: TypeLang\Type\Identifier {
-          +offset: 11
-          +value: "key"
-        }
-      }
-    ]
-    +sealed: false
-  }
-}
+$result = $parser->parseTolerant('int and some trailing description');
+
+$result->type;   // TypeLang\Type\NamedTypeNode ("int")
+$result->offset; // offset where parsing stopped
 ```
+
+See the [documentation](https://typelang.dev) for feature toggling, visitors and
+name resolution.
