@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver\Stub;
 
-use Some\A, Some\B as Bee, Some\C;
+use Some\A;
+use Some\B as Bee;
+use Some\C;
 
 /**
  * @uses A

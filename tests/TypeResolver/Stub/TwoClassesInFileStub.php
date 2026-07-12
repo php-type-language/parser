@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver\Stub;
 
-use Some\Shared;
 use Some\Other as Alias;
+use Some\Shared;
 
 final class FirstDeclaredClass {}
 

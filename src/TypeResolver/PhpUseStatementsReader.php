@@ -22,7 +22,6 @@ final readonly class PhpUseStatementsReader
      * Return array of use statements from class.
      *
      * @param \ReflectionClass<object> $class
-     *
      * @return array<int|non-empty-string, non-empty-string>
      */
     public function getClassUseStatements(\ReflectionClass $class): array
@@ -38,8 +37,6 @@ final readonly class PhpUseStatementsReader
 
     /**
      * Return array of use statements from function.
-     *
-     * @param \ReflectionFunctionAbstract $function
      *
      * @return array<int|non-empty-string, non-empty-string>
      */
@@ -82,7 +79,6 @@ final readonly class PhpUseStatementsReader
      * Reads the type imports of the current namespace.
      *
      * @param \Iterator<array-key, \PhpToken> $tokens
-     *
      * @return \Iterator<int|non-empty-string, non-empty-string>
      */
     private function readImports(\Iterator $tokens): \Iterator
@@ -122,7 +118,6 @@ final readonly class PhpUseStatementsReader
      * Reads a single "use" statement and returns the imports it declares.
      *
      * @param \Iterator<array-key, \PhpToken> $tokens
-     *
      * @return list<array{non-empty-string, non-empty-string|null}>
      */
     private function fetchUseStatement(\Iterator $tokens): array
@@ -161,7 +156,6 @@ final readonly class PhpUseStatementsReader
      * terminating ";"
      *
      * @param \Iterator<array-key, \PhpToken> $tokens
-     *
      * @return list<\PhpToken>
      */
     private function readStatementTokens(\Iterator $tokens): array
@@ -194,7 +188,6 @@ final readonly class PhpUseStatementsReader
      *
      * @param list<\PhpToken> $tokens
      * @param non-empty-string|null $prefix
-     *
      * @return list<array{non-empty-string, non-empty-string|null}>
      */
     private function parseEntries(array $tokens, ?string $prefix): array
@@ -229,7 +222,6 @@ final readonly class PhpUseStatementsReader
 
     /**
      * @param list<\PhpToken> $tokens
-     *
      * @return int<0, max>|null
      */
     private function offsetOf(array $tokens, string $text): ?int
@@ -248,7 +240,6 @@ final readonly class PhpUseStatementsReader
      *
      * @param list<\PhpToken> $tokens
      * @param non-empty-string|null $prefix
-     *
      * @return array{non-empty-string, non-empty-string|null}|null
      */
     private function parseEntry(array $tokens, ?string $prefix): ?array

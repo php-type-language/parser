@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver\Stub;
 
-use Some\ClassName;
-use function Some\helperFunction;
-use const Some\SOME_CONSTANT;
 use Some\Aliased as Alias;
+use Some\ClassName;
 
 /**
  * @uses ClassName

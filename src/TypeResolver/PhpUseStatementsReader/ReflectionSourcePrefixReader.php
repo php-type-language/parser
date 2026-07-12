@@ -52,7 +52,6 @@ final readonly class ReflectionSourcePrefixReader
      *
      * @param non-empty-string $pathname
      * @param int<0, max> $startsAt
-     *
      * @throws \LogicException
      * @throws \RuntimeException
      */

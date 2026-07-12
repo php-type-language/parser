@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver;
 
-use TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 use TypeLang\Parser\Tests\TypeResolver\Stub\ClassWithGroupUsesStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\ClosureUseStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\CommentsAroundUsesStub;
@@ -17,6 +16,7 @@ use TypeLang\Parser\Tests\TypeResolver\Stub\NoImportsStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\SimpleClassStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\TraitUsageStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\TwoClassesInFileStub;
+use TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 
 final class PhpUseStatementsReaderTest extends TypeResolverTestCase
 {
@@ -26,7 +26,6 @@ final class PhpUseStatementsReaderTest extends TypeResolverTestCase
 
     /**
      * @param class-string $class
-     *
      * @return array<int|non-empty-string, non-empty-string>
      * @throws \ReflectionException
      */

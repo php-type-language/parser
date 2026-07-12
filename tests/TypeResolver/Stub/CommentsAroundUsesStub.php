@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Tests\TypeResolver\Stub;
 use Some\First; // a trailing line comment
 /* a block comment between statements */
 use Some\Second as Aliased;
-# a hash comment
+// a hash comment
 use Some\Third;
 
 /**

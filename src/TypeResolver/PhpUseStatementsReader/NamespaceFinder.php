@@ -8,7 +8,6 @@ final readonly class NamespaceFinder
 {
     /**
      * @param \Iterator<array-key, \PhpToken> $tokens
-     *
      * @return \Iterator<array-key, \PhpToken>
      */
     public function rewind(string $namespace, \Iterator $tokens): \Iterator
