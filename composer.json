@@ -22,9 +22,9 @@
     },
     "require-dev": {
         "jetbrains/phpstorm-attributes": "^1.2",
-        "phplrt/compiler": "^3.7",
-        "phpstan/phpstan": "^2.2",
-        "phpunit/phpunit": "^13.2"
+        "phplrt/compiler": "^3.7.5",
+        "phpstan/phpstan": "^2.2.5",
+        "phpunit/phpunit": "^13.2.4"
     },
     "autoload-dev": {
         "psr-4": {
