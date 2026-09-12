@@ -8,11 +8,7 @@ use TypeLang\Type\Node;
 
 class MatcherVisitor extends Visitor
 {
-    public private(set) ?Node $node = null;
-
-    public bool $isFound {
-        get => $this->node !== null;
-    }
+    public ?Node $node = null;
 
     private bool $shouldContinue = false;
 
@@ -25,9 +21,18 @@ class MatcherVisitor extends Visitor
         private readonly ?\Closure $break = null,
     ) {}
 
+    /**
+     * Returns {@see true} in case of a node matching the criteria was found.
+     */
+    public function hasMatches(): bool
+    {
+        return $this->node !== null;
+    }
+
     public function before(): void
     {
         $this->node = null;
+        $this->shouldContinue = false;
     }
 
     public function enter(Node $node): ?Command

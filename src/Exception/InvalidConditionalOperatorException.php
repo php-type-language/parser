@@ -4,18 +4,28 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
+use Phplrt\Contracts\Source\ReadableInterface;
+
 final class InvalidConditionalOperatorException extends SemanticException
 {
     /**
-     * Occurs when a conditional expression uses an unsupported operator.
+     * Occurs when a condition is written with an operator the grammar knows
+     * nothing of.
      *
-     * @param non-empty-string $operator
      * @param int<0, max> $offset
      */
-    public static function becauseConditionalOperatorIsInvalid(string $operator, int $offset = 0): self
-    {
-        $message = \sprintf('Invalid conditional operator "%s"', $operator);
-
-        return new self($offset, $message, self::ERROR_CODE_INVALID_OPERATOR);
+    public static function becauseConditionalOperatorIsInvalid(
+        string $operator,
+        ReadableInterface $source,
+        int $offset = 0,
+    ): self {
+        return new self(
+            self::describe(
+                \sprintf('Invalid conditional operator "%s"', $operator),
+                $source,
+            ),
+            $source,
+            self::createToken($source, $offset),
+        );
     }
 }

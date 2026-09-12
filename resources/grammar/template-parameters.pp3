@@ -1,0 +1,79 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Template Parameters
+ * -----------------------------------------------------------------------------
+ */
+
+TemplateParameters -> {
+    if ($this->features->generics === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template parameters', $source, $offset);
+    }
+
+    return new Type\Template\TemplateParameterListNode($children, $offset);
+}
+  : ::T_ANGLE_BRACKET_OPEN::
+      TemplateParameter() @error("Syntax error, unexpected {token}, a parameter list must carry at least one parameter") (
+        ::T_COMMA:: TemplateParameter()
+      )* ::T_COMMA::?
+    ::T_ANGLE_BRACKET_CLOSE:: @error("Syntax error, unexpected {token}, a parameter list must be closed with a bracket \">\"")
+  ;
+
+TemplateParameter -> {
+    $upper = $lower = $default = null;
+
+    foreach (\array_slice($children, 1) as $limit) {
+        if (!$limit instanceof Type\Template\TemplateBoundEdgeNode) {
+            if ($default !== null) {
+                throw Exception\TemplateBoundException::becauseBoundIsDuplicated('default', $source, $limit->offset);
+            }
+
+            $default = $limit;
+
+            continue;
+        }
+
+        if ($default !== null) {
+            throw Exception\TemplateBoundException::becauseDefaultIsNotWrittenLast($source, $limit->operator->offset);
+        }
+
+        switch ($limit->operator->value) {
+            case 'of':
+            case 'as':
+                if ($upper !== null) {
+                    throw Exception\TemplateBoundException::becauseBoundIsDuplicated('upper bound', $source, $limit->offset);
+                }
+
+                $upper = $limit;
+                break;
+
+            case 'super':
+                if ($lower !== null) {
+                    throw Exception\TemplateBoundException::becauseBoundIsDuplicated('lower bound', $source, $limit->offset);
+                }
+
+                $lower = $limit;
+                break;
+
+            default:
+                throw Exception\TemplateBoundException::becauseOperatorIsUnknown(
+                    $limit->operator->value,
+                    $source,
+                    $limit->operator->offset,
+                );
+        }
+    }
+
+    return new Type\Template\TemplateParameterNode($children[0], $upper, $lower, $default, $offset);
+}
+  : Identifier() ( TemplateBoundEdge() | TemplateDefault() )*
+  ;
+
+TemplateBoundEdge -> {
+    return new Type\Template\TemplateBoundEdgeNode($children[0], $children[1], $offset);
+}
+  : Identifier() Type()
+  ;
+
+TemplateDefault
+  : ::T_ASSIGN:: Type()
+  ;

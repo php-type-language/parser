@@ -1,0 +1,43 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Template Arguments
+ * -----------------------------------------------------------------------------
+ */
+
+TemplateArguments -> {
+    if ($this->features->generics === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template arguments', $source, $offset);
+    }
+
+    return new Type\Template\TemplateArgumentListNode($children, $offset);
+}
+  : ::T_ANGLE_BRACKET_OPEN::
+      TemplateArgument() @error("Syntax error, unexpected {token}, an argument list must carry at least one argument") (
+        ::T_COMMA:: TemplateArgument()
+      )* ::T_COMMA::?
+    ::T_ANGLE_BRACKET_CLOSE:: @error("Syntax error, unexpected {token}, an argument list must be closed with a bracket \">\"")
+  ;
+
+TemplateArgument -> {
+    if (\is_array($children)) {
+        if ($this->features->hints === false) {
+            throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('template argument hints', $source, $offset);
+        }
+
+        return new Type\Template\TemplateArgumentNode($children[1], $children[0], $offset);
+    }
+
+    return new Type\Template\TemplateArgumentNode($children, null, $offset);
+}
+  : TemplateHintedArgument()
+  | TemplateSimpleArgument()
+  ;
+
+TemplateSimpleArgument
+  : WildcardType()
+  | Type()
+  ;
+
+TemplateHintedArgument
+  : IdentifierWithExtraSpace() TemplateSimpleArgument()
+  ;

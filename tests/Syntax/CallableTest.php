@@ -17,7 +17,6 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
             AST, $this->parseAndPrint('foo()'));
     }
@@ -27,15 +26,12 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
               NamedTypeNode
                 Name(void)
-                  Identifier(void)
             AST, $this->parseAndPrint('foo(T): void'));
     }
 
@@ -44,35 +40,28 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(a)
-                Identifier(a)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(int)
-                      Identifier(int)
                     Template\TemplateArgumentListNode
                       Template\TemplateArgumentNode
                         Literal\IntLiteralNode(0)
                       Template\TemplateArgumentNode
                         NamedTypeNode
                           Name(max)
-                            Identifier(max)
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   CallableTypeNode
                     Name(c)
-                      Identifier(c)
                     Callable\CallableParameterListNode
-                      Callable\CallableParameterNode(simple)
+                      Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                         NullableTypeNode
                           NamedTypeNode
                             Name(C)
-                              Identifier(C)
                     NamedTypeNode
                       Name(mixed)
-                        Identifier(mixed)
               NamedTypeNode
                 Name(void)
-                  Identifier(void)
             AST, $this->parseAndPrint('a(int<0, max>, c(?C): mixed): void'));
     }
 
@@ -81,13 +70,12 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
-                  Literal\VariableLiteralNode($name)
+                  VariableNode
+                    Identifier(name)
             AST, $this->parseAndPrint('foo(T $name)'));
     }
 
@@ -96,21 +84,18 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(A)
-                      Identifier(A)
-                  Literal\VariableLiteralNode($a)
-                Callable\CallableParameterNode(simple)
+                  VariableNode
+                    Identifier(a)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(B)
-                      Identifier(B)
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(C)
-                      Identifier(C)
             AST, $this->parseAndPrint('foo(A $a, B, C)'));
     }
 
@@ -119,12 +104,10 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(output)
+                Callable\CallableParameterNode(isOutput=true, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
             AST, $this->parseAndPrint('foo(T&)'));
     }
 
@@ -133,13 +116,12 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(output)
+                Callable\CallableParameterNode(isOutput=true, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
-                  Literal\VariableLiteralNode($name)
+                  VariableNode
+                    Identifier(name)
             AST, $this->parseAndPrint('foo(T &$name)'));
     }
 
@@ -148,77 +130,51 @@ final class CallableTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(optional)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=true)
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
             AST, $this->parseAndPrint('foo(T=)'));
     }
 
-    public function testVariadicParameterPrefixSyntax(): void
+    public function testVariadicMarkerCannotPrecedeTheParameterType(): void
     {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(foo)
-                Identifier(foo)
-              Callable\CallableParameterListNode
-                Callable\CallableParameterNode(variadic)
-                  NamedTypeNode
-                    Name(T)
-                      Identifier(T)
-            AST, $this->parseAndPrint('foo(...T)'));
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
+
+        $this->parse('foo(...T)');
     }
 
-    public function testVariadicParameterPostfixSyntax(): void
+    public function testVariadicParameter(): void
     {
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(foo)
-                Identifier(foo)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(variadic)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=true, isOptional=false)
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
             AST, $this->parseAndPrint('foo(T...)'));
     }
 
-    public function testVariadicNamedOutputParameter(): void
+    public function testNameCannotFollowTheDefaultMarker(): void
     {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(foo)
-                Identifier(foo)
-              Callable\CallableParameterListNode
-                Callable\CallableParameterNode(output, variadic)
-                  NamedTypeNode
-                    Name(T)
-                      Identifier(T)
-                  Literal\VariableLiteralNode($name)
-            AST, $this->parseAndPrint('foo(...T &$name)'));
-    }
-
-    public function testParameterWithoutTypeIsNotAllowed(): void
-    {
-        $this->expectParsingException('unexpected "$name"');
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
 
         $this->parse('foo(T= $name)');
     }
 
     public function testAmpersandMustFollowParameterType(): void
     {
-        $this->expectParsingException('unexpected "T"');
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
 
         $this->parse('foo(&T)');
     }
 
-    public function testVariadicCannotBeBothPrefixAndPostfix(): void
+    public function testParameterWithoutATypeIsNotAllowed(): void
     {
-        $this->expectParsingException('Either prefix or postfix variadic syntax should be used, but not both');
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
 
-        $this->parse('foo(...T...)');
+        $this->parse('foo($name)');
     }
 
     public function testVariadicParameterCannotHaveDefault(): void
@@ -230,8 +186,52 @@ final class CallableTest extends SyntaxTestCase
 
     public function testLeadingCommaIsNotAllowed(): void
     {
-        $this->expectParsingException('unexpected ","');
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
 
         $this->parse('foo(,T)');
+    }
+
+    /**
+     * A reference marker precedes the variadic one, the way PHP itself writes
+     * it: {@code &...$name} rather than {@code ...&$name}.
+     */
+    public function testReferenceAndVariadicMarkersOfATypedParameterAreOrdered(): void
+    {
+        self::assertSame(<<<'AST'
+            CallableTypeNode
+              Name(foo)
+              Callable\CallableParameterListNode
+                Callable\CallableParameterNode(isOutput=true, isVariadic=true, isOptional=false)
+                  NamedTypeNode
+                    Name(T)
+                  VariableNode
+                    Identifier(name)
+            AST, $this->parseAndPrint('foo(T &...$name)'));
+    }
+
+    public function testTypedParameterCannotPutTheReferenceAfterTheVariadic(): void
+    {
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
+
+        $this->parse('foo(T ...&$name)');
+    }
+
+    public function testModifiersWithoutATypeAreNotAllowed(): void
+    {
+        $this->expectParsingException('a parameter list must be closed with a bracket ")"');
+
+        $this->parse('foo(&...$name)');
+    }
+
+    public function testTypedParameterAllowsBothMarkersWithoutAName(): void
+    {
+        self::assertSame(<<<'AST'
+            CallableTypeNode
+              Name(foo)
+              Callable\CallableParameterListNode
+                Callable\CallableParameterNode(isOutput=true, isVariadic=true, isOptional=false)
+                  NamedTypeNode
+                    Name(T)
+            AST, $this->parseAndPrint('foo(T &...)'));
     }
 }

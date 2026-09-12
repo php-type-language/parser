@@ -1,6 +1,16 @@
 parameters:
   level: max
+  phpVersion:
+    min: 80100
+    max: 80599
+  treatPhpDocTypesAsCertain: false
   fileExtensions:
     - php
   paths:
     - src
+  excludePaths:
+    analyse:
+      # The parser is generated out of the grammar by the phplrt compiler and
+      # is not written by hand.
+      - src/Internal/CompiledExecutor.php
+  reportUnmatchedIgnoredErrors: false

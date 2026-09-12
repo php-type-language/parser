@@ -33,7 +33,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testResolvesImportedName(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         self::assertSame(
@@ -44,7 +44,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testResolvesImportedNamePrefix(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         self::assertSame(
@@ -55,7 +55,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testResolvesAliasedName(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
 
         self::assertSame(
@@ -66,7 +66,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testResolvesAliasItself(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
 
         self::assertSame(
@@ -93,7 +93,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('caseInsensitiveDataProvider')]
     public function testMatchesFirstSegmentCaseInsensitively(string $code, string $expected): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         self::assertSame($expected, $this->resolveName($resolver, $code));
@@ -101,7 +101,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testLeavesUnknownNameUnchanged(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         self::assertSame('Unknown', $this->resolveName($resolver, 'Unknown'));
@@ -117,7 +117,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testBuiltinTypeIsLeftUnchanged(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         self::assertSame('int', $this->resolveName($resolver, 'int'));
@@ -125,7 +125,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testLastImportWinsForDuplicateLastSegment(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('First\Node')
             ->withTypeImport('Second\Node');
 
@@ -134,7 +134,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testResolvesNamesInsideUnion(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node')
             ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
 
@@ -142,67 +142,49 @@ final class TypeResolverTest extends TypeResolverTestCase
             UnionTypeNode
               NamedTypeNode
                 Name(TypeLang\Parser\Node)
-                  Identifier(TypeLang)
-                  Identifier(Parser)
-                  Identifier(Node)
               NamedTypeNode
                 Name(TypeLang\Parser\Exception)
-                  Identifier(TypeLang)
-                  Identifier(Parser)
-                  Identifier(Exception)
             AST, $this->print($resolver->resolve($this->parse('Node|Error'))));
     }
 
     public function testResolvesNamesInsideShape(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node')
             ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
 
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(array)
-                Identifier(array)
-              Shape\FieldsListNode(sealed)
-                Shape\ImplicitFieldNode(required)
+              Shape\FieldsListNode(isSealed=true)
+                Shape\ImplicitFieldNode(isOptional=false)
                   NamedTypeNode
                     Name(TypeLang\Parser\Node)
-                      Identifier(TypeLang)
-                      Identifier(Parser)
-                      Identifier(Node)
-                Shape\ImplicitFieldNode(required)
+                Shape\ImplicitFieldNode(isOptional=false)
                   NamedTypeNode
                     Name(TypeLang\Parser\Exception\SemanticException)
-                      Identifier(TypeLang)
-                      Identifier(Parser)
-                      Identifier(Exception)
-                      Identifier(SemanticException)
             AST, $this->print($resolver->resolve($this->parse('array{Node, Error\SemanticException}'))));
     }
 
     public function testResolvesNamesInsideGenericArguments(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('Vendor\Collection')
             ->withTypeImport('Vendor\Node');
 
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Vendor\Collection)
-                Identifier(Vendor)
-                Identifier(Collection)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(Vendor\Node)
-                      Identifier(Vendor)
-                      Identifier(Node)
             AST, $this->print($resolver->resolve($this->parse('Collection<Node>'))));
     }
 
     public function testResolveMutatesInPlaceAndReturnsSameInstance(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         $source = $this->parse('Node');
@@ -262,7 +244,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('aliasCaseDataProvider')]
     public function testMatchesAliasCaseInsensitively(string $code, string $expected): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
 
         self::assertSame($expected, $this->resolveName($resolver, $code));
@@ -270,58 +252,50 @@ final class TypeResolverTest extends TypeResolverTestCase
 
     public function testResolvesNamesInsideCallableType(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node')
             ->withTypeImportAs('App\Err\Exception', 'Error');
 
         self::assertSame(<<<'AST'
             CallableTypeNode
               Name(callable)
-                Identifier(callable)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(simple)
+                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
                   NamedTypeNode
                     Name(App\Node)
-                      Identifier(App)
-                      Identifier(Node)
               NamedTypeNode
                 Name(App\Err\Exception)
-                  Identifier(App)
-                  Identifier(Err)
-                  Identifier(Exception)
             AST, $this->print($resolver->resolve($this->parse('callable(Node): Error'))));
     }
 
     public function testResolvesClassInClassConstant(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node');
 
         self::assertSame(<<<'AST'
             ClassConstNode
               Name(App\Node)
-                Identifier(App)
-                Identifier(Node)
               Identifier(FOO)
             AST, $this->print($resolver->resolve($this->parse('Node::FOO'))));
     }
 
     public function testResolvesClassInClassConstantMask(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node');
 
         self::assertSame(<<<'AST'
             ClassConstMaskNode
               Name(App\Node)
-                Identifier(App)
-                Identifier(Node)
+              MaskNode(*)
+                WildcardNode(*)
             AST, $this->print($resolver->resolve($this->parse('Node::*'))));
     }
 
     public function testResolvesNamesInsideIntersection(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node')
             ->withTypeImportAs('App\Err\Exception', 'Error');
 
@@ -329,19 +303,14 @@ final class TypeResolverTest extends TypeResolverTestCase
             IntersectionTypeNode
               NamedTypeNode
                 Name(App\Node)
-                  Identifier(App)
-                  Identifier(Node)
               NamedTypeNode
                 Name(App\Err\Exception)
-                  Identifier(App)
-                  Identifier(Err)
-                  Identifier(Exception)
             AST, $this->print($resolver->resolve($this->parse('Node&Error'))));
     }
 
     public function testResolvesNamesInsideConditional(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node')
             ->withTypeImportAs('App\Err\Exception', 'Error');
 
@@ -350,13 +319,8 @@ final class TypeResolverTest extends TypeResolverTestCase
               Condition\EqualConditionNode
                 NamedTypeNode
                   Name(App\Node)
-                    Identifier(App)
-                    Identifier(Node)
                 NamedTypeNode
                   Name(App\Err\Exception)
-                    Identifier(App)
-                    Identifier(Err)
-                    Identifier(Exception)
               Literal\BoolLiteralNode(true)
               Literal\BoolLiteralNode(false)
             AST, $this->print($resolver->resolve($this->parse('Node is Error ? true : false'))));
@@ -368,7 +332,7 @@ final class TypeResolverTest extends TypeResolverTestCase
      */
     public function testDoesNotResolveNamespaceRelativePrefix(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node');
 
         self::assertSame('namespace\Node', $this->resolveName($resolver, 'namespace\Node'));
@@ -393,7 +357,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('nonMatchingNameDataProvider')]
     public function testDoesNotResolveNonMatchingName(string $code): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node')
             ->withTypeImportAs('App\Err\Exception', 'Error');
 
@@ -418,7 +382,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('literalTypeDataProvider')]
     public function testLeavesLiteralTypesUntouched(string $code): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node');
 
         $source = $this->parse($code);
@@ -436,7 +400,7 @@ final class TypeResolverTest extends TypeResolverTestCase
      */
     public function testLeavesUnrelatedCompoundTypeUntouched(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('App\Node');
 
         $source = $this->parse('array<int, non-empty-string>|callable(bool): void');
@@ -453,7 +417,7 @@ final class TypeResolverTest extends TypeResolverTestCase
         $source = $this->parse('array{Node, Error\Sub}');
         $before = $this->print($source);
 
-        self::assertSame($before, $this->print(new TypeResolver()->resolve($source)));
+        self::assertSame($before, $this->print((new TypeResolver())->resolve($source)));
     }
 
     /**
@@ -463,7 +427,7 @@ final class TypeResolverTest extends TypeResolverTestCase
      */
     public function testMalformedImportIsRejected(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('\\');
 
         $this->expectException(\Throwable::class);
@@ -492,7 +456,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('fullyQualifiedNameDataProvider')]
     public function testFullyQualifiedNamesIgnoreImports(string $code, string $expected): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node')
             ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
 
@@ -525,7 +489,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('reservedBuiltinTypeDataProvider')]
     public function testReservedBuiltinTypeIsNeverRewrittenByImport(string $reserved): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport("Vendor\\{$reserved}");
 
         self::assertSame($reserved, $this->resolveName($resolver, $reserved));
@@ -547,7 +511,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('reservedSpecialTypeDataProvider')]
     public function testReservedSpecialTypeIsNeverRewrittenByImport(string $reserved): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport("Vendor\\{$reserved}");
 
         self::assertSame($reserved, $this->resolveName($resolver, $reserved));
@@ -571,7 +535,7 @@ final class TypeResolverTest extends TypeResolverTestCase
     #[DataProvider('nonMatchingSegmentDataProvider')]
     public function testImportMatchesWholeSegmentOnly(string $code): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('A\Node');
 
         self::assertSame($code, $this->resolveName($resolver, $code));
@@ -584,7 +548,7 @@ final class TypeResolverTest extends TypeResolverTestCase
      */
     public function testResolutionIsIdempotent(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImport('TypeLang\Parser\Node');
 
         $node = $this->parse('Node\Foo');
@@ -602,7 +566,7 @@ final class TypeResolverTest extends TypeResolverTestCase
      */
     public function testAliasSubstitutionKeepsAllTrailingSegments(): void
     {
-        $resolver = new TypeResolver()
+        $resolver = (new TypeResolver())
             ->withTypeImportAs('A\B\Exception', 'Error');
 
         self::assertSame(

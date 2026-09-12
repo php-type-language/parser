@@ -17,18 +17,13 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Path\To\ExampleClass)
-                Identifier(Path)
-                Identifier(To)
-                Identifier(ExampleClass)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(T)
-                      Identifier(T)
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(U)
-                      Identifier(U)
             AST, $this->parseAndPrint('Path\\To\\ExampleClass<T, U>'));
     }
 
@@ -37,12 +32,10 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Collection)
-                Identifier(Collection)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(User)
-                      Identifier(User)
             AST, $this->parseAndPrint('Collection<User>'));
     }
 
@@ -51,28 +44,23 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(iterable)
-                Identifier(iterable)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(int)
-                      Identifier(int)
                     Template\TemplateArgumentListNode
                       Template\TemplateArgumentNode
                         Literal\IntLiteralNode(0)
                       Template\TemplateArgumentNode
                         NamedTypeNode
                           Name(max)
-                            Identifier(max)
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(Collection)
-                      Identifier(Collection)
                     Template\TemplateArgumentListNode
                       Template\TemplateArgumentNode
                         NamedTypeNode
                           Name(User)
-                            Identifier(User)
             AST, $this->parseAndPrint('iterable<int<0, max>, Collection<User>>'));
     }
 
@@ -81,16 +69,13 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(HashMap)
-                Identifier(HashMap)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(Request)
-                      Identifier(Request)
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(User)
-                      Identifier(User)
             AST, $this->parseAndPrint('HashMap<Request, User,>'));
     }
 
@@ -99,17 +84,14 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(HashMap)
-                Identifier(HashMap)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(array-key)
-                      Identifier(array-key)
                 Template\TemplateArgumentNode
-                  Identifier(covariant)
                   NamedTypeNode
                     Name(Request)
-                      Identifier(Request)
+                  Identifier(covariant)
             AST, $this->parseAndPrint('HashMap<array-key, covariant Request>'));
     }
 
@@ -123,13 +105,10 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Type)
-                Identifier(Type)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(out\Some)
-                      Identifier(out)
-                      Identifier(Some)
             AST, $this->parseAndPrint('Type<out\\Some>'));
     }
 
@@ -143,13 +122,11 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Type)
-                Identifier(Type)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
-                  Identifier(out)
                   NamedTypeNode
                     Name(\Some)
-                      Identifier(Some)
+                  Identifier(out)
             AST, $this->parseAndPrint('Type<out \\Some>'));
     }
 
@@ -162,14 +139,10 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Type)
-                Identifier(Type)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
                   NamedTypeNode
                     Name(out\Some\Deep)
-                      Identifier(out)
-                      Identifier(Some)
-                      Identifier(Deep)
             AST, $this->parseAndPrint('Type<out\\Some\\Deep>'));
     }
 
@@ -182,40 +155,43 @@ final class GenericTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             NamedTypeNode
               Name(Type)
-                Identifier(Type)
               Template\TemplateArgumentListNode
                 Template\TemplateArgumentNode
-                  Identifier(out)
                   NamedTypeNode
                     Name(Some)
-                      Identifier(Some)
+                  Identifier(out)
             AST, $this->parseAndPrint('Type<out Some>'));
     }
 
     public function testMissingTemplateArgument(): void
     {
-        $this->expectParsingException('unexpected ">"');
+        $this->expectParsingException('an argument list must carry at least one argument');
 
         $this->parse('example<>');
     }
 
     public function testLeadingCommaIsNotAllowed(): void
     {
-        $this->expectParsingException('unexpected ","');
+        $this->expectParsingException('an argument list must carry at least one argument');
 
         $this->parse('example<,T>');
     }
 
     public function testHintAllowsOnlyIdentifiers(): void
     {
-        $this->expectParsingException('unexpected "User"');
+        $this->expectParsingException('an argument list must be closed with a bracket ">"');
 
         $this->parse('Collection<42 User>');
     }
 
+    /**
+     * A second hint reads as the bound of a template parameter, and a
+     * parameter list belongs to a callable, so the statement is refused
+     * where the parenthesis it would go on with is missing.
+     */
     public function testMultipleHintsAreNotAllowed(): void
     {
-        $this->expectParsingException('unexpected "Request"');
+        $this->expectParsingException('unexpected end of input');
 
         $this->parse('HashMap<array-key, some covariant Request>');
     }

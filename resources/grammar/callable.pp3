@@ -1,0 +1,67 @@
+
+// The "(T, U): V" of a callable type
+CallableSuffix
+  : ::T_PARENTHESIS_OPEN::
+        CallableParameters()
+    ::T_PARENTHESIS_CLOSE::     @error("Syntax error, unexpected {token}, a parameter list must be closed with a bracket \")\"")
+    CallableReturnType()?
+  ;
+
+CallableParameters -> {
+    return new Type\Callable\CallableParameterListNode($children, $offset);
+}
+  : ( CallableParameter()
+      ( ::T_COMMA:: CallableParameter() )*
+      ::T_COMMA::?
+    )?
+  ;
+
+CallableParameter -> {
+    $parameter = new Type\Callable\CallableParameterNode(
+        $children[0],
+        null,
+        false,
+        false,
+        false,
+        $offset,
+    );
+
+    for ($i = 1, $count = \count($children); $i < $count; ++$i) {
+        $child = $children[$i];
+
+        if ($child instanceof Type\VariableNode) {
+            $parameter->name = $child;
+
+            continue;
+        }
+
+        switch ($child->id) {
+            case self::T_AMP:
+                $parameter->isOutput = true;
+                break;
+
+            case self::T_ELLIPSIS:
+                $parameter->isVariadic = true;
+                break;
+
+            default:
+                if ($parameter->isVariadic) {
+                    throw Exception\VariadicWithDefaultException::becauseVariadicHasDefault($source, $offset);
+                }
+
+                $parameter->isOptional = true;
+        }
+    }
+
+    return $parameter;
+}
+  : Type()
+    <T_AMP>?
+    <T_ELLIPSIS>?
+    Variable()?
+    <T_ASSIGN>?
+  ;
+
+CallableReturnType
+  : ::T_COLON:: Type() @error("Syntax error, unexpected {token}, a callable must carry a type after the colon \":\"")
+  ;

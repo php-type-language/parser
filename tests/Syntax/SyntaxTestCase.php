@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Tests\Syntax;
 
 use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Parser\Exception\FeatureNotAllowedException;
-use TypeLang\Parser\Exception\ParseException;
+use TypeLang\Parser\Exception\ParserException;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Tests\TestCase;
@@ -22,13 +22,13 @@ abstract class SyntaxTestCase extends TestCase
         $this->expectException($class);
 
         if ($message !== null) {
-            $this->expectExceptionMessageIsOrContains($message);
+            $this->expectExceptionMessage($message);
         }
     }
 
     protected function expectParsingException(?string $message = null): void
     {
-        $this->expectParserExceptionOf(ParseException::class, $message);
+        $this->expectParserExceptionOf(ParserException::class, $message);
     }
 
     protected function expectSemanticException(?string $message = null): void

@@ -19,7 +19,6 @@ final class OffsetAccessTest extends SyntaxTestCase
               Literal\StringLiteralNode('offset')
               NamedTypeNode
                 Name(T)
-                  Identifier(T)
             AST, $this->parseAndPrint("T['offset']"));
     }
 
@@ -29,10 +28,8 @@ final class OffsetAccessTest extends SyntaxTestCase
             TypeOffsetAccessNode
               NamedTypeNode
                 Name(U)
-                  Identifier(U)
               NamedTypeNode
                 Name(T)
-                  Identifier(T)
             AST, $this->parseAndPrint('T[U]'));
     }
 
@@ -43,16 +40,13 @@ final class OffsetAccessTest extends SyntaxTestCase
               Literal\IntLiteralNode(0)
               NamedTypeNode
                 Name(array)
-                  Identifier(array)
-                Shape\FieldsListNode(sealed)
-                  Shape\ImplicitFieldNode(required)
+                Shape\FieldsListNode(isSealed=true)
+                  Shape\ImplicitFieldNode(isOptional=false)
                     NamedTypeNode
                       Name(int)
-                        Identifier(int)
-                  Shape\ImplicitFieldNode(required)
+                  Shape\ImplicitFieldNode(isOptional=false)
                     NamedTypeNode
                       Name(string)
-                        Identifier(string)
             AST, $this->parseAndPrint('array{int, string}[0]'));
     }
 
@@ -62,27 +56,23 @@ final class OffsetAccessTest extends SyntaxTestCase
             TypeOffsetAccessNode
               NamedTypeNode
                 Name(object)
-                  Identifier(object)
-                Shape\FieldsListNode(unsealed)
-                  Shape\NamedFieldNode(required)
+                Shape\FieldsListNode(isSealed=false)
+                  Shape\NamedFieldNode(isOptional=false)
                     Identifier(key)
                     NamedTypeNode
                       Name(int)
-                        Identifier(int)
               NamedTypeNode
                 Name(T)
-                  Identifier(T)
                 Template\TemplateArgumentListNode
                   Template\TemplateArgumentNode
                     NamedTypeNode
                       Name(U)
-                        Identifier(U)
             AST, $this->parseAndPrint('T<U>[object{key: int, ...}]'));
     }
 
     public function testOffsetCannotBeDoubleBracketed(): void
     {
-        $this->expectParsingException('unexpected "["');
+        $this->expectParsingException('an offset must be closed with a bracket "]"');
 
         $this->parse('Collection[[Some]]');
     }

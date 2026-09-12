@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
-use Phplrt\Contracts\Source\SourceExceptionInterface;
+use Phplrt\Contracts\Lexer\TokenInterface;
+use Phplrt\Contracts\Source\ReadableInterface;
 
-final class UnrecognizedTokenException extends ParseException
+final class UnrecognizedTokenException extends ParsingException
 {
     /**
      * Occurs when unable to recognize tokens in source code.
-     *
-     * @param int<0, max> $offset
-     * @throws SourceExceptionInterface
      */
-    public static function becauseTokenIsUnrecognized(string $token, string $statement, int $offset): self
+    public static function becauseTokenIsUnrecognized(ReadableInterface $source, TokenInterface $token): self
     {
-        $message = \vsprintf('Syntax error, unrecognized %s%s %s', [
-            Formatter::token($token),
-            $token === $statement ? '' : ' in ' . Formatter::source($statement),
-            Formatter::suffix($statement, $offset),
+        $message = \vsprintf('Syntax error, unexpected %s in %s', [
+            self::printToken($token),
+            self::printSource($source),
         ]);
 
-        return new self($message, self::ERROR_CODE_UNRECOGNIZED_TOKEN);
+        return new self($message, $source, $token);
     }
 }

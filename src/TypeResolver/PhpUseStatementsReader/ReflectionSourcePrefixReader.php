@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 
-final readonly class ReflectionSourcePrefixReader
+final class ReflectionSourcePrefixReader
 {
     /**
      * @param \ReflectionClass<object> $class

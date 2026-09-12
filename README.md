@@ -33,7 +33,7 @@ composer require type-lang/parser
 ```
 
 **Requirements:** 
-- PHP 8.4+
+- PHP 8.1+
 
 ## Usage
 

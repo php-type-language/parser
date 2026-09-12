@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
+use Phplrt\Contracts\Source\ReadableInterface;
+
 final class ShapeKeysMixingException extends SemanticException
 {
     /**
-     * Occurs when a shape mixes explicit and implicit keys.
+     * Occurs when a shape declares both explicit and implicit keys.
      *
      * @param int<0, max> $offset
      */
-    public static function becauseShapeKeysAreMixed(int $offset = 0): self
-    {
-        $message = 'Cannot mix explicit and implicit shape keys';
-
-        return new self($offset, $message, self::ERROR_CODE_SHAPE_KEY_MIX);
+    public static function becauseShapeKeysAreMixed(
+        ReadableInterface $source,
+        int $offset = 0,
+    ): self {
+        return new self(
+            self::describe(
+                'Cannot mix explicit and implicit shape keys',
+                $source,
+            ),
+            $source,
+            self::createToken($source, $offset),
+        );
     }
 }

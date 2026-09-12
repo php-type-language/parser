@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Traverser;
 
 final class StringDumperVisitor extends DumperVisitor
 {
-    public private(set) string $output = '';
+    public string $output = '';
 
     public function before(): void
     {

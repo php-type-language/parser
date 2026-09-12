@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
-use Phplrt\Contracts\Source\SourceExceptionInterface;
+use Phplrt\Contracts\Lexer\TokenInterface;
+use Phplrt\Contracts\Source\ReadableInterface;
 
-final class UnexpectedTokenException extends ParseException
+final class UnexpectedTokenException extends ParsingException
 {
     /**
      * Occurs when a known token is found in an unexpected source location.
      *
-     * @param int<0, max> $offset
-     * @throws SourceExceptionInterface
+     * The message is the one the grammar carries, whether it is written in
+     * an "@error" directive or worded by the parser itself.
      */
-    public static function becauseTokenIsUnexpected(string $token, string $statement, int $offset): self
-    {
-        $message = \vsprintf('Syntax error, unexpected %s%s %s', [
-            Formatter::token($token),
-            $token === $statement ? '' : ' in ' . Formatter::source($statement),
-            Formatter::suffix($statement, $offset),
+    public static function becauseTokenIsUnexpected(
+        string $message,
+        ReadableInterface $source,
+        TokenInterface $token,
+    ): self {
+        $message = \vsprintf('%s in %s', [
+            $message,
+            self::printSource($source),
         ]);
 
-        return new self($message, self::ERROR_CODE_UNEXPECTED_TOKEN);
+        return new self($message, $source, $token);
     }
 }

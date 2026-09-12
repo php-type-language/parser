@@ -18,7 +18,6 @@ final class ListTest extends SyntaxTestCase
             TypesListNode
               NamedTypeNode
                 Name(User)
-                  Identifier(User)
             AST, $this->parseAndPrint('User[]'));
     }
 
@@ -29,7 +28,6 @@ final class ListTest extends SyntaxTestCase
               TypesListNode
                 NamedTypeNode
                   Name(User)
-                    Identifier(User)
             AST, $this->parseAndPrint('User[][]'));
     }
 }

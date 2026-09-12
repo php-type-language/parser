@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Traverser\PropertyAccessor;
 
-final readonly class SimplePropertyAccessor implements PropertyAccessorInterface
+final class SimplePropertyAccessor implements PropertyAccessorInterface
 {
     /**
      * Skips static and hooked properties
      */
     private function shouldSkip(\ReflectionProperty $property): bool
     {
-        return $property->isStatic()
-            || $property->hasHooks();
+        if ($property->isStatic() || $property->isReadOnly()) {
+            return true;
+        }
+
+        // Property hooks are available since PHP 8.4
+        return \method_exists($property, 'hasHooks')
+            && $property->hasHooks();
     }
 
     public function unwrap(object $object): iterable

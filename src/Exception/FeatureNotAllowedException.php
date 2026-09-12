@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Exception;
 
+use Phplrt\Contracts\Source\ReadableInterface;
+
 final class FeatureNotAllowedException extends SemanticException
 {
     /**
@@ -13,10 +15,18 @@ final class FeatureNotAllowedException extends SemanticException
      * @param non-empty-string $name
      * @param int<0, max> $offset
      */
-    public static function becauseFeatureIsNotAllowed(string $name, int $offset = 0): self
-    {
-        $message = \sprintf('%s not allowed', \ucfirst($name));
-
-        return new self($offset, $message);
+    public static function becauseFeatureIsNotAllowed(
+        string $name,
+        ReadableInterface $source,
+        int $offset = 0,
+    ): self {
+        return new self(
+            self::describe(
+                \sprintf('%s not allowed', \ucfirst($name)),
+                $source,
+            ),
+            $source,
+            self::createToken($source, $offset),
+        );
     }
 }

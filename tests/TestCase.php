@@ -7,8 +7,10 @@ namespace TypeLang\Parser\Tests;
 use JetBrains\PhpStorm\Language;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use TypeLang\Parser\ParsedResult;
+use TypeLang\Parser\Partial\ParsedResult;
+use TypeLang\Parser\Partial\SuccessfulParsedResult;
 use TypeLang\Parser\Traverser;
+use TypeLang\Parser\Validation\CheckResult;
 use TypeLang\Parser\TypeParser;
 use TypeLang\Parser\TypeParserFeatures;
 use TypeLang\Parser\TypeParserInterface;
@@ -27,15 +29,12 @@ use TypeLang\Type\TypeNode;
  *     list?: bool,
  *     offsets?: bool,
  *     hints?: bool,
- *     attributes?: bool,
  * }
  */
 #[Group('unit'), Group('type-lang/parser')]
 abstract class TestCase extends BaseTestCase
 {
-    protected TypeParserInterface $parser {
-        get => $this->parser ??= new TypeParser();
-    }
+    private ?TypeParserInterface $parser = null;
 
     /**
      * @param ParserOptionsType $options
@@ -43,7 +42,7 @@ abstract class TestCase extends BaseTestCase
     protected function parser(array $options = []): TypeParserInterface
     {
         if ($options === []) {
-            return $this->parser;
+            return $this->parser ??= new TypeParser();
         }
 
         return new TypeParser(new TypeParserFeatures(...$options));
@@ -64,11 +63,22 @@ abstract class TestCase extends BaseTestCase
      * @param ParserOptionsType $options
      * @throws \Throwable
      */
-    protected function parseTolerant(#[Language('PHP')] string $code, array $options = []): ParsedResult
+    protected function partial(#[Language('PHP')] string $code, array $options = []): ParsedResult
     {
         $parser = $this->parser($options);
 
-        return $parser->parseTolerant($code);
+        return $parser->partial($code);
+    }
+
+    /**
+     * @param ParserOptionsType $options
+     * @throws \Throwable
+     */
+    protected function validate(#[Language('PHP')] string $code, array $options = []): CheckResult
+    {
+        $parser = $this->parser($options);
+
+        return $parser->validate($code);
     }
 
     protected function print(TypeNode $statement): string
@@ -96,7 +106,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected function tolerantParseAndPrint(#[Language('PHP')] string $code, array $options = []): string
     {
-        $result = $this->parseTolerant($code, $options);
+        $result = $this->partial($code, $options);
+
+        self::assertInstanceOf(SuccessfulParsedResult::class, $result);
 
         return $this->print($result->type);
     }

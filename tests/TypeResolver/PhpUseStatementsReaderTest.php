@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\TypeResolver;
 
 use TypeLang\Parser\Tests\TypeResolver\Stub\ClassWithGroupUsesStub;
+use TypeLang\Parser\Tests\TypeResolver\Stub\ClassWithMethodStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\ClosureUseStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\CommentsAroundUsesStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\FunctionAndConstUseStub;
@@ -20,9 +21,7 @@ use TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 
 final class PhpUseStatementsReaderTest extends TypeResolverTestCase
 {
-    private PhpUseStatementsReader $reader {
-        get => $this->reader ??= new PhpUseStatementsReader();
-    }
+    private ?PhpUseStatementsReader $reader = null;
 
     /**
      * @param class-string $class
@@ -31,7 +30,25 @@ final class PhpUseStatementsReaderTest extends TypeResolverTestCase
      */
     private function read(string $class): array
     {
-        return $this->reader->getClassUseStatements(new \ReflectionClass($class));
+        return ($this->reader ??= new PhpUseStatementsReader())->getClassUseStatements(new \ReflectionClass($class));
+    }
+
+    /**
+     * @return array<int|non-empty-string, non-empty-string>
+     */
+    private function readFunction(\ReflectionFunctionAbstract $function): array
+    {
+        return ($this->reader ??= new PhpUseStatementsReader())->getFunctionUseStatements($function);
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    private function functionStub(): \ReflectionFunction
+    {
+        require_once __DIR__ . '/Stub/functions.php';
+
+        return new \ReflectionFunction(__NAMESPACE__ . '\Stub\exampleFunctionStub');
     }
 
     public function testReadsPlainAndAliasedImports(): void
@@ -182,5 +199,34 @@ final class PhpUseStatementsReaderTest extends TypeResolverTestCase
             // Some\C;
             'Some\C',
         ], $this->read(MultipleImportsPerStatementStub::class));
+    }
+
+    public function testReadsImportsOfFunction(): void
+    {
+        self::assertSame([
+            // use Some\Any;
+            'Some\Any',
+            // use Some\Any\Test as Example;
+            'Example' => 'Some\Any\Test',
+            // use function Some\helper;
+            'Some\helper',
+        ], $this->readFunction($this->functionStub()));
+    }
+
+    /**
+     * A method is not a namespaced symbol on its own, so its imports have to
+     * be read from the declaring class instead.
+     */
+    public function testReturnsEmptyForMethod(): void
+    {
+        self::assertSame(
+            [],
+            $this->readFunction(new \ReflectionMethod(ClassWithMethodStub::class, 'example')),
+        );
+    }
+
+    public function testReturnsEmptyForInternalFunction(): void
+    {
+        self::assertSame([], $this->readFunction(new \ReflectionFunction('strlen')));
     }
 }

@@ -1,0 +1,209 @@
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Language Syntax Summary
+ * -----------------------------------------------------------------------------
+ */
+
+%include grammar/lexemes
+%include grammar/common
+%include grammar/literals
+%include grammar/template-arguments     // T<TArg, TArg2>
+%include grammar/template-parameters    // callable<TParam of Some>(): void
+%include grammar/callable               // callable(mixed): void
+%include grammar/shape-fields           // array { key: int, ...<TKey, TValue> }
+%include grammar/named-type             // Map<int<0, max>, non-empty-string>
+
+// The lexer reads bytes rather than codepoints, so a "Тип" is a name the way a "Type" is
+%pragma lexer.pcre.disable u
+
+%pragma root Type
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Type Statement
+ * -----------------------------------------------------------------------------
+ */
+
+// The logical operators and the condition are read by this very rule rather
+// than by a level of their own: every type the reading goes through is read
+// through each of those levels, while an operator stands in only a few of
+// them.
+Type -> {
+    if (\count($children) === 1) {
+        return $children[0];
+    }
+
+    // The suffix of a condition is the only thing the rule reads that carries
+    // a flag of its own, which is what the operands are told from
+    $condition = null;
+
+    for ($i = 1, $count = \count($children); $i < $count; ++$i) {
+        if (\is_bool($children[$i])) {
+            $condition = \array_splice($children, $i);
+
+            break;
+        }
+    }
+
+    // The operands joined by an ampersand bind tighter, so they are collected
+    // into a group of their own, and the groups are what a union is made of
+    $groups = [];
+    $group = [$children[0]];
+    $isUnion = false;
+    $isIntersection = false;
+
+    for ($i = 1, $count = \count($children); $i < $count; $i += 2) {
+        if ($children[$i]->id === self::T_OR) {
+            $isUnion = true;
+            $groups[] = $group;
+            $group = [$children[$i + 1]];
+
+            continue;
+        }
+
+        $isIntersection = true;
+        $group[] = $children[$i + 1];
+    }
+
+    $groups[] = $group;
+
+    // The operand that binds tighter is the one reported first, the way the
+    // reading would have reached it
+    if ($isIntersection && $this->features->intersections === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('intersection types', $source, $offset);
+    }
+
+    if ($isUnion && $this->features->unions === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('union types', $source, $offset);
+    }
+
+    $statements = [];
+
+    foreach ($groups as $group) {
+        $statements[] = \count($group) === 1
+            ? $group[0]
+            : new Type\IntersectionTypeNode($group, $group[0]->offset);
+    }
+
+    $statement = \count($statements) === 1
+        ? $statements[0]
+        : new Type\UnionTypeNode($statements, $offset);
+
+    if ($condition === null) {
+        return $statement;
+    }
+
+    if ($this->features->conditions === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('conditional expressions', $source, $offset);
+    }
+
+    $comparison = $condition[0]
+        ? new Type\Condition\NotEqualConditionNode($statement, $condition[1], $offset)
+        : new Type\Condition\EqualConditionNode($statement, $condition[1], $offset);
+
+    return new Type\TernaryExpressionNode(
+        $comparison,
+        $condition[2],
+        $condition[3],
+        $offset,
+    );
+}
+  : UnaryType() LogicalTail()* TernaryExpressionSuffix()?
+  | Variable() TernaryExpressionSuffix()
+  ;
+
+TernaryExpressionSuffix
+  : TernaryExpressionOperator() (Type() | Variable())
+    ::T_QMARK:: Type()  @error("Syntax error, unexpected {token}, a condition must carry the type it is true of")
+    ::T_COLON::         @error("Syntax error, unexpected {token}, a condition must be parted with a colon \":\"")
+    Type()              @error("Syntax error, unexpected {token}, a condition must carry the type it is false of")
+  ;
+
+// An "is" or an "is not"
+TernaryExpressionOperator -> {
+    return \count($children) === 2;
+}
+  : <T_EQ> <T_NOT>?
+  ;
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Logical Statements
+ * -----------------------------------------------------------------------------
+ */
+
+LogicalTail
+  : <T_OR> UnaryType()  @error("Syntax error, unexpected {token}, a union type must carry a type after the vertical bar \"|\", for example \"T|U\"")
+  | <T_AMP> UnaryType() @error("Syntax error, unexpected {token}, an intersection type must carry a type after the ampersand \"&\", for example \"T&U\"")
+  ;
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Unary Statements
+ * -----------------------------------------------------------------------------
+ */
+
+UnaryType
+  : NullableType()
+  | ListOrOffsetType()
+  ;
+
+NullableType -> {
+    return new Type\NullableTypeNode($children[0], $offset);
+}
+  : ::T_QMARK:: ListOrOffsetType() @error("Syntax error, unexpected {token}, a nullable type must carry the type it makes nullable, for example \"?T\"")
+  ;
+
+ListOrOffsetType -> {
+    $statement = $children[0];
+    $count = \count($children);
+
+    for ($i = 1; $i < $count; ++$i) {
+        $child = $children[$i];
+
+        switch (true) {
+            case $child === true:
+                if ($this->features->lists === false) {
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('square bracket list types', $source, $offset);
+                }
+
+                $statement = new Type\TypesListNode($statement, $offset);
+                break;
+            case $child instanceof Type\TypeNode:
+                if ($this->features->offsets === false) {
+                    throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('type offsets', $source, $offset);
+                }
+
+                $statement = new Type\TypeOffsetAccessNode($statement, $child, $offset);
+                break;
+            default:
+                throw Exception\InternalSemanticException::becauseSubNodeIsUnexpected(
+                    \get_debug_type($child),
+                    $source,
+                    $offset,
+                );
+        }
+    }
+
+    return $statement;
+}
+  : PrimaryType()
+    ListOrOffsetSuffix()*
+  ;
+
+ListOrOffsetSuffix -> {
+    return $children[0] ?? true;
+}
+  : ::T_SQUARE_BRACKET_OPEN::
+      Type()?
+    ::T_SQUARE_BRACKET_CLOSE:: @error("Syntax error, unexpected {token}, an offset must be closed with a bracket \"]\"")
+  ;
+
+PrimaryType
+  : ::T_PARENTHESIS_OPEN:: Type() ::T_PARENTHESIS_CLOSE:: @error("Syntax error, unexpected {token}, a group must be closed with a bracket \")\"")
+  | ThisType()
+  | LiteralType()
+  | NamedType()
+  | LeadingMaskType()
+  ;

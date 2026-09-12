@@ -4,8 +4,31 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 
-final readonly class NamespaceFinder
+final class NamespaceFinder
 {
+    /**
+     * Returns the last namespace the given source declares, which is the one
+     * whatever the source ends with is written in.
+     *
+     * @param \Iterator<array-key, \PhpToken> $tokens
+     */
+    public function findLast(\Iterator $tokens): string
+    {
+        $result = '';
+
+        while ($tokens->valid()) {
+            if ($tokens->current()->id === \T_NAMESPACE) {
+                $result = $this->readNamespace($tokens);
+
+                continue;
+            }
+
+            $tokens->next();
+        }
+
+        return $result;
+    }
+
     /**
      * @param \Iterator<array-key, \PhpToken> $tokens
      * @return \Iterator<array-key, \PhpToken>

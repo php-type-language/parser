@@ -1,0 +1,118 @@
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Named Types
+ * -----------------------------------------------------------------------------
+ */
+
+// A name is read by this very rule rather than by one of its own: a type is
+// named far more often than anything else is read, so every rule the reading
+// goes through on its way here is paid for by the whole grammar.
+NamedType -> {
+    $head = $children[0];
+    $suffix = $children[1] ?? null;
+
+    // "Some\Any\*" and "Some\Any\SOME_*"
+    //
+    // A mask closes the type it is written at the end of, so it is read as a
+    // suffix of a name and never carries a suffix of its own.
+    if ($suffix instanceof Type\MaskNode || $suffix instanceof Type\WildcardNode) {
+        $parts = $head->parts;
+
+        if ($suffix instanceof Type\MaskNode) {
+            // "Some\Any\*"
+            $mask = $suffix;
+        } else {
+            // "Some\Any\SOME_*"
+            $segment = \array_pop($parts);
+            $mask = new Type\MaskNode([$segment, ...\array_slice($children, 1)], $segment->offset);
+        }
+
+        return new Type\ConstMaskNode(
+            $mask,
+            $parts === []
+                ? $head->isFullyQualified
+                : new Type\Name($parts, $head->isFullyQualified, $head->offset),
+            $offset,
+        );
+    }
+
+    switch (true) {
+        // Some\Any
+        case $suffix === null:
+            return new Type\NamedTypeNode($children[0], null, null, $offset);
+
+        // Some\Any<T, U>
+        case $suffix instanceof Type\Template\TemplateArgumentListNode:
+            return new Type\NamedTypeNode($children[0], $suffix, null, $offset);
+
+        // Some\Any{name: T, ...<K, V>}
+        case $suffix instanceof Type\Shape\FieldsListNode:
+            return new Type\NamedTypeNode($children[0], $children[2] ?? null, $suffix, $offset);
+
+        // Some\Any(T, U): V
+        case $suffix instanceof Type\Callable\CallableParameterListNode:
+            if ($this->features->callables === false) {
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('callable types', $source, $offset);
+            }
+
+            return new Type\CallableTypeNode($children[0], $suffix, $children[2] ?? null, null, $offset);
+
+        // Some\Any<T, U>(T): U
+        case $suffix instanceof Type\Template\TemplateParameterListNode:
+            if ($this->features->callables === false) {
+                throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('callable types', $source, $offset);
+            }
+
+            return new Type\CallableTypeNode($children[0], $children[2], $children[3] ?? null, $suffix, $offset);
+
+        // Some\Any::CONST, Some\Any::CONST_* and Some\Any::*
+        default:
+            if (\count($children) === 3 && $children[2] instanceof Type\Identifier) {
+                return new Type\ClassConstNode($children[0], $children[2], $offset);
+            }
+
+            return new Type\ClassConstMaskNode(
+                $children[0],
+                new Type\MaskNode(\array_slice($children, 2), $children[2]->offset),
+                $offset,
+            );
+    }
+}
+  : Name() NamedTypeSuffix()?
+  ;
+
+NamedTypeSuffix
+  : ClassConstSuffix()
+  | CallableSuffix()
+  | TemplateArguments() !::T_PARENTHESIS_OPEN::
+  | TemplateParameters() CallableSuffix()
+  | ShapeFields()
+  | MaskTail()
+  | NamespacedMask()
+  ;
+
+// "*_SOME" — a mask that carries no name in front of it
+LeadingMaskType -> {
+    return new Type\ConstMaskNode(new Type\MaskNode($children, $offset), false, $offset);
+}
+  : WildcardType() Identifier() MaskTail()?
+  ;
+
+MaskTail
+  : WildcardType() ( Identifier() WildcardType() )* Identifier()?
+  ;
+
+NamespacedMask -> {
+    return new Type\MaskNode($children, $offset);
+}
+  : ::T_NS_DELIMITER:: MaskTail()
+  ;
+
+// The "::CONST", "::CONST_*", "::*" and "::A*B" of a class constant
+ClassConstSuffix
+  : <T_DOUBLE_COLON>
+    ( Identifier() MaskTail()?
+    | MaskTail()
+    ) @error("Syntax error, unexpected {token}, a class constant must carry a name after the double colon, for example \"Some::CONST\"")
+  ;

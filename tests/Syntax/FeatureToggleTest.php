@@ -31,7 +31,6 @@ final class FeatureToggleTest extends SyntaxTestCase
         yield 'lists' => [['lists' => false], 'int[]', 'Square bracket list types not allowed'];
         yield 'offsets' => [['offsets' => false], 'T[U]', 'Type offsets not allowed'];
         yield 'conditions' => [['conditions' => false], 'A is B ? C : D', 'Conditional expressions not allowed'];
-        yield 'attributes' => [['attributes' => false], 'T<#[a] U>', 'Template argument attributes not allowed'];
         yield 'hints' => [['hints' => false], 'T<in U>', 'Template argument hints not allowed'];
     }
 
@@ -55,7 +54,7 @@ final class FeatureToggleTest extends SyntaxTestCase
 
     public function testTrailingTextIsAllowedInTolerantMode(): void
     {
-        $result = $this->parseTolerant('int and more text');
+        $result = $this->partial('int and more text');
         $type = $result->type;
 
         self::assertInstanceOf(NamedTypeNode::class, $type);

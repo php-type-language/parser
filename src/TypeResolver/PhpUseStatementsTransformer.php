@@ -41,12 +41,12 @@ use TypeLang\Type\Name;
  * // > }
  * ```
  */
-final readonly class PhpUseStatementsTransformer
+final class PhpUseStatementsTransformer
 {
     /**
      * @var array<non-empty-lowercase-string, Name>
      */
-    private array $replacements;
+    private readonly array $replacements;
 
     /**
      * @param iterable<non-empty-string|array-key, non-empty-string|Name> $replacements
@@ -73,7 +73,7 @@ final readonly class PhpUseStatementsTransformer
 
             // normalize key
             if (\is_int($key) || $key === '') {
-                $key = $replacement->last->toString();
+                $key = $replacement->getLastPartAsString();
             }
 
             $result[\strtolower($key)] = $replacement;
@@ -89,17 +89,17 @@ final readonly class PhpUseStatementsTransformer
             return true;
         }
 
+        $first = $name->getFirstPart();
+
         // Non-FQN names prefixed with "namespace" must not be replaced
-        if (!$name->isSimple) {
-            return $name->first->toLowerString() === 'namespace';
+        if (!$name->isSimple()) {
+            return $first->toLowerString() === 'namespace';
         }
 
-        $first = $name->first;
-
         // builtin types must not be replaced
-        return $first->isBuiltin
+        return $first->isBuiltin()
             // special types also must not be replaced
-            || $first->isSpecial;
+            || $first->isSpecial();
     }
 
     public function __invoke(Name $name): ?Name
@@ -108,7 +108,7 @@ final readonly class PhpUseStatementsTransformer
             return null;
         }
 
-        $first = \strtolower($name->first->toString());
+        $first = \strtolower($name->getFirstPartAsString());
         $prefix = $this->replacements[$first] ?? null;
 
         return $prefix?->mergeWith($name);

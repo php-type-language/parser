@@ -4,6 +4,9 @@
 declare(strict_types=1);
 
 use Phplrt\Compiler\Compiler;
+use Phplrt\Compiler\Generator\ClassModifier;
+use Phplrt\Compiler\Generator\TargetPhpVersion;
+use Phplrt\Source\FileSource;
 
 if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
     trigger_error('The console should be invoked via the CLI '
@@ -31,20 +34,16 @@ if (!class_exists(Compiler::class)) {
     exit(-1);
 }
 
-$grammar = (new Compiler())
-    ->load(new SplFileInfo(__DIR__ . '/../resources/grammar.pp2'))
-    ->build()
-        ->withClassReference('TypeLang\\Type')
-        ->withClassReference('TypeLang\\Parser\\Exception')
-    ->generate();
-
-file_put_contents(__DIR__ . '/../resources/grammar.php', $grammar);
-
-//
-// Postprocess and optimize output grammar
-//
-
-$data = file_get_contents(__DIR__ . '/../resources/grammar.php');
-
-// Replace functions to static one
-file_put_contents(__DIR__ . '/../resources/grammar.php', $data);
+(new Compiler())
+    ->load(FileSource::createFromPathname(__DIR__ . '/../resources/grammar.pp3'))
+    ->generate()
+        ->withNamespaceName('TypeLang\\Parser\\Internal')
+        ->withClassName('CompiledExecutor')
+        ->withClassModifier(ClassModifier::Abstract)
+        // The parser carries the features it recognizes a source with, so it
+        // is declared as a mutable class rather than a readonly one.
+        ->withReadonly(false)
+        ->withTargetPhpVersion(TargetPhpVersion::Php81)
+        ->withClassImport('TypeLang\\Type')
+        ->withClassImport('TypeLang\\Parser\\Exception')
+        ->save(__DIR__ . '/../src/Internal/CompiledExecutor.php');

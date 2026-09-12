@@ -6,6 +6,8 @@ namespace TypeLang\Parser;
 
 use JetBrains\PhpStorm\Language;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
+use TypeLang\Parser\Partial\ParsedResult;
+use TypeLang\Parser\Validation\CheckResult;
 use TypeLang\Type\TypeNode;
 
 /**
@@ -49,7 +51,7 @@ interface TypeParserInterface
      * code.
      *
      * ```
-     * $result = $parser->tolerant('array{ field: result } This is an example');
+     * $result = $parser->partial('array{ field: result } This is an example');
      *
      * $result->type;
      * // => NamedTypeNode{ name: "array", ...
@@ -61,7 +63,7 @@ interface TypeParserInterface
      * To get information about the remaining part, just apply `substr` to source:
      * ```
      * $source = 'array{ field: result } This is an example';
-     * $result = $parser->tolerant($source);
+     * $result = $parser->partial($source);
      *
      * echo substr($source, $result->offset);
      * // => "This is an example"
@@ -73,5 +75,31 @@ interface TypeParserInterface
      * @throws ParserExceptionInterface in case of parsing exception occurs
      * @throws \Throwable in case of internal error occurs
      */
-    public function parseTolerant(#[Language('PHP')] mixed $source): ParsedResult;
+    public function partial(#[Language('PHP')] mixed $source): ParsedResult;
+
+    /**
+     * Tells whether the provided source code is a type, building nothing
+     * of it.
+     *
+     * Nothing is built while a source is checked, so this method is the
+     * cheaper one of the three whenever the type itself is of no use.
+     *
+     * ```
+     * $parser->validate('array{ field: result }');
+     * // => SuccessfulCheckResult
+     *
+     * $parser->validate('array{ field: result } and more');
+     * // => PartialCheckResult
+     *
+     * $parser->validate('array{');
+     * // => FailureCheckResult
+     * ```
+     *
+     * @param TSource $source source code to check
+     * @return CheckResult what stands in the way of the reading, in case of
+     *         anything does
+     * @throws ParserExceptionInterface in case of parsing exception occurs
+     * @throws \Throwable in case of internal error occurs
+     */
+    public function validate(#[Language('PHP')] mixed $source): CheckResult;
 }

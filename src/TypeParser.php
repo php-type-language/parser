@@ -5,37 +5,33 @@ declare(strict_types=1);
 namespace TypeLang\Parser;
 
 use JetBrains\PhpStorm\Language;
-use Phplrt\Contracts\Parser\ParserRuntimeExceptionInterface;
+use Phplrt\Contracts\Lexer\TokenInterface;
+use Phplrt\Contracts\Source\Exception\SourceExceptionInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
-use Phplrt\Contracts\Source\SourceExceptionInterface;
 use Phplrt\Contracts\Source\SourceFactoryInterface;
-use Phplrt\Parser\Exception\UnexpectedTokenException as LexerUnexpectedTokenException;
-use Phplrt\Parser\Exception\UnrecognizedTokenException as LexerUnrecognizedTokenException;
 use Phplrt\Source\SourceFactory;
-use TypeLang\Parser\Exception\InternalParseException;
-use TypeLang\Parser\Exception\ParseException;
-use TypeLang\Parser\Exception\SemanticException;
-use TypeLang\Parser\Exception\SemanticParseException;
-use TypeLang\Parser\Exception\UnexpectedTokenException;
-use TypeLang\Parser\Exception\UnrecognizedSyntaxException;
-use TypeLang\Parser\Exception\UnrecognizedTokenException;
-use TypeLang\Parser\Internal\ExecutionContext;
+use TypeLang\Parser\Internal\Executor;
+use TypeLang\Parser\Partial\ParsedResult;
+use TypeLang\Parser\Validation\CheckResult;
 use TypeLang\Type\TypeNode;
 
+/**
+ * @template-contravariant TSource of mixed = mixed
+ *
+ * @template-implements TypeParserInterface<TSource>
+ */
 final class TypeParser implements TypeParserInterface
 {
-    private ExecutionContext $strict {
-        get => $this->strict ??= new ExecutionContext($this->features, false);
-    }
+    private readonly SourceFactoryInterface $sources;
 
-    private ExecutionContext $tolerant {
-        get => $this->tolerant ??= new ExecutionContext($this->features, true);
-    }
+    private ?Executor $executor = null;
 
     public function __construct(
         public readonly TypeParserFeatures $features = new TypeParserFeatures(),
-        private readonly SourceFactoryInterface $sources = new SourceFactory(),
-    ) {}
+        ?SourceFactoryInterface $sources = null,
+    ) {
+        $this->sources = $sources ?? SourceFactory::createDefault();
+    }
 
     /**
      * Returns a new parser with an overridden parser feature flag.
@@ -55,99 +51,72 @@ final class TypeParser implements TypeParserInterface
         );
     }
 
+    /**
+     * Reads the provided source code into the tokens it is written of,
+     * building nothing out of them.
+     *
+     * The tokens are what every other method of this parser reads the source
+     * through, so this is the source as the grammar sees it: what a token is
+     * called, what it carries, and where it stands.
+     *
+     * ```
+     * foreach ($parser->lex('array{ field: result }') as $token) {
+     *     echo $token->name . ' ' . $token->value . \PHP_EOL;
+     * }
+     *
+     * // => T_NAME array
+     * // => T_BRACE_OPEN {
+     * // => ...
+     * ```
+     *
+     * @param TSource $source source code to read
+     * @return iterable<array-key, TokenInterface> the tokens the source is
+     *         written of
+     * @throws \Throwable in case of internal error occurs
+     */
+    public function lex(#[Language('PHP')] mixed $source): iterable
+    {
+        $executor = $this->getExecutor();
+
+        return $executor->lex($this->toSource($source));
+    }
+
     public function parse(#[Language('PHP')] mixed $source): TypeNode
     {
-        $result = $this->execute($this->strict, $source);
+        $executor = $this->getExecutor();
 
-        return $result->type;
+        return $executor->parse($this->toSource($source));
     }
 
-    public function parseTolerant(#[Language('PHP')] mixed $source): ParsedResult
+    public function partial(#[Language('PHP')] mixed $source): ParsedResult
     {
-        return $this->execute($this->tolerant, $source);
+        $executor = $this->getExecutor();
+
+        return $executor->partial($this->toSource($source));
     }
 
-    private function execute(ExecutionContext $context, mixed $source): ParsedResult
+    public function validate(#[Language('PHP')] mixed $source): CheckResult
     {
-        try {
-            $instance = $this->sources->create($source);
+        $executor = $this->getExecutor();
 
-            try {
-                return $context->parse($instance)
-                    ?? throw InternalParseException::becauseTypeStatementIsUnreadable();
-            } catch (LexerUnexpectedTokenException $e) {
-                throw $this->unexpectedTokenError($e, $instance);
-            } catch (LexerUnrecognizedTokenException $e) {
-                throw $this->unrecognizedTokenError($e, $instance);
-            } catch (ParserRuntimeExceptionInterface $e) {
-                throw $this->parserRuntimeError($e, $instance);
-            } catch (SemanticException $e) {
-                throw $this->semanticError($e, $instance);
-            } catch (\Throwable $e) {
-                throw $this->internalError($e, $instance);
-            }
-        } catch (SourceExceptionInterface $e) {
-            throw InternalParseException::becauseSourceIsUnreadable($e);
-        }
+        return $executor->validate($this->toSource($source));
     }
 
     /**
-     * @throws SourceExceptionInterface in case of source content reading error
+     * @throws SourceExceptionInterface in case of no source can be created out
+     *         of the given value
      */
-    private function unexpectedTokenError(LexerUnexpectedTokenException $e, ReadableInterface $source): ParseException
+    private function toSource(mixed $source): ReadableInterface
     {
-        $token = $e->getToken();
-
-        return UnexpectedTokenException::becauseTokenIsUnexpected(
-            token: $token->getValue(),
-            statement: $source->getContents(),
-            offset: $token->getOffset(),
-        );
+        return $this->sources->create($source);
     }
 
     /**
-     * @throws SourceExceptionInterface in case of source content reading error
+     * Returns a lazily created parser recognizing a source with the features
+     * of this one.
      */
-    private function unrecognizedTokenError(LexerUnrecognizedTokenException $e, ReadableInterface $source): ParseException
+    private function getExecutor(): Executor
     {
-        $token = $e->getToken();
-
-        return UnrecognizedTokenException::becauseTokenIsUnrecognized(
-            token: $token->getValue(),
-            statement: $source->getContents(),
-            offset: $token->getOffset(),
-        );
-    }
-
-    /**
-     * @throws SourceExceptionInterface in case of source content reading error
-     */
-    private function semanticError(SemanticException $e, ReadableInterface $source): ParseException
-    {
-        return SemanticParseException::becauseSemanticErrorOccurs($e, $source);
-    }
-
-    /**
-     * @throws SourceExceptionInterface in case of source content reading error
-     */
-    private function parserRuntimeError(ParserRuntimeExceptionInterface $e, ReadableInterface $source): ParseException
-    {
-        $token = $e->getToken();
-
-        return UnrecognizedSyntaxException::becauseSyntaxIsUnrecognized(
-            statement: $source->getContents(),
-            offset: $token->getOffset(),
-        );
-    }
-
-    /**
-     * @throws SourceExceptionInterface in case of source content reading error
-     */
-    private function internalError(\Throwable $e, ReadableInterface $source): ParseException
-    {
-        return InternalParseException::becauseInternalErrorOccurs(
-            statement: $source->getContents(),
-            e: $e,
-        );
+        return $this->executor ??= new Executor($this->features);
     }
 }

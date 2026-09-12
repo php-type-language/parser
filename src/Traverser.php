@@ -23,7 +23,9 @@ final class Traverser implements TraverserInterface
         iterable $visitors = [],
         private PropertyAccessorInterface $propertyAccessor = new SimplePropertyAccessor(),
     ) {
-        $this->visitors = \iterator_to_array($visitors, false);
+        $this->visitors = \is_array($visitors)
+            ? \array_values($visitors)
+            : \iterator_to_array($visitors, false);
     }
 
     /**

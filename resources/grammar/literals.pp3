@@ -1,0 +1,90 @@
+
+LiteralType -> {
+    if ($this->features->literals === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('literal values', $source, $offset);
+    }
+    return $children;
+}
+  : ScalarType()
+  | NullLiteralType()
+  ;
+
+ScalarType
+  : StringLiteralType()
+  | FloatLiteralType()
+  | IntLiteralType()
+  | TrueLiteralType()
+  | FalseLiteralType()
+  ;
+
+StringLiteralType
+  : DoubleQuotedStringLiteralType()
+  | SingleQuotedStringLiteralType()
+  ;
+
+DoubleQuotedStringLiteralType -> {
+    return new Type\Literal\StringLiteralNode(
+        StringDecoder::unpackAndDecode($children->value, true),
+        $children->value,
+        $offset,
+    );
+}
+  : <T_DQ_STRING_LITERAL>
+  ;
+
+SingleQuotedStringLiteralType -> {
+    return new Type\Literal\StringLiteralNode(
+        StringDecoder::unpackAndDecode($children->value, false),
+        $children->value,
+        $offset,
+    );
+}
+  : <T_SQ_STRING_LITERAL>
+  ;
+
+FloatLiteralType -> {
+    return new Type\Literal\FloatLiteralNode(
+        FloatDecoder::decode($children->value),
+        $children->value,
+        $offset,
+    );
+}
+  : <T_FLOAT_LITERAL>
+  ;
+
+IntLiteralType -> {
+    $decoded = IntDecoder::decode($children->value);
+
+    return new Type\Literal\IntLiteralNode(
+        $decoded->value,
+        $children->value,
+        $decoded->decimal,
+        $offset,
+    );
+}
+  : <T_BIN_INT_LITERAL>
+  | <T_OCT_INT_LITERAL>
+  | <T_HEX_INT_LITERAL>
+  | <T_DEC_INT_LITERAL>
+  ;
+
+TrueLiteralType -> {
+    return new Type\Literal\BoolLiteralNode(true, $children->value, $offset);
+}
+  : <T_TRUE_LITERAL>
+  ;
+
+FalseLiteralType -> {
+    return new Type\Literal\BoolLiteralNode(false, $children->value, $offset);
+}
+  : <T_FALSE_LITERAL>
+  ;
+
+NullLiteralType -> {
+    return new Type\Literal\NullLiteralNode(
+        $children->value,
+        $offset,
+    );
+}
+  : <T_NULL_LITERAL>
+  ;

@@ -1,0 +1,68 @@
+
+// "Some\Any" or "\Some\Any"
+Name -> {
+    // "Some\Any" starts at a segment of its own
+    if ($children[0] instanceof Type\Identifier) {
+        return new Type\Name($children, false, $offset);
+    }
+
+    // "\Some\Any" carries the separator in front of its segments, and the
+    // name itself is the part that follows it
+    $segments = \array_slice($children, 1);
+
+    return new Type\Name($segments, true, $segments[0]->offset);
+}
+  : <T_NS_DELIMITER>? Identifier() NameTail()*
+  ;
+
+NameTail
+  : ::T_NS_DELIMITER:: Identifier() @error("Syntax error, unexpected {token}, a name must carry a segment after the separator, for example \"Some\Any\"")
+  ;
+
+Identifier -> {
+    return new Type\Identifier(
+        $children->id === self::T_NAME_WITH_SPACE
+            ? \rtrim($children->value)
+            : $children->value,
+        $offset,
+    );
+}
+  : <T_NAME>
+  | <T_NAME_WITH_SPACE>
+  | <T_EQ>
+  | <T_NOT>
+  | <T_TRUE_LITERAL>
+  | <T_FALSE_LITERAL>
+  | <T_NULL_LITERAL>
+  ;
+
+IdentifierWithExtraSpace -> {
+    return new Type\Identifier(\rtrim($children->value), $offset);
+}
+    : <T_NAME_WITH_SPACE>
+    ;
+
+// Any "$variable" (including "$this")
+Variable -> {
+    return new Type\VariableNode(
+        new Type\Identifier(\substr($children->value, 1), $offset),
+        $offset,
+    );
+}
+  : <T_VARIABLE>
+  | <T_THIS>
+  ;
+
+// The "$this" of a "callable(): $this"
+ThisType -> {
+    return new Type\ThisNode($offset);
+}
+  : <T_THIS>
+  ;
+
+// "*" in "T<*>" or "JSON_*"
+WildcardType -> {
+    return new Type\WildcardNode($offset);
+}
+  : <T_ASTERISK>
+  ;

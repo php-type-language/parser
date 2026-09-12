@@ -1,0 +1,138 @@
+
+ShapeFields -> {
+    $count = \count($children);
+
+    if ($count === 0) {
+        return [new Type\Shape\FieldsListNode([], true, $offset)];
+    }
+
+    if ($this->features->shapes === false) {
+        throw Exception\FeatureNotAllowedException::becauseFeatureIsNotAllowed('shape fields', $source, $offset);
+    }
+
+    $parameters = null;
+
+    // The "...<K, V>" suffix
+    if ($children[$count - 1] instanceof Type\Template\TemplateArgumentListNode) {
+        $parameters = $children[$count - 1];
+        --$count;
+    }
+
+    if ($children[0] instanceof Type\Shape\FieldsListNode) {
+        $fields = $children[0];
+        $unsealed = $count > 1;
+    } else {
+        $fields = new Type\Shape\FieldsListNode([], true, $offset);
+        $unsealed = $count > 0;
+    }
+
+    if ($unsealed) {
+        $fields->isSealed = false;
+    }
+
+    if ($parameters === null) {
+        return [$fields];
+    }
+
+    return [$fields, $parameters];
+}
+  : ::T_BRACE_OPEN::
+      (
+        (ShapeFieldsList() (::T_COMMA:: ShapeFieldsUnsealed())?)
+        | ShapeFieldsUnsealed()?
+      )
+      ::T_COMMA::?
+    ::T_BRACE_CLOSE:: @error("Syntax error, unexpected {token}, a shape must be closed with a brace \"}\"")
+  ;
+
+ShapeFieldsUnsealed
+  : <T_ELLIPSIS> TemplateArguments()?
+  ;
+
+ShapeFieldsList -> {
+    $explicit = false;
+    $implicit = false;
+    $indexed = [];
+
+    foreach ($children as $field) {
+        if (!$field instanceof Type\Shape\ExplicitFieldNode) {
+            $implicit = true;
+
+            continue;
+        }
+
+        $explicit = true;
+
+        if (!$field instanceof Type\Shape\SimpleFieldNodeInterface) {
+            continue;
+        }
+
+        $key = $field->getIndex();
+
+        if (isset($indexed[$key])) {
+            throw Exception\ShapeFieldDuplicationException::becauseShapeFieldIsDuplicated($key, $source, $field->offset);
+        }
+
+        $indexed[$key] = true;
+    }
+
+    if ($explicit && $implicit) {
+        throw Exception\ShapeKeysMixingException::becauseShapeKeysAreMixed($source, $offset);
+    }
+
+    return new Type\Shape\FieldsListNode($children, true, $offset);
+}
+  : ShapeField() (
+      ::T_COMMA:: ShapeField()
+    )*
+  ;
+
+ShapeField
+  : ExplicitField()
+  | ImplicitField()
+  ;
+
+ExplicitField -> {
+    $count = \count($children);
+    $name = $children[0];
+    $value = $children[$count - 1];
+
+    $optional = $count === 3;
+
+    return match (true) {
+        // "a", "true" and "null"
+        $name instanceof Type\Identifier
+            => new Type\Shape\NamedFieldNode($name, $value, $optional, $offset),
+        $name instanceof Type\Literal\IntLiteralNode,
+        $name instanceof Type\Literal\StringLiteralNode
+            => new Type\Shape\ScalarFieldNode($name, $value, $optional, $offset),
+        // "Some::CONST", "Some::CONST_*" and "JSON_*"
+        $name instanceof Type\ClassConstNode,
+        $name instanceof Type\ClassConstMaskNode,
+        $name instanceof Type\ConstMaskNode
+            => new Type\Shape\ComplexFieldNode($name, $value, $optional, $offset),
+        default => throw Exception\ShapeKeyException::becauseKeyIsNotAName($source, $name->offset),
+    };
+}
+  : ShapeKey() (<T_QMARK>)? ::T_COLON:: ShapeValue() @error("Syntax error, unexpected {token}, a shape field must carry a type after the colon \":\"")
+  ;
+
+ImplicitField -> {
+    return new Type\Shape\ImplicitFieldNode($children[0], false, $offset);
+}
+  : ShapeValue()
+  ;
+
+ShapeKey
+  : Identifier() &ShapeKeyEnd()
+  | PrimaryType()
+  ;
+
+// The "?:" and ":" a shape key is followed by
+ShapeKeyEnd
+  : ::T_QMARK::? ::T_COLON::
+  ;
+
+ShapeValue
+  : Type()
+  ;

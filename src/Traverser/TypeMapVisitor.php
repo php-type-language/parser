@@ -37,8 +37,16 @@ final class TypeMapVisitor extends Visitor
         switch (true) {
             case $node instanceof NamedTypeNode:
             case $node instanceof CallableTypeNode:
-            case $node instanceof ConstMaskNode:
                 $node->name = $this->map($node->name);
+
+                return null;
+
+            case $node instanceof ConstMaskNode:
+                // A mask carries no namespace of its own in case of the
+                // constant is written with none, and nothing is mapped then
+                if ($node->namespaceOrFullyQualified instanceof Name) {
+                    $node->namespaceOrFullyQualified = $this->map($node->namespaceOrFullyQualified);
+                }
 
                 return null;
 

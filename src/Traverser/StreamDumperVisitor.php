@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Traverser;
 
 final class StreamDumperVisitor extends DumperVisitor
 {
-    public const string DEFAULT_OUTPUT_STREAM = 'php://stderr';
+    public const DEFAULT_OUTPUT_STREAM = 'php://stderr';
 
     /**
      * @var resource

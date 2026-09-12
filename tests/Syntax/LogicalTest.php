@@ -19,13 +19,10 @@ final class LogicalTest extends SyntaxTestCase
             UnionTypeNode
               NamedTypeNode
                 Name(A)
-                  Identifier(A)
               NamedTypeNode
                 Name(B)
-                  Identifier(B)
               NamedTypeNode
                 Name(C)
-                  Identifier(C)
             AST, $this->parseAndPrint('A | B | C'));
     }
 
@@ -35,13 +32,10 @@ final class LogicalTest extends SyntaxTestCase
             IntersectionTypeNode
               NamedTypeNode
                 Name(A)
-                  Identifier(A)
               NamedTypeNode
                 Name(B)
-                  Identifier(B)
               NamedTypeNode
                 Name(C)
-                  Identifier(C)
             AST, $this->parseAndPrint('A & B & C'));
     }
 
@@ -51,7 +45,6 @@ final class LogicalTest extends SyntaxTestCase
             NullableTypeNode
               NamedTypeNode
                 Name(Example)
-                  Identifier(Example)
             AST, $this->parseAndPrint('?Example'));
     }
 
@@ -62,13 +55,10 @@ final class LogicalTest extends SyntaxTestCase
               IntersectionTypeNode
                 NamedTypeNode
                   Name(A)
-                    Identifier(A)
                 NamedTypeNode
                   Name(B)
-                    Identifier(B)
               NamedTypeNode
                 Name(C)
-                  Identifier(C)
             AST, $this->parseAndPrint('(A & B) | C'));
     }
 
@@ -79,13 +69,10 @@ final class LogicalTest extends SyntaxTestCase
               UnionTypeNode
                 NamedTypeNode
                   Name(A)
-                    Identifier(A)
                 NamedTypeNode
                   Name(B)
-                    Identifier(B)
               NamedTypeNode
                 Name(C)
-                  Identifier(C)
             AST, $this->parseAndPrint('(A | B) & C'));
     }
 
@@ -98,7 +85,7 @@ final class LogicalTest extends SyntaxTestCase
 
     public function testDanglingUnionDelimiter(): void
     {
-        $this->expectParsingException('unexpected end of input');
+        $this->expectParsingException('a union type must carry a type after the vertical bar');
 
         $this->parse('int |');
     }
@@ -112,7 +99,7 @@ final class LogicalTest extends SyntaxTestCase
 
     public function testDanglingIntersectionDelimiter(): void
     {
-        $this->expectParsingException('unexpected end of input');
+        $this->expectParsingException('an intersection type must carry a type after the ampersand');
 
         $this->parse('string &');
     }

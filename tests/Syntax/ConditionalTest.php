@@ -20,10 +20,6 @@ final class ConditionalTest extends SyntaxTestCase
     {
         yield 'is' => ['A is B ? C : D', 'EqualConditionNode'];
         yield 'is not' => ['A is not B ? C : D', 'NotEqualConditionNode'];
-        yield 'less than' => ['A < B ? C : D', 'LessThanConditionNode'];
-        yield 'greater than' => ['A > B ? C : D', 'GreaterThanConditionNode'];
-        yield 'less or equal' => ['A <= B ? C : D', 'LessThanOrEqualConditionNode'];
-        yield 'greater or equal' => ['A >= B ? C : D', 'GreaterThanOrEqualConditionNode'];
     }
 
     #[DataProvider('conditionDataProvider')]
@@ -34,16 +30,12 @@ final class ConditionalTest extends SyntaxTestCase
               Condition\\{$condition}
                 NamedTypeNode
                   Name(A)
-                    Identifier(A)
                 NamedTypeNode
                   Name(B)
-                    Identifier(B)
               NamedTypeNode
                 Name(C)
-                  Identifier(C)
               NamedTypeNode
                 Name(D)
-                  Identifier(D)
             AST, $this->parseAndPrint($type));
     }
 
@@ -52,17 +44,41 @@ final class ConditionalTest extends SyntaxTestCase
         self::assertSame(<<<'AST'
             TernaryExpressionNode
               Condition\EqualConditionNode
-                Literal\VariableLiteralNode($T)
+                VariableNode
+                  Identifier(T)
                 NamedTypeNode
                   Name(B)
-                    Identifier(B)
               NamedTypeNode
                 Name(C)
-                  Identifier(C)
               NamedTypeNode
                 Name(D)
-                  Identifier(D)
             AST, $this->parseAndPrint('$T is B ? C : D'));
+    }
+
+    /**
+     * A variable stands on either side of the operator, and on both at once.
+     *
+     * @return iterable<non-empty-string, array{non-empty-string}>
+     */
+    public static function variableOperandDataProvider(): iterable
+    {
+        yield 'on the left' => ['($T is B ? C : D)'];
+        yield 'on the right' => ['(A is $T ? C : D)'];
+        yield 'on both sides' => ['($A is $B ? C : D)'];
+        yield 'this on the left' => ['($this is B ? C : D)'];
+        yield 'this on the right' => ['(A is $this ? C : D)'];
+    }
+
+    /**
+     * @param non-empty-string $type
+     * @throws \Throwable
+     */
+    #[DataProvider('variableOperandDataProvider')]
+    public function testVariableStandsAsAnOperand(string $type): void
+    {
+        $printer = new \TypeLang\Printer\PrettyTypePrinter();
+
+        self::assertSame($type, $printer->print($this->parse($type)));
     }
 
     public function testEqualityOperatorIsNotAllowed(): void
@@ -74,7 +90,7 @@ final class ConditionalTest extends SyntaxTestCase
 
     public function testInequalityOperatorIsNotAllowed(): void
     {
-        $this->expectParsingException('unexpected "!"');
+        $this->expectParsingException('unexpected "!="');
 
         $this->parse('A != B ? C : D');
     }

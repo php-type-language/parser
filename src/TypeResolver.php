@@ -9,13 +9,13 @@ use TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 use TypeLang\Parser\TypeResolver\PhpUseStatementsTransformer;
 use TypeLang\Type\TypeNode;
 
-final readonly class TypeResolver
+final class TypeResolver
 {
     public function __construct(
         /**
          * @var array<array-key, non-empty-string>
          */
-        private array $imports = [],
+        private readonly array $imports = [],
     ) {}
 
     /**
@@ -116,8 +116,8 @@ final readonly class TypeResolver
      */
     public function withTypeImportsFromClass(\ReflectionClass $class): self
     {
-        $statements = new PhpUseStatementsReader()
-            ->getClassUseStatements($class);
+        $reader = new PhpUseStatementsReader();
+        $statements = $reader->getClassUseStatements($class);
 
         return new self([...$this->imports, ...$statements]);
     }
@@ -162,8 +162,8 @@ final readonly class TypeResolver
             return $this->withTypeImportsFromClass($function->getDeclaringClass());
         }
 
-        $statements = new PhpUseStatementsReader()
-            ->getFunctionUseStatements($function);
+        $reader = new PhpUseStatementsReader();
+        $statements = $reader->getFunctionUseStatements($function);
 
         return new self([...$this->imports, ...$statements]);
     }
