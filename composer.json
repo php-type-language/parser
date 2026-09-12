@@ -19,6 +19,7 @@
         }
     },
     "require-dev": {
+        "type-lang/printer": "^2.0",
         "jetbrains/phpstorm-attributes": "^1.2",
         "phplrt/compiler": "^4.1",
         "phpstan/phpstan": "^2.2",
