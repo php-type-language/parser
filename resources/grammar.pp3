@@ -58,9 +58,9 @@ NamedType -> {
         // Foo<T>(T): T
         $second instanceof Type\Template\TemplateParameterListNode => new Type\Callable\CallableTypeNode($name, $children[2], $children[3] ?? null, $second, $offset),
         // Foo::BAR
-        $second instanceof Type\Identifier => new Type\Constant\ClassConstTypeNode($name, $second, $offset),
+        $second instanceof Type\Identifier => new Type\Constant\ConstTypeNode($name, $second, $offset),
         // Foo::BAR_*, Foo::*
-        default => new Type\Constant\ClassConstMaskTypeNode($name, $second, $offset),
+        default => new Type\Constant\ConstMaskTypeNode($name, $second, $offset),
     };
 }
   : Name() (

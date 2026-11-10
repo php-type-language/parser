@@ -6,8 +6,8 @@ namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeLang\Parser\Tests\TestCase;
-use TypeLang\Type\Constant\ClassConstMaskTypeNode;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstMaskTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Constant\MaskNode\WildcardMaskNode;
 use TypeLang\Type\Identifier;
 use TypeLang\Type\NamedTypeNode;
@@ -43,8 +43,8 @@ final class ClassConstTypeTest extends TestCase
     {
         $type = $this->parse($source);
 
-        self::assertInstanceOf(ClassConstTypeNode::class, $type);
-        self::assertSame($class, $type->class->toString());
+        self::assertInstanceOf(ConstTypeNode::class, $type);
+        self::assertSame($class, $type->owner->toString());
         self::assertSame($constant, $type->constant->value);
     }
 
@@ -76,17 +76,17 @@ final class ClassConstTypeTest extends TestCase
     {
         $type = $this->parse($source);
 
-        self::assertInstanceOf(ClassConstMaskTypeNode::class, $type);
-        self::assertSame('Foo', $type->class->toString());
+        self::assertInstanceOf(ConstMaskTypeNode::class, $type);
+        self::assertSame('Foo', $type->owner->toString());
         self::assertSame($mask, $type->mask->toString());
-        self::assertSame($classes, \array_map(static fn(object $item): string => $item::class, $type->mask->items));
+        self::assertSame($classes, \array_map(static fn(object $item): string => $item::class, $type->mask->children));
     }
 
     public function testSegmentsOfAMaskAreTheWordsAlone(): void
     {
         $type = $this->parse('Foo::A*B*C');
 
-        self::assertInstanceOf(ClassConstMaskTypeNode::class, $type);
+        self::assertInstanceOf(ConstMaskTypeNode::class, $type);
         self::assertSame(['A', 'B', 'C'], $type->mask->getSegmentsAsStrings());
     }
 
@@ -115,9 +115,9 @@ final class ClassConstTypeTest extends TestCase
     {
         $node = $this->parse($source);
 
-        self::assertInstanceOf(ClassConstTypeNode::class, $node);
+        self::assertInstanceOf(ConstTypeNode::class, $node);
         self::assertSame($type, $node->offset);
-        self::assertSame($type, $node->class->offset);
+        self::assertSame($type, $node->owner->offset);
         self::assertSame($constant, $node->constant->offset);
     }
 
@@ -125,18 +125,18 @@ final class ClassConstTypeTest extends TestCase
     {
         $node = $this->parse('  Foo::BAR_*');
 
-        self::assertInstanceOf(ClassConstMaskTypeNode::class, $node);
+        self::assertInstanceOf(ConstMaskTypeNode::class, $node);
         self::assertSame(2, $node->offset);
         self::assertSame(7, $node->mask->offset);
-        self::assertSame(7, $node->mask->items[0]->offset);
-        self::assertSame(11, $node->mask->items[1]->offset);
+        self::assertSame(7, $node->mask->children[0]->offset);
+        self::assertSame(11, $node->mask->children[1]->offset);
     }
 
     public function testTriviaAroundIsIgnored(): void
     {
         $node = $this->parse("/* a */ Foo::BAR // b\n");
 
-        self::assertInstanceOf(ClassConstTypeNode::class, $node);
+        self::assertInstanceOf(ConstTypeNode::class, $node);
         self::assertSame('BAR', $node->constant->value);
     }
 

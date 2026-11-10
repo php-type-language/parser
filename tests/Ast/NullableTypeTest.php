@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeLang\Parser\Tests\TestCase;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Constant\ConstMaskTypeNode;
 use TypeLang\Type\Literal\IntLiteralNode;
 use TypeLang\Type\Literal\NullLiteralNode;
@@ -16,8 +16,8 @@ use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\ThisTypeNode;
 use TypeLang\Type\TypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\NullableTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -36,7 +36,7 @@ final class NullableTypeTest extends TestCase
         yield 'int' => ['?42', IntLiteralNode::class];
         yield 'string' => ["?'a'", StringLiteralNode::class];
         yield 'this' => ['?$this', ThisTypeNode::class];
-        yield 'class constant' => ['?Foo::BAR', ClassConstTypeNode::class];
+        yield 'class constant' => ['?Foo::BAR', ConstTypeNode::class];
         yield 'global mask' => ['?PHP_*', ConstMaskTypeNode::class];
         yield 'group' => ['?(int)', NamedTypeNode::class];
         yield 'list' => ['?int[]', TypesListTypeNode::class];
@@ -73,14 +73,14 @@ final class NullableTypeTest extends TestCase
         $union = $this->parse('?A|B');
 
         self::assertInstanceOf(UnionTypeNode::class, $union);
-        self::assertInstanceOf(NullableTypeNode::class, $union->types[0]);
-        self::assertInstanceOf(NamedTypeNode::class, $union->types[1]);
+        self::assertInstanceOf(NullableTypeNode::class, $union->children[0]);
+        self::assertInstanceOf(NamedTypeNode::class, $union->children[1]);
 
         $intersection = $this->parse('?A&B');
 
         self::assertInstanceOf(IntersectionTypeNode::class, $intersection);
-        self::assertInstanceOf(NullableTypeNode::class, $intersection->types[0]);
-        self::assertInstanceOf(NamedTypeNode::class, $intersection->types[1]);
+        self::assertInstanceOf(NullableTypeNode::class, $intersection->children[0]);
+        self::assertInstanceOf(NamedTypeNode::class, $intersection->children[1]);
     }
 
     public function testTypeWithNoMarkIsNotNullable(): void

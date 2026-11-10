@@ -12,8 +12,8 @@ use TypeLang\Parser\TypeParserFeatures;
 use TypeLang\Type\LogicalTypeNode\IntersectionTypeNode;
 use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\TypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\NullableTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**

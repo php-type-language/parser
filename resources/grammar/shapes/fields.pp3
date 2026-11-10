@@ -44,7 +44,7 @@ ShapeKey
 ShapeNamedKey -> {
     // Foo::BAR
     if (isset($children[1])) {
-        return new Type\Constant\ClassConstTypeNode($children[0], $children[1], $offset);
+        return new Type\Constant\ConstTypeNode($children[0], $children[1], $offset);
     }
 
     // a, Foo\Bar

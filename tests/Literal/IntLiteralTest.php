@@ -114,7 +114,7 @@ final class IntLiteralTest extends TestCase
         self::assertInstanceOf(\TypeLang\Type\NamedTypeNode::class, $node);
         self::assertNotNull($node->fields);
 
-        $field = $node->fields->items[0];
+        $field = $node->fields->children[0];
 
         self::assertInstanceOf(\TypeLang\Type\Shape\NamedFieldNode::class, $field);
         self::assertInstanceOf(IntLiteralNode::class, $field->type);

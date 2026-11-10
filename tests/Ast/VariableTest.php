@@ -34,7 +34,7 @@ final class VariableTest extends AstTestCase
             Callable\CallableTypeNode
               Name(callable)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(isOutput=false, isVariadic=false)
+                Callable\CallableParameterNode(isByReference=false, isVariadic=false)
                   ThisTypeNode
               NamedTypeNode
                 Name(void)

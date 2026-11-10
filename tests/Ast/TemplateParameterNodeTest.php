@@ -15,7 +15,6 @@ use TypeLang\Type\Literal\IntLiteralNode;
 use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\Template\TemplateBoundNode;
-use TypeLang\Type\Template\TemplateBoundNode\BoundKind;
 use TypeLang\Type\Template\TemplateParameterNode;
 use TypeLang\Type\Template\VarianceNode\VarianceKind;
 use TypeLang\Type\TypeNode;
@@ -98,33 +97,33 @@ final class TemplateParameterNodeTest extends TestCase
     }
 
     /**
-     * @return iterable<non-empty-string, array{non-empty-string, BoundKind|null, BoundKind|null}>
+     * @return iterable<non-empty-string, array{non-empty-string, non-empty-string|null, non-empty-string|null}>
      */
-    public static function boundKindDataProvider(): iterable
+    public static function boundDataProvider(): iterable
     {
-        // source, kind of the upper bound, kind of the lower bound
-        yield 'of' => ['T of U', BoundKind::Upper, null];
-        yield 'as' => ['T as U', BoundKind::Upper, null];
-        yield 'super' => ['T super U', null, BoundKind::Lower];
-        yield 'of and super' => ['T of A super B', BoundKind::Upper, BoundKind::Lower];
-        yield 'as and super' => ['T as A super B', BoundKind::Upper, BoundKind::Lower];
+        // source, word of the upper bound, word of the lower bound
+        yield 'of' => ['T of U', 'of', null];
+        yield 'as' => ['T as U', 'as', null];
+        yield 'super' => ['T super U', null, 'super'];
+        yield 'of and super' => ['T of A super B', 'of', 'super'];
+        yield 'as and super' => ['T as A super B', 'as', 'super'];
         yield 'none' => ['T', null, null];
-        yield 'keyword of as a name and as a bound' => ['of of int', BoundKind::Upper, null];
-        yield 'keyword super as a name and as a bound' => ['super super int', null, BoundKind::Lower];
+        yield 'keyword of as a name and as a bound' => ['of of int', 'of', null];
+        yield 'keyword super as a name and as a bound' => ['super super int', null, 'super'];
     }
 
     /**
-     * The kind of a bound is told by the rule, not by the word.
-     *
      * @param non-empty-string $source
+     * @param non-empty-string|null $upper
+     * @param non-empty-string|null $lower
      */
-    #[DataProvider('boundKindDataProvider')]
-    public function testKindOfABoundIsToldByTheRule(string $source, ?BoundKind $upper, ?BoundKind $lower): void
+    #[DataProvider('boundDataProvider')]
+    public function testBoundKeepsTheWordItIsWrittenWith(string $source, ?string $upper, ?string $lower): void
     {
         $parameter = $this->readParameter($source);
 
-        self::assertSame($upper, $parameter->upper?->kind);
-        self::assertSame($lower, $parameter->lower?->kind);
+        self::assertSame($upper, $parameter->upper?->operator->value);
+        self::assertSame($lower, $parameter->lower?->operator->value);
     }
 
     public function testBoundsAreTypes(): void
@@ -194,7 +193,7 @@ final class TemplateParameterNodeTest extends TestCase
         self::assertCount(2, $node->templates);
         self::assertSame('T', $node->templates[0]->name->value);
         self::assertSame('U', $node->templates[1]->name->value);
-        self::assertSame(BoundKind::Upper, $node->templates[1]->upper?->kind);
+        self::assertSame('of', $node->templates[1]->upper?->operator->value);
         self::assertCount(1, $node->parameters);
         self::assertInstanceOf(NamedTypeNode::class, $node->type);
     }

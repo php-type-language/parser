@@ -39,7 +39,7 @@ ListTypeOrOffsetAccess -> {
                 break;
 
             case $child instanceof Type\TypeNode:
-                $type = new Type\WrappingTypeNode\TypeOffsetAccessTypeNode($type, $child, $offset);
+                $type = new Type\TypeOffsetAccessTypeNode($type, $child, $offset);
                 break;
 
             default:

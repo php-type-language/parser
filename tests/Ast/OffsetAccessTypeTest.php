@@ -6,13 +6,13 @@ namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeLang\Parser\Tests\TestCase;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Literal\IntLiteralNode;
 use TypeLang\Type\Literal\StringLiteralNode;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\ThisTypeNode;
 use TypeLang\Type\TypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -29,12 +29,12 @@ final class OffsetAccessTypeTest extends TestCase
         yield 'name by a string' => ["T['a']", NamedTypeNode::class, StringLiteralNode::class];
         yield 'name by an int' => ['T[0]', NamedTypeNode::class, IntLiteralNode::class];
         yield 'name by a negative int' => ['T[-1]', NamedTypeNode::class, IntLiteralNode::class];
-        yield 'name by a constant' => ['T[Foo::A]', NamedTypeNode::class, ClassConstTypeNode::class];
+        yield 'name by a constant' => ['T[Foo::A]', NamedTypeNode::class, ConstTypeNode::class];
         yield 'name by a list' => ['T[K[]]', NamedTypeNode::class, TypesListTypeNode::class];
         yield 'name by an access' => ['T[K[L]]', NamedTypeNode::class, TypeOffsetAccessTypeNode::class];
         yield 'name by a group' => ['T[(K)]', NamedTypeNode::class, NamedTypeNode::class];
         yield 'this by a name' => ['$this[K]', ThisTypeNode::class, NamedTypeNode::class];
-        yield 'constant by a name' => ['Foo::BAR[K]', ClassConstTypeNode::class, NamedTypeNode::class];
+        yield 'constant by a name' => ['Foo::BAR[K]', ConstTypeNode::class, NamedTypeNode::class];
         yield 'group by a name' => ['(T)[K]', NamedTypeNode::class, NamedTypeNode::class];
         yield 'spaces' => ['T [ K ]', NamedTypeNode::class, NamedTypeNode::class];
         yield 'line breaks' => ["T\n[\nK\n]", NamedTypeNode::class, NamedTypeNode::class];

@@ -32,7 +32,7 @@ CallableParameter -> {
     $type = null;
     $name = null;
     $default = null;
-    $isOutput = false;
+    $isByReference = false;
     $isVariadic = false;
 
     foreach ($children as $child) {
@@ -50,7 +50,7 @@ CallableParameter -> {
                 break;
 
             case $child->id === self::T_AMPERSAND:
-                $isOutput = true;
+                $isByReference = true;
                 break;
 
             default:
@@ -59,7 +59,7 @@ CallableParameter -> {
         }
     }
 
-    return new Type\Callable\CallableParameterNode($type, $name, $isOutput, $isVariadic, $default, $offset);
+    return new Type\Callable\CallableParameterNode($type, $name, $isByReference, $isVariadic, $default, $offset);
 }
   : Type() <T_AMPERSAND>? (<T_ELLIPSIS> Variable()? | Variable()? CallableDefault()?)
   | <T_ELLIPSIS> Type()
@@ -80,7 +80,7 @@ CallableDefault -> {
 // FOO, \PHP_EOL, Foo::BAR, Foo::class
 CallableConstant -> {
     if (isset($children[1])) {
-        return new Type\Constant\ClassConstTypeNode($children[0], $children[1], $offset);
+        return new Type\Constant\ConstTypeNode($children[0], $children[1], $offset);
     }
 
     return new Type\NamedTypeNode($children[0], null, null, $offset);

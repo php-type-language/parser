@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Traverser;
 
 use TypeLang\Type\Callable\CallableTypeNode;
-use TypeLang\Type\Constant\ClassConstMaskTypeNode;
-use TypeLang\Type\Constant\ClassConstTypeNode;
 use TypeLang\Type\Constant\ConstMaskTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Name;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\NamespaceName;
@@ -34,6 +33,8 @@ final class TypeMapVisitor extends Visitor
     /**
      * A namespace of a mask is mapped as the name of its last word, a mask
      * written with none, from the root, or with no words is left as it is.
+     *
+     * @return ($namespace is null ? null : NamespaceName)
      */
     private function mapNamespace(?NamespaceName $namespace): ?NamespaceName
     {
@@ -54,7 +55,11 @@ final class TypeMapVisitor extends Visitor
             offset: $namespace->offset,
         ));
 
-        return new NamespaceName($mapped->toString(), NamespaceKind::Qualified, $namespace->offset);
+        return new NamespaceName(
+            value: \implode(NamespaceName::DELIMITER, $mapped->toArray()),
+            kind: $mapped->namespace->kind ?? NamespaceKind::Qualified,
+            offset: $namespace->offset,
+        );
     }
 
     /**
@@ -69,6 +74,18 @@ final class TypeMapVisitor extends Visitor
         return new NamespaceName(\implode(NamespaceName::DELIMITER, $parts));
     }
 
+    /**
+     * @return ($owner is Name ? Name : ($owner is null ? null : NamespaceName))
+     */
+    private function mapOwner(Name|NamespaceName|null $owner): Name|NamespaceName|null
+    {
+        if ($owner instanceof Name) {
+            return $this->map($owner);
+        }
+
+        return $this->mapNamespace($owner);
+    }
+
     public function enter(Node $node): ?Command
     {
         switch (true) {
@@ -78,14 +95,13 @@ final class TypeMapVisitor extends Visitor
 
                 return null;
 
-            case $node instanceof ConstMaskTypeNode:
-                $node->namespace = $this->mapNamespace($node->namespace);
+            case $node instanceof ConstTypeNode:
+                $node->owner = $this->mapOwner($node->owner);
 
                 return null;
 
-            case $node instanceof ClassConstTypeNode:
-            case $node instanceof ClassConstMaskTypeNode:
-                $node->class = $this->map($node->class);
+            case $node instanceof ConstMaskTypeNode:
+                $node->owner = $this->mapOwner($node->owner);
 
                 return null;
 

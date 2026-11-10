@@ -9,13 +9,13 @@ use TypeLang\Parser\Tests\TestCase;
 use TypeLang\Parser\Traverser;
 use TypeLang\Parser\Traverser\TypeMapVisitor;
 use TypeLang\Type\Callable\CallableTypeNode;
-use TypeLang\Type\Constant\ClassConstMaskTypeNode;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Constant\ConstMaskTypeNode;
 use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\Name;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\NamespaceName;
+use TypeLang\Type\NamespaceName\NamespaceKind;
 use TypeLang\Type\TypeNode;
 
 final class TypeMapVisitorTest extends TestCase
@@ -68,8 +68,26 @@ final class TypeMapVisitorTest extends TestCase
 
         Traverser::new([$this->alias('Aliased')])->traverse([$node]);
 
-        self::assertInstanceOf(NamespaceName::class, $node->namespace);
-        self::assertSame('Aliased', $node->namespace->toString());
+        self::assertInstanceOf(NamespaceName::class, $node->owner);
+        self::assertSame('Aliased', $node->owner->toString());
+    }
+
+    #[Test]
+    public function theNamespaceOfAConstMaskTransformedIntoAFullyQualifiedNameIsReadFromTheRoot(): void
+    {
+        $node = $this->parseAs(ConstMaskTypeNode::class, 'Vendor\SOME_*');
+
+        $visitor = new TypeMapVisitor(static fn(Name $name): Name => new Name(
+            value: 'Aliased',
+            namespace: new NamespaceName('App', NamespaceKind::FullyQualified),
+        ));
+
+        Traverser::new([$visitor])->traverse([$node]);
+
+        self::assertInstanceOf(NamespaceName::class, $node->owner);
+        self::assertSame(NamespaceKind::FullyQualified, $node->owner->kind);
+        self::assertSame(['App', 'Aliased'], $node->owner->toArray());
+        self::assertSame('\App\Aliased', $node->owner->toString());
     }
 
     #[Test]
@@ -79,7 +97,7 @@ final class TypeMapVisitorTest extends TestCase
 
         Traverser::new([$this->alias()])->traverse([$node]);
 
-        self::assertNull($node->namespace);
+        self::assertNull($node->owner);
     }
 
     #[Test]
@@ -89,24 +107,24 @@ final class TypeMapVisitorTest extends TestCase
 
         Traverser::new([$this->alias()])->traverse([$node]);
 
-        self::assertNotNull($node->namespace);
-        self::assertSame('\Vendor', $node->namespace->toString());
+        self::assertNotNull($node->owner);
+        self::assertSame('\Vendor', $node->owner->toString());
     }
 
     #[Test]
     public function theClassOfAClassConstIsTransformed(): void
     {
-        $node = $this->parseAs(ClassConstTypeNode::class, 'Example::CONSTANT');
+        $node = $this->parseAs(ConstTypeNode::class, 'Example::CONSTANT');
 
         Traverser::new([$this->alias()])->traverse([$node]);
 
-        self::assertSame('Aliased', $node->class->toString());
+        self::assertSame('Aliased', $node->owner->toString());
     }
 
     #[Test]
     public function theConstantOfAClassConstIsNotTransformed(): void
     {
-        $node = $this->parseAs(ClassConstTypeNode::class, 'Example::CONSTANT');
+        $node = $this->parseAs(ConstTypeNode::class, 'Example::CONSTANT');
 
         Traverser::new([$this->alias()])->traverse([$node]);
 
@@ -114,13 +132,13 @@ final class TypeMapVisitorTest extends TestCase
     }
 
     #[Test]
-    public function theClassOfAClassConstMaskIsTransformed(): void
+    public function theClassOfAConstMaskIsTransformed(): void
     {
-        $node = $this->parseAs(ClassConstMaskTypeNode::class, 'Example::*');
+        $node = $this->parseAs(ConstMaskTypeNode::class, 'Example::*');
 
         Traverser::new([$this->alias()])->traverse([$node]);
 
-        self::assertSame('Aliased', $node->class->toString());
+        self::assertSame('Aliased', $node->owner->toString());
     }
 
     #[Test]
@@ -146,7 +164,7 @@ final class TypeMapVisitorTest extends TestCase
             ['Aliased', 'Aliased'],
             \array_map(
                 static fn(NamedTypeNode $type): string => $type->name->toString(),
-                $node->types,
+                $node->children,
             ),
         );
     }

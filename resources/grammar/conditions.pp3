@@ -20,14 +20,24 @@
     return match (\count($children)) {
         // T is U ? A : B
         4 => new Type\Condition\ConditionalTypeNode(
-            new Type\Condition\EqualConditionNode($children[0], $children[1], $offset),
+            new Type\Condition\ConditionNode(
+                $children[0],
+                $children[1],
+                Type\Condition\ConditionNode\ConditionKind::Equal,
+                $offset,
+            ),
             $children[2],
             $children[3],
             $offset,
         ),
         // T is not U ? A : B, the children have the "is not" in front of the target
         default => new Type\Condition\ConditionalTypeNode(
-            new Type\Condition\NotEqualConditionNode($children[0], $children[2], $offset),
+            new Type\Condition\ConditionNode(
+                $children[0],
+                $children[2],
+                Type\Condition\ConditionNode\ConditionKind::NotEqual,
+                $offset,
+            ),
             $children[3],
             $children[4],
             $offset,

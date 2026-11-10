@@ -311,19 +311,19 @@ final class ShapeTest extends AstTestCase
               Name(array)
               Shape\FieldListNode(isSealed=true)
                 Shape\ComplexFieldNode(isOptional=false)
-                  Constant\ClassConstTypeNode
+                  Constant\ConstTypeNode
                     Name(Foo)
                     Identifier(BAR)
                   NamedTypeNode
                     Name(int)
                 Shape\ComplexFieldNode(isOptional=true)
-                  Constant\ClassConstTypeNode
+                  Constant\ConstTypeNode
                     Name(\Foo\Bar)
                     Identifier(BAZ)
                   NamedTypeNode
                     Name(string)
                 Shape\ComplexFieldNode(isOptional=false)
-                  Constant\ClassConstTypeNode
+                  Constant\ConstTypeNode
                     Name(Foo)
                     Identifier(class)
                   NamedTypeNode

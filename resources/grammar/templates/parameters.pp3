@@ -39,13 +39,15 @@ TemplateParameters @error("Invalid template arguments, \",\" or \">\" is expecte
                 $name = $child;
                 break;
 
+            // super Type
             case $child instanceof Type\Template\TemplateBoundNode
-                && $child->kind === Type\Template\TemplateBoundNode\BoundKind::Upper:
-                $upper = $child;
+                && $child->operator->value === 'super':
+                $lower = $child;
                 break;
 
+            // of Type, as Type
             case $child instanceof Type\Template\TemplateBoundNode:
-                $lower = $child;
+                $upper = $child;
                 break;
 
             default:
@@ -66,7 +68,7 @@ TemplateParameters @error("Invalid template arguments, \",\" or \">\" is expecte
 TemplateUpperBound -> {
     return new Type\Template\TemplateBoundNode(
         $children[1],
-        Type\Template\TemplateBoundNode\BoundKind::Upper,
+        new Type\Identifier($children[0]->value, $children[0]->offset),
         $offset,
     );
 }
@@ -77,7 +79,7 @@ TemplateUpperBound -> {
 TemplateLowerBound -> {
     return new Type\Template\TemplateBoundNode(
         $children[1],
-        Type\Template\TemplateBoundNode\BoundKind::Lower,
+        new Type\Identifier($children[0]->value, $children[0]->offset),
         $offset,
     );
 }

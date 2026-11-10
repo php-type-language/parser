@@ -92,9 +92,9 @@ final class NumberSignTest extends TestCase
         $node = $this->parse('- 1|+ 2.5');
 
         self::assertInstanceOf(UnionTypeNode::class, $node);
-        self::assertInstanceOf(IntLiteralNode::class, $node->types[0]);
-        self::assertSame(-1, $node->types[0]->value);
-        self::assertInstanceOf(FloatLiteralNode::class, $node->types[1]);
-        self::assertSame(2.5, $node->types[1]->value);
+        self::assertInstanceOf(IntLiteralNode::class, $node->children[0]);
+        self::assertSame(-1, $node->children[0]->value);
+        self::assertInstanceOf(FloatLiteralNode::class, $node->children[1]);
+        self::assertSame(2.5, $node->children[1]->value);
     }
 }

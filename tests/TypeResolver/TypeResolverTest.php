@@ -260,7 +260,7 @@ final class TypeResolverTest extends TypeResolverTestCase
             Callable\CallableTypeNode
               Name(callable)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(isOutput=false, isVariadic=false)
+                Callable\CallableParameterNode(isByReference=false, isVariadic=false)
                   NamedTypeNode
                     Name(App\Node)
               NamedTypeNode
@@ -274,7 +274,7 @@ final class TypeResolverTest extends TypeResolverTestCase
             ->withTypeImport('App\Node');
 
         self::assertSame(<<<'AST'
-            Constant\ClassConstTypeNode
+            Constant\ConstTypeNode
               Name(App\Node)
               Identifier(FOO)
             AST, $this->print($resolver->resolve($this->parse('Node::FOO'))));
@@ -286,7 +286,7 @@ final class TypeResolverTest extends TypeResolverTestCase
             ->withTypeImport('App\Node');
 
         self::assertSame(<<<'AST'
-            Constant\ClassConstMaskTypeNode
+            Constant\ConstMaskTypeNode
               Name(App\Node)
               Constant\MaskNode(*)
                 Constant\MaskNode\WildcardMaskNode(*)
@@ -316,7 +316,7 @@ final class TypeResolverTest extends TypeResolverTestCase
 
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(App\Node)
                 NamedTypeNode

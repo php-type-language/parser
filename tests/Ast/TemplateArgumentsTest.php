@@ -9,8 +9,7 @@ use TypeLang\Parser\Exception\FeatureNotEnabledException;
 use TypeLang\Parser\Tests\TestCase;
 use TypeLang\Parser\TypeParser;
 use TypeLang\Parser\TypeParserFeatures;
-use TypeLang\Type\Constant\ClassConstMaskTypeNode;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Constant\ConstMaskTypeNode;
 use TypeLang\Type\Literal\BoolLiteralNode;
 use TypeLang\Type\Literal\FloatLiteralNode;
@@ -26,8 +25,8 @@ use TypeLang\Type\Template\VarianceNode;
 use TypeLang\Type\Template\WildcardTemplateArgumentNode;
 use TypeLang\Type\ThisTypeNode;
 use TypeLang\Type\TypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\NullableTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -53,8 +52,8 @@ final class TemplateArgumentsTest extends TestCase
             StringLiteralNode::class,
         ]];
         yield 'this' => ['Foo<$this>', [ThisTypeNode::class]];
-        yield 'class constant' => ['Foo<Bar::BAZ>', [ClassConstTypeNode::class]];
-        yield 'class mask' => ['Foo<Bar::*>', [ClassConstMaskTypeNode::class]];
+        yield 'class constant' => ['Foo<Bar::BAZ>', [ConstTypeNode::class]];
+        yield 'class mask' => ['Foo<Bar::*>', [ConstMaskTypeNode::class]];
         yield 'global mask' => ['Foo<PHP_*>', [ConstMaskTypeNode::class]];
         yield 'nullable' => ['Foo<?int>', [NullableTypeNode::class]];
         yield 'list' => ['Foo<int[]>', [TypesListTypeNode::class]];

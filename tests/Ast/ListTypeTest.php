@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeLang\Parser\Tests\TestCase;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Constant\ConstMaskTypeNode;
 use TypeLang\Type\Literal\IntLiteralNode;
 use TypeLang\Type\NamedTypeNode;
@@ -28,7 +28,7 @@ final class ListTypeTest extends TestCase
         yield 'qualified name' => ['\\Foo\\Bar[]', NamedTypeNode::class];
         yield 'literal' => ['42[]', IntLiteralNode::class];
         yield 'this' => ['$this[]', ThisTypeNode::class];
-        yield 'class constant' => ['Foo::BAR[]', ClassConstTypeNode::class];
+        yield 'class constant' => ['Foo::BAR[]', ConstTypeNode::class];
         yield 'global mask' => ['PHP_*[]', ConstMaskTypeNode::class];
         yield 'group' => ['(int)[]', NamedTypeNode::class];
         yield 'spaces' => ['int [ ]', NamedTypeNode::class];

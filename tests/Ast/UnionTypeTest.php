@@ -6,15 +6,15 @@ namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeLang\Parser\Tests\TestCase;
-use TypeLang\Type\Constant\ClassConstTypeNode;
+use TypeLang\Type\Constant\ConstTypeNode;
 use TypeLang\Type\Literal\IntLiteralNode;
 use TypeLang\Type\LogicalTypeNode\IntersectionTypeNode;
 use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\ThisTypeNode;
 use TypeLang\Type\TypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\NullableTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -31,7 +31,7 @@ final class UnionTypeTest extends TestCase
         yield 'three names' => ['A|B|C', [NamedTypeNode::class, NamedTypeNode::class, NamedTypeNode::class]];
         yield 'literals' => ['1|2', [IntLiteralNode::class, IntLiteralNode::class]];
         yield 'this and a name' => ['$this|A', [ThisTypeNode::class, NamedTypeNode::class]];
-        yield 'constants' => ['Foo::A|Foo::B', [ClassConstTypeNode::class, ClassConstTypeNode::class]];
+        yield 'constants' => ['Foo::A|Foo::B', [ConstTypeNode::class, ConstTypeNode::class]];
         yield 'lists' => ['A[]|B[]', [TypesListTypeNode::class, TypesListTypeNode::class]];
         yield 'list and name' => ['A[]|B', [TypesListTypeNode::class, NamedTypeNode::class]];
         yield 'name and list' => ['A|B[]', [NamedTypeNode::class, TypesListTypeNode::class]];
@@ -72,10 +72,10 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse($source);
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertCount(\count($members), $type->types);
+        self::assertCount(\count($members), $type->children);
 
         foreach ($members as $index => $class) {
-            self::assertInstanceOf($class, $type->types[$index]);
+            self::assertInstanceOf($class, $type->children[$index]);
         }
     }
 
@@ -84,11 +84,11 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('\\Some\\Any|Other|$this');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertInstanceOf(NamedTypeNode::class, $type->types[0]);
-        self::assertSame('\\Some\\Any', $type->types[0]->name->toString());
-        self::assertInstanceOf(NamedTypeNode::class, $type->types[1]);
-        self::assertSame('Other', $type->types[1]->name->toString());
-        self::assertInstanceOf(ThisTypeNode::class, $type->types[2]);
+        self::assertInstanceOf(NamedTypeNode::class, $type->children[0]);
+        self::assertSame('\\Some\\Any', $type->children[0]->name->toString());
+        self::assertInstanceOf(NamedTypeNode::class, $type->children[1]);
+        self::assertSame('Other', $type->children[1]->name->toString());
+        self::assertInstanceOf(ThisTypeNode::class, $type->children[2]);
     }
 
     public function testManyTypesAreOneUnionNotANestedOne(): void
@@ -96,9 +96,9 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('A|B|C|D|E');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertCount(5, $type->types);
+        self::assertCount(5, $type->children);
 
-        foreach ($type->types as $member) {
+        foreach ($type->children as $member) {
             self::assertInstanceOf(NamedTypeNode::class, $member);
         }
     }
@@ -130,7 +130,7 @@ final class UnionTypeTest extends TestCase
 
         $actual = [];
 
-        foreach ($type->types as $member) {
+        foreach ($type->children as $member) {
             self::assertInstanceOf(NamedTypeNode::class, $member);
             $actual[] = $member->name->toString();
         }
@@ -143,9 +143,9 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('(A|B)[]|C');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertCount(2, $type->types);
-        self::assertInstanceOf(TypesListTypeNode::class, $type->types[0]);
-        self::assertInstanceOf(UnionTypeNode::class, $type->types[0]->type);
+        self::assertCount(2, $type->children);
+        self::assertInstanceOf(TypesListTypeNode::class, $type->children[0]);
+        self::assertInstanceOf(UnionTypeNode::class, $type->children[0]->type);
     }
 
     public function testGroupOfANullableIsNotMerged(): void
@@ -153,9 +153,9 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('(?(A|B))|C');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertCount(2, $type->types);
-        self::assertInstanceOf(NullableTypeNode::class, $type->types[0]);
-        self::assertInstanceOf(UnionTypeNode::class, $type->types[0]->type);
+        self::assertCount(2, $type->children);
+        self::assertInstanceOf(NullableTypeNode::class, $type->children[0]);
+        self::assertInstanceOf(UnionTypeNode::class, $type->children[0]->type);
     }
 
     public function testUnionInAGroupOfAnIntersectionIsNotMerged(): void
@@ -163,7 +163,7 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('(A|B)&C');
 
         self::assertInstanceOf(IntersectionTypeNode::class, $type);
-        self::assertInstanceOf(UnionTypeNode::class, $type->types[0]);
+        self::assertInstanceOf(UnionTypeNode::class, $type->children[0]);
     }
 
     public function testIntersectionBindsTighterThanUnion(): void
@@ -171,12 +171,12 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('A|B&C|D&E&F');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertCount(3, $type->types);
-        self::assertInstanceOf(NamedTypeNode::class, $type->types[0]);
-        self::assertInstanceOf(IntersectionTypeNode::class, $type->types[1]);
-        self::assertCount(2, $type->types[1]->types);
-        self::assertInstanceOf(IntersectionTypeNode::class, $type->types[2]);
-        self::assertCount(3, $type->types[2]->types);
+        self::assertCount(3, $type->children);
+        self::assertInstanceOf(NamedTypeNode::class, $type->children[0]);
+        self::assertInstanceOf(IntersectionTypeNode::class, $type->children[1]);
+        self::assertCount(2, $type->children[1]->children);
+        self::assertInstanceOf(IntersectionTypeNode::class, $type->children[2]);
+        self::assertCount(3, $type->children[2]->children);
     }
 
     public function testTypeWithNoBarIsNotAUnion(): void
@@ -252,7 +252,7 @@ final class UnionTypeTest extends TestCase
 
         $actual = [];
 
-        foreach ($type->types as $member) {
+        foreach ($type->children as $member) {
             $actual[] = $member instanceof NullableTypeNode;
         }
 
@@ -264,10 +264,10 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('A|?B&C');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertInstanceOf(IntersectionTypeNode::class, $type->types[1]);
-        self::assertCount(2, $type->types[1]->types);
-        self::assertInstanceOf(NullableTypeNode::class, $type->types[1]->types[0]);
-        self::assertInstanceOf(NamedTypeNode::class, $type->types[1]->types[1]);
+        self::assertInstanceOf(IntersectionTypeNode::class, $type->children[1]);
+        self::assertCount(2, $type->children[1]->children);
+        self::assertInstanceOf(NullableTypeNode::class, $type->children[1]->children[0]);
+        self::assertInstanceOf(NamedTypeNode::class, $type->children[1]->children[1]);
     }
 
     public function testQuestionMarkBehindAnAmpersandInAMemberIsTheOneOfItsType(): void
@@ -275,9 +275,9 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('A|B&?C');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertInstanceOf(IntersectionTypeNode::class, $type->types[1]);
-        self::assertInstanceOf(NamedTypeNode::class, $type->types[1]->types[0]);
-        self::assertInstanceOf(NullableTypeNode::class, $type->types[1]->types[1]);
+        self::assertInstanceOf(IntersectionTypeNode::class, $type->children[1]);
+        self::assertInstanceOf(NamedTypeNode::class, $type->children[1]->children[0]);
+        self::assertInstanceOf(NullableTypeNode::class, $type->children[1]->children[1]);
     }
 
     public function testNullableListIsANullableMember(): void
@@ -285,8 +285,8 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse('A|?B[]');
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertInstanceOf(NullableTypeNode::class, $type->types[1]);
-        self::assertInstanceOf(TypesListTypeNode::class, $type->types[1]->type);
+        self::assertInstanceOf(NullableTypeNode::class, $type->children[1]);
+        self::assertInstanceOf(TypesListTypeNode::class, $type->children[1]->type);
     }
 
     /**
@@ -329,7 +329,7 @@ final class UnionTypeTest extends TestCase
 
         $actual = [];
 
-        foreach ($type->types as $member) {
+        foreach ($type->children as $member) {
             $actual[] = $member->offset;
         }
 
@@ -342,6 +342,6 @@ final class UnionTypeTest extends TestCase
         $type = $this->parse("/* a */ A /* b */ | // c\n B /* d */ // e\n");
 
         self::assertInstanceOf(UnionTypeNode::class, $type);
-        self::assertCount(2, $type->types);
+        self::assertCount(2, $type->children);
     }
 }

@@ -53,11 +53,11 @@ ConstantMask
 ConstMaskType -> {
     // PHP_*
     if (!\is_array($children)) {
-        return new Type\Constant\ConstMaskTypeNode($children, null, $offset);
+        return new Type\Constant\ConstMaskTypeNode(null, $children, $offset);
     }
 
     // Foo\BAR_*, \*
-    return new Type\Constant\ConstMaskTypeNode($children[1], $children[0], $offset);
+    return new Type\Constant\ConstMaskTypeNode($children[0], $children[1], $offset);
 }
   : IdentifierMask()
   | Namespace() (IdentifierMask() | WildcardMask())

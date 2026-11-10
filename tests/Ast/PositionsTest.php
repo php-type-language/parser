@@ -12,8 +12,8 @@ use TypeLang\Type\LogicalTypeNode\IntersectionTypeNode;
 use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\TypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\NullableTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -54,16 +54,16 @@ final class PositionsTest extends AstTestCase
     private static function places(): array
     {
         return [
-            'template argument' => ['Foo<%s>', static fn(NamedTypeNode $n) => $n->arguments?->items[0]->value],
-            'second template argument' => ['Foo<int, %s>', static fn(NamedTypeNode $n) => $n->arguments?->items[1]->value],
-            'shape value' => ['array{a: %s}', static fn(NamedTypeNode $n) => $n->fields?->items[0]->type],
-            'implicit shape value' => ['array{%s}', static fn(NamedTypeNode $n) => $n->fields?->items[0]->type],
+            'template argument' => ['Foo<%s>', static fn(NamedTypeNode $n) => $n->arguments?->children[0]->value],
+            'second template argument' => ['Foo<int, %s>', static fn(NamedTypeNode $n) => $n->arguments?->children[1]->value],
+            'shape value' => ['array{a: %s}', static fn(NamedTypeNode $n) => $n->fields?->children[0]->type],
+            'implicit shape value' => ['array{%s}', static fn(NamedTypeNode $n) => $n->fields?->children[0]->type],
             'parameter' => ['callable(%s $a)', static fn(CallableTypeNode $n) => $n->parameters[0]->type],
             'variadic parameter' => ['callable(...%s)', static fn(CallableTypeNode $n) => $n->parameters[0]->type],
             'offset key' => ['T[%s]', static fn(TypeOffsetAccessTypeNode $n) => $n->access],
-            'upper bound' => ['callable<T of %s>(): void', static fn(CallableTypeNode $n) => $n->templates?->items[0]->upper?->type],
-            'lower bound' => ['callable<T super %s>(): void', static fn(CallableTypeNode $n) => $n->templates?->items[0]->lower?->type],
-            'template default' => ['callable<T = %s>(): void', static fn(CallableTypeNode $n) => $n->templates?->items[0]->default],
+            'upper bound' => ['callable<T of %s>(): void', static fn(CallableTypeNode $n) => $n->templates?->children[0]->upper?->type],
+            'lower bound' => ['callable<T super %s>(): void', static fn(CallableTypeNode $n) => $n->templates?->children[0]->lower?->type],
+            'template default' => ['callable<T = %s>(): void', static fn(CallableTypeNode $n) => $n->templates?->children[0]->default],
             'then branch' => ['A is B ? %s : C', static fn(ConditionalTypeNode $n) => $n->then],
             'else branch' => ['A is B ? C : %s', static fn(ConditionalTypeNode $n) => $n->else],
         ];
@@ -100,8 +100,8 @@ final class PositionsTest extends AstTestCase
     public static function groupedPlaceDataProvider(): iterable
     {
         $places = [
-            'union member' => ['A|%s', static fn(UnionTypeNode $n) => $n->types[1]],
-            'intersection member' => ['A&%s', static fn(IntersectionTypeNode $n) => $n->types[1]],
+            'union member' => ['A|%s', static fn(UnionTypeNode $n) => $n->children[1]],
+            'intersection member' => ['A&%s', static fn(IntersectionTypeNode $n) => $n->children[1]],
             'nullable' => ['?%s', static fn(NullableTypeNode $n) => $n->type],
             'list' => ['%s[]', static fn(TypesListTypeNode $n) => $n->type],
             'offset access' => ['%s[K]', static fn(TypeOffsetAccessTypeNode $n) => $n->type],

@@ -59,7 +59,7 @@ final class WildcardTest extends AstTestCase
         self::assertInstanceOf(\TypeLang\Type\NamedTypeNode::class, $node);
         self::assertNotNull($node->arguments);
 
-        $argument = $node->arguments->items[1];
+        $argument = $node->arguments->children[1];
 
         self::assertInstanceOf(\TypeLang\Type\Template\WildcardTemplateArgumentNode::class, $argument);
         self::assertSame(16, $argument->offset);

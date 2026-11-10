@@ -9,8 +9,7 @@ use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Callable\CallableParameterNode;
 use TypeLang\Type\Callable\CallableTypeNode;
 use TypeLang\Type\Condition\ConditionalTypeNode;
-use TypeLang\Type\Condition\EqualConditionNode;
-use TypeLang\Type\Condition\NotEqualConditionNode;
+use TypeLang\Type\Condition\ConditionNode\ConditionKind;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\ThisTypeNode;
 use TypeLang\Type\VariableNode;
@@ -22,20 +21,24 @@ use TypeLang\Type\VariableNode;
 final class ConditionalTest extends AstTestCase
 {
     /**
-     * @return iterable<non-empty-string, array{non-empty-string, non-empty-string}>
+     * @return iterable<non-empty-string, array{non-empty-string, ConditionKind}>
      */
     public static function conditionDataProvider(): iterable
     {
-        yield 'is' => ['A is B ? C : D', 'EqualConditionNode'];
-        yield 'is not' => ['A is not B ? C : D', 'NotEqualConditionNode'];
+        yield 'is' => ['A is B ? C : D', ConditionKind::Equal];
+        yield 'is not' => ['A is not B ? C : D', ConditionKind::NotEqual];
     }
 
     #[DataProvider('conditionDataProvider')]
-    public function testConditionalOperators(string $type, string $condition): void
+    public function testConditionalOperators(string $type, ConditionKind $kind): void
     {
-        self::assertSame(<<<AST
+        $node = $this->parse($type);
+
+        self::assertInstanceOf(ConditionalTypeNode::class, $node);
+        self::assertSame($kind, $node->condition->kind);
+        self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\\{$condition}
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(A)
                 NamedTypeNode
@@ -51,7 +54,7 @@ final class ConditionalTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 VariableNode($T)
                 NamedTypeNode
                   Name(B)
@@ -148,7 +151,7 @@ final class ConditionalTest extends AstTestCase
         $node = $this->parse('T is not ?A ? X : Y');
 
         self::assertInstanceOf(ConditionalTypeNode::class, $node);
-        self::assertInstanceOf(NotEqualConditionNode::class, $node->condition);
+        self::assertSame(ConditionKind::NotEqual, $node->condition->kind);
     }
 
     /**
@@ -159,7 +162,7 @@ final class ConditionalTest extends AstTestCase
         $node = $this->parse('T is notX ? A : B');
 
         self::assertInstanceOf(ConditionalTypeNode::class, $node);
-        self::assertInstanceOf(EqualConditionNode::class, $node->condition);
+        self::assertSame(ConditionKind::Equal, $node->condition->kind);
         self::assertInstanceOf(NamedTypeNode::class, $node->condition->target);
         self::assertSame('notX', $node->condition->target->name->toString());
     }
@@ -168,7 +171,7 @@ final class ConditionalTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\NotEqualConditionNode
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(T)
                 WrappingTypeNode\NullableTypeNode
@@ -189,7 +192,7 @@ final class ConditionalTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(T)
                 NamedTypeNode
@@ -206,7 +209,7 @@ final class ConditionalTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(A)
                 NamedTypeNode
@@ -214,7 +217,7 @@ final class ConditionalTest extends AstTestCase
               NamedTypeNode
                 Name(C)
               Condition\ConditionalTypeNode
-                Condition\EqualConditionNode
+                Condition\ConditionNode
                   NamedTypeNode
                     Name(D)
                   NamedTypeNode

@@ -11,8 +11,8 @@ use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\ThisTypeNode;
 use TypeLang\Type\TypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\NullableTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -33,8 +33,8 @@ final class SuffixPriorityTest extends TestCase
         return match (true) {
             $node instanceof NamedTypeNode => $node->name->toString(),
             $node instanceof ThisTypeNode => '$this',
-            $node instanceof UnionTypeNode => '[' . \implode('|', \array_map(self::render(...), $node->types)) . ']',
-            $node instanceof IntersectionTypeNode => '{' . \implode('&', \array_map(self::render(...), $node->types)) . '}',
+            $node instanceof UnionTypeNode => '[' . \implode('|', \array_map(self::render(...), $node->children)) . ']',
+            $node instanceof IntersectionTypeNode => '{' . \implode('&', \array_map(self::render(...), $node->children)) . '}',
             $node instanceof NullableTypeNode => '?(' . self::render($node->type) . ')',
             $node instanceof TypesListTypeNode => '(' . self::render($node->type) . ')[]',
             $node instanceof TypeOffsetAccessTypeNode => '('

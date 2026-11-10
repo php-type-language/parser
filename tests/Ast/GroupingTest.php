@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Tests\Ast;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\NamedTypeNode;
-use TypeLang\Type\WrappingTypeNode\TypeOffsetAccessTypeNode;
+use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
 
 /**
@@ -127,11 +127,11 @@ final class GroupingTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             WrappingTypeNode\TypesListTypeNode
-              WrappingTypeNode\TypeOffsetAccessTypeNode
-                NamedTypeNode
-                  Name(K)
+              TypeOffsetAccessTypeNode
                 NamedTypeNode
                   Name(T)
+                NamedTypeNode
+                  Name(K)
             AST, $this->parseAndPrint('T[K][]'));
 
         $node = $this->parse('T[K][]');
@@ -171,11 +171,11 @@ final class GroupingTest extends AstTestCase
             Callable\CallableTypeNode
               Name(callable)
               Callable\CallableParameterListNode
-                Callable\CallableParameterNode(isOutput=false, isVariadic=false)
+                Callable\CallableParameterNode(isByReference=false, isVariadic=false)
                   Callable\CallableTypeNode
                     Name(callable)
                     Callable\CallableParameterListNode
-                      Callable\CallableParameterNode(isOutput=false, isVariadic=false)
+                      Callable\CallableParameterNode(isByReference=false, isVariadic=false)
                         NamedTypeNode
                           Name(int)
                     NamedTypeNode
@@ -207,13 +207,13 @@ final class GroupingTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(A)
                 NamedTypeNode
                   Name(B)
               Condition\ConditionalTypeNode
-                Condition\EqualConditionNode
+                Condition\ConditionNode
                   NamedTypeNode
                     Name(C)
                   NamedTypeNode
@@ -231,7 +231,7 @@ final class GroupingTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 NamedTypeNode
                   Name(A)
                 NamedTypeNode
@@ -250,7 +250,7 @@ final class GroupingTest extends AstTestCase
     {
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
-              Condition\EqualConditionNode
+              Condition\ConditionNode
                 LogicalTypeNode\UnionTypeNode
                   NamedTypeNode
                     Name(int)

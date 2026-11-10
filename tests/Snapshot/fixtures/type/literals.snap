@@ -244,21 +244,21 @@
 >>> Null
 <<< accepted Literal\NullLiteralNode@0(value: null, raw: "Null")
 >>> true|false
-<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\BoolLiteralNode@0(value: true, raw: "true"), Literal\BoolLiteralNode@5(value: false, raw: "false")])
+<<< accepted LogicalTypeNode\UnionTypeNode@0(children: [Literal\BoolLiteralNode@0(value: true, raw: "true"), Literal\BoolLiteralNode@5(value: false, raw: "false")])
 >>> true&false
-<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Literal\BoolLiteralNode@0(value: true, raw: "true"), Literal\BoolLiteralNode@5(value: false, raw: "false")])
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(children: [Literal\BoolLiteralNode@0(value: true, raw: "true"), Literal\BoolLiteralNode@5(value: false, raw: "false")])
 >>> ?true
 <<< accepted WrappingTypeNode\NullableTypeNode@0(type: Literal\BoolLiteralNode@1(value: true, raw: "true"))
 >>> ?null
 <<< accepted WrappingTypeNode\NullableTypeNode@0(type: Literal\NullLiteralNode@1(value: null, raw: "null"))
 >>> null|int
-<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\NullLiteralNode@0(value: null, raw: "null"), NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)])
+<<< accepted LogicalTypeNode\UnionTypeNode@0(children: [Literal\NullLiteralNode@0(value: null, raw: "null"), NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)])
 >>> int|null
-<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@4(value: null, raw: "null")])
+<<< accepted LogicalTypeNode\UnionTypeNode@0(children: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@4(value: null, raw: "null")])
 >>> null|null
-<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\NullLiteralNode@0(value: null, raw: "null"), Literal\NullLiteralNode@5(value: null, raw: "null")])
+<<< accepted LogicalTypeNode\UnionTypeNode@0(children: [Literal\NullLiteralNode@0(value: null, raw: "null"), Literal\NullLiteralNode@5(value: null, raw: "null")])
 >>> void|null
-<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "void", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@5(value: null, raw: "null")])
+<<< accepted LogicalTypeNode\UnionTypeNode@0(children: [NamedTypeNode@0(name: Name@0(value: "void", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@5(value: null, raw: "null")])
 >>> true[]
 <<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Literal\BoolLiteralNode@0(value: true, raw: "true"))
 >>> null[]
@@ -270,73 +270,73 @@
 
 # Class constants
 >>> Foo::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> \\Foo::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "BAR"))
 >>> Foo\\Bar::BAZ
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "BAZ"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "BAZ"))
 >>> \\Foo\\Bar::BAZ
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@10(value: "BAZ"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@10(value: "BAZ"))
 >>> self::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "self", namespace: null), constant: Identifier@6(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "self", namespace: null), constant: Identifier@6(value: "BAR"))
 >>> static::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "static", namespace: null), constant: Identifier@8(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "static", namespace: null), constant: Identifier@8(value: "BAR"))
 >>> parent::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "parent", namespace: null), constant: Identifier@8(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "parent", namespace: null), constant: Identifier@8(value: "BAR"))
 >>> $this::BAR
 <<< partial@5 ThisTypeNode@0()
 >>> Foo::bar
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "bar"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "bar"))
 >>> Foo::Bar_Baz
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "Bar_Baz"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "Bar_Baz"))
 >>> Foo::BAR1
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR1"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR1"))
 >>> Foo::1
 <<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
 >>> Foo::
 <<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
 >>> Foo::*
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(children: [Constant\MaskNode\WildcardMaskNode@5()]))
 >>> Foo::BAR_*
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@9()]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(children: [Identifier@5(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@9()]))
 >>> Foo::*_BAZ
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "_BAZ")]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(children: [Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "_BAZ")]))
 >>> Foo::BAR*
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR"), Constant\MaskNode\WildcardMaskNode@8()]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(children: [Identifier@5(value: "BAR"), Constant\MaskNode\WildcardMaskNode@8()]))
 >>> Foo::B*R
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "B"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "R")]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(children: [Identifier@5(value: "B"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "R")]))
 >>> Foo::**
-<<< partial@6 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+<<< partial@6 Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(children: [Constant\MaskNode\WildcardMaskNode@5()]))
 >>> \\Foo::*
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), mask: Constant\MaskNode@6(items: [Constant\MaskNode\WildcardMaskNode@6()]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), mask: Constant\MaskNode@6(children: [Constant\MaskNode\WildcardMaskNode@6()]))
 >>> self::*
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "self", namespace: null), mask: Constant\MaskNode@6(items: [Constant\MaskNode\WildcardMaskNode@6()]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "self", namespace: null), mask: Constant\MaskNode@6(children: [Constant\MaskNode\WildcardMaskNode@6()]))
 >>> static::*
-<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "static", namespace: null), mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]))
+<<< accepted Constant\ConstMaskTypeNode@0(owner: Name@0(value: "static", namespace: null), mask: Constant\MaskNode@8(children: [Constant\MaskNode\WildcardMaskNode@8()]))
 >>> Foo::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "class"))
 >>> \\Foo::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "class"))
 >>> self::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "self", namespace: null), constant: Identifier@6(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "self", namespace: null), constant: Identifier@6(value: "class"))
 >>> static::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "static", namespace: null), constant: Identifier@8(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "static", namespace: null), constant: Identifier@8(value: "class"))
 >>> $this::class
 <<< partial@5 ThisTypeNode@0()
 >>> Foo::CLASS
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "CLASS"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "CLASS"))
 >>> Foo\\Bar::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "class"))
 >>> Foo::BAR::BAZ
-<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< partial@8 Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> Foo::BAR::class
-<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< partial@8 Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> Foo::BAR[]
-<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")))
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")))
 >>> Foo::BAR|Foo::BAZ
-<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), Constant\ClassConstTypeNode@9(class: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAZ"))])
+<<< accepted LogicalTypeNode\UnionTypeNode@0(children: [Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), Constant\ConstTypeNode@9(owner: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAZ"))])
 >>> Foo::BAR&Foo::BAZ
-<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), Constant\ClassConstTypeNode@9(class: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAZ"))])
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(children: [Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), Constant\ConstTypeNode@9(owner: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAZ"))])
 >>> Foo::{BAR}
 <<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
 >>> Foo::{BAR}|Foo::{BAZ}
@@ -344,45 +344,45 @@
 >>> Foo::$bar
 <<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
 >>> Foo::bar()
-<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "bar"))
+<<< partial@8 Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "bar"))
 >>> Foo::BAR:
-<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< partial@8 Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> Foo::BAR::
-<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< partial@8 Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> Foo:BAR
 <<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
 >>> Foo:::BAR
 <<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
 >>> Foo::BAR ::BAZ
-<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< partial@9 Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> Foo :: BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@7(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@7(value: "BAR"))
 >>> Foo ::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
 >>> Foo:: BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
 >>> Foo\\BAR
 <<< accepted NamedTypeNode@0(name: Name@0(value: "BAR", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
 >>> int::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "int", namespace: null), constant: Identifier@5(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "int", namespace: null), constant: Identifier@5(value: "BAR"))
 >>> true::BAR
 <<< partial@4 Literal\BoolLiteralNode@0(value: true, raw: "true")
 >>> null::BAR
 <<< partial@4 Literal\NullLiteralNode@0(value: null, raw: "null")
 >>> array::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "array", namespace: null), constant: Identifier@7(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "array", namespace: null), constant: Identifier@7(value: "BAR"))
 >>> list::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "list", namespace: null), constant: Identifier@6(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "list", namespace: null), constant: Identifier@6(value: "BAR"))
 >>> callable::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "callable", namespace: null), constant: Identifier@10(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "callable", namespace: null), constant: Identifier@10(value: "BAR"))
 >>> int::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "int", namespace: null), constant: Identifier@5(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "int", namespace: null), constant: Identifier@5(value: "class"))
 >>> array::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "array", namespace: null), constant: Identifier@7(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "array", namespace: null), constant: Identifier@7(value: "class"))
 >>> T::class
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "class"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "class"))
 >>> T::BAR
-<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "BAR"))
+<<< accepted Constant\ConstTypeNode@0(owner: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "BAR"))
 
 # Global constants
 >>> PHP_EOL
