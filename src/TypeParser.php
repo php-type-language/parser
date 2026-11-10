@@ -42,6 +42,40 @@ final class TypeParser implements TypeParserInterface
     }
 
     /**
+     * Returns type recognition context:
+     * ```
+     * $result = $parser->forType()
+     *     ->parse('Type<U, V>');
+     * ```
+     *
+     * @api
+     *
+     * @return self<TypeNode, TSource>
+     */
+    public function forType(): self
+    {
+        /** @var self<TypeNode, TSource> */
+        return $this->for(Internal\CompiledExecutor::Type);
+    }
+
+    /**
+     * Returns template parameter recognition context:
+     * ```
+     * $result = $parser->forType()
+     *     ->parse('T of U<V> = Default<Z>');
+     * ```
+     *
+     * @api
+     *
+     * @return self<TemplateParameterNode, TSource>
+     */
+    public function forTemplateParameter(): self
+    {
+        /** @var self<TemplateParameterNode, TSource> */
+        return $this->for(Internal\CompiledExecutor::TemplateParameter);
+    }
+
+    /**
      * Returns a new parser with an overridden parser feature flag.
      *
      * ```
@@ -98,40 +132,6 @@ final class TypeParser implements TypeParserInterface
     private function toSource(mixed $source): ReadableInterface
     {
         return $this->sources->create($source);
-    }
-
-    /**
-     * Returns type recognition context:
-     * ```
-     * $result = $parser->forType()
-     *     ->parse('Type<U, V>');
-     * ```
-     *
-     * @api
-     *
-     * @return self<TypeNode, TSource>
-     */
-    public function forType(): self
-    {
-        /** @var self<TypeNode, TSource> */
-        return $this->for(Internal\CompiledExecutor::Type);
-    }
-
-    /**
-     * Returns template parameter recognition context:
-     * ```
-     * $result = $parser->forType()
-     *     ->parse('T of U<V> = Default<Z>');
-     * ```
-     *
-     * @api
-     *
-     * @return self<TemplateParameterNode, TSource>
-     */
-    public function forTemplateParameter(): self
-    {
-        /** @var self<TemplateParameterNode, TSource> */
-        return $this->for(Internal\CompiledExecutor::TemplateParameter);
     }
 
     /**
