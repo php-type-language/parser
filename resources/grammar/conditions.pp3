@@ -1,0 +1,50 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Conditional Types
+ *
+ *  T is U ? A : B, T is not U ? A : B, $a is U ? A : B
+ * -----------------------------------------------------------------------------
+ */
+
+// int, T is U ? A : B, T is not U ? A : B, $a is U ? A : B
+ConditionalType -> {
+    if (!isset($children[1])) {
+        return $children[0];
+    }
+
+    if (!$this->features->conditions) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('conditions', $ctx);
+    }
+
+    return match (\count($children)) {
+        // T is U ? A : B
+        4 => new Type\Condition\ConditionalTypeNode(
+            new Type\Condition\EqualConditionNode($children[0], $children[1], $offset),
+            $children[2],
+            $children[3],
+            $offset,
+        ),
+        // T is not U ? A : B, the children have the "is not" in front of the target
+        default => new Type\Condition\ConditionalTypeNode(
+            new Type\Condition\NotEqualConditionNode($children[0], $children[2], $offset),
+            $children[3],
+            $children[4],
+            $offset,
+        ),
+    };
+}
+  : UnionType() ConditionTail()?
+  | Variable() ConditionTail()
+  ;
+
+// is U ? A : B, is not U ? A : B, is not ?U ? A : B
+ConditionTail
+  : <T_IS_NOT> ConditionOperand() ::T_QUESTION:: Type() ::T_COLON:: Type()
+  | ::T_IS:: ConditionOperand() ::T_QUESTION:: Type() ::T_COLON:: Type()
+  ;
+
+// U, $b
+ConditionOperand
+  : Variable()
+  | UnionType()
+  ;

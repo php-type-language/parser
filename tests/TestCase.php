@@ -14,21 +14,28 @@ use TypeLang\Parser\Validation\CheckResult;
 use TypeLang\Parser\TypeParser;
 use TypeLang\Parser\TypeParserFeatures;
 use TypeLang\Parser\TypeParserInterface;
+use TypeLang\Type\NamedTypeNode;
+use TypeLang\Type\Name;
 use TypeLang\Type\TypeNode;
 
 /**
  * @phpstan-type ParserOptionsType array{
- *     tolerant?: bool,
- *     conditional?: bool,
- *     shapes?: bool,
- *     callables?: bool,
- *     literals?: bool,
- *     generics?: bool,
- *     union?: bool,
- *     intersection?: bool,
- *     list?: bool,
+ *     unions?: bool,
+ *     intersections?: bool,
+ *     nullables?: bool,
+ *     lists?: bool,
  *     offsets?: bool,
+ *     conditions?: bool,
+ *     generics?: bool,
+ *     wildcards?: bool,
  *     hints?: bool,
+ *     callables?: bool,
+ *     templates?: bool,
+ *     defaults?: bool,
+ *     shapes?: bool,
+ *     constants?: bool,
+ *     masks?: bool,
+ *     literals?: bool,
  * }
  */
 #[Group('unit'), Group('type-lang/parser')]
@@ -57,6 +64,21 @@ abstract class TestCase extends BaseTestCase
         $parser = $this->parser($options);
 
         return $parser->parse($code);
+    }
+
+    /**
+     * Reads a name the same way the parser does: `Foo`, `Foo\Bar`, `\Foo\Bar`.
+     *
+     * @param non-empty-string $name
+     * @throws \Throwable
+     */
+    protected function parseName(string $name): Name
+    {
+        $type = $this->parse($name);
+
+        \assert($type instanceof NamedTypeNode);
+
+        return $type->name;
     }
 
     /**

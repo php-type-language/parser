@@ -4,243 +4,131 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Internal;
 
-use Phplrt\Contracts\Lexer\Channel;
-use Phplrt\Contracts\Lexer\TokenInterface;
-use Phplrt\Contracts\Position\PositionInterface;
-use Phplrt\Contracts\Source\Exception\SourceExceptionInterface;
+use Phplrt\Contracts\Position\PositionFactoryInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Parser\Analysis\Mode;
 use Phplrt\Parser\Analysis\Result\FailureResult;
 use Phplrt\Parser\Analysis\Result\PartialResult;
 use Phplrt\Parser\Analysis\Result\SuccessfulResult;
-use Phplrt\Parser\Exception\UnexpectedTokenException as GrammarUnexpectedTokenException;
-use Phplrt\Parser\Parser as ParserRuntime;
 use Phplrt\Position\PositionFactory;
-use TypeLang\Parser\Exception\InternalParseException;
-use TypeLang\Parser\Exception\ParserException;
-use TypeLang\Parser\Exception\ParserExceptionInterface;
-use TypeLang\Parser\Exception\UnexpectedTokenException;
-use TypeLang\Parser\Exception\UnreadableSourceException;
-use TypeLang\Parser\Exception\UnrecognizedSyntaxException;
-use TypeLang\Parser\Exception\UnrecognizedTokenException;
+use TypeLang\Parser\Internal\SubParser\BinIntParser;
+use TypeLang\Parser\Internal\SubParser\DecIntParser;
+use TypeLang\Parser\Internal\SubParser\DqStringParser;
+use TypeLang\Parser\Internal\SubParser\FloatParser;
+use TypeLang\Parser\Internal\SubParser\HexIntParser;
+use TypeLang\Parser\Internal\SubParser\OctIntParser;
+use TypeLang\Parser\Internal\SubParser\OctLegacyIntParser;
+use TypeLang\Parser\Internal\SubParser\SqStringParser;
 use TypeLang\Parser\Partial\FailureParsedResult;
-use TypeLang\Parser\Partial\ParsedResult;
 use TypeLang\Parser\Partial\PartialParsedResult;
 use TypeLang\Parser\Partial\SuccessfulParsedResult;
 use TypeLang\Parser\TypeParserFeatures;
-use TypeLang\Parser\Validation\CheckResult;
 use TypeLang\Parser\Validation\FailureCheckResult;
 use TypeLang\Parser\Validation\PartialCheckResult;
 use TypeLang\Parser\Validation\SuccessfulCheckResult;
+use TypeLang\Type\Node;
 use TypeLang\Type\TypeNode;
 
 /**
- * The compiled TypeLang grammar, bound to the set of features the source is
- * recognized with.
+ * @template T of Node = TypeNode
  *
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal TypeLang\Parser
+ * @template-extends CompiledExecutor<T>
  *
- * @template-extends CompiledExecutor<TypeNode>
- *
- * @property-read ParserRuntime<TypeNode> $parser
+ * @see TypeNode
  */
 final class Executor extends CompiledExecutor
 {
-    private readonly PositionFactory $positions;
+    protected readonly DecIntParser $decInt;
+    protected readonly HexIntParser $hexInt;
+    protected readonly BinIntParser $binInt;
+    protected readonly OctIntParser $octInt;
+    protected readonly OctLegacyIntParser $octLegacyInt;
+    protected readonly FloatParser $float;
+    protected readonly DqStringParser $dqString;
+    protected readonly SqStringParser $sqString;
 
     public function __construct(
-        /**
-         * @api this property is accessible inside the grammar reducers
-         */
         protected readonly TypeParserFeatures $features,
+        private readonly PositionFactoryInterface $positions = new PositionFactory(),
     ) {
-        $this->positions = new PositionFactory();
-
         parent::__construct();
+
+        $converter = BaseConverterFactory::default()
+            ->select();
+
+        $this->decInt = new DecIntParser($converter);
+        $this->hexInt = new HexIntParser($converter);
+        $this->binInt = new BinIntParser($converter);
+        $this->octInt = new OctIntParser($converter);
+        $this->octLegacyInt = new OctLegacyIntParser($converter);
+        $this->float = new FloatParser();
+        $this->dqString = new DqStringParser();
+        $this->sqString = new SqStringParser();
     }
 
     /**
-     * @return iterable<array-key, TokenInterface>
+     * @param int<0, max> $rule
+     * @return self<Node>
      */
-    public function lex(ReadableInterface $source): iterable
+    public function for(int $rule): self
     {
-        return $this->lexer->lex($source);
+        $self = clone $this;
+        $self->parser = $self->parser->withInitial($rule);
+
+        return $self;
     }
 
     /**
-     * Reads the source whole and returns the type it is written of.
+     * Reads as much of the source as the grammar describes, a source that is
+     * no type is not an error but a failed result.
      *
-     * @throws ParserException in case of the source is no type of its own
+     * @throws \Throwable in case of the source cannot be read
      */
-    public function parse(ReadableInterface $source): TypeNode
+    public function validate(ReadableInterface $source): SuccessfulCheckResult|FailureCheckResult
     {
-        $result = $this->build($source);
+        $result = $this->parser->analyze($source, Mode::SyntaxCheck);
 
-        if (!$result instanceof SuccessfulResult || $result instanceof PartialResult) {
-            throw $this->createError($result, $source);
-        }
-
-        return $result->value;
-    }
-
-    /**
-     * Reads as much of the source as the grammar describes and returns the
-     * type that part is written of.
-     *
-     * @throws ParserException in case of an internal error occurs
-     */
-    public function partial(ReadableInterface $source): ParsedResult
-    {
-        $result = $this->build($source);
-
-        if ($result instanceof PartialResult) {
-            return new PartialParsedResult(
-                type: $result->value,
-                offset: $result->token->offset,
-            );
-        }
-
-        if ($result instanceof SuccessfulResult) {
-            return new SuccessfulParsedResult($result->value, $this->length($source));
-        }
-
-        return new FailureParsedResult(
-            message: $this->createError($result, $source)->getMessage(),
-            position: $this->createPosition($source, $result->token->offset),
-            offset: $result->token->offset,
-        );
-    }
-
-    /**
-     * Tells whether the source is a type the grammar describes, building
-     * nothing of it.
-     *
-     * @throws ParserException in case of an internal error occurs
-     */
-    public function validate(ReadableInterface $source): CheckResult
-    {
-        $result = $this->check($source);
-
-        if ($result instanceof SuccessfulResult && !$result instanceof PartialResult) {
-            return new SuccessfulCheckResult();
-        }
-
-        $error = $this->createError($result, $source);
-        $offset = $result->token->offset;
-        $position = $this->createPosition($source, $offset);
-
-        if ($result instanceof PartialResult) {
-            return new PartialCheckResult(
-                message: $error->getMessage(),
-                position: $position,
-                offset: $offset,
-            );
-        }
-
-        return new FailureCheckResult(
-            message: $error->getMessage(),
-            position: $position,
-            offset: $offset,
-        );
-    }
-
-    /**
-     * Reads the source into the type it describes.
-     *
-     * @return SuccessfulResult<TypeNode>|FailureResult
-     * @throws ParserException in case of the grammar cannot be run
-     */
-    private function build(ReadableInterface $source): SuccessfulResult|FailureResult
-    {
-        assert($this->parser instanceof ParserRuntime);
-
-        try {
-            return $this->parser->analyze($source, Mode::Tolerant);
-        } catch (\Throwable $e) {
-            throw $this->raised($e, $source);
-        }
-    }
-
-    /**
-     * Reads the source without building anything of it.
-     *
-     * @return SuccessfulResult<null>|FailureResult
-     * @throws ParserException in case of the grammar cannot be run
-     */
-    private function check(ReadableInterface $source): SuccessfulResult|FailureResult
-    {
-        assert($this->parser instanceof ParserRuntime);
-
-        try {
-            return $this->parser->analyze($source, Mode::SyntaxCheck);
-        } catch (\Throwable $e) {
-            throw $this->raised($e, $source);
-        }
-    }
-
-    /**
-     * Converts whatever the grammar raises while it reads into the error of
-     * this parser.
-     */
-    private function raised(\Throwable $e, ReadableInterface $source): ParserException
-    {
         return match (true) {
-            $e instanceof ParserException => $e,
-            $e instanceof SourceExceptionInterface
-                => UnreadableSourceException::becauseSourceIsUnreadable($source, $e),
-            default => InternalParseException::becauseInternalErrorOccurs($source, $e),
+            $result instanceof PartialResult => new PartialCheckResult(
+                message: $result->error->getMessage(),
+                position: $this->positions->createFromOffset($source, $result->token->offset),
+                offset: $result->token->offset,
+            ),
+            $result instanceof FailureResult => new FailureCheckResult(
+                message: $result->error->getMessage(),
+                position: $this->positions->createFromOffset($source, $result->token->offset),
+                offset: $result->token->offset,
+            ),
+            default => new SuccessfulCheckResult(),
         };
     }
 
     /**
-     * Returns the length of the source, which is the offset a reading that
-     * has stopped at nothing ends at.
+     * Reads as much of the source as the grammar describes, a source that is
+     * no type is not an error but a failed result.
      *
-     * @return int<0, max>
-     * @throws ParserExceptionInterface in case of the source cannot be read
+     * @return SuccessfulParsedResult<T>|FailureParsedResult
+     * @throws \Throwable in case of the source cannot be read
      */
-    private function length(ReadableInterface $source): int
+    public function partial(ReadableInterface $source): SuccessfulParsedResult|FailureParsedResult
     {
-        try {
-            return \strlen($source->content);
-        } catch (\Throwable $e) {
-            throw $this->raised($e, $source);
-        }
-    }
+        $result = $this->parser->analyze($source, Mode::Tolerant);
 
-    /**
-     * @param int<0, max> $offset
-     * @throws SourceExceptionInterface
-     */
-    private function createPosition(ReadableInterface $source, int $offset): PositionInterface
-    {
-        return $this->positions->createFromOffset($source, $offset);
-    }
-
-    /**
-     * Converts the error of the grammar into the error of this parser.
-     *
-     * @param FailureResult|PartialResult<mixed> $result
-     */
-    private function createError(FailureResult|PartialResult $result, ReadableInterface $source): ParserException
-    {
-        $error = $result->error;
-
-        if (!$error instanceof GrammarUnexpectedTokenException) {
-            return UnrecognizedSyntaxException::becauseSyntaxIsUnrecognized($source, $error->token);
-        }
-
-        // An input the lexer says nothing about is reported as an unrecognized
-        // one rather than as a token in a wrong place.
-        if ($error->token->channel === Channel::Unknown) {
-            return UnrecognizedTokenException::becauseTokenIsUnrecognized($source, $error->token);
-        }
-
-        return UnexpectedTokenException::becauseTokenIsUnexpected(
-            message: $error->getMessage(),
-            source: $source,
-            token: $error->token,
-        );
+        return match (true) {
+            $result instanceof PartialResult => new PartialParsedResult(
+                /** @phpstan-ignore-next-line : PHPStan "unresolvable type" bug */
+                $result->value,
+                $result->token->offset,
+            ),
+            $result instanceof SuccessfulResult => new SuccessfulParsedResult(
+                $result->value,
+                \strlen($source->content),
+            ),
+            default => new FailureParsedResult(
+                message: $result->error->getMessage(),
+                position: $this->positions->createFromOffset($source, $result->token->offset),
+                offset: $result->token->offset,
+            ),
+        };
     }
 }

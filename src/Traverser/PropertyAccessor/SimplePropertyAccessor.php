@@ -17,7 +17,7 @@ final class SimplePropertyAccessor implements PropertyAccessorInterface
 
         // Property hooks are available since PHP 8.4
         return \method_exists($property, 'hasHooks')
-            && $property->hasHooks();
+            && $property->hasHooks() === true;
     }
 
     public function unwrap(object $object): iterable

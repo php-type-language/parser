@@ -11,7 +11,8 @@
     "require": {
         "php": "^8.1",
         "type-lang/types": "^2.0",
-        "phplrt/runtime": "^4.1.2"
+        "phplrt/runtime": "^4.2.4",
+        "phplrt/exception": "^4.2.4"
     },
     "autoload": {
         "psr-4": {
@@ -21,8 +22,8 @@
     "require-dev": {
         "type-lang/printer": "^2.0",
         "jetbrains/phpstorm-attributes": "^1.2",
-        "phplrt/compiler": "^4.1",
-        "phpstan/phpstan": "^2.2",
+        "phplrt/compiler": "^4.2.4",
+        "phpstan/phpstan": "^2.3",
         "phpunit/phpunit": "^10.5|^11.0|^12.0|^13.0"
     },
     "autoload-dev": {

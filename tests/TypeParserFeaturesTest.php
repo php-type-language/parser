@@ -13,70 +13,89 @@ final class TypeParserFeaturesTest extends TestCase
     /**
      * @return iterable<non-empty-string, array{
      *     non-empty-string,
-     *     \Closure(TypeParserFeatures):bool,
-     *     bool
+     *     \Closure(TypeParserFeatures):bool
      * }>
      */
     public static function featureDataProvider(): iterable
     {
-        yield 'conditions' => [
-            'conditions',
-            static fn(TypeParserFeatures $features): bool => $features->conditions,
-            TypeParserFeatures::CONDITIONAL_FEATURES_DEFAULT_VALUE,
-        ];
-
-        yield 'shapes' => [
-            'shapes',
-            static fn(TypeParserFeatures $features): bool => $features->shapes,
-            TypeParserFeatures::SHAPES_FEATURES_DEFAULT_VALUE,
-        ];
-
-        yield 'callables' => [
-            'callables',
-            static fn(TypeParserFeatures $features): bool => $features->callables,
-            TypeParserFeatures::CALLABLES_FEATURES_DEFAULT_VALUE,
-        ];
-
-        yield 'literals' => [
-            'literals',
-            static fn(TypeParserFeatures $features): bool => $features->literals,
-            TypeParserFeatures::LITERALS_FEATURES_DEFAULT_VALUE,
-        ];
-
-        yield 'generics' => [
-            'generics',
-            static fn(TypeParserFeatures $features): bool => $features->generics,
-            TypeParserFeatures::GENERICS_FEATURES_DEFAULT_VALUE,
-        ];
-
         yield 'unions' => [
             'unions',
             static fn(TypeParserFeatures $features): bool => $features->unions,
-            TypeParserFeatures::UNION_FEATURES_DEFAULT_VALUE,
         ];
 
         yield 'intersections' => [
             'intersections',
             static fn(TypeParserFeatures $features): bool => $features->intersections,
-            TypeParserFeatures::INTERSECTION_FEATURES_DEFAULT_VALUE,
+        ];
+
+        yield 'nullables' => [
+            'nullables',
+            static fn(TypeParserFeatures $features): bool => $features->nullables,
         ];
 
         yield 'lists' => [
             'lists',
             static fn(TypeParserFeatures $features): bool => $features->lists,
-            TypeParserFeatures::LIST_FEATURES_DEFAULT_VALUE,
         ];
 
         yield 'offsets' => [
             'offsets',
             static fn(TypeParserFeatures $features): bool => $features->offsets,
-            TypeParserFeatures::OFFSETS_FEATURES_DEFAULT_VALUE,
+        ];
+
+        yield 'conditions' => [
+            'conditions',
+            static fn(TypeParserFeatures $features): bool => $features->conditions,
+        ];
+
+        yield 'generics' => [
+            'generics',
+            static fn(TypeParserFeatures $features): bool => $features->generics,
+        ];
+
+        yield 'wildcards' => [
+            'wildcards',
+            static fn(TypeParserFeatures $features): bool => $features->wildcards,
         ];
 
         yield 'hints' => [
             'hints',
             static fn(TypeParserFeatures $features): bool => $features->hints,
-            TypeParserFeatures::HINTS_FEATURES_DEFAULT_VALUE,
+        ];
+
+        yield 'callables' => [
+            'callables',
+            static fn(TypeParserFeatures $features): bool => $features->callables,
+        ];
+
+        yield 'templates' => [
+            'templates',
+            static fn(TypeParserFeatures $features): bool => $features->templates,
+        ];
+
+        yield 'defaults' => [
+            'defaults',
+            static fn(TypeParserFeatures $features): bool => $features->defaults,
+        ];
+
+        yield 'shapes' => [
+            'shapes',
+            static fn(TypeParserFeatures $features): bool => $features->shapes,
+        ];
+
+        yield 'constants' => [
+            'constants',
+            static fn(TypeParserFeatures $features): bool => $features->constants,
+        ];
+
+        yield 'masks' => [
+            'masks',
+            static fn(TypeParserFeatures $features): bool => $features->masks,
+        ];
+
+        yield 'literals' => [
+            'literals',
+            static fn(TypeParserFeatures $features): bool => $features->literals,
         ];
     }
 
@@ -86,10 +105,9 @@ final class TypeParserFeaturesTest extends TestCase
      */
     #[DataProvider('featureDataProvider')]
     #[Test]
-    public function eachFeatureIsEnabledByDefault(string $feature, \Closure $read, bool $default): void
+    public function eachFeatureIsEnabledByDefault(string $feature, \Closure $read): void
     {
-        self::assertTrue($default);
-        self::assertSame($default, $read(new TypeParserFeatures()));
+        self::assertTrue($read(new TypeParserFeatures()));
     }
 
     /**
@@ -98,7 +116,7 @@ final class TypeParserFeaturesTest extends TestCase
      */
     #[DataProvider('featureDataProvider')]
     #[Test]
-    public function eachFeatureCanBeDisabledUsingTheConstructor(string $feature, \Closure $read, bool $default): void
+    public function eachFeatureCanBeDisabledUsingTheConstructor(string $feature, \Closure $read): void
     {
         self::assertFalse($read(new TypeParserFeatures(...[$feature => false])));
     }
@@ -109,7 +127,7 @@ final class TypeParserFeaturesTest extends TestCase
      */
     #[DataProvider('featureDataProvider')]
     #[Test]
-    public function eachFeatureCanBeDisabledUsingTheWithMethod(string $feature, \Closure $read, bool $default): void
+    public function eachFeatureCanBeDisabledUsingTheWithMethod(string $feature, \Closure $read): void
     {
         self::assertFalse($read((new TypeParserFeatures())->with(...[$feature => false])));
     }
@@ -120,11 +138,25 @@ final class TypeParserFeaturesTest extends TestCase
      */
     #[DataProvider('featureDataProvider')]
     #[Test]
-    public function eachFeatureCanBeEnabledUsingTheWithMethod(string $feature, \Closure $read, bool $default): void
+    public function eachFeatureCanBeEnabledUsingTheWithMethod(string $feature, \Closure $read): void
     {
         $features = new TypeParserFeatures(...[$feature => false]);
 
         self::assertTrue($read($features->with(...[$feature => true])));
+    }
+
+    /**
+     * @param non-empty-string $feature
+     */
+    #[DataProvider('featureDataProvider')]
+    #[Test]
+    public function disablingOneFeatureKeepsTheOthersEnabled(string $feature): void
+    {
+        $features = new TypeParserFeatures(...[$feature => false]);
+
+        foreach (self::featureDataProvider() as $name => [, $other]) {
+            self::assertSame($name !== $feature, $other($features), $name);
+        }
     }
 
     #[Test]

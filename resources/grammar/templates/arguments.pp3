@@ -1,0 +1,68 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Template Arguments
+ * -----------------------------------------------------------------------------
+ */
+
+TemplateArguments -> {
+    if (!$this->features->generics) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('generics', $ctx);
+    }
+
+    return new Type\Template\TemplateListNode($children, $offset);
+}
+  : ::T_ANGLE_OPEN::
+        TemplateArgument()
+        (::T_COMMA:: TemplateArgument())*
+        ::T_COMMA::?
+    ::T_ANGLE_CLOSE::
+  ;
+
+TemplateArgument
+  : WildcardTemplateArgument()
+  | TypedTemplateArgument()
+  ;
+
+WildcardTemplateArgument -> {
+    if (!$this->features->wildcards) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('wildcards', $ctx);
+    }
+
+    return new Type\Template\WildcardTemplateArgumentNode($offset);
+}
+  : <T_WILDCARD>
+  ;
+
+// T, covariant T, callable(int): void
+// covariant (A|B) is a variance and a group, in (A|B) is a callable "in"
+TypedTemplateArgument -> {
+    // T
+    if (!\is_array($children)) {
+        return new Type\Template\TypedTemplateArgumentNode($children, null, $offset);
+    }
+
+    // covariant T
+    if (!$this->features->hints) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('hints', $ctx);
+    }
+
+    return new Type\Template\TypedTemplateArgumentNode($children[1], $children[0], $offset);
+}
+  : (Variance() Type())
+  | Type()
+  ;
+
+// covariant, contravariant, invariant
+Variance -> {
+    $kind = match ($children->id) {
+        self::T_COVARIANT => Type\Template\VarianceNode\VarianceKind::Covariant,
+        self::T_CONTRAVARIANT => Type\Template\VarianceNode\VarianceKind::Contravariant,
+        default => Type\Template\VarianceNode\VarianceKind::Invariant,
+    };
+
+    return new Type\Template\VarianceNode($kind, $offset);
+}
+  : <T_COVARIANT>
+  | <T_CONTRAVARIANT>
+  | <T_INVARIANT>
+  ;

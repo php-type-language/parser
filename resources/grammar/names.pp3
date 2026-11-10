@@ -1,0 +1,57 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Names
+ * -----------------------------------------------------------------------------
+ */
+
+
+// Foo, PHP_EOL, is, true
+Word
+  : <T_IDENTIFIER>
+  | <T_IS>
+  | <T_NOT>
+  | <T_OF>
+  | <T_AS>
+  | <T_SUPER>
+  | <T_COVARIANT>
+  | <T_CONTRAVARIANT>
+  | <T_INVARIANT>
+  | <T_TRUE>
+  | <T_FALSE>
+  | <T_NULL>
+  ;
+
+// Foo
+Identifier -> {
+    return new Type\Identifier($children[0]->value, $offset);
+}
+  : Word()
+  ;
+
+// Foo\, \Foo\, \, namespace\
+Namespace -> {
+    $kind = Type\NamespaceName\NamespaceKind::Qualified;
+
+    if ($children->value[0] === Type\NamespaceName::DELIMITER) {
+        $kind = Type\NamespaceName\NamespaceKind::FullyQualified;
+    }
+
+    return new Type\NamespaceName(\trim($children->value, Type\NamespaceName::DELIMITER), $kind, $offset);
+}
+  : <T_NAMESPACE>
+  ;
+
+// Foo, \Foo, Foo\Bar, \Foo\Bar, true\null, non-empty-string
+Name -> {
+    // Some\Foo, \Foo
+    if (\is_array($children)) {
+        return new Type\Name($children[1]->value, $children[0], $offset);
+    }
+
+    // Foo, non-empty-string
+    return new Type\Name($children->value, null, $offset);
+}
+  : Namespace() Word()
+  | <T_VIRTUAL_NAME>
+  | Word()
+  ;

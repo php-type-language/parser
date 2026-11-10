@@ -1,67 +1,87 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Callable Types
+ * -----------------------------------------------------------------------------
+ */
 
-// The "(T, U): V" of a callable type
-CallableSuffix
-  : ::T_PARENTHESIS_OPEN::
-        CallableParameters()
-    ::T_PARENTHESIS_CLOSE::     @error("Syntax error, unexpected {token}, a parameter list must be closed with a bracket \")\"")
-    CallableReturnType()?
+
+// (int $a, string ...$b): void, (int), (): void
+// callable(): int|string is (callable(): int)|string
+CallableSignature
+  : CallableParameters() (::T_COLON:: NullableType())?
   ;
 
+// (), (int), (int $a, string $b,)
 CallableParameters -> {
+    if (!$this->features->callables) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('callables', $ctx);
+    }
+
     return new Type\Callable\CallableParameterListNode($children, $offset);
 }
-  : ( CallableParameter()
-      ( ::T_COMMA:: CallableParameter() )*
-      ::T_COMMA::?
-    )?
+  : ::T_PAREN_OPEN::
+        (CallableParameter() (::T_COMMA:: CallableParameter())* ::T_COMMA::?)?
+    ::T_PAREN_CLOSE::
   ;
 
+// int, int $a, int &$a, int ...$a, int &...$a, int=, int $a = 42, $a, &$a,
+// ...$a, ...int
 CallableParameter -> {
-    $parameter = new Type\Callable\CallableParameterNode(
-        $children[0],
-        null,
-        false,
-        false,
-        false,
-        $offset,
-    );
+    $type = null;
+    $name = null;
+    $default = null;
+    $isOutput = false;
+    $isVariadic = false;
 
-    for ($i = 1, $count = \count($children); $i < $count; ++$i) {
-        $child = $children[$i];
-
-        if ($child instanceof Type\VariableNode) {
-            $parameter->name = $child;
-
-            continue;
-        }
-
-        switch ($child->id) {
-            case self::T_AMP:
-                $parameter->isOutput = true;
+    foreach ($children as $child) {
+        switch (true) {
+            case $child instanceof Type\TypeNode:
+                $type = $child;
                 break;
 
-            case self::T_ELLIPSIS:
-                $parameter->isVariadic = true;
+            case $child instanceof Type\VariableNode:
+                $name = $child;
+                break;
+
+            case $child instanceof Type\Callable\DefaultValueNode:
+                $default = $child;
+                break;
+
+            case $child->id === self::T_AMPERSAND:
+                $isOutput = true;
                 break;
 
             default:
-                if ($parameter->isVariadic) {
-                    throw Exception\VariadicWithDefaultException::becauseVariadicHasDefault($source, $offset);
-                }
-
-                $parameter->isOptional = true;
+                $isVariadic = true;
+                break;
         }
     }
 
-    return $parameter;
+    return new Type\Callable\CallableParameterNode($type, $name, $isOutput, $isVariadic, $default, $offset);
 }
-  : Type()
-    <T_AMP>?
-    <T_ELLIPSIS>?
-    Variable()?
-    <T_ASSIGN>?
+  : Type() <T_AMPERSAND>? (<T_ELLIPSIS> Variable()? | Variable()? CallableDefault()?)
+  | <T_ELLIPSIS> Type()
+  | <T_AMPERSAND>? (<T_ELLIPSIS> Variable() | Variable() CallableDefault()?)
   ;
 
-CallableReturnType
-  : ::T_COLON:: Type() @error("Syntax error, unexpected {token}, a callable must carry a type after the colon \":\"")
+// = 42, = Foo::BAR, = null, =
+CallableDefault -> {
+    if (!$this->features->defaults) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('defaults', $ctx);
+    }
+
+    return new Type\Callable\DefaultValueNode($children[1] ?? null, $offset);
+}
+  : <T_ASSIGN> (Literal() | CallableConstant())?
+  ;
+
+// FOO, \PHP_EOL, Foo::BAR, Foo::class
+CallableConstant -> {
+    if (isset($children[1])) {
+        return new Type\Constant\ClassConstTypeNode($children[0], $children[1], $offset);
+    }
+
+    return new Type\NamedTypeNode($children[0], null, null, $offset);
+}
+  : Name() (::T_DOUBLE_COLON:: Identifier())?
   ;

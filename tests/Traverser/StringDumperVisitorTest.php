@@ -9,11 +9,10 @@ use TypeLang\Parser\Tests\TestCase;
 use TypeLang\Parser\Traverser;
 use TypeLang\Parser\Traverser\DumperVisitor;
 use TypeLang\Parser\Traverser\StringDumperVisitor;
-use TypeLang\Type\Identifier;
 use TypeLang\Type\Name;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\Node;
-use TypeLang\Type\UnionTypeNode;
+use TypeLang\Type\LogicalTypeNode\UnionTypeNode;
 
 final class StringDumperVisitorTest extends TestCase
 {
@@ -48,7 +47,7 @@ final class StringDumperVisitorTest extends TestCase
     {
         self::assertSame(
             "NamedTypeNode\n  Name(Foo\\Bar)\n",
-            $this->dump([new NamedTypeNode(Name::createFromString('Foo\\Bar'))]),
+            $this->dump([new NamedTypeNode($this->parseName('Foo\\Bar'))]),
         );
     }
 
@@ -56,8 +55,8 @@ final class StringDumperVisitorTest extends TestCase
     public function theSimplifiedNamespaceCanBeChanged(): void
     {
         self::assertSame(
-            "Type\\Identifier(Example)\n",
-            $this->dump([new Identifier('Example')], 'TypeLang\\'),
+            "Type\\Name(Example)\n",
+            $this->dump([new Name('Example')], 'TypeLang\\'),
         );
     }
 
@@ -65,8 +64,8 @@ final class StringDumperVisitorTest extends TestCase
     public function theNodeNameIsPrintedAsIsInCaseOfANonMatchingNamespace(): void
     {
         self::assertSame(
-            "TypeLang\\Type\\Identifier(Example)\n",
-            $this->dump([new Identifier('Example')], 'Example\\'),
+            "TypeLang\\Type\\Name(Example)\n",
+            $this->dump([new Name('Example')], 'Example\\'),
         );
     }
 
@@ -74,8 +73,8 @@ final class StringDumperVisitorTest extends TestCase
     public function theDefaultSimplifiedNamespaceIsUsed(): void
     {
         self::assertSame(
-            $this->dump([new Identifier('Example')]),
-            $this->dump([new Identifier('Example')], DumperVisitor::DEFAULT_SIMPLIFIED_NODE_NAMESPACE),
+            $this->dump([new Name('Example')]),
+            $this->dump([new Name('Example')], DumperVisitor::DEFAULT_SIMPLIFIED_NODE_NAMESPACE),
         );
     }
 
@@ -83,7 +82,7 @@ final class StringDumperVisitorTest extends TestCase
     public function everyNestingLevelIsIndentedByTwoSpaces(): void
     {
         self::assertSame(<<<'OUTPUT'
-            UnionTypeNode
+            LogicalTypeNode\UnionTypeNode
               NamedTypeNode
                 Name(int)
               NamedTypeNode
@@ -91,8 +90,8 @@ final class StringDumperVisitorTest extends TestCase
 
             OUTPUT, $this->dump([
                 new UnionTypeNode([
-                    new NamedTypeNode(Name::createFromString('int')),
-                    new NamedTypeNode(Name::createFromString('string'))
+                    new NamedTypeNode($this->parseName('int')),
+                    new NamedTypeNode($this->parseName('string'))
                 ]),
             ]));
     }
@@ -102,7 +101,7 @@ final class StringDumperVisitorTest extends TestCase
     {
         self::assertSame(
             "Name(\\Foo\\Bar)\n",
-            $this->dump([Name::createFromString('\\Foo\\Bar')]),
+            $this->dump([$this->parseName('\\Foo\\Bar')]),
         );
     }
 
@@ -111,15 +110,14 @@ final class StringDumperVisitorTest extends TestCase
     {
         self::assertStringStartsWith(
             "NamedTypeNode\n",
-            $this->dump([new NamedTypeNode(Name::createFromString('Example'))]),
+            $this->dump([new NamedTypeNode($this->parseName('Example'))]),
         );
     }
 
     #[Test]
     public function theOffsetPropertyIsNotPrinted(): void
     {
-        $node = new NamedTypeNode(Name::createFromString('Example'));
-        $node->offset = 42;
+        $node = new NamedTypeNode($this->parseName('Example'), offset: 42);
 
         self::assertStringStartsWith("NamedTypeNode\n", $this->dump([$node]));
     }
@@ -192,7 +190,7 @@ final class StringDumperVisitorTest extends TestCase
         self::assertSame(<<<'OUTPUT'
             NamedTypeNode
               Name(array)
-              Shape\FieldsListNode(isSealed=true)
+              Shape\FieldListNode(isSealed=true)
                 Shape\NamedFieldNode(isOptional=true)
                   Identifier(foo)
                   NamedTypeNode
@@ -205,7 +203,7 @@ final class StringDumperVisitorTest extends TestCase
     public function resetClearsTheOutput(): void
     {
         $visitor = new StringDumperVisitor();
-        Traverser::new([$visitor])->traverse([new Identifier('Example')]);
+        Traverser::new([$visitor])->traverse([new Name('Example')]);
 
         $visitor->reset();
 
@@ -218,10 +216,10 @@ final class StringDumperVisitorTest extends TestCase
         $visitor = new StringDumperVisitor();
         $traverser = Traverser::new([$visitor]);
 
-        $traverser->traverse([new Identifier('First')]);
-        $traverser->traverse([new Identifier('Second')]);
+        $traverser->traverse([new Name('First')]);
+        $traverser->traverse([new Name('Second')]);
 
-        self::assertSame("Identifier(Second)\n", $visitor->output);
+        self::assertSame("Name(Second)\n", $visitor->output);
     }
 
     #[Test]
@@ -230,9 +228,9 @@ final class StringDumperVisitorTest extends TestCase
         $visitor = new StringDumperVisitor();
         $traverser = Traverser::new([$visitor]);
 
-        $traverser->traverse([new NamedTypeNode(Name::createFromString('First'))]);
-        $traverser->traverse([new Identifier('Second')]);
+        $traverser->traverse([new NamedTypeNode($this->parseName('First'))]);
+        $traverser->traverse([new Name('Second')]);
 
-        self::assertSame("Identifier(Second)\n", $visitor->output);
+        self::assertSame("Name(Second)\n", $visitor->output);
     }
 }

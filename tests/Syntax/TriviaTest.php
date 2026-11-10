@@ -5,250 +5,150 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Syntax;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tests for the whitespace and the comments a type is written among, which
- * part the tokens and reach no tree of their own.
+ * Whitespaces, comments and what follows a whole type (grammar/lexemes.pp3).
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class TriviaTest extends SyntaxTestCase
 {
     /**
-     * @return iterable<non-empty-string, array{non-empty-string}>
+     * @return iterable<non-empty-string, array{string}>
      */
-    public static function commentedUnionDataProvider(): iterable
+    public static function validTriviaDataProvider(): iterable
     {
-        yield 'block comment' => ['int /* c */ | string'];
-        yield 'two block comments' => ['int /* a */ /* b */ | string'];
-        yield 'line comment' => ["int // c\n| string"];
-        yield 'hash comment' => ["int # c\n| string"];
-        yield 'empty hash comment' => ["int #\n| string"];
-        yield 'comment behind the delimiter' => ['int|/* c */string'];
-        yield 'comment on either side' => ['/* a */int|string/* b */'];
+        yield 'spaces around' => ['  int  '];
+        yield 'tabs around' => ["\tint\t"];
+        yield 'line breaks around' => ["\nint\n"];
+        yield 'carriage returns around' => ["\r\nint\r\n"];
+        yield 'line breaks around a bar' => ["int\n|\nstring"];
+        yield 'line break before a bar' => ["int\n|string"];
+        yield 'line break behind a bar' => ["int|\nstring"];
+        yield 'tabs around a bar' => ["int\t|\tstring"];
+        yield 'space before the double colon' => ['Foo ::BAR'];
+        yield 'space behind the double colon' => ['Foo:: BAR'];
+        yield 'space before the parenthesis of a callable' => ['callable (int): void'];
+        yield 'line break before the parenthesis of a callable' => ["callable\n(int): void"];
+        yield 'space before the arguments' => ['Foo <int>'];
+        yield 'line break before the arguments' => ["array\n<int>"];
+        yield 'space before the shape' => ['array {a: int}'];
+        yield 'line break before the shape' => ["array\n{a: int}"];
+        yield 'space before the bracket of an offset' => ['T [K]'];
+
+        yield 'arguments on several lines' => ["array<\n    int,\n    string,\n>"];
+        yield 'shape on several lines' => ["array{\n    a: int,\n    b?: string,\n}"];
+        yield 'callable on several lines' => ["callable(\n    int \$a,\n    string \$b,\n): void"];
+        yield 'callable with a break before the colon' => ["callable(int)\n: void"];
+
+        yield 'block comment behind' => ['int /* c */'];
+        yield 'block comment before' => ['/* c */ int'];
+        yield 'block comment around a bar' => ['int /* c */ | /* c */ string'];
+        yield 'documentation comment' => ['/** c */ int'];
+        yield 'empty comment' => ['/**/ int'];
+        yield 'line comment behind' => ['int // c'];
+        yield 'line comment and a continuation' => ["int // c\n| string"];
+        yield 'hash comment behind' => ['int # c'];
+        yield 'hash comment and a continuation' => ["int # c\n| string"];
+        yield 'line comment before' => ["// c\nint"];
+        yield 'comment inside a shape' => ['array{a: int /* c */, b: string}'];
+        yield 'comment before a field' => ['array{/* c */ a: int}'];
+        yield 'comment inside parameters' => ['callable(/* c */ int /* c */): void'];
+
+        yield 'cyrillic name' => ['Фу'];
+        yield 'line break inside a string' => ["'a\nb'"];
+        yield 'line break after a sign' => ["-\n1"];
+        yield 'cyrillic string' => ["'Фу'"];
+        yield 'emoji string' => ['"😀"'];
+        yield 'combining character' => ["a\u{0310}"];
+        yield 'zero width space is a part of a name' => ["int\u{200B}"];
+        yield 'byte order mark is a part of a name' => ["\u{FEFF}int"];
+    }
+
+    #[DataProvider('validTriviaDataProvider')]
+    public function testSourceIsAccepted(string $source): void
+    {
+        self::assertAccepted($source);
     }
 
     /**
-     * @param non-empty-string $type
-     * @throws \Throwable
+     * @return iterable<non-empty-string, array{string}>
      */
-    #[DataProvider('commentedUnionDataProvider')]
-    public function testACommentPartsTwoTokens(string $type): void
+    public static function invalidTriviaDataProvider(): iterable
     {
-        self::assertSame(<<<'AST'
-            UnionTypeNode
-              NamedTypeNode
-                Name(int)
-              NamedTypeNode
-                Name(string)
-            AST, $this->parseAndPrint($type));
+        yield 'empty' => [''];
+        yield 'space' => [' '];
+        yield 'line break' => ["\n"];
+        yield 'tab' => ["\t"];
+        yield 'only a comment' => ['/* c */'];
+        yield 'only a line comment' => ['// c'];
+
+        yield 'unterminated block comment' => ['/* int'];
+        yield 'block comment end alone' => ['int */'];
+        yield 'star alone' => ['int *'];
+        yield 'space inside a word' => ['in t'];
+        yield 'space inside a name' => ['i nt'];
+        yield 'space inside a namespace' => ['Foo \\ Bar'];
+        yield 'comment inside a namespace' => ['Some/* c */\\Any'];
+        yield 'comment glued to a namespace' => ['Some\\/* c */Any'];
+    }
+
+    #[DataProvider('invalidTriviaDataProvider')]
+    public function testSourceIsRejected(string $source): void
+    {
+        self::assertRejected($source);
     }
 
     /**
-     * A comment ends the line it is written on, so whatever follows the line
-     * is read as usual.
+     * @return iterable<non-empty-string, array{string}>
      */
-    public function testALineCommentEndsWithItsLine(): void
+    public static function trailingInputDataProvider(): iterable
     {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(array)
-              Shape\FieldsListNode(isSealed=true)
-                Shape\NamedFieldNode(isOptional=false)
-                  Identifier(a)
-                  NamedTypeNode
-                    Name(int)
-            AST, $this->parseAndPrint("array{\n  // the key\n  a: int,\n}"));
+        yield 'a second name' => ['int string'];
+        yield 'a comma' => ['int, string'];
+        yield 'a semicolon' => ['int;'];
+        yield 'a semicolon and a name' => ['int;string'];
+        yield 'a name and a bar' => ['int string|bool'];
+        yield 'a variable' => ['int $a'];
+        yield 'parameters' => ['int $a, string $b'];
+        yield 'a variadic variable' => ['int ...$a'];
+        yield 'a variadic marker' => ['int...'];
+        yield 'a variadic marker before' => ['...int'];
+        yield 'a dot' => ['int.'];
+        yield 'a leading dot' => ['.int'];
+        yield 'a trailing comma' => ['int,'];
+        yield 'a leading comma' => [',int'];
+        yield 'a closing parenthesis' => ['int)'];
+        yield 'an opening parenthesis' => ['(int'];
+        yield 'a closing bracket' => ['int]'];
+        yield 'an opening bracket' => ['[int'];
+        yield 'a closing brace' => ['int}'];
+        yield 'an opening brace' => ['{int'];
+        yield 'a closing angle bracket' => ['int>'];
+        yield 'an opening angle bracket' => ['<int'];
+        yield 'a bar behind a closing parenthesis' => ['int|string)'];
+        yield 'an unclosed group behind a bar' => ['(int|string'];
+        yield 'at sign' => ['int@'];
+        yield 'at sign before' => ['@int'];
+        yield 'exclamation mark' => ['int!'];
+        yield 'tilde' => ['int~'];
+        yield 'caret' => ['int^'];
+        yield 'percent' => ['int%'];
+        yield 'assignment' => ['int='];
+        yield 'assignment before' => ['=int'];
+        yield 'backslash behind' => ['int\\'];
+        yield 'backquote' => ['int`'];
+        yield 'slash' => ['int/'];
+        yield 'plus' => ['int+'];
+        yield 'colon' => ['int:'];
+        yield 'colon before' => [':int'];
+        yield 'double colon' => ['int::'];
+        yield 'double colon before' => ['::int'];
+        yield 'question mark and a name' => ['int ? a'];
+        yield 'two question marks' => ['int??'];
     }
 
-    /**
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function commentedNameDataProvider(): iterable
+    #[DataProvider('trailingInputDataProvider')]
+    public function testTrailingInputIsRejected(string $source): void
     {
-        yield 'in front of the separator' => ['Some/* c */\Any'];
-        yield 'behind the separator' => ['Some\/* c */Any'];
-    }
-
-    /**
-     * A separator parts the segments of a name on its own, so a comment
-     * standing beside it parts nothing.
-     *
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('commentedNameDataProvider')]
-    public function testACommentStandsInsideAName(string $type): void
-    {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(Some\Any)
-            AST, $this->parseAndPrint($type));
-    }
-
-    public function testACommentStandsInsideAnEmptyShape(): void
-    {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(array)
-              Shape\FieldsListNode(isSealed=true)
-            AST, $this->parseAndPrint('array{ /* c */ }'));
-    }
-
-    public function testACommentStandsBetweenANameAndItsParameters(): void
-    {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(callable)
-              Callable\CallableParameterListNode
-              NamedTypeNode
-                Name(void)
-            AST, $this->parseAndPrint('callable/* c */(): void'));
-    }
-
-    /**
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function spacedTypeDataProvider(): iterable
-    {
-        yield 'around the arguments' => ['Some < int , string >'];
-        yield 'no space at all' => ['Some<int,string>'];
-    }
-
-    /**
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('spacedTypeDataProvider')]
-    public function testSpaceAroundATokenIsOfNoMeaning(string $type): void
-    {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(Some)
-              Template\TemplateArgumentListNode
-                Template\TemplateArgumentNode
-                  NamedTypeNode
-                    Name(int)
-                Template\TemplateArgumentNode
-                  NamedTypeNode
-                    Name(string)
-            AST, $this->parseAndPrint($type));
-    }
-
-    public function testSpaceStandsAroundEveryPartOfACallable(): void
-    {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(callable)
-              Callable\CallableParameterListNode
-                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
-                  NamedTypeNode
-                    Name(int)
-              NamedTypeNode
-                Name(void)
-            AST, $this->parseAndPrint('callable ( int ) : void'));
-    }
-
-    public function testATypeIsSurroundedByBlankLines(): void
-    {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(int)
-            AST, $this->parseAndPrint("\n\n  int  \n\n"));
-    }
-
-    /**
-     * The two words of an "is not" are two tokens, so whatever stands between
-     * any other pair of tokens stands between them as well.
-     *
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function partedIsNotDataProvider(): iterable
-    {
-        yield 'a single space' => ['A is not B ? C : D'];
-        yield 'several spaces' => ['A is  not B ? C : D'];
-        yield 'a tabulation' => ["A is\tnot B ? C : D"];
-        yield 'a line terminator' => ["A is\nnot B ? C : D"];
-        yield 'a block comment' => ['A is/* c */not B ? C : D'];
-        yield 'a line comment' => ["A is // c\nnot B ? C : D"];
-        yield 'a comment and a line terminator' => ["A is /* c */\n not B ? C : D"];
-    }
-
-    /**
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('partedIsNotDataProvider')]
-    public function testTriviaPartsTheWordsOfAnIsNot(string $type): void
-    {
-        self::assertSame(<<<'AST'
-            TernaryExpressionNode
-              Condition\NotEqualConditionNode
-                NamedTypeNode
-                  Name(A)
-                NamedTypeNode
-                  Name(B)
-              NamedTypeNode
-                Name(C)
-              NamedTypeNode
-                Name(D)
-            AST, $this->parseAndPrint($type));
-    }
-
-    /**
-     * The words are read the way they are written, so a single word that is
-     * spelled like the two of them is an ordinary name.
-     */
-    public function testTheWordsOfAnIsNotAreTwoWords(): void
-    {
-        $this->expectParsingException();
-
-        $this->parse('A isnot B ? C : D');
-    }
-
-    /**
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function casedIsNotDataProvider(): iterable
-    {
-        yield 'uppercase' => ['A IS NOT B ? C : D'];
-        yield 'uppercase negation alone' => ['A is NOT B ? C : D'];
-        yield 'mixed case' => ['A Is NoT B ? C : D'];
-    }
-
-    /**
-     * The words are written the one way they are written, so a word of any
-     * other case is an ordinary name and opens no condition.
-     *
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('casedIsNotDataProvider')]
-    public function testTheWordsOfAnIsNotAreCaseSensitive(string $type): void
-    {
-        $this->expectParsingException();
-
-        $this->parse($type);
-    }
-
-    public function testAnUnterminatedBlockCommentIsRefused(): void
-    {
-        $this->expectParsingException('unexpected "/*"');
-
-        $this->parse('/* the comment that never ends');
-    }
-
-    public function testACommentAloneIsNoType(): void
-    {
-        $this->expectParsingException('unexpected end of input');
-
-        $this->parse('// only a comment');
-    }
-
-    public function testSpaceAloneIsNoType(): void
-    {
-        $this->expectParsingException('unexpected end of input');
-
-        $this->parse("  \n\t ");
+        self::assertRejected($source);
     }
 }

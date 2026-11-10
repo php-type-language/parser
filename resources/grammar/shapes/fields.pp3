@@ -1,0 +1,55 @@
+
+ShapeField
+  : ShapeExplicitField()
+  | ShapeImplicitField()
+  ;
+
+ShapeImplicitField -> {
+    return new Type\Shape\ImplicitFieldNode($children[0], $offset);
+}
+  : Type()
+  ;
+
+// a: int, a?: int, 42: int, 'a': int, Foo::BAR: int
+ShapeExplicitField -> {
+    // The children are the key, the question mark, if there is one, the type
+    $key = $children[0];
+    $type = \end($children);
+    $isOptional = isset($children[2]);
+
+    return match (true) {
+        // a
+        $key instanceof Type\Identifier
+            => new Type\Shape\NamedFieldNode($key, $type, $isOptional, $offset),
+        // 42, 'a'
+        $key instanceof Type\Literal\IntLiteralNode,
+        $key instanceof Type\Literal\StringLiteralNode
+            => new Type\Shape\ScalarFieldNode($key, $type, $isOptional, $offset),
+        // Foo::BAR
+        default
+            => new Type\Shape\ComplexFieldNode($key, $type, $isOptional, $offset),
+    };
+}
+  : ShapeKey() <T_QUESTION>? ::T_COLON:: Type()
+  ;
+
+// a, Foo\BAR, Foo::BAR, 42, 'text'. A mask of constants is not a key
+ShapeKey
+  : ShapeClassConstKey()
+  | ShapeNamedKey()
+  | IntLiteral()
+  | StringLiteral()
+  ;
+
+// a, a-b, Foo\Bar, \FOO
+ShapeNamedKey -> {
+    return new Type\Identifier($children[0]->toString(), $children[0]->offset);
+}
+  : Name()
+  ;
+
+ShapeClassConstKey -> {
+    return new Type\Constant\ClassConstTypeNode($children[0], $children[1], $offset);
+}
+  : Name() ::T_DOUBLE_COLON:: Identifier()
+  ;

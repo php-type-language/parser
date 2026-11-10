@@ -6,12 +6,18 @@ namespace TypeLang\Parser;
 
 use JetBrains\PhpStorm\Language;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
-use TypeLang\Parser\Partial\ParsedResult;
-use TypeLang\Parser\Validation\CheckResult;
+use TypeLang\Parser\Partial\FailureParsedResult;
+use TypeLang\Parser\Partial\SuccessfulParsedResult;
+use TypeLang\Parser\Validation\FailureCheckResult;
+use TypeLang\Parser\Validation\SuccessfulCheckResult;
+use TypeLang\Type\Node;
 use TypeLang\Type\TypeNode;
 
 /**
+ * @template-covariant TResult of Node = TypeNode
  * @template-contravariant TSource of mixed = mixed
+ *
+ * @see TypeNode used by default
  */
 interface TypeParserInterface
 {
@@ -32,10 +38,11 @@ interface TypeParserInterface
      * ```
      *
      * @param TSource $source source code to parse
+     * @return TResult
      * @throws ParserExceptionInterface in case of parsing exception occurs
      * @throws \Throwable in case of internal error occurs
      */
-    public function parse(#[Language('PHP')] mixed $source): TypeNode;
+    public function parse(#[Language('PHP')] mixed $source): Node;
 
     /**
      * Parses as much of the provided source code as possible and returns
@@ -70,12 +77,13 @@ interface TypeParserInterface
      * ```
      *
      * @param TSource $source source code to parse
-     * @return ParsedResult parsing result containing a partial AST, parser
-     *         state, and syntax diagnostics
+     * @return SuccessfulParsedResult<TResult>|FailureParsedResult parsing
+     *         result containing a partial AST, parser state, and syntax
+     *         diagnostics
      * @throws ParserExceptionInterface in case of parsing exception occurs
      * @throws \Throwable in case of internal error occurs
      */
-    public function partial(#[Language('PHP')] mixed $source): ParsedResult;
+    public function partial(#[Language('PHP')] mixed $source): SuccessfulParsedResult|FailureParsedResult;
 
     /**
      * Tells whether the provided source code is a type, building nothing
@@ -96,10 +104,10 @@ interface TypeParserInterface
      * ```
      *
      * @param TSource $source source code to check
-     * @return CheckResult what stands in the way of the reading, in case of
-     *         anything does
+     * @return SuccessfulCheckResult|FailureCheckResult what stands in the way
+     *         of the reading, in case of anything does
      * @throws ParserExceptionInterface in case of parsing exception occurs
      * @throws \Throwable in case of internal error occurs
      */
-    public function validate(#[Language('PHP')] mixed $source): CheckResult;
+    public function validate(#[Language('PHP')] mixed $source): SuccessfulCheckResult|FailureCheckResult;
 }

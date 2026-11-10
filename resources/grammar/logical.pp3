@@ -1,0 +1,37 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Logical Types
+ * -----------------------------------------------------------------------------
+ */
+
+
+// A|B, A|B&C is A|(B&C)
+UnionType -> {
+    if (!isset($children[1])) {
+        return $children[0];
+    }
+
+    if (!$this->features->unions) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('unions', $ctx);
+    }
+
+    return new Type\LogicalTypeNode\UnionTypeNode($children, $offset);
+}
+  : IntersectionType() (::T_UNION:: IntersectionType())*
+  ;
+
+
+// A&B, A&B[] is A&(B[])
+IntersectionType -> {
+    if (!isset($children[1])) {
+        return $children[0];
+    }
+
+    if (!$this->features->intersections) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('intersections', $ctx);
+    }
+
+    return new Type\LogicalTypeNode\IntersectionTypeNode($children, $offset);
+}
+  : NullableType() (::T_AMPERSAND:: NullableType())*
+  ;

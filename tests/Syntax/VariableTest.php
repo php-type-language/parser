@@ -5,265 +5,134 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Syntax;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
-use TypeLang\Parser\Exception\UnexpectedTokenException;
-use TypeLang\Type\CallableTypeNode;
-use TypeLang\Type\TernaryExpressionNode;
-use TypeLang\Type\ThisNode;
-use TypeLang\Type\VariableNode;
 
 /**
- * Tests for the "$this" written as a type and for the variables written
- * beside one.
+ * The variable `$name` (grammar.pp3). It is no type, so it stands as the name of
+ * a parameter of a callable and a type never accepts it.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class VariableTest extends SyntaxTestCase
 {
-    public function testThisIsATypeOfItsOwn(): void
+    private static function parameter(string $variable): string
     {
-        self::assertSame('ThisNode', $this->parseAndPrint('$this'));
-    }
-
-    public function testThisStandsAsAReturnType(): void
-    {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(callable)
-              Callable\CallableParameterListNode
-              ThisNode
-            AST, $this->parseAndPrint('callable(): $this'));
-    }
-
-    public function testThisStandsAsAParameterType(): void
-    {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(callable)
-              Callable\CallableParameterListNode
-                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
-                  ThisNode
-              NamedTypeNode
-                Name(void)
-            AST, $this->parseAndPrint('callable($this): void'));
+        return 'callable(' . $variable . "\n)";
     }
 
     /**
-     * The same word names a parameter once a type stands in front of it, so
-     * it is read as a variable and not as a type.
+     * @return iterable<non-empty-string, array{string}>
      */
-    public function testThisNamesAParameter(): void
+    public static function validVariableDataProvider(): iterable
     {
-        self::assertSame(<<<'AST'
-            CallableTypeNode
-              Name(callable)
-              Callable\CallableParameterListNode
-                Callable\CallableParameterNode(isOutput=false, isVariadic=false, isOptional=false)
-                  NamedTypeNode
-                    Name(int)
-                  VariableNode
-                    Identifier(this)
-              NamedTypeNode
-                Name(void)
-            AST, $this->parseAndPrint('callable(int $this): void'));
+        yield 'letter' => ['$a'];
+        yield 'upper case letter' => ['$A'];
+        yield 'word' => ['$value'];
+        yield 'underscore' => ['$_'];
+        yield 'two underscores' => ['$__'];
+        yield 'underscore in front' => ['$_x'];
+        yield 'underscore inside' => ['$a_b'];
+        yield 'digit behind' => ['$a1'];
+        yield 'digit behind an underscore' => ['$_1'];
+        yield 'camel case' => ['$someValue'];
+        yield 'unicode letter' => ['$Ф'];
+        yield 'byte above ascii' => ["\$\u{FF}"];
+        yield 'emoji' => ["\$\u{1F600}"];
+
+        // The word this is a variable only as a part of a longer name
+        yield 'this and a suffix' => ['$thisFoo'];
+        yield 'this and an underscore' => ['$this_'];
+        yield 'this and a letter' => ['$thisx'];
+        yield 'this in upper case' => ['$THIS'];
+        yield 'this in camel case' => ['$This'];
+
+        // Trivia
+        yield 'spaces around' => ['  $a  '];
+        yield 'line breaks around' => ["\n\$a\n"];
+        yield 'comment in front' => ['/* c */ $a'];
+        yield 'comment behind' => ['$a /* c */'];
+        yield 'line comment behind' => ['$a // c'];
+        yield 'hash comment behind' => ['$a # c'];
     }
 
-    public function testThisIsATemplateArgument(): void
+    #[DataProvider('validVariableDataProvider')]
+    public function testVariableIsAccepted(string $source): void
     {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(Some)
-              Template\TemplateArgumentListNode
-                Template\TemplateArgumentNode
-                  ThisNode
-            AST, $this->parseAndPrint('Some<$this>'));
-    }
-
-    public function testThisIsAShapeValue(): void
-    {
-        self::assertSame(<<<'AST'
-            NamedTypeNode
-              Name(array)
-              Shape\FieldsListNode(isSealed=true)
-                Shape\NamedFieldNode(isOptional=false)
-                  Identifier(a)
-                  ThisNode
-            AST, $this->parseAndPrint('array{a: $this}'));
+        self::assertAccepted(self::parameter($source));
     }
 
     /**
-     * @return iterable<non-empty-string, array{non-empty-string, non-empty-string}>
+     * @return iterable<non-empty-string, array{string}>
      */
-    public static function wrappedThisDataProvider(): iterable
+    public static function invalidVariableDataProvider(): iterable
     {
-        yield 'list' => ['$this[]', 'TypesListNode'];
-        yield 'nullable' => ['?$this', 'NullableTypeNode'];
-        yield 'union' => ['$this|null', 'UnionTypeNode'];
+        yield 'dollar alone' => ['$'];
+        yield 'two dollars' => ['$$'];
+        yield 'variable variable' => ['$$a'];
+        yield 'space behind the dollar' => ['$ a'];
+        yield 'line break behind the dollar' => ["\$\na"];
+        yield 'comment behind the dollar' => ['$/* c */a'];
+        yield 'digit in front' => ['$1'];
+        yield 'digit in front of a word' => ['$1a'];
+        yield 'hyphen in front' => ['$-a'];
+        yield 'hyphen inside' => ['$a-b'];
+        yield 'dot inside' => ['$a.b'];
+        yield 'backslash inside' => ['$a\\b'];
+        yield 'dollar behind' => ['a$'];
+        yield 'two variables' => ['$a $b'];
+        yield 'two variables glued' => ['$a$b'];
+        yield 'variable and a name' => ['$a b'];
+        yield 'variable and brackets' => ['$a[]'];
+        yield 'variable and a key' => ['$a[K]'];
+        yield 'variable and a bar' => ['$a|b'];
+        yield 'variable and an ampersand' => ['$a&b'];
+        yield 'variable and a mark' => ['$a?'];
+        yield 'variable and a colon' => ['$a::B'];
+        yield 'variable and arguments' => ['$a<int>'];
+        yield 'variable and parentheses' => ['$a()'];
+    }
+
+    #[DataProvider('invalidVariableDataProvider')]
+    public function testVariableIsRejected(string $source): void
+    {
+        self::assertRejected(self::parameter($source));
     }
 
     /**
-     * @param non-empty-string $type
-     * @param non-empty-string $wrapper
-     * @throws \Throwable
+     * The word this is a type of its own, so in the place of a parameter it
+     * stands as the type and not as a name.
      */
-    #[DataProvider('wrappedThisDataProvider')]
-    public function testThisIsWrappedLikeAnyOtherType(string $type, string $wrapper): void
+    public function testThisIsAcceptedAsATypeOfAParameter(): void
     {
-        self::assertStringStartsWith($wrapper, $this->parseAndPrint($type));
+        self::assertAccepted(self::parameter('$this'));
     }
 
     /**
-     * A condition reads its subject as a type first, so the word is the type
-     * and not the variable it is spelled like.
+     * @return iterable<non-empty-string, array{string}>
      */
-    public function testThisStandsAsATypeOnTheLeftOfACondition(): void
+    public static function variableAsATypeDataProvider(): iterable
     {
-        $node = $this->parse('$this is B ? C : D');
-
-        self::assertInstanceOf(TernaryExpressionNode::class, $node);
-        self::assertInstanceOf(ThisNode::class, $node->condition->subject);
+        yield 'variable' => ['$a'];
+        yield 'variable with an underscore' => ['$_x'];
+        yield 'variable with a long name' => ['$thisFoo'];
+        yield 'nullable variable' => ['?$a'];
+        yield 'list of variables' => ['$a[]'];
+        yield 'union of variables' => ['$a|$b'];
+        yield 'intersection with a variable' => ['A&$b'];
+        yield 'variable in a group' => ['($a)'];
+        yield 'variable as an argument' => ['Foo<$a>'];
+        yield 'variable as a key' => ['array{$a: int}'];
+        yield 'variable as a field' => ['array{$a}'];
+        yield 'variable as a constant class' => ['$a::BAR'];
+        yield 'variable as a shape value' => ['array{a: $a}'];
+        yield 'variable as a return type' => ['callable(): $a'];
+        yield 'variable as an offset' => ['T[$a]'];
+        yield 'this as a constant class' => ['$this::BAR'];
+        yield 'variable in front of the type of a parameter' => ['callable($a int): void'];
+        yield 'this as a name of a parameter' => ['callable(int $this): void'];
+        yield 'variable with a dash as a name of a parameter' => ['callable(int $a-b): void'];
     }
 
-    /**
-     * The token is written the one way it is written, so a word that only
-     * looks like it is an ordinary variable.
-     */
-    public function testTheThisTokenIsCaseSensitive(): void
+    #[DataProvider('variableAsATypeDataProvider')]
+    public function testVariableIsNoType(string $source): void
     {
-        $node = $this->parse('$This is B ? C : D');
-
-        self::assertInstanceOf(TernaryExpressionNode::class, $node);
-        self::assertInstanceOf(VariableNode::class, $node->condition->subject);
-        self::assertSame('This', $node->condition->subject->name->value);
-    }
-
-    public function testAVariableStandsBesideACondition(): void
-    {
-        $node = $this->parse('$value is B ? C : D');
-
-        self::assertInstanceOf(TernaryExpressionNode::class, $node);
-        self::assertInstanceOf(VariableNode::class, $node->condition->subject);
-        self::assertSame('value', $node->condition->subject->name->value);
-    }
-
-    /**
-     * A variable names a place a value is kept in, so it is no type and
-     * stands nowhere a type is expected.
-     */
-    public function testAVariableIsNoTypeOfItsOwn(): void
-    {
-        $this->expectParsingException();
-
-        $this->parse('$value');
-    }
-
-    public function testAVariableIsNoTemplateArgument(): void
-    {
-        $this->expectParsingException();
-
-        $this->parse('Some<$value>');
-    }
-
-    /**
-     * A variable carries no type the rest of the reading could go on with,
-     * so it stands nowhere a type is wrapped, joined or indexed. The subject
-     * of a condition is the one place a variable is read.
-     *
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function variableBesideATypeDataProvider(): iterable
-    {
-        yield 'a nullable' => ['?$value is B ? C : D'];
-        yield 'a union' => ['int|$value is B ? C : D'];
-        yield 'an intersection' => ['int&$value is B ? C : D'];
-        yield 'a union it opens' => ['$value|int is B ? C : D'];
-        yield 'a list' => ['$value[] is B ? C : D'];
-        yield 'an offset' => ['$value[0] is B ? C : D'];
-        yield 'a group' => ['($value)'];
-        yield 'a shape value' => ['array{a: $value}'];
-        yield 'a return type' => ['callable(): $value'];
-    }
-
-    /**
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('variableBesideATypeDataProvider')]
-    public function testAVariableStandsInNoTypePosition(string $type): void
-    {
-        // The token is reported the way any other unexpected one is, rather
-        // than raised as an error of the parser itself.
-        $this->expectException(UnexpectedTokenException::class);
-
-        $this->parse($type);
-    }
-
-    public function testThisCarriesNoClassConstant(): void
-    {
-        $this->expectParsingException('unexpected "::"');
-
-        $this->parse('$this::CONST');
-    }
-
-    public function testAParameterNameStandsBehindItsTypeAlone(): void
-    {
-        $this->expectParsingException();
-
-        $this->parse('callable($value int): void');
-    }
-
-    /**
-     * A dash belongs to a name and not to a variable, the way it does not
-     * belong to one in PHP either.
-     *
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function dashedVariableDataProvider(): iterable
-    {
-        yield 'an ordinary variable' => ['$value-of is B ? C : D'];
-        yield 'the this variable' => ['$this-of is B ? C : D'];
-        yield 'a parameter name' => ['callable(int $value-of): void'];
-    }
-
-    /**
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('dashedVariableDataProvider')]
-    public function testAVariableCarriesNoDash(string $type): void
-    {
-        $this->expectParsingException();
-
-        $this->parse($type);
-    }
-
-    /**
-     * @return iterable<non-empty-string, array{non-empty-string}>
-     */
-    public static function variableBodyDataProvider(): iterable
-    {
-        yield 'an underscore' => ['$value_1'];
-        yield 'a leading underscore' => ['$_value'];
-        yield 'digits' => ['$value42'];
-        yield 'a word that opens with this' => ['$thisValue'];
-    }
-
-    /**
-     * @param non-empty-string $type
-     * @throws \Throwable
-     */
-    #[DataProvider('variableBodyDataProvider')]
-    public function testAVariableCarriesWhateverANameCarriesBesideADash(string $type): void
-    {
-        $node = $this->parse($type . ' is B ? C : D');
-
-        self::assertInstanceOf(TernaryExpressionNode::class, $node);
-        self::assertInstanceOf(VariableNode::class, $node->condition->subject);
-        self::assertSame(\substr($type, 1), $node->condition->subject->name->value);
-    }
-    public function testTheDollarSignAloneIsNoVariable(): void
-    {
-        $this->expectParsingException();
-
-        $this->parse('$');
+        self::assertRejected($source);
     }
 }

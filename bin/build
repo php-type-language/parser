@@ -7,6 +7,9 @@ use Phplrt\Compiler\Compiler;
 use Phplrt\Compiler\Generator\ClassModifier;
 use Phplrt\Compiler\Generator\TargetPhpVersion;
 use Phplrt\Source\FileSource;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 
 if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
     trigger_error('The console should be invoked via the CLI '
@@ -34,7 +37,16 @@ if (!class_exists(Compiler::class)) {
     exit(-1);
 }
 
-(new Compiler())
+$compiler = new Compiler();
+
+if (\class_exists(ConsoleLogger::class)) {
+    $compiler->setLogger(new ConsoleLogger(new StreamOutput(
+        stream: \STDOUT,
+        verbosity: OutputInterface::VERBOSITY_VERY_VERBOSE,
+    )));
+}
+
+$compiler
     ->load(FileSource::createFromPathname(__DIR__ . '/../resources/grammar.pp3'))
     ->generate()
         ->withNamespaceName('TypeLang\\Parser\\Internal')
@@ -46,4 +58,4 @@ if (!class_exists(Compiler::class)) {
         ->withTargetPhpVersion(TargetPhpVersion::Php81)
         ->withClassImport('TypeLang\\Type')
         ->withClassImport('TypeLang\\Parser\\Exception')
-        ->save(__DIR__ . '/../src/Internal/CompiledExecutor.php');
+    ->save(__DIR__ . '/../src/Internal/CompiledExecutor.php');

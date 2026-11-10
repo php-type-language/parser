@@ -1,0 +1,56 @@
+
+%include shapes/fields
+
+/**
+ * -----------------------------------------------------------------------------
+ *  Shapes
+ * -----------------------------------------------------------------------------
+ */
+
+// array{a: int}, list{a: int, ...}, Some{...<K, V>}
+ShapeFields -> {
+    if (!$this->features->shapes) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('shapes', $ctx);
+    }
+
+    $fields = new Type\Shape\FieldListNode([], true, $offset);
+    $arguments = null;
+
+    foreach ($children as $child) {
+        switch (true) {
+            case $child instanceof Type\Shape\FieldNode:
+                $fields->items[] = $child;
+                break;
+
+            case $child instanceof Type\Template\TemplateListNode:
+                $arguments = $child;
+                break;
+
+            default:
+                $fields->isSealed = false;
+                break;
+        }
+    }
+
+    return [$fields, $arguments];
+}
+  : ::T_BRACE_OPEN::
+        (ShapeFieldList() ShapeTail()? | ShapeUnsealed())?
+    ::T_BRACE_CLOSE::
+  ;
+
+// a: int, b?: string, int
+ShapeFieldList
+  : ShapeField()
+    (::T_COMMA:: ShapeField())*
+  ;
+
+// , ... | , ...<K, V> | ,
+ShapeTail
+  : ::T_COMMA:: ShapeUnsealed()?
+  ;
+
+// ..., ...<K, V>
+ShapeUnsealed
+  : <T_ELLIPSIS> TemplateArguments()? ::T_COMMA::?
+  ;

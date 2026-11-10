@@ -1,0 +1,82 @@
+/**
+ * -----------------------------------------------------------------------------
+ *  Template Parameters
+ * -----------------------------------------------------------------------------
+ */
+
+
+// <T>, <T, U of int>, <covariant T of A super B = C,>
+TemplateParameters -> {
+    if (!$this->features->templates) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('templates', $ctx);
+    }
+
+    return new Type\Template\TemplateParameterListNode($children, $offset);
+}
+  : ::T_ANGLE_OPEN::
+        TemplateParameter() (::T_COMMA:: TemplateParameter())* ::T_COMMA::?
+    ::T_ANGLE_CLOSE::
+  ;
+
+// T, covariant T, T of U, T as U, T super U, T of A super B, T = V
+#TemplateParameter -> {
+    $name = null;
+    $variance = null;
+    $upper = null;
+    $lower = null;
+    $default = null;
+
+    foreach ($children as $child) {
+        switch (true) {
+            case $child instanceof Type\Template\VarianceNode:
+                $variance = $child;
+                break;
+
+            case $child instanceof Type\Identifier:
+                $name = $child;
+                break;
+
+            case $child instanceof Type\Template\TemplateBoundNode
+                && $child->kind === Type\Template\TemplateBoundNode\BoundKind::Upper:
+                $upper = $child;
+                break;
+
+            case $child instanceof Type\Template\TemplateBoundNode:
+                $lower = $child;
+                break;
+
+            default:
+                $default = $child;
+                break;
+        }
+    }
+
+    return new Type\Template\TemplateParameterNode($name, $upper, $lower, $default, $variance, $offset);
+}
+  : (Variance() Identifier() | Identifier())
+    TemplateUpperBound()?
+    TemplateLowerBound()?
+    (::T_ASSIGN:: Type())?
+  ;
+
+// of Type, as Type
+TemplateUpperBound -> {
+    return new Type\Template\TemplateBoundNode(
+        $children[1],
+        Type\Template\TemplateBoundNode\BoundKind::Upper,
+        $offset,
+    );
+}
+  : (<T_OF> | <T_AS>) Type()
+  ;
+
+// super Type
+TemplateLowerBound -> {
+    return new Type\Template\TemplateBoundNode(
+        $children[1],
+        Type\Template\TemplateBoundNode\BoundKind::Lower,
+        $offset,
+    );
+}
+  : <T_SUPER> Type()
+  ;

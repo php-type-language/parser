@@ -8,5 +8,6 @@ use Phplrt\Contracts\Source\ReadableInterface;
 
 /**
  * @property-read ReadableInterface $source
+ * @property-read ParsingErrorRange $range
  */
 interface ParserExceptionInterface extends \Throwable {}

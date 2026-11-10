@@ -65,7 +65,7 @@ properties describing its kind.
   free-text description.
 
 ```php
-$result = $parser->parseTolerant('int and some trailing description');
+$result = $result->parseTolerant('int and some trailing description');
 
 $result->type;   // TypeLang\Type\NamedTypeNode ("int")
 $result->offset; // offset where parsing stopped

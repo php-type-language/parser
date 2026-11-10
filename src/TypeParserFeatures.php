@@ -7,12 +7,12 @@ namespace TypeLang\Parser;
 /**
  * Configures language features supported by the parser.
  *
- * Feature flags allow enabling or disabling individual language constructs.
- * When a feature is disabled, the parser will treat the corresponding syntax
- * as unsupported and report an error.
+ * Each flag enables or disables one language feature. When a feature is
+ * disabled, the parser reports the corresponding syntax as not allowed.
+ * All features are enabled by default.
  *
  * ```
- * $parser = new Parser(new ParserFeatures(
+ * $parser = new TypeParser(new TypeParserFeatures(
  *     conditions: false,
  * ));
  *
@@ -22,58 +22,79 @@ namespace TypeLang\Parser;
  */
 final class TypeParserFeatures
 {
-    public const CONDITIONAL_FEATURES_DEFAULT_VALUE = true;
-    public const SHAPES_FEATURES_DEFAULT_VALUE = true;
-    public const CALLABLES_FEATURES_DEFAULT_VALUE = true;
-    public const LITERALS_FEATURES_DEFAULT_VALUE = true;
-    public const GENERICS_FEATURES_DEFAULT_VALUE = true;
-    public const UNION_FEATURES_DEFAULT_VALUE = true;
-    public const INTERSECTION_FEATURES_DEFAULT_VALUE = true;
-    public const LIST_FEATURES_DEFAULT_VALUE = true;
-    public const OFFSETS_FEATURES_DEFAULT_VALUE = true;
-    public const HINTS_FEATURES_DEFAULT_VALUE = true;
-
     public function __construct(
         /**
-         * Enables or disables support for conditional types such as `T ? U : V`
+         * Enables or disables support for union types such as `T|U`
          */
-        public readonly bool $conditions = self::CONDITIONAL_FEATURES_DEFAULT_VALUE,
+        public readonly bool $unions = true,
         /**
-         * Enables or disables support for shape types such as `T{key: U}`
+         * Enables or disables support for intersection types such as `T&U`
          */
-        public readonly bool $shapes = self::SHAPES_FEATURES_DEFAULT_VALUE,
+        public readonly bool $intersections = true,
         /**
-         * Enables or disables support for callable types such as `fn(T, U): V`
+         * Enables or disables support for nullable types such as `?T`
          */
-        public readonly bool $callables = self::CALLABLES_FEATURES_DEFAULT_VALUE,
-        /**
-         * Enables or disables support for literal types such as `42` or `'foo'`
-         */
-        public readonly bool $literals = self::LITERALS_FEATURES_DEFAULT_VALUE,
-        /**
-         * Enables or disables support for generic type arguments such as `T<U, V>`
-         */
-        public readonly bool $generics = self::GENERICS_FEATURES_DEFAULT_VALUE,
-        /**
-         * Enables or disables support for union types such as `T | U`
-         */
-        public readonly bool $unions = self::UNION_FEATURES_DEFAULT_VALUE,
-        /**
-         * Enables or disables support for intersection types such as `T & U`
-         */
-        public readonly bool $intersections = self::INTERSECTION_FEATURES_DEFAULT_VALUE,
+        public readonly bool $nullables = true,
         /**
          * Enables or disables support for short list types such as `T[]`
          */
-        public readonly bool $lists = self::LIST_FEATURES_DEFAULT_VALUE,
+        public readonly bool $lists = true,
         /**
          * Enables or disables support for offset access types such as `T[U]`
          */
-        public readonly bool $offsets = self::OFFSETS_FEATURES_DEFAULT_VALUE,
+        public readonly bool $offsets = true,
         /**
-         * Enables or disables support for generic variance hints such as `T<out U, in V>`
+         * Enables or disables support for conditional types
+         * such as `T is U ? A : B`
          */
-        public readonly bool $hints = self::HINTS_FEATURES_DEFAULT_VALUE,
+        public readonly bool $conditions = true,
+        /**
+         * Enables or disables support for generic type arguments
+         * such as `T<U, V>`
+         */
+        public readonly bool $generics = true,
+        /**
+         * Enables or disables support for wildcard generic arguments
+         * such as `T<*>`
+         */
+        public readonly bool $wildcards = true,
+        /**
+         * Enables or disables support for call-site variance of generic
+         * arguments such as `T<covariant U>`
+         */
+        public readonly bool $hints = true,
+        /**
+         * Enables or disables support for callable types
+         * such as `callable(T): U`
+         */
+        public readonly bool $callables = true,
+        /**
+         * Enables or disables support for template parameters of callable
+         * types such as `callable<T of U>(T): T`
+         */
+        public readonly bool $templates = true,
+        /**
+         * Enables or disables support for default values of callable
+         * parameters such as `callable(T $a = U): V`
+         */
+        public readonly bool $defaults = true,
+        /**
+         * Enables or disables support for shape types such as `array{key: T}`
+         */
+        public readonly bool $shapes = true,
+        /**
+         * Enables or disables support for class constant types
+         * such as `Foo::BAR`
+         */
+        public readonly bool $constants = true,
+        /**
+         * Enables or disables support for constant masks such as `Foo::BAR_*`
+         */
+        public readonly bool $masks = true,
+        /**
+         * Enables or disables support for literal types such as `42` or `'foo'`
+         */
+        public readonly bool $literals = true,
     ) {}
 
     /**

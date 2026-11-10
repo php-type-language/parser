@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Tests\Internal;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TypeLang\Parser\Internal\StringDecoder\UtfCharRenderer;
+use TypeLang\Parser\Internal\SubParser\StringParser\UtfCharRenderer;
 use TypeLang\Parser\Tests\TestCase;
 
 final class UtfCharRendererTest extends TestCase
