@@ -1,0 +1,127 @@
+# Template parameters
+
+# Names
+>>> T
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> TKey
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "TKey"), upper: null, lower: null, default: null, variance: null)
+>>> _T
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "_T"), upper: null, lower: null, default: null, variance: null)
+>>> int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "int"), upper: null, lower: null, default: null, variance: null)
+>>> of
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "of"), upper: null, lower: null, default: null, variance: null)
+>>> super
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "super"), upper: null, lower: null, default: null, variance: null)
+>>> covariant
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "covariant"), upper: null, lower: null, default: null, variance: null)
+>>> true
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "true"), upper: null, lower: null, default: null, variance: null)
+>>> T-Key
+<<< rejected
+>>> \\T
+<<< rejected
+>>> Foo\\T
+<<< rejected
+>>> $T
+<<< rejected
+>>> 42
+<<< rejected
+>>>
+<<< rejected
+
+# Variance
+>>> covariant T
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@10(value: "T"), upper: null, lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Covariant))
+>>> contravariant T
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@14(value: "T"), upper: null, lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Contravariant))
+>>> invariant T
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@10(value: "T"), upper: null, lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Invariant))
+>>> covariant covariant
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@10(value: "covariant"), upper: null, lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Covariant))
+>>> covariant
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "covariant"), upper: null, lower: null, default: null, variance: null)
+>>> in T
+<<< partial@3 Template\TemplateParameterNode@0(name: Identifier@0(value: "in"), upper: null, lower: null, default: null, variance: null)
+>>> out T
+<<< partial@4 Template\TemplateParameterNode@0(name: Identifier@0(value: "out"), upper: null, lower: null, default: null, variance: null)
+>>> covariant contravariant T
+<<< partial@24 Template\TemplateParameterNode@0(name: Identifier@10(value: "contravariant"), upper: null, lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Covariant))
+
+# Bounds
+>>> T of int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T as int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T super int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: Template\TemplateBoundNode@2(type: NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Lower), default: null, variance: null)
+>>> T of int super string
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: Template\TemplateBoundNode@9(type: NamedTypeNode@15(name: Name@15(value: "string", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Lower), default: null, variance: null)
+>>> T as int super string
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: Template\TemplateBoundNode@9(type: NamedTypeNode@15(name: Name@15(value: "string", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Lower), default: null, variance: null)
+>>> T super string of int
+<<< partial@15 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: Template\TemplateBoundNode@2(type: NamedTypeNode@8(name: Name@8(value: "string", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Lower), default: null, variance: null)
+>>> T of int of string
+<<< partial@9 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of
+<<< partial@2 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> T super
+<<< partial@2 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> T of int|string
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: LogicalTypeNode\UnionTypeNode@5(types: [NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null)]), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of array<int, string>
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "array", namespace: null), arguments: Template\TemplateListNode@11(items: [Template\TypedTemplateArgumentNode@11(value: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@16(value: NamedTypeNode@16(name: Name@16(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of array{a: int}
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@11(items: [Shape\NamedFieldNode@11(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@11(value: "a"), isOptional: false)], isSealed: true)), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of callable(int): void
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: Callable\CallableTypeNode@5(name: Name@5(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@14(items: [Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of (U is int ? A : B)
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: Condition\ConditionalTypeNode@6(condition: Condition\EqualConditionNode@6(subject: NamedTypeNode@6(name: Name@6(value: "U", namespace: null), arguments: null, fields: null), target: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null)), then: NamedTypeNode@17(name: Name@17(value: "A", namespace: null), arguments: null, fields: null), else: NamedTypeNode@21(name: Name@21(value: "B", namespace: null), arguments: null, fields: null)), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of Foo<covariant U>
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "Foo", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@19(name: Name@19(value: "U", namespace: null), arguments: null, fields: null), variance: Template\VarianceNode@9(kind: Template\VarianceNode\VarianceKind::Covariant))]), fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of of
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "of", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T is int
+<<< partial@2 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+
+# Defaults
+>>> T = int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: NamedTypeNode@4(name: Name@4(value: "int", namespace: null), arguments: null, fields: null), variance: null)
+>>> T of int = 42
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: Literal\IntLiteralNode@11(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal), variance: null)
+>>> T of int super never = int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: Template\TemplateBoundNode@9(type: NamedTypeNode@15(name: Name@15(value: "never", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Lower), default: NamedTypeNode@23(name: Name@23(value: "int", namespace: null), arguments: null, fields: null), variance: null)
+>>> covariant T of int super never = int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@10(value: "T"), upper: Template\TemplateBoundNode@12(type: NamedTypeNode@15(name: Name@15(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: Template\TemplateBoundNode@19(type: NamedTypeNode@25(name: Name@25(value: "never", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Lower), default: NamedTypeNode@33(name: Name@33(value: "int", namespace: null), arguments: null, fields: null), variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Covariant))
+>>> T =
+<<< partial@2 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> T = int = string
+<<< partial@8 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: NamedTypeNode@4(name: Name@4(value: "int", namespace: null), arguments: null, fields: null), variance: null)
+>>> T = int|string
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: LogicalTypeNode\UnionTypeNode@4(types: [NamedTypeNode@4(name: Name@4(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@8(name: Name@8(value: "string", namespace: null), arguments: null, fields: null)]), variance: null)
+
+# Trivia
+>>>  T\040
+<<< accepted Template\TemplateParameterNode@1(name: Identifier@1(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> T/* c */of/* c */int
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@8(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of int // c
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> covariant\nT\nof\nint
+<<< accepted Template\TemplateParameterNode@0(name: Identifier@10(value: "T"), upper: Template\TemplateBoundNode@12(type: NamedTypeNode@15(name: Name@15(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Covariant))
+
+# A parameter followed by the rest of a DocBlock tag
+>>> T The description
+<<< partial@2 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> T of int The description
+<<< partial@9 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T of int|string - the description
+<<< partial@16 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: Template\TemplateBoundNode@2(type: LogicalTypeNode\UnionTypeNode@5(types: [NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null)]), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)
+>>> T = int the description
+<<< partial@8 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: NamedTypeNode@4(name: Name@4(value: "int", namespace: null), arguments: null, fields: null), variance: null)
+>>> covariant T of object $value
+<<< partial@22 Template\TemplateParameterNode@0(name: Identifier@10(value: "T"), upper: Template\TemplateBoundNode@12(type: NamedTypeNode@15(name: Name@15(value: "object", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: Template\VarianceNode@0(kind: Template\VarianceNode\VarianceKind::Covariant))
+>>> T, U
+<<< partial@1 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)
+>>> T>
+<<< partial@1 Template\TemplateParameterNode@0(name: Identifier@0(value: "T"), upper: null, lower: null, default: null, variance: null)

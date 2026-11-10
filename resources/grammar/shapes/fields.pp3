@@ -26,8 +26,7 @@ ShapeExplicitField -> {
         $key instanceof Type\Literal\StringLiteralNode
             => new Type\Shape\ScalarFieldNode($key, $type, $isOptional, $offset),
         // Foo::BAR
-        default
-            => new Type\Shape\ComplexFieldNode($key, $type, $isOptional, $offset),
+        default => new Type\Shape\ComplexFieldNode($key, $type, $isOptional, $offset),
     };
 }
   : ShapeKey() <T_QUESTION>? ::T_COLON:: Type()
@@ -36,21 +35,20 @@ ShapeExplicitField -> {
 
 // a, Foo\BAR, Foo::BAR, 42, 'text'. A mask of constants is not a key
 ShapeKey
-  : ShapeClassConstKey()
-  | ShapeNamedKey()
+  : ShapeNamedKey()
   | IntLiteral()
   | StringLiteral()
   ;
 
-// a, a-b, Foo\Bar, \FOO
+// a, a-b, Foo\Bar, \FOO, Foo::BAR
 ShapeNamedKey -> {
+    // Foo::BAR
+    if (isset($children[1])) {
+        return new Type\Constant\ClassConstTypeNode($children[0], $children[1], $offset);
+    }
+
+    // a, Foo\Bar
     return new Type\Identifier($children[0]->toString(), $children[0]->offset);
 }
-  : Name()
-  ;
-
-ShapeClassConstKey -> {
-    return new Type\Constant\ClassConstTypeNode($children[0], $children[1], $offset);
-}
-  : Name() ::T_DOUBLE_COLON:: Identifier()
+  : Name() (::T_DOUBLE_COLON:: Identifier())?
   ;

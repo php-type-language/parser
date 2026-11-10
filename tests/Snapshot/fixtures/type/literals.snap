@@ -1,0 +1,639 @@
+# Literals
+
+# Integers
+>>> 0
+<<< accepted Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 1
+<<< accepted Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> 42
+<<< accepted Literal\IntLiteralNode@0(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)
+>>> -1
+<<< accepted Literal\IntLiteralNode@0(value: -1, raw: "-1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)
+>>> +1
+<<< accepted Literal\IntLiteralNode@0(value: 1, raw: "+1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> - 1
+<<< accepted Literal\IntLiteralNode@0(value: -1, raw: "- 1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)
+>>> --1
+<<< rejected
+>>> -0
+<<< accepted Literal\IntLiteralNode@0(value: 0, raw: "-0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 00
+<<< accepted Literal\IntLiteralNode@0(value: 0, raw: "00", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 007
+<<< accepted Literal\IntLiteralNode@0(value: 7, raw: "007", decimal: "7", kind: Literal\IntLiteralKind::Octal)
+>>> 1_000
+<<< accepted Literal\IntLiteralNode@0(value: 1000, raw: "1_000", decimal: "1000", kind: Literal\IntLiteralKind::Decimal)
+>>> 1__000
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> _1
+<<< accepted NamedTypeNode@0(name: Name@0(value: "_1", namespace: null), arguments: null, fields: null)
+>>> 1_
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> 1_000_000
+<<< accepted Literal\IntLiteralNode@0(value: 1000000, raw: "1_000_000", decimal: "1000000", kind: Literal\IntLiteralKind::Decimal)
+>>> 0x1F
+<<< accepted Literal\IntLiteralNode@0(value: 31, raw: "0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0X1f
+<<< accepted Literal\IntLiteralNode@0(value: 31, raw: "0X1f", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0x
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0xG
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0x1_F
+<<< accepted Literal\IntLiteralNode@0(value: 31, raw: "0x1_F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> -0x1F
+<<< accepted Literal\IntLiteralNode@0(value: -31, raw: "-0x1F", decimal: "-31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0b101
+<<< accepted Literal\IntLiteralNode@0(value: 5, raw: "0b101", decimal: "5", kind: Literal\IntLiteralKind::Binary)
+>>> 0B101
+<<< accepted Literal\IntLiteralNode@0(value: 5, raw: "0B101", decimal: "5", kind: Literal\IntLiteralKind::Binary)
+>>> 0b
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0b102
+<<< partial@4 Literal\IntLiteralNode@0(value: 2, raw: "0b10", decimal: "2", kind: Literal\IntLiteralKind::Binary)
+>>> 0b1_01
+<<< accepted Literal\IntLiteralNode@0(value: 5, raw: "0b1_01", decimal: "5", kind: Literal\IntLiteralKind::Binary)
+>>> 0o17
+<<< accepted Literal\IntLiteralNode@0(value: 15, raw: "0o17", decimal: "15", kind: Literal\IntLiteralKind::Octal)
+>>> 0O17
+<<< accepted Literal\IntLiteralNode@0(value: 15, raw: "0O17", decimal: "15", kind: Literal\IntLiteralKind::Octal)
+>>> 0o
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0o8
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 017
+<<< accepted Literal\IntLiteralNode@0(value: 15, raw: "017", decimal: "15", kind: Literal\IntLiteralKind::Octal)
+>>> 08
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 1e3
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "1e3", mantissa: "1", exponent: "3")
+>>> 1E3
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "1E3", mantissa: "1", exponent: "3")
+>>> 1e+3
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "1e+3", mantissa: "1", exponent: "3")
+>>> 1e-3
+<<< accepted Literal\FloatLiteralNode@0(value: 0.001, raw: "1e-3", mantissa: "1", exponent: "-3")
+>>> PHP_INT_MAX
+<<< accepted NamedTypeNode@0(name: Name@0(value: "PHP_INT_MAX", namespace: null), arguments: null, fields: null)
+>>> 9223372036854775807
+<<< accepted Literal\IntLiteralNode@0(value: 9223372036854775807, raw: "9223372036854775807", decimal: "9223372036854775807", kind: Literal\IntLiteralKind::Decimal)
+>>> 9223372036854775808
+<<< accepted Literal\IntLiteralNode@0(value: 9223372036854775807, raw: "9223372036854775808", decimal: "9223372036854775808", kind: Literal\IntLiteralKind::Decimal)
+>>> -9223372036854775808
+<<< accepted Literal\IntLiteralNode@0(value: -9223372036854775807-1, raw: "-9223372036854775808", decimal: "-9223372036854775808", kind: Literal\IntLiteralKind::Decimal)
+>>> -9223372036854775809
+<<< accepted Literal\IntLiteralNode@0(value: -9223372036854775807-1, raw: "-9223372036854775809", decimal: "-9223372036854775809", kind: Literal\IntLiteralKind::Decimal)
+>>> 99999999999999999999
+<<< accepted Literal\IntLiteralNode@0(value: 9223372036854775807, raw: "99999999999999999999", decimal: "99999999999999999999", kind: Literal\IntLiteralKind::Decimal)
+>>> 18446744073709551616
+<<< accepted Literal\IntLiteralNode@0(value: 9223372036854775807, raw: "18446744073709551616", decimal: "18446744073709551616", kind: Literal\IntLiteralKind::Decimal)
+
+# Floats
+>>> 0.0
+<<< accepted Literal\FloatLiteralNode@0(value: 0.0, raw: "0.0", mantissa: "0.0", exponent: "0")
+>>> 1.5
+<<< accepted Literal\FloatLiteralNode@0(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0")
+>>> -1.5
+<<< accepted Literal\FloatLiteralNode@0(value: -1.5, raw: "-1.5", mantissa: "-1.5", exponent: "0")
+>>> +1.5
+<<< accepted Literal\FloatLiteralNode@0(value: 1.5, raw: "+1.5", mantissa: "1.5", exponent: "0")
+>>> .5
+<<< accepted Literal\FloatLiteralNode@0(value: 0.5, raw: ".5", mantissa: "0.5", exponent: "0")
+>>> 1.
+<<< accepted Literal\FloatLiteralNode@0(value: 1.0, raw: "1.", mantissa: "1", exponent: "0")
+>>> -.5
+<<< accepted Literal\FloatLiteralNode@0(value: -0.5, raw: "-.5", mantissa: "-0.5", exponent: "0")
+>>> 1.5e3
+<<< accepted Literal\FloatLiteralNode@0(value: 1500.0, raw: "1.5e3", mantissa: "1.5", exponent: "3")
+>>> 1.5E3
+<<< accepted Literal\FloatLiteralNode@0(value: 1500.0, raw: "1.5E3", mantissa: "1.5", exponent: "3")
+>>> 1.5e+3
+<<< accepted Literal\FloatLiteralNode@0(value: 1500.0, raw: "1.5e+3", mantissa: "1.5", exponent: "3")
+>>> 1.5e-3
+<<< accepted Literal\FloatLiteralNode@0(value: 0.0015, raw: "1.5e-3", mantissa: "1.5", exponent: "-3")
+>>> 1e3.5
+<<< partial@3 Literal\FloatLiteralNode@0(value: 1000.0, raw: "1e3", mantissa: "1", exponent: "3")
+>>> 1.5.5
+<<< partial@3 Literal\FloatLiteralNode@0(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0")
+>>> 1_000.5
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.5, raw: "1_000.5", mantissa: "1000.5", exponent: "0")
+>>> 1.5_5
+<<< accepted Literal\FloatLiteralNode@0(value: 1.55, raw: "1.5_5", mantissa: "1.55", exponent: "0")
+>>> 1._5
+<<< partial@2 Literal\FloatLiteralNode@0(value: 1.0, raw: "1.", mantissa: "1", exponent: "0")
+>>> 1_.5
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> 0.1_0
+<<< accepted Literal\FloatLiteralNode@0(value: 0.1, raw: "0.1_0", mantissa: "0.10", exponent: "0")
+>>> 1.e3
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "1.e3", mantissa: "1", exponent: "3")
+>>> .5e3
+<<< accepted Literal\FloatLiteralNode@0(value: 500.0, raw: ".5e3", mantissa: "0.5", exponent: "3")
+>>> 1e
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> 1e+
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> INF
+<<< accepted NamedTypeNode@0(name: Name@0(value: "INF", namespace: null), arguments: null, fields: null)
+>>> NAN
+<<< accepted NamedTypeNode@0(name: Name@0(value: "NAN", namespace: null), arguments: null, fields: null)
+>>> -INF
+<<< rejected
+>>> float
+<<< accepted NamedTypeNode@0(name: Name@0(value: "float", namespace: null), arguments: null, fields: null)
+>>> 1.7976931348623157e309
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1.7976931348623157e309", mantissa: "1.7976931348623157", exponent: "309")
+>>> -1.7976931348623157e309
+<<< accepted Literal\FloatLiteralNode@0(value: -1.7976931348623157E+308, raw: "-1.7976931348623157e309", mantissa: "-1.7976931348623157", exponent: "309")
+
+# Strings
+>>> 'a'
+<<< accepted Literal\StringLiteralNode@0(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a"
+<<< accepted Literal\StringLiteralNode@0(value: "a", raw: "\"a\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a b'
+<<< accepted Literal\StringLiteralNode@0(value: "a b", raw: "'a b'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a b"
+<<< accepted Literal\StringLiteralNode@0(value: "a b", raw: "\"a b\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> ''
+<<< accepted Literal\StringLiteralNode@0(value: "", raw: "''", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> ""
+<<< accepted Literal\StringLiteralNode@0(value: "", raw: "\"\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a\\'b'
+<<< accepted Literal\StringLiteralNode@0(value: "a'b", raw: "'a\\'b'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a\\"b"
+<<< accepted Literal\StringLiteralNode@0(value: "a\"b", raw: "\"a\\\"b\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a"b'
+<<< accepted Literal\StringLiteralNode@0(value: "a\"b", raw: "'a\"b'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a'b"
+<<< accepted Literal\StringLiteralNode@0(value: "a'b", raw: "\"a'b\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a\\\\b'
+<<< accepted Literal\StringLiteralNode@0(value: "a\\b", raw: "'a\\\\b'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a\\\\b"
+<<< accepted Literal\StringLiteralNode@0(value: "a\\b", raw: "\"a\\\\b\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a\\nb'
+<<< accepted Literal\StringLiteralNode@0(value: "a\\nb", raw: "'a\\nb'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a\\nb"
+<<< accepted Literal\StringLiteralNode@0(value: "a\nb", raw: "\"a\\nb\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> "a\\x41"
+<<< accepted Literal\StringLiteralNode@0(value: "aA", raw: "\"a\\x41\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> "a\\u{1F600}"
+<<< accepted Literal\StringLiteralNode@0(value: "a\360\237\230\200", raw: "\"a\\u{1F600}\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> "a\\101"
+<<< accepted Literal\StringLiteralNode@0(value: "aA", raw: "\"a\\101\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> "a\\e"
+<<< accepted Literal\StringLiteralNode@0(value: "a\033", raw: "\"a\\e\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a\\x41'
+<<< accepted Literal\StringLiteralNode@0(value: "a\\x41", raw: "'a\\x41'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'a
+<<< rejected
+>>> "a
+<<< rejected
+>>> a'
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "a", namespace: null), arguments: null, fields: null)
+>>> a"
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "a", namespace: null), arguments: null, fields: null)
+>>> 'a''b'
+<<< partial@3 Literal\StringLiteralNode@0(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a""b"
+<<< partial@3 Literal\StringLiteralNode@0(value: "a", raw: "\"a\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a' 'b'
+<<< partial@4 Literal\StringLiteralNode@0(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'a\\
+<<< rejected
+>>> '\320\244\321\203'
+<<< accepted Literal\StringLiteralNode@0(value: "\320\244\321\203", raw: "'\320\244\321\203'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "\320\244\321\203"
+<<< accepted Literal\StringLiteralNode@0(value: "\320\244\321\203", raw: "\"\320\244\321\203\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a|b'
+<<< accepted Literal\StringLiteralNode@0(value: "a|b", raw: "'a|b'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'a<b>'
+<<< accepted Literal\StringLiteralNode@0(value: "a<b>", raw: "'a<b>'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'a(b)'
+<<< accepted Literal\StringLiteralNode@0(value: "a(b)", raw: "'a(b)'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'a{b}'
+<<< accepted Literal\StringLiteralNode@0(value: "a{b}", raw: "'a{b}'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'array{a: int}'
+<<< accepted Literal\StringLiteralNode@0(value: "array{a: int}", raw: "'array{a: int}'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> '1'
+<<< accepted Literal\StringLiteralNode@0(value: "1", raw: "'1'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> '-1'
+<<< accepted Literal\StringLiteralNode@0(value: "-1", raw: "'-1'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> '1.5'
+<<< accepted Literal\StringLiteralNode@0(value: "1.5", raw: "'1.5'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'true'
+<<< accepted Literal\StringLiteralNode@0(value: "true", raw: "'true'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'null'
+<<< accepted Literal\StringLiteralNode@0(value: "null", raw: "'null'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'Foo::BAR'
+<<< accepted Literal\StringLiteralNode@0(value: "Foo::BAR", raw: "'Foo::BAR'", kind: Literal\StringLiteralKind::SingleQuoted)
+
+# Boolean and null
+>>> true
+<<< accepted Literal\BoolLiteralNode@0(value: true, raw: "true")
+>>> false
+<<< accepted Literal\BoolLiteralNode@0(value: false, raw: "false")
+>>> null
+<<< accepted Literal\NullLiteralNode@0(value: null, raw: "null")
+>>> True
+<<< accepted Literal\BoolLiteralNode@0(value: true, raw: "True")
+>>> FALSE
+<<< accepted Literal\BoolLiteralNode@0(value: false, raw: "FALSE")
+>>> NULL
+<<< accepted Literal\NullLiteralNode@0(value: null, raw: "NULL")
+>>> Null
+<<< accepted Literal\NullLiteralNode@0(value: null, raw: "Null")
+>>> true|false
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\BoolLiteralNode@0(value: true, raw: "true"), Literal\BoolLiteralNode@5(value: false, raw: "false")])
+>>> true&false
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Literal\BoolLiteralNode@0(value: true, raw: "true"), Literal\BoolLiteralNode@5(value: false, raw: "false")])
+>>> ?true
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: Literal\BoolLiteralNode@1(value: true, raw: "true"))
+>>> ?null
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: Literal\NullLiteralNode@1(value: null, raw: "null"))
+>>> null|int
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\NullLiteralNode@0(value: null, raw: "null"), NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)])
+>>> int|null
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@4(value: null, raw: "null")])
+>>> null|null
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\NullLiteralNode@0(value: null, raw: "null"), Literal\NullLiteralNode@5(value: null, raw: "null")])
+>>> void|null
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "void", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@5(value: null, raw: "null")])
+>>> true[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Literal\BoolLiteralNode@0(value: true, raw: "true"))
+>>> null[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Literal\NullLiteralNode@0(value: null, raw: "null"))
+>>> false<int>
+<<< partial@5 Literal\BoolLiteralNode@0(value: false, raw: "false")
+>>> true{a: int}
+<<< partial@4 Literal\BoolLiteralNode@0(value: true, raw: "true")
+
+# Class constants
+>>> Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> \\Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "BAR"))
+>>> Foo\\Bar::BAZ
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "BAZ"))
+>>> \\Foo\\Bar::BAZ
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@10(value: "BAZ"))
+>>> self::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "self", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> static::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "static", namespace: null), constant: Identifier@8(value: "BAR"))
+>>> parent::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "parent", namespace: null), constant: Identifier@8(value: "BAR"))
+>>> $this::BAR
+<<< partial@5 ThisTypeNode@0()
+>>> Foo::bar
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "bar"))
+>>> Foo::Bar_Baz
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "Bar_Baz"))
+>>> Foo::BAR1
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR1"))
+>>> Foo::1
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::BAR_*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@9()]))
+>>> Foo::*_BAZ
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "_BAZ")]))
+>>> Foo::BAR*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR"), Constant\MaskNode\WildcardMaskNode@8()]))
+>>> Foo::B*R
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "B"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "R")]))
+>>> Foo::**
+<<< partial@6 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> \\Foo::*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), mask: Constant\MaskNode@6(items: [Constant\MaskNode\WildcardMaskNode@6()]))
+>>> self::*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "self", namespace: null), mask: Constant\MaskNode@6(items: [Constant\MaskNode\WildcardMaskNode@6()]))
+>>> static::*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "static", namespace: null), mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]))
+>>> Foo::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "class"))
+>>> \\Foo::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "class"))
+>>> self::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "self", namespace: null), constant: Identifier@6(value: "class"))
+>>> static::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "static", namespace: null), constant: Identifier@8(value: "class"))
+>>> $this::class
+<<< partial@5 ThisTypeNode@0()
+>>> Foo::CLASS
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "CLASS"))
+>>> Foo\\Bar::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "class"))
+>>> Foo::BAR::BAZ
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR::class
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")))
+>>> Foo::BAR|Foo::BAZ
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), Constant\ClassConstTypeNode@9(class: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAZ"))])
+>>> Foo::BAR&Foo::BAZ
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), Constant\ClassConstTypeNode@9(class: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAZ"))])
+>>> Foo::{BAR}
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::{BAR}|Foo::{BAZ}
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::$bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::bar()
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "bar"))
+>>> Foo::BAR:
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR::
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo:BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo:::BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::BAR ::BAZ
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo :: BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@7(value: "BAR"))
+>>> Foo ::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> Foo:: BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> Foo\\BAR
+<<< accepted NamedTypeNode@0(name: Name@0(value: "BAR", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> int::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "int", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> true::BAR
+<<< partial@4 Literal\BoolLiteralNode@0(value: true, raw: "true")
+>>> null::BAR
+<<< partial@4 Literal\NullLiteralNode@0(value: null, raw: "null")
+>>> array::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "array", namespace: null), constant: Identifier@7(value: "BAR"))
+>>> list::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "list", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> callable::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "callable", namespace: null), constant: Identifier@10(value: "BAR"))
+>>> int::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "int", namespace: null), constant: Identifier@5(value: "class"))
+>>> array::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "array", namespace: null), constant: Identifier@7(value: "class"))
+>>> T::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "class"))
+>>> T::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "BAR"))
+
+# Global constants
+>>> PHP_EOL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "PHP_EOL", namespace: null), arguments: null, fields: null)
+>>> \\PHP_EOL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "PHP_EOL", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> E_ALL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "E_ALL", namespace: null), arguments: null, fields: null)
+>>> FOO
+<<< accepted NamedTypeNode@0(name: Name@0(value: "FOO", namespace: null), arguments: null, fields: null)
+
+# Parser tests: integer tokens
+>>> -42
+<<< accepted Literal\IntLiteralNode@0(value: -42, raw: "-42", decimal: "-42", kind: Literal\IntLiteralKind::Decimal)
+>>> +42
+<<< accepted Literal\IntLiteralNode@0(value: 42, raw: "+42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)
+>>> - 42
+<<< accepted Literal\IntLiteralNode@0(value: -42, raw: "- 42", decimal: "-42", kind: Literal\IntLiteralKind::Decimal)
+>>> - 0x1F
+<<< accepted Literal\IntLiteralNode@0(value: -31, raw: "- 0x1F", decimal: "-31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0X1F
+<<< accepted Literal\IntLiteralNode@0(value: 31, raw: "0X1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0XDeaD
+<<< accepted Literal\IntLiteralNode@0(value: 57005, raw: "0XDeaD", decimal: "57005", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0xDE_AD
+<<< accepted Literal\IntLiteralNode@0(value: 57005, raw: "0xDE_AD", decimal: "57005", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> +0x1F
+<<< accepted Literal\IntLiteralNode@0(value: 31, raw: "+0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0b10_10
+<<< accepted Literal\IntLiteralNode@0(value: 10, raw: "0b10_10", decimal: "10", kind: Literal\IntLiteralKind::Binary)
+>>> -0b101
+<<< accepted Literal\IntLiteralNode@0(value: -5, raw: "-0b101", decimal: "-5", kind: Literal\IntLiteralKind::Binary)
+>>> 0o6_5_5
+<<< accepted Literal\IntLiteralNode@0(value: 429, raw: "0o6_5_5", decimal: "429", kind: Literal\IntLiteralKind::Octal)
+>>> -0o17
+<<< accepted Literal\IntLiteralNode@0(value: -15, raw: "-0o17", decimal: "-15", kind: Literal\IntLiteralKind::Octal)
+>>> 0_42
+<<< accepted Literal\IntLiteralNode@0(value: 34, raw: "0_42", decimal: "34", kind: Literal\IntLiteralKind::Octal)
+>>> -017
+<<< accepted Literal\IntLiteralNode@0(value: -15, raw: "-017", decimal: "-15", kind: Literal\IntLiteralKind::Octal)
+>>> 0129
+<<< partial@3 Literal\IntLiteralNode@0(value: 10, raw: "012", decimal: "10", kind: Literal\IntLiteralKind::Octal)
+>>> 0o78
+<<< partial@3 Literal\IntLiteralNode@0(value: 7, raw: "0o7", decimal: "7", kind: Literal\IntLiteralKind::Octal)
+>>> 0x1F 0b1
+<<< partial@5 Literal\IntLiteralNode@0(value: 31, raw: "0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+
+# Parser tests: literals
+>>> + 1
+<<< accepted Literal\IntLiteralNode@0(value: 1, raw: "+ 1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> -   42
+<<< accepted Literal\IntLiteralNode@0(value: -42, raw: "-   42", decimal: "-42", kind: Literal\IntLiteralKind::Decimal)
+>>> -\t42
+<<< accepted Literal\IntLiteralNode@0(value: -42, raw: "-\t42", decimal: "-42", kind: Literal\IntLiteralKind::Decimal)
+>>> -\n42
+<<< accepted Literal\IntLiteralNode@0(value: -42, raw: "-\n42", decimal: "-42", kind: Literal\IntLiteralKind::Decimal)
+>>> - \r\n 42
+<<< accepted Literal\IntLiteralNode@0(value: -42, raw: "- \r\n 42", decimal: "-42", kind: Literal\IntLiteralKind::Decimal)
+>>> - 0b101
+<<< accepted Literal\IntLiteralNode@0(value: -5, raw: "- 0b101", decimal: "-5", kind: Literal\IntLiteralKind::Binary)
+>>> - 0o17
+<<< accepted Literal\IntLiteralNode@0(value: -15, raw: "- 0o17", decimal: "-15", kind: Literal\IntLiteralKind::Octal)
+>>> - 017
+<<< accepted Literal\IntLiteralNode@0(value: -15, raw: "- 017", decimal: "-15", kind: Literal\IntLiteralKind::Octal)
+>>> - 1.5
+<<< accepted Literal\FloatLiteralNode@0(value: -1.5, raw: "- 1.5", mantissa: "-1.5", exponent: "0")
+>>> 08.5
+<<< accepted Literal\FloatLiteralNode@0(value: 8.5, raw: "08.5", mantissa: "8.5", exponent: "0")
+>>> 01e3
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "01e3", mantissa: "1", exponent: "3")
+>>> 'it\\'s'
+<<< accepted Literal\StringLiteralNode@0(value: "it's", raw: "'it\\'s'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "say \\"hi\\""
+<<< accepted Literal\StringLiteralNode@0(value: "say \"hi\"", raw: "\"say \\\"hi\\\"\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> "it's"
+<<< accepted Literal\StringLiteralNode@0(value: "it's", raw: "\"it's\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> '\320\244\321\203 \360\237\230\200'
+<<< accepted Literal\StringLiteralNode@0(value: "\320\244\321\203 \360\237\230\200", raw: "'\320\244\321\203 \360\237\230\200'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> 'a\nb'
+<<< accepted Literal\StringLiteralNode@0(value: "a\nb", raw: "'a\nb'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "a\nb"
+<<< accepted Literal\StringLiteralNode@0(value: "a\nb", raw: "\"a\nb\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 'a\r\nb'
+<<< accepted Literal\StringLiteralNode@0(value: "a\r\nb", raw: "'a\r\nb'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "first\nsecond\n\nthird"
+<<< accepted Literal\StringLiteralNode@0(value: "first\nsecond\n\nthird", raw: "\"first\nsecond\n\nthird\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> 0b2
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0x_1
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0b_1
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 0o_7
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 'a'b
+<<< partial@3 Literal\StringLiteralNode@0(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted)
+
+# Parser tests: bool and null literal
+>>> TruE
+<<< accepted Literal\BoolLiteralNode@0(value: true, raw: "TruE")
+>>> NulL
+<<< accepted Literal\NullLiteralNode@0(value: null, raw: "NulL")
+
+# Parser tests: float literal
+>>> 0.9
+<<< accepted Literal\FloatLiteralNode@0(value: 0.9, raw: "0.9", mantissa: "0.9", exponent: "0")
+>>> .9
+<<< accepted Literal\FloatLiteralNode@0(value: 0.9, raw: ".9", mantissa: "0.9", exponent: "0")
+>>> -0.9
+<<< accepted Literal\FloatLiteralNode@0(value: -0.9, raw: "-0.9", mantissa: "-0.9", exponent: "0")
+>>> +0.9
+<<< accepted Literal\FloatLiteralNode@0(value: 0.9, raw: "+0.9", mantissa: "0.9", exponent: "0")
+>>> +.9
+<<< accepted Literal\FloatLiteralNode@0(value: 0.9, raw: "+.9", mantissa: "0.9", exponent: "0")
+>>> 10e2
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "10e2", mantissa: "10", exponent: "2")
+>>> 10E2
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "10E2", mantissa: "10", exponent: "2")
+>>> 10e-2
+<<< accepted Literal\FloatLiteralNode@0(value: 0.1, raw: "10e-2", mantissa: "10", exponent: "-2")
+>>> 10e+2
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "10e+2", mantissa: "10", exponent: "2")
+>>> +10e2
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "+10e2", mantissa: "10", exponent: "2")
+>>> +1.5e+3
+<<< accepted Literal\FloatLiteralNode@0(value: 1500.0, raw: "+1.5e+3", mantissa: "1.5", exponent: "3")
+>>> 4_4.
+<<< accepted Literal\FloatLiteralNode@0(value: 44.0, raw: "4_4.", mantissa: "44", exponent: "0")
+>>> .4_2
+<<< accepted Literal\FloatLiteralNode@0(value: 0.42, raw: ".4_2", mantissa: "0.42", exponent: "0")
+>>> 42e2_3
+<<< accepted Literal\FloatLiteralNode@0(value: 4.2E+24, raw: "42e2_3", mantissa: "42", exponent: "23")
+>>> 42e+2_3
+<<< accepted Literal\FloatLiteralNode@0(value: 4.2E+24, raw: "42e+2_3", mantissa: "42", exponent: "23")
+>>> 2_3.4_5e-6_7
+<<< accepted Literal\FloatLiteralNode@0(value: 2.345E-66, raw: "2_3.4_5e-6_7", mantissa: "23.45", exponent: "-67")
+>>> 1.5_e3
+<<< partial@3 Literal\FloatLiteralNode@0(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0")
+>>> 1.5e_3
+<<< partial@3 Literal\FloatLiteralNode@0(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0")
+>>> 1e3_
+<<< partial@3 Literal\FloatLiteralNode@0(value: 1000.0, raw: "1e3", mantissa: "1", exponent: "3")
+
+# Parser tests: float range
+>>> 1e400
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1e400", mantissa: "1", exponent: "400")
+>>> -1e400
+<<< accepted Literal\FloatLiteralNode@0(value: -1.7976931348623157E+308, raw: "-1e400", mantissa: "-1", exponent: "400")
+>>> 1e309
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1e309", mantissa: "1", exponent: "309")
+>>> +1e400
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "+1e400", mantissa: "1", exponent: "400")
+>>> + 1e400
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "+ 1e400", mantissa: "1", exponent: "400")
+>>> - 1e400
+<<< accepted Literal\FloatLiteralNode@0(value: -1.7976931348623157E+308, raw: "- 1e400", mantissa: "-1", exponent: "400")
+>>> 1.5e400
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1.5e400", mantissa: "1.5", exponent: "400")
+>>> 1.5e+400
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1.5e+400", mantissa: "1.5", exponent: "400")
+>>> 1_0e4_00
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1_0e4_00", mantissa: "10", exponent: "400")
+>>> 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.5
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.5", mantissa: "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.5", exponent: "0")
+>>> 1e-400
+<<< accepted Literal\FloatLiteralNode@0(value: 0.0, raw: "1e-400", mantissa: "1", exponent: "-400")
+>>> -1e-400
+<<< accepted Literal\FloatLiteralNode@0(value: -0.0, raw: "-1e-400", mantissa: "-1", exponent: "-400")
+>>> 1.5e-400
+<<< accepted Literal\FloatLiteralNode@0(value: 0.0, raw: "1.5e-400", mantissa: "1.5", exponent: "-400")
+>>> 0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
+<<< accepted Literal\FloatLiteralNode@0(value: 0.0, raw: "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001", mantissa: "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001", exponent: "0")
+>>> 1.7976931348623157e308
+<<< accepted Literal\FloatLiteralNode@0(value: 1.7976931348623157E+308, raw: "1.7976931348623157e308", mantissa: "1.7976931348623157", exponent: "308")
+>>> -1.7976931348623157e308
+<<< accepted Literal\FloatLiteralNode@0(value: -1.7976931348623157E+308, raw: "-1.7976931348623157e308", mantissa: "-1.7976931348623157", exponent: "308")
+>>> 2.2250738585072014e-308
+<<< accepted Literal\FloatLiteralNode@0(value: 2.2250738585072014E-308, raw: "2.2250738585072014e-308", mantissa: "2.2250738585072014", exponent: "-308")
+
+# Parser tests: int literal
+>>> 0b10101101
+<<< accepted Literal\IntLiteralNode@0(value: 173, raw: "0b10101101", decimal: "173", kind: Literal\IntLiteralKind::Binary)
+>>> 0b10_10_11_01
+<<< accepted Literal\IntLiteralNode@0(value: 173, raw: "0b10_10_11_01", decimal: "173", kind: Literal\IntLiteralKind::Binary)
+>>> 0B1010
+<<< accepted Literal\IntLiteralNode@0(value: 10, raw: "0B1010", decimal: "10", kind: Literal\IntLiteralKind::Binary)
+>>> -0b1010
+<<< accepted Literal\IntLiteralNode@0(value: -10, raw: "-0b1010", decimal: "-10", kind: Literal\IntLiteralKind::Binary)
+>>> +0b1010
+<<< accepted Literal\IntLiteralNode@0(value: 10, raw: "+0b1010", decimal: "10", kind: Literal\IntLiteralKind::Binary)
+>>> 0o42
+<<< accepted Literal\IntLiteralNode@0(value: 34, raw: "0o42", decimal: "34", kind: Literal\IntLiteralKind::Octal)
+>>> 0O42
+<<< accepted Literal\IntLiteralNode@0(value: 34, raw: "0O42", decimal: "34", kind: Literal\IntLiteralKind::Octal)
+>>> 042
+<<< accepted Literal\IntLiteralNode@0(value: 34, raw: "042", decimal: "34", kind: Literal\IntLiteralKind::Octal)
+>>> 0o42_23
+<<< accepted Literal\IntLiteralNode@0(value: 2195, raw: "0o42_23", decimal: "2195", kind: Literal\IntLiteralKind::Octal)
+>>> 0xDEAD
+<<< accepted Literal\IntLiteralNode@0(value: 57005, raw: "0xDEAD", decimal: "57005", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0xDEAD_BEEF
+<<< accepted Literal\IntLiteralNode@0(value: 3735928559, raw: "0xDEAD_BEEF", decimal: "3735928559", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> +0xDEAD
+<<< accepted Literal\IntLiteralNode@0(value: 57005, raw: "+0xDEAD", decimal: "57005", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> +0o42
+<<< accepted Literal\IntLiteralNode@0(value: 34, raw: "+0o42", decimal: "34", kind: Literal\IntLiteralKind::Octal)
+>>> 0123
+<<< accepted Literal\IntLiteralNode@0(value: 83, raw: "0123", decimal: "83", kind: Literal\IntLiteralKind::Octal)
+>>> 42_04
+<<< accepted Literal\IntLiteralNode@0(value: 4204, raw: "42_04", decimal: "4204", kind: Literal\IntLiteralKind::Decimal)
+>>> 04_23
+<<< accepted Literal\IntLiteralNode@0(value: 275, raw: "04_23", decimal: "275", kind: Literal\IntLiteralKind::Octal)
+>>> 0xFE_DE
+<<< accepted Literal\IntLiteralNode@0(value: 65246, raw: "0xFE_DE", decimal: "65246", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> 0b0001_1000
+<<< accepted Literal\IntLiteralNode@0(value: 24, raw: "0b0001_1000", decimal: "24", kind: Literal\IntLiteralKind::Binary)
+>>> 42_
+<<< partial@2 Literal\IntLiteralNode@0(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)
+>>> 4__2
+<<< partial@1 Literal\IntLiteralNode@0(value: 4, raw: "4", decimal: "4", kind: Literal\IntLiteralKind::Decimal)
+>>> 0x_FF
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+>>> 09_1
+<<< partial@1 Literal\IntLiteralNode@0(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal)
+
+# Parser tests: number sign
+>>> + 42
+<<< accepted Literal\IntLiteralNode@0(value: 42, raw: "+ 42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)
+>>> +   42
+<<< accepted Literal\IntLiteralNode@0(value: 42, raw: "+   42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)
+>>> - 1_000
+<<< accepted Literal\IntLiteralNode@0(value: -1000, raw: "- 1_000", decimal: "-1000", kind: Literal\IntLiteralKind::Decimal)
+>>> + 0x1F
+<<< accepted Literal\IntLiteralNode@0(value: 31, raw: "+ 0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)
+>>> -   1.5
+<<< accepted Literal\FloatLiteralNode@0(value: -1.5, raw: "-   1.5", mantissa: "-1.5", exponent: "0")
+>>> -\n1.5
+<<< accepted Literal\FloatLiteralNode@0(value: -1.5, raw: "-\n1.5", mantissa: "-1.5", exponent: "0")
+>>> + 1.5
+<<< accepted Literal\FloatLiteralNode@0(value: 1.5, raw: "+ 1.5", mantissa: "1.5", exponent: "0")
+>>> - .5
+<<< accepted Literal\FloatLiteralNode@0(value: -0.5, raw: "- .5", mantissa: "-0.5", exponent: "0")
+>>> + .5
+<<< accepted Literal\FloatLiteralNode@0(value: 0.5, raw: "+ .5", mantissa: "0.5", exponent: "0")
+>>> - 1.
+<<< accepted Literal\FloatLiteralNode@0(value: -1.0, raw: "- 1.", mantissa: "-1", exponent: "0")
+>>> - 1e3
+<<< accepted Literal\FloatLiteralNode@0(value: -1000.0, raw: "- 1e3", mantissa: "-1", exponent: "3")
+>>> + 1e3
+<<< accepted Literal\FloatLiteralNode@0(value: 1000.0, raw: "+ 1e3", mantissa: "1", exponent: "3")
+>>> - 1.5e-2
+<<< accepted Literal\FloatLiteralNode@0(value: -0.015, raw: "- 1.5e-2", mantissa: "-1.5", exponent: "-2")
+>>> - 1_0.2_5
+<<< accepted Literal\FloatLiteralNode@0(value: -10.25, raw: "- 1_0.2_5", mantissa: "-10.25", exponent: "0")

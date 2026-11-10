@@ -1,0 +1,383 @@
+# Special and builtin types
+
+# Integer ranges and masks
+>>> int<0, max>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "max", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<min, 0>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "min", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<min, max>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "min", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "max", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<0, 10>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@7(value: Literal\IntLiteralNode@7(value: 10, raw: "10", decimal: "10", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<-10, 10>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: -10, raw: "-10", decimal: "-10", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 10, raw: "10", decimal: "10", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<0,10>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@6(value: Literal\IntLiteralNode@6(value: 10, raw: "10", decimal: "10", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<0>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<0, 10, 20>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@7(value: Literal\IntLiteralNode@7(value: 10, raw: "10", decimal: "10", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@11(value: Literal\IntLiteralNode@11(value: 20, raw: "20", decimal: "20", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<>
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int<max, min>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "max", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "min", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<10, 0>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 10, raw: "10", decimal: "10", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@8(value: Literal\IntLiteralNode@8(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int<'a', 'b'>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\StringLiteralNode@4(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), variance: null), Template\TypedTemplateArgumentNode@9(value: Literal\StringLiteralNode@9(value: "b", raw: "'b'", kind: Literal\StringLiteralKind::SingleQuoted), variance: null)]), fields: null)
+>>> int<1.5, 2.5>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\FloatLiteralNode@4(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0"), variance: null), Template\TypedTemplateArgumentNode@9(value: Literal\FloatLiteralNode@9(value: 2.5, raw: "2.5", mantissa: "2.5", exponent: "0"), variance: null)]), fields: null)
+>>> int<Foo::A, Foo::B>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Constant\ClassConstTypeNode@4(class: Name@4(value: "Foo", namespace: null), constant: Identifier@9(value: "A")), variance: null), Template\TypedTemplateArgumentNode@12(value: Constant\ClassConstTypeNode@12(class: Name@12(value: "Foo", namespace: null), constant: Identifier@17(value: "B")), variance: null)]), fields: null)
+>>> int<MIN, MAX>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "MIN", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "MAX", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<Min, Max>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "Min", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "Max", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<PHP_INT_MIN, PHP_INT_MAX>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "PHP_INT_MIN", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "PHP_INT_MAX", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<0x0, 0xFF>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0x0", decimal: "0", kind: Literal\IntLiteralKind::Hexadecimal), variance: null), Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 255, raw: "0xFF", decimal: "255", kind: Literal\IntLiteralKind::Hexadecimal), variance: null)]), fields: null)
+>>> int<int, int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<0, T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Literal\IntLiteralNode@4(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int<T, 0>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "T", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@7(value: Literal\IntLiteralNode@7(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int-range<0, 10>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-range", namespace: null), arguments: Template\TemplateListNode@10(items: [Template\TypedTemplateArgumentNode@10(value: Literal\IntLiteralNode@10(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@13(value: Literal\IntLiteralNode@13(value: 10, raw: "10", decimal: "10", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> positive-int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "positive-int", namespace: null), arguments: null, fields: null)
+>>> negative-int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "negative-int", namespace: null), arguments: null, fields: null)
+>>> non-positive-int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-positive-int", namespace: null), arguments: null, fields: null)
+>>> non-negative-int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-negative-int", namespace: null), arguments: null, fields: null)
+>>> non-zero-int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-zero-int", namespace: null), arguments: null, fields: null)
+>>> int-mask<1, 2, 4>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@12(value: Literal\IntLiteralNode@12(value: 2, raw: "2", decimal: "2", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@15(value: Literal\IntLiteralNode@15(value: 4, raw: "4", decimal: "4", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int-mask<1,2,4>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@11(value: Literal\IntLiteralNode@11(value: 2, raw: "2", decimal: "2", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@13(value: Literal\IntLiteralNode@13(value: 4, raw: "4", decimal: "4", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int-mask<>
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: null, fields: null)
+>>> int-mask<1>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int-mask<1, 2, 4,>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Literal\IntLiteralNode@9(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@12(value: Literal\IntLiteralNode@12(value: 2, raw: "2", decimal: "2", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@15(value: Literal\IntLiteralNode@15(value: 4, raw: "4", decimal: "4", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int-mask<'a'>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Literal\StringLiteralNode@9(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), variance: null)]), fields: null)
+>>> int-mask<Foo::A, Foo::B>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Constant\ClassConstTypeNode@9(class: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "A")), variance: null), Template\TypedTemplateArgumentNode@17(value: Constant\ClassConstTypeNode@17(class: Name@17(value: "Foo", namespace: null), constant: Identifier@22(value: "B")), variance: null)]), fields: null)
+>>> int-mask<Foo::*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Constant\ClassConstMaskTypeNode@9(class: Name@9(value: "Foo", namespace: null), mask: Constant\MaskNode@14(items: [Constant\MaskNode\WildcardMaskNode@14()])), variance: null)]), fields: null)
+>>> int-mask<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int-mask-of<Foo::*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: Constant\ClassConstMaskTypeNode@12(class: Name@12(value: "Foo", namespace: null), mask: Constant\MaskNode@17(items: [Constant\MaskNode\WildcardMaskNode@17()])), variance: null)]), fields: null)
+>>> int-mask-of<Foo::A>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: Constant\ClassConstTypeNode@12(class: Name@12(value: "Foo", namespace: null), constant: Identifier@17(value: "A")), variance: null)]), fields: null)
+>>> int-mask-of<1|2|4>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: LogicalTypeNode\UnionTypeNode@12(types: [Literal\IntLiteralNode@12(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), Literal\IntLiteralNode@14(value: 2, raw: "2", decimal: "2", kind: Literal\IntLiteralKind::Decimal), Literal\IntLiteralNode@16(value: 4, raw: "4", decimal: "4", kind: Literal\IntLiteralKind::Decimal)]), variance: null)]), fields: null)
+>>> int-mask-of<1, 2>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: Literal\IntLiteralNode@12(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), variance: null), Template\TypedTemplateArgumentNode@15(value: Literal\IntLiteralNode@15(value: 2, raw: "2", decimal: "2", kind: Literal\IntLiteralKind::Decimal), variance: null)]), fields: null)
+>>> int-mask-of<>
+<<< partial@11 NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: null, fields: null)
+>>> int-mask-of<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int-mask-of<value-of<Foo::*>>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: NamedTypeNode@12(name: Name@12(value: "value-of", namespace: null), arguments: Template\TemplateListNode@21(items: [Template\TypedTemplateArgumentNode@21(value: Constant\ClassConstMaskTypeNode@21(class: Name@21(value: "Foo", namespace: null), mask: Constant\MaskNode@26(items: [Constant\MaskNode\WildcardMaskNode@26()])), variance: null)]), fields: null), variance: null)]), fields: null)
+
+# Key and value extraction
+>>> key-of<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> key-of<array{a: int}>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@13(items: [Shape\NamedFieldNode@13(type: NamedTypeNode@16(name: Name@16(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@13(value: "a"), isOptional: false)], isSealed: true)), variance: null)]), fields: null)
+>>> key-of<Foo::BAR>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: Constant\ClassConstTypeNode@7(class: Name@7(value: "Foo", namespace: null), constant: Identifier@12(value: "BAR")), variance: null)]), fields: null)
+>>> key-of<Foo::*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: Constant\ClassConstMaskTypeNode@7(class: Name@7(value: "Foo", namespace: null), mask: Constant\MaskNode@12(items: [Constant\MaskNode\WildcardMaskNode@12()])), variance: null)]), fields: null)
+>>> key-of<>
+<<< partial@6 NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: null, fields: null)
+>>> key-of<T, U>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "T", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@10(value: NamedTypeNode@10(name: Name@10(value: "U", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> key-of<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> value-of<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> value-of<Foo::BAR>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Constant\ClassConstTypeNode@9(class: Name@9(value: "Foo", namespace: null), constant: Identifier@14(value: "BAR")), variance: null)]), fields: null)
+>>> value-of<Foo::*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Constant\ClassConstMaskTypeNode@9(class: Name@9(value: "Foo", namespace: null), mask: Constant\MaskNode@14(items: [Constant\MaskNode\WildcardMaskNode@14()])), variance: null)]), fields: null)
+>>> value-of<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> value-of<>
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: null, fields: null)
+>>> value-of<T, U>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "T", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@12(value: NamedTypeNode@12(name: Name@12(value: "U", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> value-of<array{a: int}>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@15(items: [Shape\NamedFieldNode@15(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@15(value: "a"), isOptional: false)], isSealed: true)), variance: null)]), fields: null)
+>>> value-of<int[]>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: WrappingTypeNode\TypesListTypeNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null)), variance: null)]), fields: null)
+>>> properties-of<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "properties-of", namespace: null), arguments: Template\TemplateListNode@14(items: [Template\TypedTemplateArgumentNode@14(value: NamedTypeNode@14(name: Name@14(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> properties-of<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "properties-of", namespace: null), arguments: Template\TemplateListNode@14(items: [Template\TypedTemplateArgumentNode@14(value: NamedTypeNode@14(name: Name@14(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> public-properties-of<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "public-properties-of", namespace: null), arguments: Template\TemplateListNode@21(items: [Template\TypedTemplateArgumentNode@21(value: NamedTypeNode@21(name: Name@21(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> protected-properties-of<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "protected-properties-of", namespace: null), arguments: Template\TemplateListNode@24(items: [Template\TypedTemplateArgumentNode@24(value: NamedTypeNode@24(name: Name@24(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> private-properties-of<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "private-properties-of", namespace: null), arguments: Template\TemplateListNode@22(items: [Template\TypedTemplateArgumentNode@22(value: NamedTypeNode@22(name: Name@22(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> properties-of<>
+<<< partial@13 NamedTypeNode@0(name: Name@0(value: "properties-of", namespace: null), arguments: null, fields: null)
+>>> key-of<T>[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null))
+>>> key-of<T>|value-of<T>
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "key-of", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), NamedTypeNode@10(name: Name@10(value: "value-of", namespace: null), arguments: Template\TemplateListNode@19(items: [Template\TypedTemplateArgumentNode@19(value: NamedTypeNode@19(name: Name@19(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)])
+>>> T[key-of<T>]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), access: NamedTypeNode@2(name: Name@2(value: "key-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: NamedTypeNode@9(name: Name@9(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null))
+>>> array<key-of<T>, value-of<T>>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "key-of", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), variance: null), Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "value-of", namespace: null), arguments: Template\TemplateListNode@26(items: [Template\TypedTemplateArgumentNode@26(value: NamedTypeNode@26(name: Name@26(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), variance: null)]), fields: null)
+
+# Strings
+>>> class-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: null, fields: null)
+>>> class-string<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<Foo|Bar>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: LogicalTypeNode\UnionTypeNode@13(types: [NamedTypeNode@13(name: Name@13(value: "Foo", namespace: null), arguments: null, fields: null), NamedTypeNode@17(name: Name@17(value: "Bar", namespace: null), arguments: null, fields: null)]), variance: null)]), fields: null)
+>>> class-string<Foo&Bar>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: LogicalTypeNode\IntersectionTypeNode@13(types: [NamedTypeNode@13(name: Name@13(value: "Foo", namespace: null), arguments: null, fields: null), NamedTypeNode@17(name: Name@17(value: "Bar", namespace: null), arguments: null, fields: null)]), variance: null)]), fields: null)
+>>> class-string<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<>
+<<< partial@12 NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: null, fields: null)
+>>> class-string<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<Foo, Bar>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "Foo", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@18(value: NamedTypeNode@18(name: Name@18(value: "Bar", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<Foo::BAR>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: Constant\ClassConstTypeNode@13(class: Name@13(value: "Foo", namespace: null), constant: Identifier@18(value: "BAR")), variance: null)]), fields: null)
+>>> class-string<static>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "static", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<self>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "self", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<$this>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: ThisTypeNode@13(), variance: null)]), fields: null)
+>>> class-string<object>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "object", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<mixed>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "mixed", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> class-string<Foo<int>>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "Foo", namespace: null), arguments: Template\TemplateListNode@17(items: [Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), variance: null)]), fields: null)
+>>> trait-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "trait-string", namespace: null), arguments: null, fields: null)
+>>> interface-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "interface-string", namespace: null), arguments: null, fields: null)
+>>> enum-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "enum-string", namespace: null), arguments: null, fields: null)
+>>> enum-string<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "enum-string", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: NamedTypeNode@12(name: Name@12(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> interface-string<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "interface-string", namespace: null), arguments: Template\TemplateListNode@17(items: [Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> trait-string<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "trait-string", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> callable-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "callable-string", namespace: null), arguments: null, fields: null)
+>>> numeric-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "numeric-string", namespace: null), arguments: null, fields: null)
+>>> non-empty-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-string", namespace: null), arguments: null, fields: null)
+>>> non-falsy-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-falsy-string", namespace: null), arguments: null, fields: null)
+>>> truthy-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "truthy-string", namespace: null), arguments: null, fields: null)
+>>> lowercase-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "lowercase-string", namespace: null), arguments: null, fields: null)
+>>> uppercase-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "uppercase-string", namespace: null), arguments: null, fields: null)
+>>> non-empty-lowercase-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-lowercase-string", namespace: null), arguments: null, fields: null)
+>>> literal-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "literal-string", namespace: null), arguments: null, fields: null)
+>>> non-empty-literal-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-literal-string", namespace: null), arguments: null, fields: null)
+>>> numeric
+<<< accepted NamedTypeNode@0(name: Name@0(value: "numeric", namespace: null), arguments: null, fields: null)
+>>> scalar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "scalar", namespace: null), arguments: null, fields: null)
+>>> empty-scalar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "empty-scalar", namespace: null), arguments: null, fields: null)
+>>> array-key
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array-key", namespace: null), arguments: null, fields: null)
+>>> callable-array
+<<< accepted NamedTypeNode@0(name: Name@0(value: "callable-array", namespace: null), arguments: null, fields: null)
+>>> callable-object
+<<< accepted NamedTypeNode@0(name: Name@0(value: "callable-object", namespace: null), arguments: null, fields: null)
+>>> stringable-object
+<<< accepted NamedTypeNode@0(name: Name@0(value: "stringable-object", namespace: null), arguments: null, fields: null)
+>>> object
+<<< accepted NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: null)
+>>> open-resource
+<<< accepted NamedTypeNode@0(name: Name@0(value: "open-resource", namespace: null), arguments: null, fields: null)
+>>> closed-resource
+<<< accepted NamedTypeNode@0(name: Name@0(value: "closed-resource", namespace: null), arguments: null, fields: null)
+>>> resource
+<<< accepted NamedTypeNode@0(name: Name@0(value: "resource", namespace: null), arguments: null, fields: null)
+>>> empty
+<<< accepted NamedTypeNode@0(name: Name@0(value: "empty", namespace: null), arguments: null, fields: null)
+>>> never
+<<< accepted NamedTypeNode@0(name: Name@0(value: "never", namespace: null), arguments: null, fields: null)
+>>> never-return
+<<< accepted NamedTypeNode@0(name: Name@0(value: "never-return", namespace: null), arguments: null, fields: null)
+>>> never-returns
+<<< accepted NamedTypeNode@0(name: Name@0(value: "never-returns", namespace: null), arguments: null, fields: null)
+>>> no-return
+<<< accepted NamedTypeNode@0(name: Name@0(value: "no-return", namespace: null), arguments: null, fields: null)
+>>> noreturn
+<<< accepted NamedTypeNode@0(name: Name@0(value: "noreturn", namespace: null), arguments: null, fields: null)
+>>> self
+<<< accepted NamedTypeNode@0(name: Name@0(value: "self", namespace: null), arguments: null, fields: null)
+>>> static
+<<< accepted NamedTypeNode@0(name: Name@0(value: "static", namespace: null), arguments: null, fields: null)
+>>> parent
+<<< accepted NamedTypeNode@0(name: Name@0(value: "parent", namespace: null), arguments: null, fields: null)
+>>> list
+<<< accepted NamedTypeNode@0(name: Name@0(value: "list", namespace: null), arguments: null, fields: null)
+>>> non-empty-list
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-list", namespace: null), arguments: null, fields: null)
+>>> array
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> non-empty-array
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-array", namespace: null), arguments: null, fields: null)
+>>> iterable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "iterable", namespace: null), arguments: null, fields: null)
+>>> countable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "countable", namespace: null), arguments: null, fields: null)
+>>> traversable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "traversable", namespace: null), arguments: null, fields: null)
+>>> Traversable<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Traversable", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> Countable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Countable", namespace: null), arguments: null, fields: null)
+
+# Instantiation and generics-on-generics
+>>> new<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "new", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> new<Foo>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "new", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> new<class-string<Foo>>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "new", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "class-string", namespace: null), arguments: Template\TemplateListNode@17(items: [Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "Foo", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), variance: null)]), fields: null)
+>>> new<>
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "new", namespace: null), arguments: null, fields: null)
+>>> new<T, U>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "new", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "T", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "U", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> T::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "class"))
+>>> Foo::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "class"))
+>>> get-class<T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "get-class", namespace: null), arguments: Template\TemplateListNode@10(items: [Template\TypedTemplateArgumentNode@10(value: NamedTypeNode@10(name: Name@10(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> template-type<T, Foo, 'T'>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "template-type", namespace: null), arguments: Template\TemplateListNode@14(items: [Template\TypedTemplateArgumentNode@14(value: NamedTypeNode@14(name: Name@14(value: "T", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "Foo", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@22(value: Literal\StringLiteralNode@22(value: "T", raw: "'T'", kind: Literal\StringLiteralKind::SingleQuoted), variance: null)]), fields: null)
+>>> template-type<T, Foo, T>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "template-type", namespace: null), arguments: Template\TemplateListNode@14(items: [Template\TypedTemplateArgumentNode@14(value: NamedTypeNode@14(name: Name@14(value: "T", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@17(name: Name@17(value: "Foo", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@22(value: NamedTypeNode@22(name: Name@22(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> template-type<>
+<<< partial@13 NamedTypeNode@0(name: Name@0(value: "template-type", namespace: null), arguments: null, fields: null)
+>>> __benevolent<int|string>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "__benevolent", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: LogicalTypeNode\UnionTypeNode@13(types: [NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@17(name: Name@17(value: "string", namespace: null), arguments: null, fields: null)]), variance: null)]), fields: null)
+>>> __benevolent<>
+<<< partial@12 NamedTypeNode@0(name: Name@0(value: "__benevolent", namespace: null), arguments: null, fields: null)
+>>> __benevolent<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "__benevolent", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> __benevolent<int, string>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "__benevolent", namespace: null), arguments: Template\TemplateListNode@13(items: [Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@18(value: NamedTypeNode@18(name: Name@18(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> __stringandstringable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "__stringandstringable", namespace: null), arguments: null, fields: null)
+>>> __never
+<<< accepted NamedTypeNode@0(name: Name@0(value: "__never", namespace: null), arguments: null, fields: null)
+
+# Assertions and type aliases
+>>> Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo-bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo-bar", namespace: null), arguments: null, fields: null)
+>>> Foo.bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo@bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo#bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo$bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "Foo"), Constant\MaskNode\WildcardMaskNode@3()]), namespace: null)
+>>> *
+<<< rejected
+>>> **
+<<< rejected
+>>> _
+<<< accepted NamedTypeNode@0(name: Name@0(value: "_", namespace: null), arguments: null, fields: null)
+>>> __
+<<< accepted NamedTypeNode@0(name: Name@0(value: "__", namespace: null), arguments: null, fields: null)
+>>> mixed
+<<< accepted NamedTypeNode@0(name: Name@0(value: "mixed", namespace: null), arguments: null, fields: null)
+
+# Parser tests: this type
+>>>   $this \040
+<<< accepted ThisTypeNode@2()
+>>> \n$this\r\n
+<<< accepted ThisTypeNode@1()
+>>> /* c */ $this
+<<< accepted ThisTypeNode@8()
+>>> $this // c
+<<< accepted ThisTypeNode@0()
+>>> $this # c\n
+<<< accepted ThisTypeNode@0()
+>>> $THIS
+<<< rejected
+>>> $This
+<<< rejected
+>>> $thisFoo
+<<< rejected
+>>> $this_
+<<< rejected
+>>> $this1
+<<< rejected
+>>> $this-x
+<<< rejected
+>>> $
+<<< rejected
+>>> Foo$this
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> $this $this
+<<< partial@6 ThisTypeNode@0()
+>>>   $this
+<<< accepted ThisTypeNode@2()
+>>> \n\n$this
+<<< accepted ThisTypeNode@2()
+>>> // c\n$this
+<<< accepted ThisTypeNode@5()
+>>> /* \320\244\321\203 */ $this
+<<< accepted ThisTypeNode@11()
+
+# Parser tests: variable
+>>> $_x
+<<< rejected
+>>> ?$a
+<<< rejected
+>>> $a[]
+<<< rejected
+>>> $a|$b
+<<< rejected
+>>> A&$b
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "A", namespace: null), arguments: null, fields: null)
+>>> ($a)
+<<< rejected
+>>> Foo<$a>
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> T[$a]
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> $this|null
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [ThisTypeNode@0(), Literal\NullLiteralNode@6(value: null, raw: "null")])

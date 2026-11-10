@@ -92,37 +92,63 @@ final class Executor extends CompiledExecutor
     public function parse(ReadableInterface $source): mixed
     {
         try {
-            return parent::parse($source);
+            $result = $this->parser->analyze($source, Mode::Tolerant);
         } catch (ParserRuntimeException $e) {
             throw $this->translate($e);
         }
-    }
 
-    private function describe(\Throwable $e): string
-    {
-        if ($e instanceof ParserRuntimeException) {
-            return $this->translate($e)
-                ->getMessage();
+        if ($result instanceof PartialResult) {
+            throw $this->fail($result->error, $result);
         }
 
-        return $e->getMessage();
+        if ($result instanceof FailureResult) {
+            throw $this->fail($result->error);
+        }
+
+        return $result->value;
+    }
+
+    /**
+     * Returns the exception of the library for the error of a reading that
+     * has not reached the end of the source.
+     *
+     * @param PartialResult<mixed>|null $read the part of the source that
+     *        has been read, if there is one
+     */
+    private function fail(\Throwable $e, ?PartialResult $read = null): \Throwable
+    {
+        if ($e instanceof ParserRuntimeException) {
+            return $this->translate($e, $read);
+        }
+
+        return $e;
+    }
+
+    /**
+     * @param PartialResult<mixed>|null $read the part of the source that
+     *        has been read, if there is one
+     */
+    private function describe(\Throwable $e, ?PartialResult $read = null): string
+    {
+        return $this->fail($e, $read)
+            ->getMessage();
     }
 
     /**
      * Returns the tokens the reading could continue with, nothing is expected
      * after a complete type.
      *
+     * @param PartialResult<mixed>|null $read the part of the source that
+     *        has been read, if there is one
      * @return list<non-empty-string>
      */
-    private function getExpected(ParserRuntimeException $e): array
+    private function getExpected(ParserRuntimeException $e, ?PartialResult $read): array
     {
         if (!$e instanceof PhplrtUnexpectedTokenException) {
             return [];
         }
 
-        $result = $this->parser->analyze($e->source, Mode::Tolerant);
-
-        if ($result instanceof PartialResult && $result->token->offset === $e->token->offset) {
+        if ($read !== null && $read->token->offset === $e->token->offset) {
             return [];
         }
 
@@ -131,10 +157,13 @@ final class Executor extends CompiledExecutor
 
     /**
      * Tells the failure of the grammar in the exceptions of the library.
+     *
+     * @param PartialResult<mixed>|null $read the part of the source that
+     *        has been read, if there is one
      */
-    private function translate(ParserRuntimeException $e): SyntaxErrorException
+    private function translate(ParserRuntimeException $e, ?PartialResult $read = null): SyntaxErrorException
     {
-        $expected = $this->getExpected($e);
+        $expected = $this->getExpected($e, $read);
 
         return match (true) {
             // The code of an error is the number of the grammar rule that
@@ -168,7 +197,7 @@ final class Executor extends CompiledExecutor
 
         return match (true) {
             $result instanceof PartialResult => new PartialCheckResult(
-                message: $this->describe($result->error),
+                message: $this->describe($result->error, $result),
                 position: $this->positions->createFromOffset($source, $result->token->offset),
                 offset: $result->token->offset,
             ),

@@ -1,0 +1,251 @@
+# Shape keys
+
+# Words
+>>> array{a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: false)], isSealed: true))
+>>> array{A: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "A"), isOptional: false)], isSealed: true))
+>>> array{a_b: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a_b"), isOptional: false)], isSealed: true))
+>>> array{a1: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a1"), isOptional: false)], isSealed: true))
+>>> array{_a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "_a"), isOptional: false)], isSealed: true))
+>>> array{1a: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a-b: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a-b"), isOptional: false)], isSealed: true))
+>>> array{a.b: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a b: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{non-empty-string: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@24(name: Name@24(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "non-empty-string"), isOptional: false)], isSealed: true))
+>>> array{class-string: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@20(name: Name@20(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "class-string"), isOptional: false)], isSealed: true))
+>>> array{int: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "int"), isOptional: false)], isSealed: true))
+>>> array{string: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "string"), isOptional: false)], isSealed: true))
+>>> array{array: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "array"), isOptional: false)], isSealed: true))
+>>> array{callable: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@16(name: Name@16(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "callable"), isOptional: false)], isSealed: true))
+>>> array{mixed: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "mixed"), isOptional: false)], isSealed: true))
+>>> array{true: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "true"), isOptional: false)], isSealed: true))
+>>> array{false: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "false"), isOptional: false)], isSealed: true))
+>>> array{null: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "null"), isOptional: false)], isSealed: true))
+>>> array{is: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "is"), isOptional: false)], isSealed: true))
+>>> array{not: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "not"), isOptional: false)], isSealed: true))
+>>> array{of: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "of"), isOptional: false)], isSealed: true))
+>>> array{as: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "as"), isOptional: false)], isSealed: true))
+>>> array{static: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "static"), isOptional: false)], isSealed: true))
+>>> array{self: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "self"), isOptional: false)], isSealed: true))
+>>> array{class: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "class"), isOptional: false)], isSealed: true))
+>>> array{list: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "list"), isOptional: false)], isSealed: true))
+>>> array{covariant: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "covariant"), isOptional: false)], isSealed: true))
+>>> array{key-of: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "key-of"), isOptional: false)], isSealed: true))
+>>> array{\320\244: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "\320\244"), isOptional: false)], isSealed: true))
+
+# Integers
+>>> array{0: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{1: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{-1: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: -1, raw: "-1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{+1: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 1, raw: "+1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{007: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 7, raw: "007", decimal: "7", kind: Literal\IntLiteralKind::Octal), isOptional: false)], isSealed: true))
+>>> array{0x1F: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 31, raw: "0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal), isOptional: false)], isSealed: true))
+>>> array{0b101: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 5, raw: "0b101", decimal: "5", kind: Literal\IntLiteralKind::Binary), isOptional: false)], isSealed: true))
+>>> array{0o17: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 15, raw: "0o17", decimal: "15", kind: Literal\IntLiteralKind::Octal), isOptional: false)], isSealed: true))
+>>> array{017: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 15, raw: "017", decimal: "15", kind: Literal\IntLiteralKind::Octal), isOptional: false)], isSealed: true))
+>>> array{1_000: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 1000, raw: "1_000", decimal: "1000", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{9223372036854775807: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@27(name: Name@27(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 9223372036854775807, raw: "9223372036854775807", decimal: "9223372036854775807", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{9223372036854775808: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@27(name: Name@27(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 9223372036854775807, raw: "9223372036854775808", decimal: "9223372036854775808", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> array{1.5: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{1e3: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{.5: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{- 1: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: -1, raw: "- 1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+
+# Strings
+>>> array{'a': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{"a": int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a", raw: "\"a\"", kind: Literal\StringLiteralKind::DoubleQuoted), isOptional: false)], isSealed: true))
+>>> array{'': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "", raw: "''", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'a b': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a b", raw: "'a b'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'a-b': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a-b", raw: "'a-b'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'a\\'b': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a'b", raw: "'a\\'b'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{"a\\"b": int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a\"b", raw: "\"a\\\"b\"", kind: Literal\StringLiteralKind::DoubleQuoted), isOptional: false)], isSealed: true))
+>>> array{'a\\nb': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a\\nb", raw: "'a\\nb'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'Foo\\Bar': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "Foo\\Bar", raw: "'Foo\\Bar'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'1': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "1", raw: "'1'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'0': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "0", raw: "'0'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> array{'a' 'b': int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{'a': int, "a": string}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false), Shape\ScalarFieldNode@16(type: NamedTypeNode@21(name: Name@21(value: "string", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@16(value: "a", raw: "\"a\"", kind: Literal\StringLiteralKind::DoubleQuoted), isOptional: false)], isSealed: true))
+
+# Constants
+>>> array{FOO: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "FOO"), isOptional: false)], isSealed: true))
+>>> array{\\FOO: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "\\FOO"), isOptional: false)], isSealed: true))
+>>> array{Foo\\BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@15(name: Name@15(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "Foo\\BAR"), isOptional: false)], isSealed: true))
+>>> array{\\Foo\\BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@16(name: Name@16(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "\\Foo\\BAR"), isOptional: false)], isSealed: true))
+>>> array{Foo::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@16(name: Name@16(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "Foo", namespace: null), constant: Identifier@11(value: "BAR")), isOptional: false)], isSealed: true))
+>>> array{\\Foo::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "Foo", namespace: NamespaceName@6(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@12(value: "BAR")), isOptional: false)], isSealed: true))
+>>> array{Foo\\Bar::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@20(name: Name@20(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "Bar", namespace: NamespaceName@6(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@15(value: "BAR")), isOptional: false)], isSealed: true))
+>>> array{self::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "self", namespace: null), constant: Identifier@12(value: "BAR")), isOptional: false)], isSealed: true))
+>>> array{static::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@19(name: Name@19(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "static", namespace: null), constant: Identifier@14(value: "BAR")), isOptional: false)], isSealed: true))
+>>> array{parent::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@19(name: Name@19(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "parent", namespace: null), constant: Identifier@14(value: "BAR")), isOptional: false)], isSealed: true))
+>>> array{Foo::class: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "Foo", namespace: null), constant: Identifier@11(value: "class")), isOptional: false)], isSealed: true))
+>>> array{PHP_*: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{\\PHP_*: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo\\BAR_*: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo::BAR_*: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo::*: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo::*_BAR: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{*: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+
+# Everything else
+>>> array{$a: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{$this: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo\\Bar: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@15(name: Name@15(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "Foo\\Bar"), isOptional: false)], isSealed: true))
+>>> array{\\Foo: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "\\Foo"), isOptional: false)], isSealed: true))
+>>> array{?: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo<int>: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo{a: int}: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{int|string: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{(a): int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{[a]: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a[]: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a::b: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "a", namespace: null), constant: Identifier@9(value: "b")), isOptional: false)], isSealed: true))
+>>> array{Foo::BAR::BAR: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+
+# Optional marks
+>>> array{a?: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: true)], isSealed: true))
+>>> array{a ?: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: true)], isSealed: true))
+>>> array{a? : int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: true)], isSealed: true))
+>>> array{0?: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@6(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), isOptional: true)], isSealed: true))
+>>> array{'a'?: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: true)], isSealed: true))
+>>> array{"a"?: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ScalarFieldNode@6(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@6(value: "a", raw: "\"a\"", kind: Literal\StringLiteralKind::DoubleQuoted), isOptional: true)], isSealed: true))
+>>> array{Foo::BAR?: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "Foo", namespace: null), constant: Identifier@11(value: "BAR")), isOptional: true)], isSealed: true))
+>>> array{PHP_*?: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{Foo::BAR_*?: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a??: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{?a: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a?int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+
+# Other families
+>>> list{a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "list", namespace: null), arguments: null, fields: Shape\FieldListNode@5(items: [Shape\NamedFieldNode@5(type: NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@5(value: "a"), isOptional: false)], isSealed: true))
+>>> list{0: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "list", namespace: null), arguments: null, fields: Shape\FieldListNode@5(items: [Shape\ScalarFieldNode@5(type: NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@5(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> list{1: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "list", namespace: null), arguments: null, fields: Shape\FieldListNode@5(items: [Shape\ScalarFieldNode@5(type: NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@5(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> list{'a': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "list", namespace: null), arguments: null, fields: Shape\FieldListNode@5(items: [Shape\ScalarFieldNode@5(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@5(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> object{a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\NamedFieldNode@7(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@7(value: "a"), isOptional: false)], isSealed: true))
+>>> object{'a': int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\ScalarFieldNode@7(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), key: Literal\StringLiteralNode@7(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), isOptional: false)], isSealed: true))
+>>> object{0: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\ScalarFieldNode@7(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Literal\IntLiteralNode@7(value: 0, raw: "0", decimal: "0", kind: Literal\IntLiteralKind::Decimal), isOptional: false)], isSealed: true))
+>>> object{Foo::BAR: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\ComplexFieldNode@7(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@7(class: Name@7(value: "Foo", namespace: null), constant: Identifier@12(value: "BAR")), isOptional: false)], isSealed: true))
+>>> object{$a: int}
+<<< partial@6 NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: null)
+
+# Parser tests: shape
+>>> array{(true): int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{(false): int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{(null): int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{0.42: int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{(0.42): int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{(A|B): int}
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)

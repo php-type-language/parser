@@ -1,0 +1,145 @@
+# A type followed by the rest of a DocBlock tag
+
+# A variable after the type
+>>> int $value
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> ?string $value The description
+<<< partial@8 WrappingTypeNode\NullableTypeNode@0(type: NamedTypeNode@1(name: Name@1(value: "string", namespace: null), arguments: null, fields: null))
+>>> int|string|null $value
+<<< partial@16 LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@4(name: Name@4(value: "string", namespace: null), arguments: null, fields: null), Literal\NullLiteralNode@11(value: null, raw: "null")])
+>>> array<string, int> $map
+<<< partial@19 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "string", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@14(value: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array{a: int, b?: string} $shape
+<<< partial@26 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: false), Shape\NamedFieldNode@14(type: NamedTypeNode@18(name: Name@18(value: "string", namespace: null), arguments: null, fields: null), key: Identifier@14(value: "b"), isOptional: true)], isSealed: true))
+>>> callable(int, string): bool $callback
+<<< partial@28 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "string", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@23(name: Name@23(value: "bool", namespace: null), arguments: null, fields: null), templates: null)
+>>> \\Closure(T): U $closure
+<<< partial@15 Callable\CallableTypeNode@0(name: Name@0(value: "Closure", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@13(name: Name@13(value: "U", namespace: null), arguments: null, fields: null), templates: null)
+>>> Foo[] $items
+<<< partial@6 WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null))
+>>> Foo::BAR $value
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> non-empty-string $name
+<<< partial@17 NamedTypeNode@0(name: Name@0(value: "non-empty-string", namespace: null), arguments: null, fields: null)
+>>> T[K] $value
+<<< partial@5 WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), access: NamedTypeNode@2(name: Name@2(value: "K", namespace: null), arguments: null, fields: null))
+>>> int ...$values
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int &$value
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int $this
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+
+# A description after the type
+>>> int The description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int the description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int - the description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int. The description
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int, the description
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int: the description
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int (the description)
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int [the description]
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int {the description}
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int <the description>
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int|string the description
+<<< partial@11 LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@4(name: Name@4(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int | string the description
+<<< partial@13 LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@6(name: Name@6(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int |string the description
+<<< partial@12 LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@5(name: Name@5(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int| the description
+<<< partial@9 LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@5(name: Name@5(value: "the", namespace: null), arguments: null, fields: null)])
+>>> array<int> the description
+<<< partial@11 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array<int> (the description)
+<<< partial@11 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array<int>(the description)
+<<< partial@10 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array<int|string>(int) the description
+<<< partial@17 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: LogicalTypeNode\UnionTypeNode@6(types: [NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@10(name: Name@10(value: "string", namespace: null), arguments: null, fields: null)]), variance: null)]), fields: null)
+>>> array<T>(T) the description
+<<< partial@12 Callable\CallableTypeNode@0(name: Name@0(value: "array", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: Template\TemplateParameterListNode@6(items: [Template\TemplateParameterNode@6(name: Identifier@6(value: "T"), upper: null, lower: null, default: null, variance: null)]))
+>>> array<T of int>(T) the description
+<<< partial@19 Callable\CallableTypeNode@0(name: Name@0(value: "array", namespace: null), parameters: Callable\CallableParameterListNode@16(items: [Callable\CallableParameterNode@16(type: NamedTypeNode@16(name: Name@16(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: Template\TemplateParameterListNode@6(items: [Template\TemplateParameterNode@6(name: Identifier@6(value: "T"), upper: Template\TemplateBoundNode@8(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)]))
+>>> array{a: int} (the description)
+<<< partial@14 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: false)], isSealed: true))
+>>> array{Foo::BAR: int, Foo::BAZ, Foo:: int} the description
+<<< partial@42 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\ComplexFieldNode@6(type: NamedTypeNode@16(name: Name@16(value: "int", namespace: null), arguments: null, fields: null), key: Constant\ClassConstTypeNode@6(class: Name@6(value: "Foo", namespace: null), constant: Identifier@11(value: "BAR")), isOptional: false), Shape\ImplicitFieldNode@21(type: Constant\ClassConstTypeNode@21(class: Name@21(value: "Foo", namespace: null), constant: Identifier@26(value: "BAZ"))), Shape\ImplicitFieldNode@31(type: Constant\ClassConstTypeNode@31(class: Name@31(value: "Foo", namespace: null), constant: Identifier@37(value: "int")))], isSealed: true))
+>>> array<int the description
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{a: int} the description
+<<< partial@14 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: false)], isSealed: true))
+>>> array{a: int the description
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> callable(): void the description
+<<< partial@17 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int the description
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> Foo is the description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo is not the description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo is Bar the description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo is Bar ? the description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo is Bar ? A : B the description
+<<< partial@19 Condition\ConditionalTypeNode@0(condition: Condition\EqualConditionNode@0(subject: NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null), target: NamedTypeNode@7(name: Name@7(value: "Bar", namespace: null), arguments: null, fields: null)), then: NamedTypeNode@13(name: Name@13(value: "A", namespace: null), arguments: null, fields: null), else: NamedTypeNode@17(name: Name@17(value: "B", namespace: null), arguments: null, fields: null))
+>>> int 42
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int 'text'
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int "text"
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int @inheritDoc
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int {@see Foo}
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\nThe description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\n * The description
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+
+# The words of a template parameter after the type
+>>> T
+<<< accepted NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> T of int
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> T of int The description
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> T as Foo|Bar
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> T super int
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> T = int
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> covariant T
+<<< partial@10 NamedTypeNode@0(name: Name@0(value: "covariant", namespace: null), arguments: null, fields: null)
+
+# No type at all
+>>> $value
+<<< rejected
+>>> $value The description
+<<< rejected
+>>> The description
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "The", namespace: null), arguments: null, fields: null)
+>>> - the description
+<<< rejected
+>>> @param
+<<< rejected
+>>> {@see Foo}
+<<< rejected
+>>> ...
+<<< rejected
+>>>
+<<< rejected

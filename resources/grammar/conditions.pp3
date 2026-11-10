@@ -6,8 +6,9 @@
  * -----------------------------------------------------------------------------
  */
 
+// Any type, an entry point
 // int, T is U ? A : B, T is not U ? A : B, $a is U ? A : B
-ConditionalType -> {
+#Type -> {
     if (!isset($children[1])) {
         return $children[0];
     }

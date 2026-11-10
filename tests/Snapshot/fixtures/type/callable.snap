@@ -1,0 +1,621 @@
+# Callable
+
+# Basic
+>>> callable(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@15(name: Name@15(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable (int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int,): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+
+# Variadic
+>>> callable(int...): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@18(name: Name@18(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int ...): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(...int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@18(name: Name@18(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(...): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int ...$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@21(name: Name@21(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int... $a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@21(name: Name@21(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(...$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@12(name: "a"), isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@17(name: Name@17(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a...): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(...int...): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int..., string): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null), Callable\CallableParameterNode@17(type: NamedTypeNode@17(name: Name@17(value: "string", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@26(name: Name@26(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+
+# By-ref
+>>> callable(int&): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: true, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int &$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: true, isVariadic: false, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(&int): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(&$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@10(name: "a"), isOutput: true, isVariadic: false, default: null)]), type: NamedTypeNode@15(name: Name@15(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a&): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(A&B): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: LogicalTypeNode\IntersectionTypeNode@9(types: [NamedTypeNode@9(name: Name@9(value: "A", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "B", namespace: null), arguments: null, fields: null)]), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@15(name: Name@15(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+
+# By-ref and variadic
+>>> callable(int &...): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: true, isVariadic: true, default: null)]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int &...$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@17(name: "a"), isOutput: true, isVariadic: true, default: null)]), type: NamedTypeNode@22(name: Name@22(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int ...&): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int ...&$a): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+
+# Names
+>>> callable(int $a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@18(name: Name@18(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable($a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@14(name: Name@14(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+
+# Optional and default
+>>> callable(int=): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@12(value: null))]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(=int): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a=): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@15(value: null))]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = 42): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = null): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\NullLiteralNode@18(value: null, raw: "null")))]), type: NamedTypeNode@25(name: Name@25(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int = 42): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\IntLiteralNode@15(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int = Foo::BAR): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@13(value: Constant\ClassConstTypeNode@15(class: Name@15(value: "Foo", namespace: null), constant: Identifier@20(value: "BAR"))))]), type: NamedTypeNode@26(name: Name@26(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int &$a=): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: true, isVariadic: false, default: Callable\DefaultValueNode@16(value: null))]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int ...=): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int ...$a=): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int=...): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int=, string): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@12(value: null)), Callable\CallableParameterNode@15(type: NamedTypeNode@15(name: Name@15(value: "string", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+
+# Default values: literals
+>>> callable(int $a = -1): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: -1, raw: "-1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = +1): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 1, raw: "+1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = 0x1F): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 31, raw: "0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)))]), type: NamedTypeNode@25(name: Name@25(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = 1_000): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 1000, raw: "1_000", decimal: "1000", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@26(name: Name@26(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(float $a = 1.5): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "float", namespace: null), arguments: null, fields: null), name: VariableNode@15(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@18(value: Literal\FloatLiteralNode@20(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0")))]), type: NamedTypeNode@26(name: Name@26(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(float $a = -1.5e3): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "float", namespace: null), arguments: null, fields: null), name: VariableNode@15(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@18(value: Literal\FloatLiteralNode@20(value: -1500.0, raw: "-1.5e3", mantissa: "-1.5", exponent: "3")))]), type: NamedTypeNode@29(name: Name@29(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(string $a = 'x'): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Literal\StringLiteralNode@21(value: "x", raw: "'x'", kind: Literal\StringLiteralKind::SingleQuoted)))]), type: NamedTypeNode@27(name: Name@27(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(string $a = "x"): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Literal\StringLiteralNode@21(value: "x", raw: "\"x\"", kind: Literal\StringLiteralKind::DoubleQuoted)))]), type: NamedTypeNode@27(name: Name@27(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(string $a = 'it\\'s'): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Literal\StringLiteralNode@21(value: "it's", raw: "'it\\'s'", kind: Literal\StringLiteralKind::SingleQuoted)))]), type: NamedTypeNode@31(name: Name@31(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(bool $a = true): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "bool", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\BoolLiteralNode@19(value: true, raw: "true")))]), type: NamedTypeNode@26(name: Name@26(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(bool $a = FALSE): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "bool", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\BoolLiteralNode@19(value: false, raw: "FALSE")))]), type: NamedTypeNode@27(name: Name@27(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(?int $a = null): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: WrappingTypeNode\NullableTypeNode@9(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null)), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\NullLiteralNode@19(value: null, raw: "null")))]), type: NamedTypeNode@26(name: Name@26(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = NULL): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\NullLiteralNode@18(value: null, raw: "NULL")))]), type: NamedTypeNode@25(name: Name@25(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+
+# Default values: constants
+>>> callable(int $a = PHP_INT_MAX): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: NamedTypeNode@18(name: Name@18(value: "PHP_INT_MAX", namespace: null), arguments: null, fields: null)))]), type: NamedTypeNode@32(name: Name@32(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = \\PHP_INT_MAX): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: NamedTypeNode@18(name: Name@18(value: "PHP_INT_MAX", namespace: NamespaceName@18(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)))]), type: NamedTypeNode@33(name: Name@33(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = Foo::BAR): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "Foo", namespace: null), constant: Identifier@23(value: "BAR"))))]), type: NamedTypeNode@29(name: Name@29(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = \\Foo\\Bar::BAZ): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "Bar", namespace: NamespaceName@18(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@28(value: "BAZ"))))]), type: NamedTypeNode@34(name: Name@34(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(string $a = Foo::class): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Constant\ClassConstTypeNode@21(class: Name@21(value: "Foo", namespace: null), constant: Identifier@26(value: "class"))))]), type: NamedTypeNode@34(name: Name@34(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = self::BAR): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "self", namespace: null), constant: Identifier@24(value: "BAR"))))]), type: NamedTypeNode@30(name: Name@30(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = static::BAR): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "static", namespace: null), constant: Identifier@26(value: "BAR"))))]), type: NamedTypeNode@32(name: Name@32(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = Foo::BAR_*): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+
+# Default values: expressions
+>>> callable(array $a = []): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(array $a = [1, 2]): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(array $a = ['a' => 1]): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(array $a = array()): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = 1 + 2): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = -PHP_INT_MAX): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = 1 << 2): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = Foo::A | Foo::B): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = (1)): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = FOO ?: 1): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = FOO ? 1 : 2): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(string $a = 'a' . 'b'): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(object $a = new Foo): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(object $a = new Foo(1)): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(Foo $a = Foo::Case): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "Foo", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "Foo", namespace: null), constant: Identifier@23(value: "Case"))))]), type: NamedTypeNode@30(name: Name@30(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = (int) '1'): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = $b): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = foo()): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+
+# Default values: unnamed and combined
+>>> callable(int = -1): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\IntLiteralNode@15(value: -1, raw: "-1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int = null): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\NullLiteralNode@15(value: null, raw: "null")))]), type: NamedTypeNode@22(name: Name@22(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int = 'x'): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\StringLiteralNode@15(value: "x", raw: "'x'", kind: Literal\StringLiteralKind::SingleQuoted)))]), type: NamedTypeNode@21(name: Name@21(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int = []): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int = 1 + 2): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = 42, string $b = 'x'): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal))), Callable\CallableParameterNode@22(type: NamedTypeNode@22(name: Name@22(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@29(name: "b"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@32(value: Literal\StringLiteralNode@34(value: "x", raw: "'x'", kind: Literal\StringLiteralKind::SingleQuoted)))]), type: NamedTypeNode@40(name: Name@40(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = 42, string $b): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal))), Callable\CallableParameterNode@22(type: NamedTypeNode@22(name: Name@22(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@29(name: "b"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@34(name: Name@34(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = 42,): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int &$a = 42): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: true, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\IntLiteralNode@19(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int ...$a = 42): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a = 42): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@12(value: Literal\IntLiteralNode@14(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(&$a = 42): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@10(name: "a"), isOutput: true, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\IntLiteralNode@15(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(= 42): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = ): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: null))]), type: NamedTypeNode@21(name: Name@21(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a == 42): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+
+# Return type
+>>> callable(): ?int
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: WrappingTypeNode\NullableTypeNode@12(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null)), templates: null)
+>>> callable(): (int|string)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: LogicalTypeNode\UnionTypeNode@13(types: [NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@17(name: Name@17(value: "string", namespace: null), arguments: null, fields: null)]), templates: null)
+>>> callable(): int|string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), templates: null), NamedTypeNode@16(name: Name@16(value: "string", namespace: null), arguments: null, fields: null)])
+>>> callable(): A&B
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "A", namespace: null), arguments: null, fields: null), templates: null), NamedTypeNode@14(name: Name@14(value: "B", namespace: null), arguments: null, fields: null)])
+>>> callable(): T is X ? A : B
+<<< accepted Condition\ConditionalTypeNode@0(condition: Condition\EqualConditionNode@0(subject: Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "T", namespace: null), arguments: null, fields: null), templates: null), target: NamedTypeNode@17(name: Name@17(value: "X", namespace: null), arguments: null, fields: null)), then: NamedTypeNode@21(name: Name@21(value: "A", namespace: null), arguments: null, fields: null), else: NamedTypeNode@25(name: Name@25(value: "B", namespace: null), arguments: null, fields: null))
+>>> callable(): int[]
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: WrappingTypeNode\TypesListTypeNode@12(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null)), templates: null)
+>>> callable(): callable(): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: Callable\CallableTypeNode@12(name: Name@12(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@20(items: []), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null), templates: null)
+>>> callable(): static
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "static", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(): $this
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: ThisTypeNode@12(), templates: null)
+
+# Generics and names
+>>> callable<T>(T): T
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@12(items: [Callable\CallableParameterNode@12(type: NamedTypeNode@12(name: Name@12(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "T", namespace: null), arguments: null, fields: null), templates: Template\TemplateParameterListNode@9(items: [Template\TemplateParameterNode@9(name: Identifier@9(value: "T"), upper: null, lower: null, default: null, variance: null)]))
+>>> callable<T of object>(T $a): T
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@22(items: [Callable\CallableParameterNode@22(type: NamedTypeNode@22(name: Name@22(value: "T", namespace: null), arguments: null, fields: null), name: VariableNode@24(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@29(name: Name@29(value: "T", namespace: null), arguments: null, fields: null), templates: Template\TemplateParameterListNode@9(items: [Template\TemplateParameterNode@9(name: Identifier@9(value: "T"), upper: Template\TemplateBoundNode@11(type: NamedTypeNode@14(name: Name@14(value: "object", namespace: null), arguments: null, fields: null), kind: Template\TemplateBoundNode\BoundKind::Upper), lower: null, default: null, variance: null)]))
+>>> Closure<T>(T): T
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "Closure", namespace: null), parameters: Callable\CallableParameterListNode@11(items: [Callable\CallableParameterNode@11(type: NamedTypeNode@11(name: Name@11(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@15(name: Name@15(value: "T", namespace: null), arguments: null, fields: null), templates: Template\TemplateParameterListNode@8(items: [Template\TemplateParameterNode@8(name: Identifier@8(value: "T"), upper: null, lower: null, default: null, variance: null)]))
+>>> \\Closure(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "Closure", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@15(name: Name@15(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> Closure(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "Closure", namespace: null), parameters: Callable\CallableParameterListNode@8(items: [Callable\CallableParameterNode@8(type: NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@14(name: Name@14(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> pure-callable(int): int
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "pure-callable", namespace: null), parameters: Callable\CallableParameterListNode@14(items: [Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@20(name: Name@20(value: "int", namespace: null), arguments: null, fields: null), templates: null)
+>>> pure-callable(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "pure-callable", namespace: null), parameters: Callable\CallableParameterListNode@14(items: [Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> pure-Closure(int): int
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "pure-Closure", namespace: null), parameters: Callable\CallableParameterListNode@13(items: [Callable\CallableParameterNode@13(type: NamedTypeNode@13(name: Name@13(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "int", namespace: null), arguments: null, fields: null), templates: null)
+
+# Parser tests: callable
+>>> callable(): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable()
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: null, templates: null)
+>>> callable(int) : void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int):void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@14(name: Name@14(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int, string): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "string", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> Foo\\Bar(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), parameters: Callable\CallableParameterListNode@8(items: [Callable\CallableParameterNode@8(type: NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@14(name: Name@14(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> foo(T): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "foo", namespace: null), parameters: Callable\CallableParameterListNode@4(items: [Callable\CallableParameterNode@4(type: NamedTypeNode@4(name: Name@4(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@8(name: Name@8(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> int(T): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "int", namespace: null), parameters: Callable\CallableParameterListNode@4(items: [Callable\CallableParameterNode@4(type: NamedTypeNode@4(name: Name@4(value: "T", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@8(name: Name@8(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable( /* c */ int /* c */ , /* c */ string /* c */ ) /* c */ : /* c */ void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@18(items: [Callable\CallableParameterNode@18(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@40(type: NamedTypeNode@40(name: Name@40(value: "string", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@75(name: Name@75(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable/* c */(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@16(items: [Callable\CallableParameterNode@16(type: NamedTypeNode@16(name: Name@16(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@22(name: Name@22(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> Closure (int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "Closure", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@15(name: Name@15(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable (): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@13(name: Name@13(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable($this): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: ThisTypeNode@9(), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@17(name: Name@17(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(A &$x): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "A", namespace: null), arguments: null, fields: null), name: VariableNode@12(name: "x"), isOutput: true, isVariadic: false, default: null)]), type: NamedTypeNode@17(name: Name@17(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(A&B $x): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: LogicalTypeNode\IntersectionTypeNode@9(types: [NamedTypeNode@9(name: Name@9(value: "A", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "B", namespace: null), arguments: null, fields: null)]), name: VariableNode@13(name: "x"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@18(name: Name@18(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(A&B &$x): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: LogicalTypeNode\IntersectionTypeNode@9(types: [NamedTypeNode@9(name: Name@9(value: "A", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "B", namespace: null), arguments: null, fields: null)]), name: VariableNode@14(name: "x"), isOutput: true, isVariadic: false, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(&...$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@13(name: "a"), isOutput: true, isVariadic: true, default: null)]), type: NamedTypeNode@18(name: Name@18(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable($a=): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@11(value: null))]), type: NamedTypeNode@15(name: Name@15(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = - 1): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: -1, raw: "- 1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)))]), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(string $a = \\PHP_EOL): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: NamedTypeNode@21(name: Name@21(value: "PHP_EOL", namespace: NamespaceName@21(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)))]), type: NamedTypeNode@32(name: Name@32(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a = 42, string $b = "x",): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal))), Callable\CallableParameterNode@22(type: NamedTypeNode@22(name: Name@22(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@29(name: "b"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@32(value: Literal\StringLiteralNode@34(value: "x", raw: "\"x\"", kind: Literal\StringLiteralKind::DoubleQuoted)))]), type: NamedTypeNode@41(name: Name@41(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(): array<int, string>
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "array", namespace: null), arguments: Template\TemplateListNode@18(items: [Template\TypedTemplateArgumentNode@18(value: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@23(value: NamedTypeNode@23(name: Name@23(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), templates: null)
+>>> callable(): 42
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: Literal\IntLiteralNode@12(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal), templates: null)
+>>> callable(): Foo::BAR
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: Constant\ClassConstTypeNode@12(class: Name@12(value: "Foo", namespace: null), constant: Identifier@17(value: "BAR")), templates: null)
+>>> callable(array{a: int} $a, list<int> ...$b): array{b: string}
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@15(items: [Shape\NamedFieldNode@15(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@15(value: "a"), isOptional: false)], isSealed: true)), name: VariableNode@23(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@27(type: NamedTypeNode@27(name: Name@27(value: "list", namespace: null), arguments: Template\TemplateListNode@32(items: [Template\TypedTemplateArgumentNode@32(value: NamedTypeNode@32(name: Name@32(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null), name: VariableNode@40(name: "b"), isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@45(name: Name@45(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@51(items: [Shape\NamedFieldNode@51(type: NamedTypeNode@54(name: Name@54(value: "string", namespace: null), arguments: null, fields: null), key: Identifier@51(value: "b"), isOptional: false)], isSealed: true)), templates: null)
+>>> callable(callable(int): void $cb): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: Callable\CallableTypeNode@9(name: Name@9(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@18(items: [Callable\CallableParameterNode@18(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null), name: VariableNode@29(name: "cb"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@35(name: Name@35(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(callable(int): void): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: Callable\CallableTypeNode@9(name: Name@9(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@18(items: [Callable\CallableParameterNode@18(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@24(name: Name@24(value: "void", namespace: null), arguments: null, fields: null), templates: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@31(name: Name@31(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int,
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int):
+<<< partial@13 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable():\040
+<<< partial@10 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: null, templates: null)
+>>> callable(int)) void
+<<< partial@13 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int):: void
+<<< partial@13 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int= $a): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(,)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int,,)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(,int)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int: void)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int, ...): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(&): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $this): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a $b): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int string $a): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int ...$a = 1): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = Foo::A|Foo::B): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = Foo::A_*): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = Foo::A[]): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = 1 = 2): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(): $a
+<<< partial@10 Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: null, templates: null)
+
+# Parser tests: group
+>>> 42 (string)
+<<< partial@3 Literal\IntLiteralNode@0(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)
+
+# Parser tests: logical
+>>> callable(): int|callable(): string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@8(items: []), type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), templates: null), Callable\CallableTypeNode@16(name: Name@16(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@24(items: []), type: NamedTypeNode@28(name: Name@28(value: "string", namespace: null), arguments: null, fields: null), templates: null)])
+
+# Parser tests: named type
+>>> callable (int)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+
+# Parser tests: trivia
+>>> callable(int)\n: void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(/* c */ int /* c */): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@17(items: [Callable\CallableParameterNode@17(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@31(name: Name@31(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable( int /* c */ $a , // x\n string ... $b ) : void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@22(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@33(type: NamedTypeNode@33(name: Name@33(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@44(name: "b"), isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@51(name: Name@51(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable /* c */ (int)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@18(items: [Callable\CallableParameterNode@18(type: NamedTypeNode@18(name: Name@18(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+
+# Parser tests: variable
+>>> callable($a\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($A\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "A"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($value\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "value"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($_\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "_"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($__\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "__"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($_x\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "_x"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($a_b\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a_b"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($a1\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a1"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($_1\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "_1"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($someValue\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "someValue"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($\320\244\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "\320\244"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($\303\277\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "\303\277"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($\360\237\230\200\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "\360\237\230\200"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($thisFoo\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "thisFoo"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($this_\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "this_"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($thisx\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "thisx"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($THIS\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "THIS"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($This\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "This"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(  $a  \n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@11(items: [Callable\CallableParameterNode@11(type: null, name: VariableNode@11(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(\n$a\n\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: null, name: VariableNode@10(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(/* c */ $a\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@17(items: [Callable\CallableParameterNode@17(type: null, name: VariableNode@17(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($a /* c */\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($a // c\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($a # c\n)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($$\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($$a\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($ a\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($\na\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($/* c */a\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($1\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($1a\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($-a\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a-b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a.b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a\\b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(a$\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a $b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a$b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a[]\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a[K]\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a|b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a&b\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a?\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a::B\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a<int>\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a()\n)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a int): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a-b): void
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+
+# Parser tests: callable type
+>>> Closure /* c */\n(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "Closure", namespace: null), parameters: Callable\CallableParameterListNode@17(items: [Callable\CallableParameterNode@17(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable($this)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: ThisTypeNode@9(), name: null, isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int &$a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: true, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int&)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: true, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(&$a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@10(name: "a"), isOutput: true, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int...)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(int ...)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(int ...$a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(int &...$a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@17(name: "a"), isOutput: true, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(...int)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(...$a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@12(name: "a"), isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(&...$a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@13(name: "a"), isOutput: true, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(int=)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@12(value: null))]), type: null, templates: null)
+>>> callable(int $a=)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@15(value: null))]), type: null, templates: null)
+>>> callable($a=)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@11(value: null))]), type: null, templates: null)
+>>> callable(int &$a=)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: true, isVariadic: false, default: Callable\DefaultValueNode@16(value: null))]), type: null, templates: null)
+>>> callable(int $a = 42)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(int = 42)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\IntLiteralNode@15(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(A&B $x)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: LogicalTypeNode\IntersectionTypeNode@9(types: [NamedTypeNode@9(name: Name@9(value: "A", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "B", namespace: null), arguments: null, fields: null)]), name: VariableNode@13(name: "x"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(A&B &$x)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: LogicalTypeNode\IntersectionTypeNode@9(types: [NamedTypeNode@9(name: Name@9(value: "A", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "B", namespace: null), arguments: null, fields: null)]), name: VariableNode@14(name: "x"), isOutput: true, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(?int $x)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: WrappingTypeNode\NullableTypeNode@9(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null)), name: VariableNode@14(name: "x"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int|string $x)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: LogicalTypeNode\UnionTypeNode@9(types: [NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@13(name: Name@13(value: "string", namespace: null), arguments: null, fields: null)]), name: VariableNode@20(name: "x"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int[] ...$x)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: WrappingTypeNode\TypesListTypeNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null)), name: VariableNode@18(name: "x"), isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(callable(): void $x)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: Callable\CallableTypeNode@9(name: Name@9(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@17(items: []), type: NamedTypeNode@21(name: Name@21(value: "void", namespace: null), arguments: null, fields: null), templates: null), name: VariableNode@26(name: "x"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int $a = -1)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: -1, raw: "-1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(int $a = - 1)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: -1, raw: "- 1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(int $a = 0x1F)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 31, raw: "0x1F", decimal: "31", kind: Literal\IntLiteralKind::Hexadecimal)))]), type: null, templates: null)
+>>> callable(float $a = 1.5)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "float", namespace: null), arguments: null, fields: null), name: VariableNode@15(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@18(value: Literal\FloatLiteralNode@20(value: 1.5, raw: "1.5", mantissa: "1.5", exponent: "0")))]), type: null, templates: null)
+>>> callable(string $a = 'x')
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Literal\StringLiteralNode@21(value: "x", raw: "'x'", kind: Literal\StringLiteralKind::SingleQuoted)))]), type: null, templates: null)
+>>> callable(string $a = "x")
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Literal\StringLiteralNode@21(value: "x", raw: "\"x\"", kind: Literal\StringLiteralKind::DoubleQuoted)))]), type: null, templates: null)
+>>> callable(bool $a = true)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "bool", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\BoolLiteralNode@19(value: true, raw: "true")))]), type: null, templates: null)
+>>> callable(bool $a = false)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "bool", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\BoolLiteralNode@19(value: false, raw: "false")))]), type: null, templates: null)
+>>> callable(?int $a = null)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: WrappingTypeNode\NullableTypeNode@9(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null)), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\NullLiteralNode@19(value: null, raw: "null")))]), type: null, templates: null)
+>>> callable(int $a = Foo::BAR)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "Foo", namespace: null), constant: Identifier@23(value: "BAR"))))]), type: null, templates: null)
+>>> callable(int $a = \\Foo\\Bar::BAZ)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "Bar", namespace: NamespaceName@18(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@28(value: "BAZ"))))]), type: null, templates: null)
+>>> callable(string $a = Foo::class)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: Constant\ClassConstTypeNode@21(class: Name@21(value: "Foo", namespace: null), constant: Identifier@26(value: "class"))))]), type: null, templates: null)
+>>> callable(int $a = PHP_INT_MAX)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: NamedTypeNode@18(name: Name@18(value: "PHP_INT_MAX", namespace: null), arguments: null, fields: null)))]), type: null, templates: null)
+>>> callable(string $a = \\PHP_EOL)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@16(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@19(value: NamedTypeNode@21(name: Name@21(value: "PHP_EOL", namespace: NamespaceName@21(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)))]), type: null, templates: null)
+>>> callable($a = 42)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@12(value: Literal\IntLiteralNode@14(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(int) /* c */ :\n void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@25(name: Name@25(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>>   callable(int $a): void
+<<< accepted Callable\CallableTypeNode@2(name: Name@2(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@11(items: [Callable\CallableParameterNode@11(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@15(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@20(name: Name@20(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable (int $a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@14(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a, string $b): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@17(type: NamedTypeNode@17(name: Name@17(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@24(name: "b"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@29(name: Name@29(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(&$a, int ...$b)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@10(name: "a"), isOutput: true, isVariadic: false, default: null), Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@21(name: "b"), isOutput: false, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(...int, $a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: true, default: null), Callable\CallableParameterNode@17(type: null, name: VariableNode@17(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int $a = 42, $b)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\IntLiteralNode@18(value: 42, raw: "42", decimal: "42", kind: Literal\IntLiteralKind::Decimal))), Callable\CallableParameterNode@22(type: null, name: VariableNode@22(name: "b"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(...$a, &...$b)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@12(name: "a"), isOutput: false, isVariadic: true, default: null), Callable\CallableParameterNode@16(type: null, name: VariableNode@20(name: "b"), isOutput: true, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(&$a, $b = 1)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@10(name: "a"), isOutput: true, isVariadic: false, default: null), Callable\CallableParameterNode@14(type: null, name: VariableNode@14(name: "b"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@17(value: Literal\IntLiteralNode@19(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+
+# Forms of the last grammar steps
+>>> callable(...int $a)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int &...)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: true, isVariadic: true, default: null)]), type: null, templates: null)
+>>> callable(int ...$a = 1)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(...)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int, ...)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(&)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(&int)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a = 1)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@9(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@12(value: Literal\IntLiteralNode@14(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(&$a = 1)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: null, name: VariableNode@10(name: "a"), isOutput: true, isVariadic: false, default: Callable\DefaultValueNode@13(value: Literal\IntLiteralNode@15(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)))]), type: null, templates: null)
+>>> callable(int &=)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: true, isVariadic: false, default: Callable\DefaultValueNode@14(value: null))]), type: null, templates: null)
+>>> callable(int $a =)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: null))]), type: null, templates: null)
+>>> callable(int $a = null)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Literal\NullLiteralNode@18(value: null, raw: "null")))]), type: null, templates: null)
+>>> callable(int $a = \\PHP_EOL)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: NamedTypeNode@18(name: Name@18(value: "PHP_EOL", namespace: NamespaceName@18(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)))]), type: null, templates: null)
+>>> callable(int $a = Foo::class)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: Callable\DefaultValueNode@16(value: Constant\ClassConstTypeNode@18(class: Name@18(value: "Foo", namespace: null), constant: Identifier@23(value: "class"))))]), type: null, templates: null)
+>>> callable(int $a = [])
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a = 1 + 2)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($this $a)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: ThisTypeNode@9(), name: VariableNode@15(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int $this)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a $b)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable($a int)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a,)
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: null, templates: null)
+>>> callable(int,,string)
+<<< partial@8 NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> callable(int $a, $b, ...$c): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@17(type: null, name: VariableNode@17(name: "b"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@21(type: null, name: VariableNode@24(name: "c"), isOutput: false, isVariadic: true, default: null)]), type: NamedTypeNode@29(name: Name@29(value: "void", namespace: null), arguments: null, fields: null), templates: null)

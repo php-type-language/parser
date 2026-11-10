@@ -125,6 +125,20 @@ final class RobustnessTest extends SyntaxTestCase
         yield 'negated condition in the else branch' => ['A is not B ? C : ', 'D', ''];
         yield 'condition in a subject' => ['(', 'A is B ? C : D', ') is E ? F : G'];
         yield 'condition in a group' => ['A is B ? (', 'C', ') : D'];
+        yield 'groups in a condition target' => ['A is (', 'B', ') ? C : D'];
+        yield 'template bounds in arguments' => ['Foo<T of ', 'A', '>'];
+        yield 'template bounds of callables' => ['Foo<T of ', 'A', '>()'];
+        yield 'template defaults of callables' => ['Foo<T = ', 'A', '>()'];
+        yield 'names of variances with arguments' => ['covariant<covariant ', 'A', '>'];
+        yield 'implicit fields' => ['array{', 'A', '}'];
+        yield 'implicit fields with arguments' => ['array{Foo<', 'A', '>}'];
+        yield 'fields with constant keys' => ['array{Foo::BAR: ', 'A', '}'];
+        yield 'arguments of unsealed shapes' => ['array{...<', 'A', '>}'];
+        yield 'named parameters' => ['callable(callable(', 'A', ') $a)'];
+        yield 'parameters with defaults' => ['callable(', 'A', ' $a = 1)'];
+        yield 'returns' => ['callable(): ', 'A', ''];
+        yield 'offsets of offsets' => ['T[T[', 'K', ']]'];
+        yield 'lists of nullable groups' => ['?(', 'A', ')[]'];
     }
 
     /**

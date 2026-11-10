@@ -1,0 +1,395 @@
+# Whitespace, comments and malformed input
+
+# Whitespace
+>>>  int
+<<< accepted NamedTypeNode@1(name: Name@1(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\040
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>>  int\040
+<<< accepted NamedTypeNode@1(name: Name@1(value: "int", namespace: null), arguments: null, fields: null)
+>>> \tint
+<<< accepted NamedTypeNode@1(name: Name@1(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\t
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> \nint
+<<< accepted NamedTypeNode@1(name: Name@1(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\n
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> \r\nint
+<<< accepted NamedTypeNode@2(name: Name@2(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\r\n
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> \302\240int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\302\240int", namespace: null), arguments: null, fields: null)
+>>> int\302\240
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int\302\240", namespace: null), arguments: null, fields: null)
+>>> in t
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "in", namespace: null), arguments: null, fields: null)
+>>> i nt
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "i", namespace: null), arguments: null, fields: null)
+>>> int|\nstring
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@5(name: Name@5(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int\n|string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@5(name: Name@5(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int |\n string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@7(name: Name@7(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int\t|\tstring
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@6(name: Name@6(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int\302\240|\302\240string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int\302\240", namespace: null), arguments: null, fields: null), NamedTypeNode@6(name: Name@6(value: "\302\240string", namespace: null), arguments: null, fields: null)])
+>>> int\342\200\203|\342\200\203string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int\342\200\203", namespace: null), arguments: null, fields: null), NamedTypeNode@7(name: Name@7(value: "\342\200\203string", namespace: null), arguments: null, fields: null)])
+>>> array<\n    int,\n    string\n>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@11(items: [Template\TypedTemplateArgumentNode@11(value: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@20(value: NamedTypeNode@20(name: Name@20(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array<\n    int,\n    string,\n>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@11(items: [Template\TypedTemplateArgumentNode@11(value: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@20(value: NamedTypeNode@20(name: Name@20(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array{\n    a: int,\n    b: string,\n}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@11(items: [Shape\NamedFieldNode@11(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@11(value: "a"), isOptional: false), Shape\NamedFieldNode@23(type: NamedTypeNode@26(name: Name@26(value: "string", namespace: null), arguments: null, fields: null), key: Identifier@23(value: "b"), isOptional: false)], isSealed: true))
+>>> array{\n    a: int,\n    b: string\n}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@11(items: [Shape\NamedFieldNode@11(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@11(value: "a"), isOptional: false), Shape\NamedFieldNode@23(type: NamedTypeNode@26(name: Name@26(value: "string", namespace: null), arguments: null, fields: null), key: Identifier@23(value: "b"), isOptional: false)], isSealed: true))
+>>> array{ a : int , b : string }
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\NamedFieldNode@7(type: NamedTypeNode@11(name: Name@11(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@7(value: "a"), isOptional: false), Shape\NamedFieldNode@17(type: NamedTypeNode@21(name: Name@21(value: "string", namespace: null), arguments: null, fields: null), key: Identifier@17(value: "b"), isOptional: false)], isSealed: true))
+>>> callable(\n    int $a,\n    string $b,\n): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@14(items: [Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@18(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@26(type: NamedTypeNode@26(name: Name@26(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@33(name: "b"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@40(name: Name@40(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(\n    int $a,\n    string $b\n): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@14(items: [Callable\CallableParameterNode@14(type: NamedTypeNode@14(name: Name@14(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@18(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@26(type: NamedTypeNode@26(name: Name@26(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@33(name: "b"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@39(name: Name@39(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a,\n string $b): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null), Callable\CallableParameterNode@18(type: NamedTypeNode@18(name: Name@18(value: "string", namespace: null), arguments: null, fields: null), name: VariableNode@25(name: "b"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@30(name: Name@30(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int\n$a): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@18(name: Name@18(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a)\n: void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int $a) :\nvoid
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: VariableNode@13(name: "a"), isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@19(name: Name@19(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable\n(int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@16(name: Name@16(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable (int) : void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@10(items: [Callable\CallableParameterNode@10(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@17(name: Name@17(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> T\nis\nint\n?\nA\n:\nB
+<<< accepted Condition\ConditionalTypeNode@0(condition: Condition\EqualConditionNode@0(subject: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), target: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)), then: NamedTypeNode@11(name: Name@11(value: "A", namespace: null), arguments: null, fields: null), else: NamedTypeNode@15(name: Name@15(value: "B", namespace: null), arguments: null, fields: null))
+>>> T is\nint ? A : B
+<<< accepted Condition\ConditionalTypeNode@0(condition: Condition\EqualConditionNode@0(subject: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), target: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)), then: NamedTypeNode@11(name: Name@11(value: "A", namespace: null), arguments: null, fields: null), else: NamedTypeNode@15(name: Name@15(value: "B", namespace: null), arguments: null, fields: null))
+>>> array\n{a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\NamedFieldNode@7(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@7(value: "a"), isOptional: false)], isSealed: true))
+>>> array {a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@7(items: [Shape\NamedFieldNode@7(type: NamedTypeNode@10(name: Name@10(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@7(value: "a"), isOptional: false)], isSealed: true))
+>>> array<int>\n[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null))
+>>> array<int> []
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null))
+>>> int\n[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null))
+>>> int []
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null))
+>>> Foo\n::\nBAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@7(value: "BAR"))
+>>> Foo ::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> Foo:: BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> Foo\n\\Bar
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo\\ Bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo \\Bar
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> \\ Foo
+<<< rejected
+>>> ?\nint
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: NamedTypeNode@2(name: Name@2(value: "int", namespace: null), arguments: null, fields: null))
+>>> ? int
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: NamedTypeNode@2(name: Name@2(value: "int", namespace: null), arguments: null, fields: null))
+>>> ?\tint
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: NamedTypeNode@2(name: Name@2(value: "int", namespace: null), arguments: null, fields: null))
+>>> int ?
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> - 1
+<<< accepted Literal\IntLiteralNode@0(value: -1, raw: "- 1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)
+>>> -\n1
+<<< accepted Literal\IntLiteralNode@0(value: -1, raw: "-\n1", decimal: "-1", kind: Literal\IntLiteralKind::Decimal)
+>>> 1 . 5
+<<< partial@2 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> 'a'\n|'b'
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Literal\StringLiteralNode@0(value: "a", raw: "'a'", kind: Literal\StringLiteralKind::SingleQuoted), Literal\StringLiteralNode@5(value: "b", raw: "'b'", kind: Literal\StringLiteralKind::SingleQuoted)])
+>>> int\342\200\213
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int\342\200\213", namespace: null), arguments: null, fields: null)
+>>> \357\273\277int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\357\273\277int", namespace: null), arguments: null, fields: null)
+>>> int\000
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> in\000t
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "in", namespace: null), arguments: null, fields: null)
+>>>
+<<< rejected
+>>> \040
+<<< rejected
+>>> \n
+<<< rejected
+>>> \t
+<<< rejected
+
+# Comments
+>>> int /* c */
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> /* c */ int
+<<< accepted NamedTypeNode@8(name: Name@8(value: "int", namespace: null), arguments: null, fields: null)
+>>> int /* c */ | string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@14(name: Name@14(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int | /* c */ string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@14(name: Name@14(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int // c
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int // c\n| string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int # c
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int # c\n| string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@10(name: Name@10(value: "string", namespace: null), arguments: null, fields: null)])
+>>> // c\nint
+<<< accepted NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)
+>>> array{a: int /* c */, b: string}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@6(items: [Shape\NamedFieldNode@6(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@6(value: "a"), isOptional: false), Shape\NamedFieldNode@22(type: NamedTypeNode@25(name: Name@25(value: "string", namespace: null), arguments: null, fields: null), key: Identifier@22(value: "b"), isOptional: false)], isSealed: true))
+>>> array{/* c */ a: int}
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: Shape\FieldListNode@14(items: [Shape\NamedFieldNode@14(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), key: Identifier@14(value: "a"), isOptional: false)], isSealed: true))
+>>> callable(/* c */ int): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@17(items: [Callable\CallableParameterNode@17(type: NamedTypeNode@17(name: Name@17(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> callable(int /* c */): void
+<<< accepted Callable\CallableTypeNode@0(name: Name@0(value: "callable", namespace: null), parameters: Callable\CallableParameterListNode@9(items: [Callable\CallableParameterNode@9(type: NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null), name: null, isOutput: false, isVariadic: false, default: null)]), type: NamedTypeNode@23(name: Name@23(value: "void", namespace: null), arguments: null, fields: null), templates: null)
+>>> /**/ int
+<<< accepted NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null)
+>>> /* */ int
+<<< accepted NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null)
+>>> /* int
+<<< rejected
+>>> int */
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> /** int */
+<<< rejected
+>>> * int
+<<< rejected
+>>> int *
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\n * | string
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\n * string
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> array<\n * int,\n * string\n * >
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> array{\n * a: int,\n * b: string\n * }
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> int\n *\n | string
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> /*int*/
+<<< rejected
+
+# Unicode
+>>> \320\244\321\203
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\244\321\203", namespace: null), arguments: null, fields: null)
+>>> \320\244\321\203\\\320\221\320\260\321\200
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\221\320\260\321\200", namespace: NamespaceName@0(value: "\320\244\321\203", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> Foo\\\320\244\321\203
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\244\321\203", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \303\211clair
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\303\211clair", namespace: null), arguments: null, fields: null)
+>>> \346\227\245\346\234\254\350\252\236
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\346\227\245\346\234\254\350\252\236", namespace: null), arguments: null, fields: null)
+>>> Foo\346\227\245\346\234\254\350\252\236
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo\346\227\245\346\234\254\350\252\236", namespace: null), arguments: null, fields: null)
+>>> \360\237\230\200
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\360\237\230\200", namespace: null), arguments: null, fields: null)
+>>> Foo\360\237\230\200
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo\360\237\230\200", namespace: null), arguments: null, fields: null)
+>>> $\321\204\321\203
+<<< rejected
+>>> '\346\227\245\346\234\254\350\252\236'
+<<< accepted Literal\StringLiteralNode@0(value: "\346\227\245\346\234\254\350\252\236", raw: "'\346\227\245\346\234\254\350\252\236'", kind: Literal\StringLiteralKind::SingleQuoted)
+>>> "\360\237\230\200"
+<<< accepted Literal\StringLiteralNode@0(value: "\360\237\230\200", raw: "\"\360\237\230\200\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> a\314\220
+<<< accepted NamedTypeNode@0(name: Name@0(value: "a\314\220", namespace: null), arguments: null, fields: null)
+
+# Extra input after a type
+>>> int string
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int, string
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int;
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int;string
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int string|bool
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int $a
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int $a, string $b
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int ...$a
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int...
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> ...int
+<<< rejected
+>>> int.
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> .int
+<<< rejected
+>>> int,
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> ,int
+<<< rejected
+>>> int)
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> (int
+<<< rejected
+>>> int]
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> [int
+<<< rejected
+>>> int}
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> {int
+<<< rejected
+>>> int>
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> <int
+<<< rejected
+>>> int|string)
+<<< partial@10 LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@4(name: Name@4(value: "string", namespace: null), arguments: null, fields: null)])
+>>> (int|string
+<<< rejected
+>>> int@
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> @int
+<<< rejected
+>>> int!
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> !int
+<<< rejected
+>>> int~
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> ~int
+<<< rejected
+>>> int^
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> ^int
+<<< rejected
+>>> int%
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int=
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> =int
+<<< rejected
+>>> int\\
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int'
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int"
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int`
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\\\\
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int/
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> /int
+<<< rejected
+>>> int+
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> +int
+<<< rejected
+>>> int-
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> -int
+<<< rejected
+>>> int:
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> :int
+<<< rejected
+>>> int::
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> ::int
+<<< rejected
+>>> int?
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int??
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int?!
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> int ? a
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+
+# Parser tests: malformed input
+>>>   \040
+<<< rejected
+>>> A is
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "A", namespace: null), arguments: null, fields: null)
+>>> Some\\
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: null, fields: null)
+>>> Some<
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: null, fields: null)
+>>> A is B ?
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "A", namespace: null), arguments: null, fields: null)
+>>> A is B ? C
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "A", namespace: null), arguments: null, fields: null)
+>>> ,
+<<< rejected
+>>> :
+<<< rejected
+>>> }
+<<< rejected
+>>> ]
+<<< rejected
+>>> ...
+<<< rejected
+>>> =
+<<< rejected
+>>> Some<int>>
+<<< partial@9 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: Template\TemplateListNode@5(items: [Template\TypedTemplateArgumentNode@5(value: NamedTypeNode@5(name: Name@5(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int[]]
+<<< partial@5 WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null))
+>>> Some<>
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: null, fields: null)
+>>> int and more text
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+
+# Parser tests: trivia
+>>>   int \040
+<<< accepted NamedTypeNode@2(name: Name@2(value: "int", namespace: null), arguments: null, fields: null)
+>>> \tint\t
+<<< accepted NamedTypeNode@1(name: Name@1(value: "int", namespace: null), arguments: null, fields: null)
+>>> \nint\n
+<<< accepted NamedTypeNode@1(name: Name@1(value: "int", namespace: null), arguments: null, fields: null)
+>>> \r\nint\r\n
+<<< accepted NamedTypeNode@2(name: Name@2(value: "int", namespace: null), arguments: null, fields: null)
+>>> int\n|\nstring
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@6(name: Name@6(value: "string", namespace: null), arguments: null, fields: null)])
+>>> array\n<int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> int /* c */ | /* c */ string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@22(name: Name@22(value: "string", namespace: null), arguments: null, fields: null)])
+>>> /** c */ int
+<<< accepted NamedTypeNode@9(name: Name@9(value: "int", namespace: null), arguments: null, fields: null)
+>>> /* c */
+<<< rejected
+>>> // c
+<<< rejected
+>>> Some/* c */\\Any
+<<< partial@11 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: null, fields: null)
+>>> Some\\/* c */Any
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: null, fields: null)
+>>> \n\n int \n\n
+<<< accepted NamedTypeNode@3(name: Name@3(value: "int", namespace: null), arguments: null, fields: null)
+>>> /* a */int|string/* b */
+<<< accepted LogicalTypeNode\UnionTypeNode@7(types: [NamedTypeNode@7(name: Name@7(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int /* a */ /* b */ | string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@22(name: Name@22(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int #\n| string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@8(name: Name@8(value: "string", namespace: null), arguments: null, fields: null)])
+>>> int|/* c */string
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null), NamedTypeNode@11(name: Name@11(value: "string", namespace: null), arguments: null, fields: null)])
+>>> Some < int , string >
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: Template\TemplateListNode@7(items: [Template\TypedTemplateArgumentNode@7(value: NamedTypeNode@7(name: Name@7(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@13(value: NamedTypeNode@13(name: Name@13(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> Some</* a */int/* b */,/* c */string>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: NamedTypeNode@12(name: Name@12(value: "int", namespace: null), arguments: null, fields: null), variance: null), Template\TypedTemplateArgumentNode@30(value: NamedTypeNode@30(name: Name@30(value: "string", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> T /* c */ [ K ]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), access: NamedTypeNode@12(name: Name@12(value: "K", namespace: null), arguments: null, fields: null))

@@ -1,0 +1,275 @@
+# Names
+
+# Plain and qualified
+>>> int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: null), arguments: null, fields: null)
+>>> Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> \\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> Foo\\Bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \\Foo\\Bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> namespace\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::NamespaceRelative)), arguments: null, fields: null)
+>>> \\Foo\\
+<<< rejected
+>>> Foo\\
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> \\
+<<< rejected
+>>> Foo\\\\Bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> foo_bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "foo_bar", namespace: null), arguments: null, fields: null)
+>>> _foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "_foo", namespace: null), arguments: null, fields: null)
+>>> Foo1
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo1", namespace: null), arguments: null, fields: null)
+>>> 1Foo
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> \320\244\321\203
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\244\321\203", namespace: null), arguments: null, fields: null)
+>>> Foo-bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo-bar", namespace: null), arguments: null, fields: null)
+>>> non-empty-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-string", namespace: null), arguments: null, fields: null)
+>>> -foo
+<<< rejected
+>>> foo-
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "foo", namespace: null), arguments: null, fields: null)
+>>> Foo\\Bar-baz
+<<< rejected
+
+# Case of builtin names
+>>> INT
+<<< accepted NamedTypeNode@0(name: Name@0(value: "INT", namespace: null), arguments: null, fields: null)
+>>> Int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Int", namespace: null), arguments: null, fields: null)
+>>> iNt
+<<< accepted NamedTypeNode@0(name: Name@0(value: "iNt", namespace: null), arguments: null, fields: null)
+>>> STRING
+<<< accepted NamedTypeNode@0(name: Name@0(value: "STRING", namespace: null), arguments: null, fields: null)
+>>> Array
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Array", namespace: null), arguments: null, fields: null)
+>>> NULL
+<<< accepted Literal\NullLiteralNode@0(value: null, raw: "NULL")
+>>> TRUE
+<<< accepted Literal\BoolLiteralNode@0(value: true, raw: "TRUE")
+>>> False
+<<< accepted Literal\BoolLiteralNode@0(value: false, raw: "False")
+
+# Reserved words as names
+>>> class
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class", namespace: null), arguments: null, fields: null)
+>>> Foo\\class
+<<< accepted NamedTypeNode@0(name: Name@0(value: "class", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> Foo\\int
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> list
+<<< accepted NamedTypeNode@0(name: Name@0(value: "list", namespace: null), arguments: null, fields: null)
+>>> array
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: null, fields: null)
+>>> callable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "callable", namespace: null), arguments: null, fields: null)
+>>> iterable
+<<< accepted NamedTypeNode@0(name: Name@0(value: "iterable", namespace: null), arguments: null, fields: null)
+>>> object
+<<< accepted NamedTypeNode@0(name: Name@0(value: "object", namespace: null), arguments: null, fields: null)
+>>> mixed
+<<< accepted NamedTypeNode@0(name: Name@0(value: "mixed", namespace: null), arguments: null, fields: null)
+>>> never
+<<< accepted NamedTypeNode@0(name: Name@0(value: "never", namespace: null), arguments: null, fields: null)
+>>> void
+<<< accepted NamedTypeNode@0(name: Name@0(value: "void", namespace: null), arguments: null, fields: null)
+
+# Relative references
+>>> self
+<<< accepted NamedTypeNode@0(name: Name@0(value: "self", namespace: null), arguments: null, fields: null)
+>>> static
+<<< accepted NamedTypeNode@0(name: Name@0(value: "static", namespace: null), arguments: null, fields: null)
+>>> parent
+<<< accepted NamedTypeNode@0(name: Name@0(value: "parent", namespace: null), arguments: null, fields: null)
+>>> $this
+<<< accepted ThisTypeNode@0()
+>>> $that
+<<< rejected
+>>> $this\\Foo
+<<< rejected
+>>> \\$this
+<<< rejected
+>>> static\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "static", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> self[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "self", namespace: null), arguments: null, fields: null))
+>>> $this[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: ThisTypeNode@0())
+>>> ?static
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: NamedTypeNode@1(name: Name@1(value: "static", namespace: null), arguments: null, fields: null))
+>>> ?$this
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: ThisTypeNode@1())
+
+# Names with keywords inside
+>>> is
+<<< accepted NamedTypeNode@0(name: Name@0(value: "is", namespace: null), arguments: null, fields: null)
+>>> not
+<<< accepted NamedTypeNode@0(name: Name@0(value: "not", namespace: null), arguments: null, fields: null)
+>>> of
+<<< accepted NamedTypeNode@0(name: Name@0(value: "of", namespace: null), arguments: null, fields: null)
+>>> as
+<<< accepted NamedTypeNode@0(name: Name@0(value: "as", namespace: null), arguments: null, fields: null)
+>>> Foo\\is
+<<< accepted NamedTypeNode@0(name: Name@0(value: "is", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> as\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "as", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> of\\as
+<<< accepted NamedTypeNode@0(name: Name@0(value: "as", namespace: NamespaceName@0(value: "of", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+
+# Parser tests: name tokens
+>>> isFoo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "isFoo", namespace: null), arguments: null, fields: null)
+>>> IS
+<<< accepted NamedTypeNode@0(name: Name@0(value: "IS", namespace: null), arguments: null, fields: null)
+>>> trueFoo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "trueFoo", namespace: null), arguments: null, fields: null)
+>>> Non-Empty
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Non-Empty", namespace: null), arguments: null, fields: null)
+>>> int-0
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-0", namespace: null), arguments: null, fields: null)
+>>> super
+<<< accepted NamedTypeNode@0(name: Name@0(value: "super", namespace: null), arguments: null, fields: null)
+>>> covariant
+<<< accepted NamedTypeNode@0(name: Name@0(value: "covariant", namespace: null), arguments: null, fields: null)
+>>> contravariant
+<<< accepted NamedTypeNode@0(name: Name@0(value: "contravariant", namespace: null), arguments: null, fields: null)
+>>> invariant
+<<< accepted NamedTypeNode@0(name: Name@0(value: "invariant", namespace: null), arguments: null, fields: null)
+>>> COVARIANT
+<<< accepted NamedTypeNode@0(name: Name@0(value: "COVARIANT", namespace: null), arguments: null, fields: null)
+>>> covariantFoo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "covariantFoo", namespace: null), arguments: null, fields: null)
+>>> offset
+<<< accepted NamedTypeNode@0(name: Name@0(value: "offset", namespace: null), arguments: null, fields: null)
+>>> asset
+<<< accepted NamedTypeNode@0(name: Name@0(value: "asset", namespace: null), arguments: null, fields: null)
+>>> superFoo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "superFoo", namespace: null), arguments: null, fields: null)
+>>> SUPER
+<<< accepted NamedTypeNode@0(name: Name@0(value: "SUPER", namespace: null), arguments: null, fields: null)
+>>> \\Foo\\Bar\\Baz
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Baz", namespace: NamespaceName@0(value: "Foo\\Bar", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> is\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "is", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \\is
+<<< accepted NamedTypeNode@0(name: Name@0(value: "is", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> true\\null
+<<< accepted NamedTypeNode@0(name: Name@0(value: "null", namespace: NamespaceName@0(value: "true", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> Foo\\null
+<<< accepted NamedTypeNode@0(name: Name@0(value: "null", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \\true\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "true", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> \\true
+<<< accepted NamedTypeNode@0(name: Name@0(value: "true", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> \\FALSE
+<<< accepted NamedTypeNode@0(name: Name@0(value: "FALSE", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> \\null
+<<< accepted NamedTypeNode@0(name: Name@0(value: "null", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> Foo\\non-empty
+<<< rejected
+>>> Foo Bar
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo\\1
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo\\$this
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+
+# Parser tests: names
+>>> Foo_Bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo_Bar", namespace: null), arguments: null, fields: null)
+>>> Foo\302\240Bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo\302\240Bar", namespace: null), arguments: null, fields: null)
+>>> Foo\\covariant
+<<< accepted NamedTypeNode@0(name: Name@0(value: "covariant", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> covariant\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "covariant", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> covariant-x
+<<< accepted NamedTypeNode@0(name: Name@0(value: "covariant-x", namespace: null), arguments: null, fields: null)
+>>> is-x
+<<< accepted NamedTypeNode@0(name: Name@0(value: "is-x", namespace: null), arguments: null, fields: null)
+>>> \\false
+<<< accepted NamedTypeNode@0(name: Name@0(value: "false", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> \\NULL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "NULL", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> Foo\\true
+<<< accepted NamedTypeNode@0(name: Name@0(value: "true", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> null-type
+<<< accepted NamedTypeNode@0(name: Name@0(value: "null-type", namespace: null), arguments: null, fields: null)
+>>> \\\\Foo
+<<< rejected
+>>> Foo \\ Bar
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> a--b
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "a", namespace: null), arguments: null, fields: null)
+>>> Foo-
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> is-
+<<< partial@2 NamedTypeNode@0(name: Name@0(value: "is", namespace: null), arguments: null, fields: null)
+>>> non-empty\\Foo
+<<< partial@9 NamedTypeNode@0(name: Name@0(value: "non-empty", namespace: null), arguments: null, fields: null)
+>>> \\non-empty
+<<< rejected
+>>> Foo\\-bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+
+# Parser tests: name
+>>> ExampleTypeName
+<<< accepted NamedTypeNode@0(name: Name@0(value: "ExampleTypeName", namespace: null), arguments: null, fields: null)
+>>> foo123
+<<< accepted NamedTypeNode@0(name: Name@0(value: "foo123", namespace: null), arguments: null, fields: null)
+>>> example-type
+<<< accepted NamedTypeNode@0(name: Name@0(value: "example-type", namespace: null), arguments: null, fields: null)
+>>> true-type
+<<< accepted NamedTypeNode@0(name: Name@0(value: "true-type", namespace: null), arguments: null, fields: null)
+>>> false-type
+<<< accepted NamedTypeNode@0(name: Name@0(value: "false-type", namespace: null), arguments: null, fields: null)
+>>> \303\234ber
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\303\234ber", namespace: null), arguments: null, fields: null)
+>>> \320\242\320\270\320\277
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\242\320\270\320\277", namespace: null), arguments: null, fields: null)
+>>> \344\275\240\345\245\275
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\344\275\240\345\245\275", namespace: null), arguments: null, fields: null)
+>>> \320\237\321\200\320\276\320\265\320\272\321\202\\\320\242\320\270\320\277
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\242\320\270\320\277", namespace: NamespaceName@0(value: "\320\237\321\200\320\276\320\265\320\272\321\202", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \320\237\321\200\320\276\320\265\320\272\321\202\\Type
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Type", namespace: NamespaceName@0(value: "\320\237\321\200\320\276\320\265\320\272\321\202", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> non-empty-\320\242\320\270\320\277
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-\320\242\320\270\320\277", namespace: null), arguments: null, fields: null)
+>>> \320\242\320\270\320\27742
+<<< accepted NamedTypeNode@0(name: Name@0(value: "\320\242\320\270\320\27742", namespace: null), arguments: null, fields: null)
+
+# Parser tests: named type
+>>> Foo\\is\\of
+<<< accepted NamedTypeNode@0(name: Name@0(value: "of", namespace: NamespaceName@0(value: "Foo\\is", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \\truefoo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "truefoo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> Foo\\false
+<<< accepted NamedTypeNode@0(name: Name@0(value: "false", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> Foo\\null\\Bar
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo\\null", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> NuLL
+<<< accepted Literal\NullLiteralNode@0(value: null, raw: "NuLL")
+>>> Some\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "Some", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> Some\\Any\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \\Some\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "Some", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> \\Some\\Any\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> namespace\\Some\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "Some", kind: NamespaceName\NamespaceKind::NamespaceRelative)), arguments: null, fields: null)
+>>> NAMESPACE\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::NamespaceRelative)), arguments: null, fields: null)
+>>> Some\\namespace\\Foo
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: NamespaceName@0(value: "Some\\namespace", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)

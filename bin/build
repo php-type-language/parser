@@ -56,6 +56,6 @@ $compiler
         // is declared as a mutable class rather than a readonly one.
         ->withReadonly(false)
         ->withTargetPhpVersion(TargetPhpVersion::Php81)
-        ->withClassImport('TypeLang\\Type')
         ->withClassImport('TypeLang\\Parser\\Exception')
+        ->withClassImport('TypeLang\\Type')
     ->save(__DIR__ . '/../src/Internal/CompiledExecutor.php');

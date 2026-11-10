@@ -1,0 +1,475 @@
+# Constants
+
+# Constants
+>>> PHP_EOL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "PHP_EOL", namespace: null), arguments: null, fields: null)
+>>> \\PHP_EOL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "PHP_EOL", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+>>> E_ALL
+<<< accepted NamedTypeNode@0(name: Name@0(value: "E_ALL", namespace: null), arguments: null, fields: null)
+
+# Constant masks
+>>> PHP_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> \\PHP_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Identifier@1(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@5()]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> PHP_*_SOME
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4(), Identifier@5(value: "_SOME")]), namespace: null)
+>>> \\PHP_*_SOME
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Identifier@1(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "_SOME")]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> FOO*BAR
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "FOO"), Constant\MaskNode\WildcardMaskNode@3(), Identifier@4(value: "BAR")]), namespace: null)
+>>> *_SOME
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Constant\MaskNode\WildcardMaskNode@0(), Identifier@1(value: "_SOME")]), namespace: null)
+>>> \\*_SOME
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Constant\MaskNode\WildcardMaskNode@1(), Identifier@2(value: "_SOME")]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> \\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Constant\MaskNode\WildcardMaskNode@1()]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> *
+<<< rejected
+
+# Constants in a namespace
+>>> Some\\Any\\CONST
+<<< accepted NamedTypeNode@0(name: Name@0(value: "CONST", namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::Qualified)), arguments: null, fields: null)
+>>> \\Some\\Any\\CONST
+<<< accepted NamedTypeNode@0(name: Name@0(value: "CONST", namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::FullyQualified)), arguments: null, fields: null)
+
+# Constant masks in a namespace
+>>> Some\\Any\\CONST_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@9(items: [Identifier@9(value: "CONST_"), Constant\MaskNode\WildcardMaskNode@15()]), namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::Qualified))
+>>> \\Some\\Any\\CONST_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@10(items: [Identifier@10(value: "CONST_"), Constant\MaskNode\WildcardMaskNode@16()]), namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> Some\\Any\\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@9(items: [Constant\MaskNode\WildcardMaskNode@9()]), namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::Qualified))
+>>> \\Some\\Any\\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@10(items: [Constant\MaskNode\WildcardMaskNode@10()]), namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> Some\\Any\\*_SUFFIX
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@9(items: [Constant\MaskNode\WildcardMaskNode@9(), Identifier@10(value: "_SUFFIX")]), namespace: NamespaceName@0(value: "Some\\Any", kind: NamespaceName\NamespaceKind::Qualified))
+
+# Class constants
+>>> Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> \\Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), constant: Identifier@6(value: "BAR"))
+>>> Foo\\Bar::BAZ
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), constant: Identifier@9(value: "BAZ"))
+>>> Foo::is
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "is"))
+>>> Foo::NULL
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "NULL"))
+
+# Class constant masks
+>>> Foo::*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::BAR_*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@9()]))
+>>> \\Foo::BAR_*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified)), mask: Constant\MaskNode@6(items: [Identifier@6(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@10()]))
+>>> Foo\\Bar::BAZ_*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Bar", namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified)), mask: Constant\MaskNode@9(items: [Identifier@9(value: "BAZ_"), Constant\MaskNode\WildcardMaskNode@13()]))
+>>> Foo::*_BAZ
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "_BAZ")]))
+>>> Foo::B*R
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "B"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "R")]))
+
+# Other
+>>> Foo::class
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "class"))
+>>> PHP_EOL|PHP_INT_MAX
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [NamedTypeNode@0(name: Name@0(value: "PHP_EOL", namespace: null), arguments: null, fields: null), NamedTypeNode@8(name: Name@8(value: "PHP_INT_MAX", namespace: null), arguments: null, fields: null)])
+>>> array<PHP_EOL>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "PHP_EOL", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> array<PHP_*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "array", namespace: null), arguments: Template\TemplateListNode@6(items: [Template\TypedTemplateArgumentNode@6(value: Constant\ConstMaskTypeNode@6(mask: Constant\MaskNode@6(items: [Identifier@6(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@10()]), namespace: null), variance: null)]), fields: null)
+>>> Foo<Bar::BAZ>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Constant\ClassConstTypeNode@4(class: Name@4(value: "Bar", namespace: null), constant: Identifier@9(value: "BAZ")), variance: null)]), fields: null)
+>>> value-of<Foo::BAR_*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "value-of", namespace: null), arguments: Template\TemplateListNode@9(items: [Template\TypedTemplateArgumentNode@9(value: Constant\ClassConstMaskTypeNode@9(class: Name@9(value: "Foo", namespace: null), mask: Constant\MaskNode@14(items: [Identifier@14(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@18()])), variance: null)]), fields: null)
+>>> int-mask-of<PHP_*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "int-mask-of", namespace: null), arguments: Template\TemplateListNode@12(items: [Template\TypedTemplateArgumentNode@12(value: Constant\ConstMaskTypeNode@12(mask: Constant\MaskNode@12(items: [Identifier@12(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@16()]), namespace: null), variance: null)]), fields: null)
+>>> Foo<*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\WildcardTemplateArgumentNode@4()]), fields: null)
+
+# Hyphens
+>>> non-empty-string
+<<< accepted NamedTypeNode@0(name: Name@0(value: "non-empty-string", namespace: null), arguments: null, fields: null)
+>>> foo-
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "foo", namespace: null), arguments: null, fields: null)
+>>> Foo-\\Bar
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo\\Bar-baz
+<<< rejected
+>>> Foo::BAR-BAZ
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> PHP-*
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "PHP", namespace: null), arguments: null, fields: null)
+>>> *-SUFFIX
+<<< rejected
+
+# Parser tests: constants
+>>> Foo::/* c */BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@12(value: "BAR"))
+>>> Foo::BAR \040
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR // c
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::*\040
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::A*B\040
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "B")]))
+>>> Foo::A*1
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "1")]))
+>>> Foo::A_*_1_2
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A_"), Constant\MaskNode\WildcardMaskNode@7(), Identifier@8(value: "_1_2")]))
+>>> Foo::A*B*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "B"), Constant\MaskNode\WildcardMaskNode@8()]))
+>>> Foo::*BAR*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "BAR"), Constant\MaskNode\WildcardMaskNode@9()]))
+>>> Foo::A*B*C
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "B"), Constant\MaskNode\WildcardMaskNode@8(), Identifier@9(value: "C")]))
+>>> Foo::is*
+<<< accepted Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "is"), Constant\MaskNode\WildcardMaskNode@7()]))
+>>> *_SUFFIX
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Constant\MaskNode\WildcardMaskNode@0(), Identifier@1(value: "_SUFFIX")]), namespace: null)
+>>> PHP_*_MAX
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4(), Identifier@5(value: "_MAX")]), namespace: null)
+>>> *A*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Constant\MaskNode\WildcardMaskNode@0(), Identifier@1(value: "A"), Constant\MaskNode\WildcardMaskNode@2()]), namespace: null)
+>>> A*B*C
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "A"), Constant\MaskNode\WildcardMaskNode@1(), Identifier@2(value: "B"), Constant\MaskNode\WildcardMaskNode@3(), Identifier@4(value: "C")]), namespace: null)
+>>> is*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "is"), Constant\MaskNode\WildcardMaskNode@2()]), namespace: null)
+>>> \\*_SUFFIX
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Constant\MaskNode\WildcardMaskNode@1(), Identifier@2(value: "_SUFFIX")]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> \\Foo\\BAR_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@9()]), namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> Foo\\Bar\\BAZ_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Identifier@8(value: "BAZ_"), Constant\MaskNode\WildcardMaskNode@12()]), namespace: NamespaceName@0(value: "Foo\\Bar", kind: NamespaceName\NamespaceKind::Qualified))
+>>> Path\\To\\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> Path\\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]), namespace: NamespaceName@0(value: "Path", kind: NamespaceName\NamespaceKind::Qualified))
+>>> Path\\To\\*_SUFFIX
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8(), Identifier@9(value: "_SUFFIX")]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> \\Path\\To\\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@9(items: [Constant\MaskNode\WildcardMaskNode@9()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> Path\\To\\*A*B
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8(), Identifier@9(value: "A"), Constant\MaskNode\WildcardMaskNode@10(), Identifier@11(value: "B")]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> PHP_* \040
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> PHP_* // c
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>>   *_SUFFIX
+<<< accepted Constant\ConstMaskTypeNode@2(mask: Constant\MaskNode@2(items: [Constant\MaskNode\WildcardMaskNode@2(), Identifier@3(value: "_SUFFIX")]), namespace: null)
+>>> true*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "true"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> null*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "null"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> is_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "is_"), Constant\MaskNode\WildcardMaskNode@3()]), namespace: null)
+>>> Foo :: \040
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> ::BAR
+<<< rejected
+>>> ::*
+<<< rejected
+>>> ::
+<<< rejected
+>>> Foo\\::BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> \\::BAR
+<<< rejected
+>>> Foo::::BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo: :BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::*:
+<<< partial@6 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::BAR Foo::BAZ
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::A**B
+<<< partial@7 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6()]))
+>>> Foo::BAR**
+<<< partial@9 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "BAR"), Constant\MaskNode\WildcardMaskNode@8()]))
+>>> Foo::**BAR
+<<< partial@6 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::* *
+<<< partial@7 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::*/* c */*
+<<< partial@13 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]))
+>>> Foo::A B
+<<< partial@7 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "A"))
+>>> Foo::*A B
+<<< partial@8 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5(), Identifier@6(value: "A")]))
+>>> Foo::A B*
+<<< partial@7 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "A"))
+>>> Foo::A*B C*D
+<<< partial@9 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "B")]))
+>>> Foo::A***
+<<< partial@7 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6()]))
+>>> Foo::0x1F
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::1.5
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::"BAR"
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::'BAR'
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::$this
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::Bar\\Baz
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::\\BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::\\null
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::A*Bar\\Baz
+<<< partial@10 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6(), Identifier@7(value: "Bar")]))
+>>> Foo::A*\\B
+<<< partial@7 Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A"), Constant\MaskNode\WildcardMaskNode@6()]))
+>>> Foo::BAR|
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR,
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR?
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR&
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR)
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR]
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR}
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR>
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR...
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR Foo
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR 1
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::BAR $x
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> $foo::BAR
+<<< rejected
+>>> "Foo"::BAR
+<<< partial@5 Literal\StringLiteralNode@0(value: "Foo", raw: "\"Foo\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> *::BAR
+<<< rejected
+>>> Foo*::BAR
+<<< partial@4 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "Foo"), Constant\MaskNode\WildcardMaskNode@3()]), namespace: null)
+>>> *Foo::BAR
+<<< partial@4 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Constant\MaskNode\WildcardMaskNode@0(), Identifier@1(value: "Foo")]), namespace: null)
+>>> PHP_**
+<<< partial@5 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> **A
+<<< rejected
+>>> Path\\To\\**
+<<< partial@9 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> \\**
+<<< partial@2 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Constant\MaskNode\WildcardMaskNode@1()]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> Path\\To\\
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Path", namespace: null), arguments: null, fields: null)
+>>> Path\\To\\*\\*
+<<< partial@9 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> Path\\*\\To\\*
+<<< partial@6 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()]), namespace: NamespaceName@0(value: "Path", kind: NamespaceName\NamespaceKind::Qualified))
+>>> \\\\*
+<<< rejected
+>>> \\ *
+<<< rejected
+>>> PHP_*::X
+<<< partial@5 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> Path\\To\\*::X
+<<< partial@9 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> \\*::X
+<<< partial@2 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Constant\MaskNode\WildcardMaskNode@1()]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> A* B*C D
+<<< partial@3 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "A"), Constant\MaskNode\WildcardMaskNode@1()]), namespace: null)
+>>> PHP_*|
+<<< partial@5 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> PHP_*:
+<<< partial@5 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> 1*
+<<< partial@1 Literal\IntLiteralNode@0(value: 1, raw: "1", decimal: "1", kind: Literal\IntLiteralKind::Decimal)
+>>> "s"*
+<<< partial@3 Literal\StringLiteralNode@0(value: "s", raw: "\"s\"", kind: Literal\StringLiteralKind::DoubleQuoted)
+>>> $this*
+<<< partial@5 ThisTypeNode@0()
+>>> $foo*
+<<< rejected
+>>> Foo::non-empty
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo::BAR-*
+<<< partial@8 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo-Bar\\BAZ_*
+<<< partial@7 NamedTypeNode@0(name: Name@0(value: "Foo-Bar", namespace: null), arguments: null, fields: null)
+>>> Foo::A * B
+<<< partial@7 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "A"))
+>>> PHP_ *
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "PHP_", namespace: null), arguments: null, fields: null)
+>>> PHP_* MAX
+<<< partial@6 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null)
+>>> PHP_ * MAX
+<<< partial@5 NamedTypeNode@0(name: Name@0(value: "PHP_", namespace: null), arguments: null, fields: null)
+>>> PHP_/* c */*
+<<< partial@11 NamedTypeNode@0(name: Name@0(value: "PHP_", namespace: null), arguments: null, fields: null)
+>>> Path\\To\\ *
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Path", namespace: null), arguments: null, fields: null)
+>>> * *
+<<< rejected
+>>> A**
+<<< partial@2 Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "A"), Constant\MaskNode\WildcardMaskNode@1()]), namespace: null)
+>>> Foo::BAR /*
+<<< partial@9 Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR"))
+>>> Foo::/* BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+
+# Parser tests: group
+>>> (Foo::BAR)
+<<< accepted Constant\ClassConstTypeNode@1(class: Name@1(value: "Foo", namespace: null), constant: Identifier@6(value: "BAR"))
+>>> (Foo::BAR_*)
+<<< accepted Constant\ClassConstMaskTypeNode@1(class: Name@1(value: "Foo", namespace: null), mask: Constant\MaskNode@6(items: [Identifier@6(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@10()]))
+>>> (PHP_*)
+<<< accepted Constant\ConstMaskTypeNode@1(mask: Constant\MaskNode@1(items: [Identifier@1(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@5()]), namespace: null)
+
+# Parser tests: intersection type
+>>> Foo::A&Foo::B
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "A")), Constant\ClassConstTypeNode@7(class: Name@7(value: "Foo", namespace: null), constant: Identifier@12(value: "B"))])
+>>> Foo::A_*&Foo::*
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A_"), Constant\MaskNode\WildcardMaskNode@7()])), Constant\ClassConstMaskTypeNode@9(class: Name@9(value: "Foo", namespace: null), mask: Constant\MaskNode@14(items: [Constant\MaskNode\WildcardMaskNode@14()]))])
+>>> PHP_*&E_*
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null), Constant\ConstMaskTypeNode@6(mask: Constant\MaskNode@6(items: [Identifier@6(value: "E_"), Constant\MaskNode\WildcardMaskNode@8()]), namespace: null)])
+>>> Path\\To\\*&A
+<<< accepted LogicalTypeNode\IntersectionTypeNode@0(types: [Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified)), NamedTypeNode@10(name: Name@10(value: "A", namespace: null), arguments: null, fields: null)])
+>>> A&*
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "A", namespace: null), arguments: null, fields: null)
+
+# Parser tests: list type
+>>> Foo::*[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()])))
+>>> PHP_*[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null))
+>>> Path\\To\\*[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified)))
+>>> *[]
+<<< rejected
+
+# Parser tests: malformed input
+>>> Some::
+<<< partial@4 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: null, fields: null)
+>>> ::CONST
+<<< rejected
+>>> Some<T>::CONST
+<<< partial@7 NamedTypeNode@0(name: Name@0(value: "Some", namespace: null), arguments: Template\TemplateListNode@5(items: [Template\TypedTemplateArgumentNode@5(value: NamedTypeNode@5(name: Name@5(value: "T", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+
+# Parser tests: name tokens
+>>> Foo\\BAR_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@4(items: [Identifier@4(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::Qualified))
+
+# Parser tests: named type
+>>> Foo::BAR|Bar
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), NamedTypeNode@9(name: Name@9(value: "Bar", namespace: null), arguments: null, fields: null)])
+>>> Foo<*,int>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\WildcardTemplateArgumentNode@4(), Template\TypedTemplateArgumentNode@6(value: NamedTypeNode@6(name: Name@6(value: "int", namespace: null), arguments: null, fields: null), variance: null)]), fields: null)
+>>> Foo<A,*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@4(name: Name@4(value: "A", namespace: null), arguments: null, fields: null), variance: null), Template\WildcardTemplateArgumentNode@6()]), fields: null)
+>>> Foo<A::B>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Constant\ClassConstTypeNode@4(class: Name@4(value: "A", namespace: null), constant: Identifier@7(value: "B")), variance: null)]), fields: null)
+>>> Foo<covariant A::B>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Constant\ClassConstTypeNode@14(class: Name@14(value: "A", namespace: null), constant: Identifier@17(value: "B")), variance: Template\VarianceNode@4(kind: Template\VarianceNode\VarianceKind::Covariant))]), fields: null)
+>>> Foo<*|int>
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+>>> Foo<**>
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+
+# Parser tests: nullable type
+>>> ?Foo::BAR_*
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: Constant\ClassConstMaskTypeNode@1(class: Name@1(value: "Foo", namespace: null), mask: Constant\MaskNode@6(items: [Identifier@6(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@10()])))
+>>> ?PHP_*
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: Constant\ConstMaskTypeNode@1(mask: Constant\MaskNode@1(items: [Identifier@1(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@5()]), namespace: null))
+>>> ?Path\\To\\*
+<<< accepted WrappingTypeNode\NullableTypeNode@0(type: Constant\ConstMaskTypeNode@1(mask: Constant\MaskNode@9(items: [Constant\MaskNode\WildcardMaskNode@9()]), namespace: NamespaceName@1(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified)))
+>>> ?::
+<<< rejected
+>>> Foo::?BAR
+<<< partial@3 NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: null, fields: null)
+
+# Parser tests: offset access type
+>>> T[Foo::A_*]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), access: Constant\ClassConstMaskTypeNode@2(class: Name@2(value: "Foo", namespace: null), mask: Constant\MaskNode@7(items: [Identifier@7(value: "A_"), Constant\MaskNode\WildcardMaskNode@9()])))
+>>> T[PHP_*]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null), access: Constant\ConstMaskTypeNode@2(mask: Constant\MaskNode@2(items: [Identifier@2(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@6()]), namespace: null))
+>>> Foo::BAR[K]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@5(value: "BAR")), access: NamedTypeNode@9(name: Name@9(value: "K", namespace: null), arguments: null, fields: null))
+>>> Foo::*[K]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Constant\MaskNode\WildcardMaskNode@5()])), access: NamedTypeNode@7(name: Name@7(value: "K", namespace: null), arguments: null, fields: null))
+>>> PHP_*[K]
+<<< accepted WrappingTypeNode\TypeOffsetAccessTypeNode@0(type: Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null), access: NamedTypeNode@6(name: Name@6(value: "K", namespace: null), arguments: null, fields: null))
+>>> T[*]
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+>>> T[::]
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "T", namespace: null), arguments: null, fields: null)
+
+# Parser tests: templates
+>>> Foo<covariant A, contravariant B, *>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: NamedTypeNode@14(name: Name@14(value: "A", namespace: null), arguments: null, fields: null), variance: Template\VarianceNode@4(kind: Template\VarianceNode\VarianceKind::Covariant)), Template\TypedTemplateArgumentNode@17(value: NamedTypeNode@31(name: Name@31(value: "B", namespace: null), arguments: null, fields: null), variance: Template\VarianceNode@17(kind: Template\VarianceNode\VarianceKind::Contravariant)), Template\WildcardTemplateArgumentNode@34()]), fields: null)
+>>> Foo<Bar::BAZ, Bar::*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Constant\ClassConstTypeNode@4(class: Name@4(value: "Bar", namespace: null), constant: Identifier@9(value: "BAZ")), variance: null), Template\TypedTemplateArgumentNode@14(value: Constant\ClassConstMaskTypeNode@14(class: Name@14(value: "Bar", namespace: null), mask: Constant\MaskNode@19(items: [Constant\MaskNode\WildcardMaskNode@19()])), variance: null)]), fields: null)
+
+# Parser tests: this type
+>>> $this::Foo
+<<< partial@5 ThisTypeNode@0()
+
+# Parser tests: union type
+>>> Foo::A_*|Foo::*
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Constant\ClassConstMaskTypeNode@0(class: Name@0(value: "Foo", namespace: null), mask: Constant\MaskNode@5(items: [Identifier@5(value: "A_"), Constant\MaskNode\WildcardMaskNode@7()])), Constant\ClassConstMaskTypeNode@9(class: Name@9(value: "Foo", namespace: null), mask: Constant\MaskNode@14(items: [Constant\MaskNode\WildcardMaskNode@14()]))])
+>>> PHP_*|E_*
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@4()]), namespace: null), Constant\ConstMaskTypeNode@6(mask: Constant\MaskNode@6(items: [Identifier@6(value: "E_"), Constant\MaskNode\WildcardMaskNode@8()]), namespace: null)])
+>>> Path\\To\\*|A
+<<< accepted LogicalTypeNode\UnionTypeNode@0(types: [Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8()]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified)), NamedTypeNode@10(name: Name@10(value: "A", namespace: null), arguments: null, fields: null)])
+>>> A|*
+<<< partial@1 NamedTypeNode@0(name: Name@0(value: "A", namespace: null), arguments: null, fields: null)
+
+# Parser tests: class const type
+>>>   Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@2(class: Name@2(value: "Foo", namespace: null), constant: Identifier@7(value: "BAR"))
+>>> /* c */ Foo::BAR
+<<< accepted Constant\ClassConstTypeNode@8(class: Name@8(value: "Foo", namespace: null), constant: Identifier@13(value: "BAR"))
+>>> \320\244\321\203::BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "\320\244\321\203", namespace: null), constant: Identifier@6(value: "BAR"))
+
+# Parser tests: const mask type
+>>> namespace\\BAR_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@10(items: [Identifier@10(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@14()]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::NamespaceRelative))
+>>> namespace\\Foo\\BAR_*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@14(items: [Identifier@14(value: "BAR_"), Constant\MaskNode\WildcardMaskNode@18()]), namespace: NamespaceName@0(value: "Foo", kind: NamespaceName\NamespaceKind::NamespaceRelative))
+>>> namespace\\*
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@10(items: [Constant\MaskNode\WildcardMaskNode@10()]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::NamespaceRelative))
+>>> A_*_1
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "A_"), Constant\MaskNode\WildcardMaskNode@2(), Identifier@3(value: "_1")]), namespace: null)
+>>>   PHP_*
+<<< accepted Constant\ConstMaskTypeNode@2(mask: Constant\MaskNode@2(items: [Identifier@2(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@6()]), namespace: null)
+>>> \\*_X
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@1(items: [Constant\MaskNode\WildcardMaskNode@1(), Identifier@2(value: "_X")]), namespace: NamespaceName@0(value: "", kind: NamespaceName\NamespaceKind::FullyQualified))
+>>> Path\\To\\*_X
+<<< accepted Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@8(items: [Constant\MaskNode\WildcardMaskNode@8(), Identifier@9(value: "_X")]), namespace: NamespaceName@0(value: "Path\\To", kind: NamespaceName\NamespaceKind::Qualified))
+>>> /* c */ Path\\*
+<<< accepted Constant\ConstMaskTypeNode@8(mask: Constant\MaskNode@13(items: [Constant\MaskNode\WildcardMaskNode@13()]), namespace: NamespaceName@8(value: "Path", kind: NamespaceName\NamespaceKind::Qualified))
+>>> /* \320\244\321\203 */ PHP_*
+<<< accepted Constant\ConstMaskTypeNode@11(mask: Constant\MaskNode@11(items: [Identifier@11(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@15()]), namespace: null)
+
+# Parser tests: grouping
+>>> T::CONST[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ClassConstTypeNode@0(class: Name@0(value: "T", namespace: null), constant: Identifier@3(value: "CONST")))
+>>> JSON_*[]
+<<< accepted WrappingTypeNode\TypesListTypeNode@0(type: Constant\ConstMaskTypeNode@0(mask: Constant\MaskNode@0(items: [Identifier@0(value: "JSON_"), Constant\MaskNode\WildcardMaskNode@5()]), namespace: null))
+
+# Parser tests: template arguments
+>>> Foo<PHP_*>
+<<< accepted NamedTypeNode@0(name: Name@0(value: "Foo", namespace: null), arguments: Template\TemplateListNode@4(items: [Template\TypedTemplateArgumentNode@4(value: Constant\ConstMaskTypeNode@4(mask: Constant\MaskNode@4(items: [Identifier@4(value: "PHP_"), Constant\MaskNode\WildcardMaskNode@8()]), namespace: null), variance: null)]), fields: null)
+
+# Parser tests: trivia
+>>> Foo /* c */ :: /* c */ BAR
+<<< accepted Constant\ClassConstTypeNode@0(class: Name@0(value: "Foo", namespace: null), constant: Identifier@23(value: "BAR"))

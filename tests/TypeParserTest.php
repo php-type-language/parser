@@ -7,7 +7,9 @@ namespace TypeLang\Parser\Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Phplrt\Source\SourceFactory;
+use TypeLang\Parser\Exception\FeatureNotEnabledException;
 use TypeLang\Parser\Exception\ParserException;
+use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Partial\FailureParsedResult;
 use TypeLang\Parser\Partial\PartialParsedResult;
 use TypeLang\Parser\Partial\SuccessfulParsedResult;
@@ -20,6 +22,8 @@ use TypeLang\Parser\Validation\SuccessfulCheckResult;
 use TypeLang\Printer\PrettyTypePrinter;
 use TypeLang\Type\Name;
 use TypeLang\Type\NamedTypeNode;
+use TypeLang\Type\Node;
+use TypeLang\Type\Template\TemplateParameterNode;
 
 final class TypeParserTest extends TestCase
 {
@@ -97,6 +101,149 @@ final class TypeParserTest extends TestCase
         $parser = new TypeParser();
 
         self::assertEquals($parser->parse('int'), $parser->parse('int'));
+    }
+
+    /**
+     * Returns every node of the tree, indexed by the identifiers of the
+     * objects.
+     *
+     * @return array<int, Node>
+     */
+    private static function collectNodes(mixed $value): array
+    {
+        if (\is_array($value)) {
+            $result = [];
+
+            foreach ($value as $item) {
+                $result += self::collectNodes($item);
+            }
+
+            return $result;
+        }
+
+        if (!$value instanceof Node) {
+            return [];
+        }
+
+        return [\spl_object_id($value) => $value] + self::collectNodes(\get_object_vars($value));
+    }
+
+    #[Test]
+    public function everyReadingReturnsATreeOfItsOwn(): void
+    {
+        $parser = new TypeParser();
+        $source = 'array<int, Foo|Bar>|callable(int $a = 42): array{a: T is U ? 1 : \'a\'}';
+
+        $first = $parser->parse($source);
+        $second = $parser->parse($source);
+
+        $nodes = self::collectNodes($first);
+
+        self::assertEquals($first, $second);
+        self::assertGreaterThan(20, \count($nodes));
+        self::assertSame([], \array_intersect_key($nodes, self::collectNodes($second)));
+    }
+
+    #[Test]
+    public function aChangedTreeDoesNotAffectTheNextReading(): void
+    {
+        $parser = new TypeParser();
+        $expected = $parser->parse('array<int>');
+
+        $changed = $parser->parse('array<int>');
+
+        self::assertInstanceOf(NamedTypeNode::class, $changed);
+
+        $changed->name = new Name('changed');
+        $changed->arguments = null;
+
+        self::assertEquals($expected, $parser->parse('array<int>'));
+    }
+
+    #[Test]
+    public function theParserReadsASourceAfterARefusedOne(): void
+    {
+        $parser = new TypeParser();
+        $expected = $parser->parse('array<int>|Foo');
+
+        try {
+            $parser->parse('array<int');
+
+            self::fail('The source must not be parsed');
+        } catch (ParserExceptionInterface) {
+            // The refusal is what the reading below is preceded by
+        }
+
+        self::assertInstanceOf(PartialParsedResult::class, $parser->partial('int $a'));
+        self::assertInstanceOf(FailureCheckResult::class, $parser->validate('int|'));
+        self::assertEquals($expected, $parser->parse('array<int>|Foo'));
+    }
+
+    #[Test]
+    public function theParsersOfDifferentFeaturesDoNotAffectEachOther(): void
+    {
+        $parser = new TypeParser();
+        $restricted = $parser->with(shapes: false);
+
+        for ($i = 0; $i < 2; ++$i) {
+            self::assertInstanceOf(NamedTypeNode::class, $parser->parse('array{a: int}'));
+
+            try {
+                $restricted->parse('array{a: int}');
+
+                self::fail('The source must not be parsed');
+            } catch (FeatureNotEnabledException) {
+                // The refusal is what the next reading is preceded by
+            }
+        }
+    }
+
+    #[Test]
+    public function theTemplateParameterParserReadsATemplateParameter(): void
+    {
+        $parser = (new TypeParser())->forTemplateParameter();
+
+        self::assertInstanceOf(TemplateParameterNode::class, $parser->parse('T of int = 42'));
+    }
+
+    #[Test]
+    public function theTemplateParameterParserDoesNotAffectTheTypeParser(): void
+    {
+        $types = new TypeParser();
+        $types->parse('int');
+
+        $parameters = $types->forTemplateParameter();
+
+        self::assertNotSame($types, $parameters);
+        self::assertInstanceOf(TemplateParameterNode::class, $parameters->parse('T of int'));
+        self::assertInstanceOf(NamedTypeNode::class, $types->parse('T'));
+        self::assertInstanceOf(PartialParsedResult::class, $types->partial('T of int'));
+        self::assertInstanceOf(TemplateParameterNode::class, $parameters->parse('T'));
+    }
+
+    #[Test]
+    public function theTypeParserIsReturnedBackFromTheTemplateParameterOne(): void
+    {
+        $parser = (new TypeParser())
+            ->forTemplateParameter()
+            ->forType();
+
+        self::assertInstanceOf(NamedTypeNode::class, $parser->parse('T'));
+        self::assertInstanceOf(PartialParsedResult::class, $parser->partial('T of int'));
+    }
+
+    #[Test]
+    public function theTemplateParameterParserKeepsTheFeatures(): void
+    {
+        $parser = (new TypeParser(new TypeParserFeatures(shapes: false)))
+            ->forTemplateParameter();
+
+        self::assertFalse($parser->features->shapes);
+        self::assertInstanceOf(TemplateParameterNode::class, $parser->parse('T of int'));
+
+        $this->expectException(FeatureNotEnabledException::class);
+
+        $parser->parse('T of array{a: int}');
     }
 
     #[Test]
