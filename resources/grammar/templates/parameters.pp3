@@ -6,7 +6,7 @@
 
 
 // <T>, <T, U of int>, <covariant T of A super B = C,>
-TemplateParameters -> {
+TemplateParameters @error("Invalid template arguments, \",\" or \">\" is expected") -> {
     if (!$this->features->templates) {
         throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('templates', $ctx);
     }
@@ -14,9 +14,12 @@ TemplateParameters -> {
     return new Type\Template\TemplateParameterListNode($children, $offset);
 }
   : ::T_ANGLE_OPEN::
-        TemplateParameter() (::T_COMMA:: TemplateParameter())* ::T_COMMA::?
+        TemplateParameter() @error("A template argument is expected after \"<\"")
+        (::T_COMMA:: TemplateParameter())*
+        ::T_COMMA::?
     ::T_ANGLE_CLOSE::
   ;
+
 
 // T, covariant T, T of U, T as U, T super U, T of A super B, T = V
 #TemplateParameter -> {

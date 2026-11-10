@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  */
 
-TemplateArguments -> {
+TemplateArguments @error("Invalid template arguments, \",\" or \">\" is expected") -> {
     if (!$this->features->generics) {
         throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('generics', $ctx);
     }
@@ -12,11 +12,12 @@ TemplateArguments -> {
     return new Type\Template\TemplateListNode($children, $offset);
 }
   : ::T_ANGLE_OPEN::
-        TemplateArgument()
+        TemplateArgument() @error("A template argument is expected after \"<\"")
         (::T_COMMA:: TemplateArgument())*
         ::T_COMMA::?
     ::T_ANGLE_CLOSE::
   ;
+
 
 TemplateArgument
   : WildcardTemplateArgument()

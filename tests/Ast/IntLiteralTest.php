@@ -60,11 +60,11 @@ final class IntLiteralTest extends AstTestCase
      */
     public static function invalidSeparatorDataProvider(): iterable
     {
-        yield 'trailing' => ['42_', 'unexpected "_"'];
-        yield 'doubled' => ['4__2', 'unexpected "__2"'];
-        yield 'after the hexadecimal prefix' => ['0x_FF', 'unexpected "x_FF"'];
-        yield 'after the binary prefix' => ['0b_1', 'unexpected "b_1"'];
-        yield 'after the octal prefix' => ['0o_7', 'unexpected "o_7"'];
+        yield 'trailing' => ['42_', 'Unexpected "_"'];
+        yield 'doubled' => ['4__2', 'Unexpected "__2"'];
+        yield 'after the hexadecimal prefix' => ['0x_FF', 'Unexpected "x_FF"'];
+        yield 'after the binary prefix' => ['0b_1', 'Unexpected "b_1"'];
+        yield 'after the octal prefix' => ['0o_7', 'Unexpected "o_7"'];
     }
 
     #[DataProvider('invalidSeparatorDataProvider')]
@@ -86,14 +86,14 @@ final class IntLiteralTest extends AstTestCase
 
     public function testBinaryAllowsOnlyZeroAndOne(): void
     {
-        $this->expectParsingException('unexpected "42"');
+        $this->expectParsingException('Unexpected "42"');
 
         $this->parse('0b101042');
     }
 
     public function testOctalAllowsOnlyDigitsUpToSeven(): void
     {
-        $this->expectParsingException('unexpected "81"');
+        $this->expectParsingException('Unexpected "81"');
 
         $this->parse('0o4281');
     }
@@ -106,8 +106,8 @@ final class IntLiteralTest extends AstTestCase
      */
     public static function leadingZeroDataProvider(): iterable
     {
-        yield 'eight' => ['08', 'unexpected "8"'];
-        yield 'nine' => ['09_1', 'unexpected "9_1"'];
+        yield 'eight' => ['08', 'Unexpected "8"'];
+        yield 'nine' => ['09_1', 'Unexpected "9_1"'];
     }
 
     #[DataProvider('leadingZeroDataProvider')]

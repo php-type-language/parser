@@ -7,6 +7,10 @@
 
 // BAR_*, *_BAZ, A*B*C
 IdentifierMask -> {
+    if (!$this->features->masks) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('masks', $ctx);
+    }
+
     $items = [];
     $position = $offset;
 
@@ -28,6 +32,10 @@ IdentifierMask -> {
 
 // *
 WildcardMask -> {
+    if (!$this->features->masks) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('masks', $ctx);
+    }
+
     return new Type\Constant\MaskNode([new Type\Constant\MaskNode\WildcardMaskNode($offset)], $offset);
 }
   : <T_WILDCARD>

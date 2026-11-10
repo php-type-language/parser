@@ -301,7 +301,7 @@ final class GroupingTest extends AstTestCase
 
     public function testAnEmptyGroupIsNoType(): void
     {
-        $this->expectParsingException('unexpected ")"');
+        $this->expectParsingException('A type is expected after "("');
 
         $this->parse('()');
     }
@@ -315,7 +315,7 @@ final class GroupingTest extends AstTestCase
 
     public function testAnAngleBracketOfItsOwnFollowsNoArgumentList(): void
     {
-        $this->expectParsingException('unexpected ">"');
+        $this->expectParsingException('Unexpected ">"');
 
         $this->parse('Some<int>>');
     }

@@ -43,6 +43,7 @@ final class ParsingErrorRange
 
     /**
      * @api
+     *
      * @throws SourceExceptionInterface
      */
     public function toStartPosition(ReadableInterface $source): PositionInterface
@@ -52,6 +53,7 @@ final class ParsingErrorRange
 
     /**
      * @api
+     *
      * @throws SourceExceptionInterface
      */
     public function toEndPosition(ReadableInterface $source): PositionInterface

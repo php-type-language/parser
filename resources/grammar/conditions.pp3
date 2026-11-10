@@ -39,8 +39,16 @@ ConditionalType -> {
 
 // is U ? A : B, is not U ? A : B, is not ?U ? A : B
 ConditionTail
-  : <T_IS_NOT> ConditionOperand() ::T_QUESTION:: Type() ::T_COLON:: Type()
-  | ::T_IS:: ConditionOperand() ::T_QUESTION:: Type() ::T_COLON:: Type()
+  : <T_IS_NOT> ConditionOperand()
+    // then
+    ::T_QUESTION:: @error("A \"?\" is expected after the target of the condition") Type()
+    // else
+    ::T_COLON:: @error("The condition requires an else branch, \":\" expected") Type()
+  | ::T_IS:: ConditionOperand()
+    // then
+    ::T_QUESTION:: @error("A \"?\" is expected after the target of the condition") Type()
+    // else
+    ::T_COLON:: @error("The condition requires an else branch, \":\" expected") Type()
   ;
 
 // U, $b

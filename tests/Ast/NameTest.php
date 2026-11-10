@@ -137,21 +137,21 @@ final class NameTest extends AstTestCase
     public function testNameCannotStartWithDigit(): void
     {
         // The underscore belongs to the name, not to the number
-        $this->expectParsingException('unexpected "_invalid_name_0"');
+        $this->expectParsingException('Unexpected "_invalid_name_0"');
 
         $this->parse('0_invalid_name_0');
     }
 
     public function testNameCannotStartWithDigitFollowedByLetters(): void
     {
-        $this->expectParsingException('unexpected "type"');
+        $this->expectParsingException('Unexpected "type"');
 
         $this->parse('42type');
     }
 
     public function testNameCannotStartWithDash(): void
     {
-        $this->expectParsingException('unexpected "-foo"');
+        $this->expectParsingException('Unrecognized syntax "-foo"');
 
         $this->parse('-foo');
     }

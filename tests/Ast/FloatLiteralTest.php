@@ -47,11 +47,11 @@ final class FloatLiteralTest extends AstTestCase
      */
     public static function invalidSeparatorDataProvider(): iterable
     {
-        yield 'before the dot' => ['1_.5', 'unexpected "_"'];
-        yield 'after the dot' => ['1._5', 'unexpected "_5"'];
-        yield 'before the exponent' => ['1.5_e3', 'unexpected "_e3"'];
-        yield 'inside the exponent' => ['1.5e_3', 'unexpected "e_3"'];
-        yield 'trailing' => ['1e3_', 'unexpected "_"'];
+        yield 'before the dot' => ['1_.5', 'Unexpected "_"'];
+        yield 'after the dot' => ['1._5', 'Unexpected "_5"'];
+        yield 'before the exponent' => ['1.5_e3', 'Unexpected "_e3"'];
+        yield 'inside the exponent' => ['1.5e_3', 'Unexpected "e_3"'];
+        yield 'trailing' => ['1e3_', 'Unexpected "_"'];
     }
 
     #[DataProvider('invalidSeparatorDataProvider')]
@@ -73,21 +73,21 @@ final class FloatLiteralTest extends AstTestCase
 
     public function testLeadingAndTrailingNumberCannotBothBeOmitted(): void
     {
-        $this->expectParsingException('unexpected "."');
+        $this->expectParsingException('Unrecognized syntax "."');
 
         $this->parse('.');
     }
 
     public function testFloatAllowsOnlyDigits(): void
     {
-        $this->expectParsingException('unexpected "A"');
+        $this->expectParsingException('Unexpected "A"');
 
         $this->parse('0.0A');
     }
 
     public function testScientificExponentMustBeDecimal(): void
     {
-        $this->expectParsingException('unexpected "e-F"');
+        $this->expectParsingException('Unexpected "e-F"');
 
         $this->parse('10e-F');
     }

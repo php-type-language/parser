@@ -60,6 +60,11 @@ NamedType -> {
     $name = $children[0];
     $second = $children[1] ?? null;
 
+    // Foo::BAR
+    if ($second instanceof Type\Identifier && !$this->features->constants) {
+        throw Exception\FeatureNotEnabledException::becauseFeatureIsNotEnabledIn('constants', $ctx);
+    }
+
     return match (true) {
         // Foo, \Foo\Bar
         $second === null => new Type\NamedTypeNode($name, null, null, $offset),
@@ -102,5 +107,8 @@ Variable -> {
 
 // (int), ((int))
 Group
-  : ::T_PAREN_OPEN:: Type() ::T_PAREN_CLOSE::
+  : ::T_PAREN_OPEN::
+      Type() @error("A type is expected after \"(\"")
+    ::T_PAREN_CLOSE::
+    @error("The group is not closed properly, \")\" expected")
   ;

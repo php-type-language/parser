@@ -7,6 +7,7 @@ namespace TypeLang\Parser\Tests;
 use JetBrains\PhpStorm\Language;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Partial\ParsedResult;
 use TypeLang\Parser\Partial\SuccessfulParsedResult;
 use TypeLang\Parser\Traverser;
@@ -64,6 +65,23 @@ abstract class TestCase extends BaseTestCase
         $parser = $this->parser($options);
 
         return $parser->parse($code);
+    }
+
+    /**
+     * Returns the exception the parser fails on the given source with.
+     *
+     * @param ParserOptionsType $options
+     * @throws \Throwable
+     */
+    protected function parseFailure(#[Language('PHP')] string $code, array $options = []): ParserExceptionInterface
+    {
+        try {
+            $this->parse($code, $options);
+        } catch (ParserExceptionInterface $e) {
+            return $e;
+        }
+
+        self::fail(\sprintf('The source "%s" must not be parsed', $code));
     }
 
     /**

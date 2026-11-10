@@ -37,6 +37,7 @@ ShapeFields -> {
   : ::T_BRACE_OPEN::
         (ShapeFieldList() ShapeTail()? | ShapeUnsealed())?
     ::T_BRACE_CLOSE::
+    @error("Invalid shape, a field, \",\" or \"}\" is expected")
   ;
 
 // a: int, b?: string, int
@@ -44,6 +45,7 @@ ShapeFieldList
   : ShapeField()
     (::T_COMMA:: ShapeField())*
   ;
+
 
 // , ... | , ...<K, V> | ,
 ShapeTail

@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Internal;
 
+use Phplrt\Contracts\Lexer\Channel;
 use Phplrt\Contracts\Position\PositionFactoryInterface;
 use Phplrt\Contracts\Source\ReadableInterface;
 use Phplrt\Parser\Analysis\Mode;
 use Phplrt\Parser\Analysis\Result\FailureResult;
 use Phplrt\Parser\Analysis\Result\PartialResult;
 use Phplrt\Parser\Analysis\Result\SuccessfulResult;
+use Phplrt\Parser\Exception\ParserRuntimeException;
+use Phplrt\Parser\Exception\UnexpectedTokenException as PhplrtUnexpectedTokenException;
 use Phplrt\Position\PositionFactory;
+use TypeLang\Parser\Exception\MalformedSyntaxException;
+use TypeLang\Parser\Exception\SyntaxErrorException;
+use TypeLang\Parser\Exception\UnexpectedTokenException;
+use TypeLang\Parser\Exception\UnrecognizedSyntaxException;
 use TypeLang\Parser\Internal\SubParser\BinIntParser;
 use TypeLang\Parser\Internal\SubParser\DecIntParser;
 use TypeLang\Parser\Internal\SubParser\DqStringParser;
@@ -79,6 +86,77 @@ final class Executor extends CompiledExecutor
     }
 
     /**
+     * @throws SyntaxErrorException in case of the source is not a valid type
+     * @throws \Throwable in case of the source cannot be read
+     */
+    public function parse(ReadableInterface $source): mixed
+    {
+        try {
+            return parent::parse($source);
+        } catch (ParserRuntimeException $e) {
+            throw $this->translate($e);
+        }
+    }
+
+    private function describe(\Throwable $e): string
+    {
+        if ($e instanceof ParserRuntimeException) {
+            return $this->translate($e)
+                ->getMessage();
+        }
+
+        return $e->getMessage();
+    }
+
+    /**
+     * Returns the tokens the reading could continue with, nothing is expected
+     * after a complete type.
+     *
+     * @return list<non-empty-string>
+     */
+    private function getExpected(ParserRuntimeException $e): array
+    {
+        if (!$e instanceof PhplrtUnexpectedTokenException) {
+            return [];
+        }
+
+        $result = $this->parser->analyze($e->source, Mode::Tolerant);
+
+        if ($result instanceof PartialResult && $result->token->offset === $e->token->offset) {
+            return [];
+        }
+
+        return $e->expected;
+    }
+
+    /**
+     * Tells the failure of the grammar in the exceptions of the library.
+     */
+    private function translate(ParserRuntimeException $e): SyntaxErrorException
+    {
+        $expected = $this->getExpected($e);
+
+        return match (true) {
+            // The code of an error is the number of the grammar rule that
+            // describes it with a message of its own
+            $e->getCode() > 0 => MalformedSyntaxException::becauseConstructIsMalformed(
+                $e->source,
+                $e->token,
+                $e->getMessage(),
+            ),
+            $e->token->channel === Channel::Unknown => UnrecognizedSyntaxException::becauseFragmentIsNotRecognized(
+                $e->source,
+                $e->token,
+            ),
+            default => UnexpectedTokenException::becauseTokenIsUnexpected(
+                $e->source,
+                $e->token,
+                $expected,
+            ),
+        };
+    }
+
+    /**
      * Reads as much of the source as the grammar describes, a source that is
      * no type is not an error but a failed result.
      *
@@ -90,12 +168,12 @@ final class Executor extends CompiledExecutor
 
         return match (true) {
             $result instanceof PartialResult => new PartialCheckResult(
-                message: $result->error->getMessage(),
+                message: $this->describe($result->error),
                 position: $this->positions->createFromOffset($source, $result->token->offset),
                 offset: $result->token->offset,
             ),
             $result instanceof FailureResult => new FailureCheckResult(
-                message: $result->error->getMessage(),
+                message: $this->describe($result->error),
                 position: $this->positions->createFromOffset($source, $result->token->offset),
                 offset: $result->token->offset,
             ),
@@ -125,7 +203,7 @@ final class Executor extends CompiledExecutor
                 \strlen($source->content),
             ),
             default => new FailureParsedResult(
-                message: $result->error->getMessage(),
+                message: $this->describe($result->error),
                 position: $this->positions->createFromOffset($source, $result->token->offset),
                 offset: $result->token->offset,
             ),

@@ -72,5 +72,8 @@ OffsetSuffix -> {
 
     return $children[1];
 }
-  : <T_BRACKET_OPEN> Type() <T_BRACKET_CLOSE>
+  : <T_BRACKET_OPEN>
+      Type() @error("A type or \"]\" is expected after \"[\"")
+    <T_BRACKET_CLOSE>
+    @error("The offset is not closed properly, \"]\" expected")
   ;

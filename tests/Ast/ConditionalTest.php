@@ -52,7 +52,7 @@ final class ConditionalTest extends AstTestCase
         self::assertSame(<<<'AST'
             Condition\ConditionalTypeNode
               Condition\EqualConditionNode
-                VariableNode(name='T')
+                VariableNode($T)
                 NamedTypeNode
                   Name(B)
               NamedTypeNode

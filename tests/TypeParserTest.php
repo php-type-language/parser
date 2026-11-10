@@ -192,7 +192,7 @@ final class TypeParserTest extends TestCase
         $result = $this->partial('|int');
 
         self::assertInstanceOf(FailureParsedResult::class, $result);
-        self::assertStringContainsString('unexpected "|"', $result->message);
+        self::assertStringContainsString('Unexpected "|"', $result->message);
         self::assertSame(0, $result->offset);
         self::assertSame(1, $result->position->line);
         self::assertSame(1, $result->position->column);
@@ -230,6 +230,6 @@ final class TypeParserTest extends TestCase
 
         self::assertInstanceOf(FailureCheckResult::class, $result);
         self::assertSame(14, $result->offset);
-        self::assertStringContainsString('unexpected "tail"', $result->message);
+        self::assertStringContainsString('Unexpected "tail"', $result->message);
     }
 }

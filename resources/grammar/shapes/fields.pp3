@@ -31,6 +31,7 @@ ShapeExplicitField -> {
     };
 }
   : ShapeKey() <T_QUESTION>? ::T_COLON:: Type()
+    @error("A type is expected after \":\"")
   ;
 
 // a, Foo\BAR, Foo::BAR, 42, 'text'. A mask of constants is not a key

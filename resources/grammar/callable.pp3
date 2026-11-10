@@ -22,7 +22,9 @@ CallableParameters -> {
   : ::T_PAREN_OPEN::
         (CallableParameter() (::T_COMMA:: CallableParameter())* ::T_COMMA::?)?
     ::T_PAREN_CLOSE::
+    @error("Invalid callable parameters, a parameter, \",\" or \")\" is expected")
   ;
+
 
 // int, int $a, int &$a, int ...$a, int &...$a, int=, int $a = 42, $a, &$a,
 // ...$a, ...int

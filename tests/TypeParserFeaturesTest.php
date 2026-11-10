@@ -6,6 +6,7 @@ namespace TypeLang\Parser\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TypeLang\Parser\Exception\FeatureNotEnabledException;
 use TypeLang\Parser\TypeParserFeatures;
 
 final class TypeParserFeaturesTest extends TestCase
@@ -156,6 +157,62 @@ final class TypeParserFeaturesTest extends TestCase
 
         foreach (self::featureDataProvider() as $name => [, $other]) {
             self::assertSame($name !== $feature, $other($features), $name);
+        }
+    }
+
+    /**
+     * The feature, the syntax it turns on and the other features that the
+     * syntax needs in order to be read.
+     *
+     * @return iterable<non-empty-string, array{non-empty-string, non-empty-string, list<non-empty-string>}>
+     */
+    public static function syntaxDataProvider(): iterable
+    {
+        yield 'unions' => ['unions', 'A|B', []];
+        yield 'intersections' => ['intersections', 'A&B', []];
+        yield 'nullables' => ['nullables', '?A', []];
+        yield 'lists' => ['lists', 'A[]', []];
+        yield 'offsets' => ['offsets', 'A[B]', []];
+        yield 'conditions' => ['conditions', 'A is B ? C : D', []];
+        yield 'generics' => ['generics', 'Foo<A>', []];
+        yield 'wildcards' => ['wildcards', 'Foo<*>', ['generics']];
+        yield 'hints' => ['hints', 'Foo<covariant A>', ['generics']];
+        yield 'callables' => ['callables', 'callable(A): B', []];
+        yield 'templates' => ['templates', 'callable<T>(T): T', ['callables']];
+        yield 'defaults' => ['defaults', 'callable(int $a = 1)', ['callables', 'literals']];
+        yield 'shapes' => ['shapes', 'array{a: int}', []];
+        yield 'constants' => ['constants', 'Foo::BAR', []];
+        yield 'masks' => ['masks', 'Foo::BAR_*', []];
+        yield 'literals' => ['literals', '42', []];
+    }
+
+    /**
+     * @param non-empty-string $feature
+     * @param non-empty-string $source
+     */
+    #[DataProvider('syntaxDataProvider')]
+    #[Test]
+    public function disabledFeatureRejectsItsSyntax(string $feature, string $source, array $requires): void
+    {
+        $this->expectException(FeatureNotEnabledException::class);
+        $this->expectExceptionMessage(\ucfirst($feature) . ' feature is not allowed');
+
+        $this->parse($source, [$feature => false]);
+    }
+
+    /**
+     * @param non-empty-string $feature
+     */
+    #[DataProvider('featureDataProvider')]
+    #[Test]
+    public function disabledFeatureDoesNotRejectTheSyntaxOfTheOthers(string $feature): void
+    {
+        foreach (self::syntaxDataProvider() as $name => [, $source, $requires]) {
+            if ($name === $feature || \in_array($feature, $requires, true)) {
+                continue;
+            }
+
+            self::assertNotNull($this->parse($source, [$feature => false]), $name);
         }
     }
 
