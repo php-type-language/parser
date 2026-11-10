@@ -151,7 +151,7 @@ final class TypeParserFeaturesTest extends TestCase
      */
     #[DataProvider('featureDataProvider')]
     #[Test]
-    public function disablingOneFeatureKeepsTheOthersEnabled(string $feature): void
+    public function disablingOneFeatureKeepsTheOthersEnabled(string $feature, \Closure $_reader): void
     {
         $features = new TypeParserFeatures(...[$feature => false]);
 
@@ -205,7 +205,7 @@ final class TypeParserFeaturesTest extends TestCase
      */
     #[DataProvider('featureDataProvider')]
     #[Test]
-    public function disabledFeatureDoesNotRejectTheSyntaxOfTheOthers(string $feature): void
+    public function disabledFeatureDoesNotRejectTheSyntaxOfTheOthers(string $feature, \Closure $_reader): void
     {
         foreach (self::syntaxDataProvider() as $name => [, $source, $requires]) {
             if ($name === $feature || \in_array($feature, $requires, true)) {

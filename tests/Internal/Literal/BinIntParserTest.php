@@ -57,7 +57,7 @@ final class BinIntParserTest extends TestCase
      */
     #[Test]
     #[DataProvider('valueDataProvider')]
-    public function testKindIsTheNotationOfTheParser(string $raw): void
+    public function testKindIsTheNotationOfTheParser(string $raw, int $_value, string $_decimal): void
     {
         $node = (new BinIntParser(new NativeBaseConverter()))->parse($raw);
 

@@ -28,21 +28,21 @@ final class UnrecognizedSyntaxExceptionTest extends TestCase
 
     #[Test]
     #[DataProvider('unrecognizedDataProvider')]
-    public function isASyntaxErrorException(string $source): void
+    public function isASyntaxErrorException(string $source, string $_fragment): void
     {
         self::assertInstanceOf(SyntaxErrorException::class, $this->parseFailure($source));
     }
 
     #[Test]
     #[DataProvider('unrecognizedDataProvider')]
-    public function isNotAnUnexpectedTokenException(string $source): void
+    public function isNotAnUnexpectedTokenException(string $source, string $_fragment): void
     {
         self::assertNotInstanceOf(UnexpectedTokenException::class, $this->parseFailure($source));
     }
 
     #[Test]
     #[DataProvider('unrecognizedDataProvider')]
-    public function isAnUnrecognizedSyntaxException(string $source): void
+    public function isAnUnrecognizedSyntaxException(string $source, string $_fragment): void
     {
         self::assertInstanceOf(UnrecognizedSyntaxException::class, $this->parseFailure($source));
     }

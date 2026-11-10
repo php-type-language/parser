@@ -57,7 +57,7 @@ final class OctLegacyIntParserTest extends TestCase
      */
     #[Test]
     #[DataProvider('valueDataProvider')]
-    public function testKindIsTheNotationOfTheParser(string $raw, int $value): void
+    public function testKindIsTheNotationOfTheParser(string $raw, int $value, string $_decimal): void
     {
         $node = (new OctLegacyIntParser(new NativeBaseConverter()))->parse($raw);
 

@@ -65,7 +65,7 @@ final class MalformedSyntaxExceptionTest extends TestCase
 
     #[Test]
     #[DataProvider('messageDataProvider')]
-    public function isMalformedSyntaxException(string $source): void
+    public function isMalformedSyntaxException(string $source, string $_message): void
     {
         self::assertInstanceOf(MalformedSyntaxException::class, $this->parseFailure($source));
     }
