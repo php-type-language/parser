@@ -3443,13 +3443,13 @@ abstract class CompiledExecutor implements \Phplrt\Contracts\Parser\ParserInterf
                     $name = $child;
                     break;
 
-                // super Type
+                    // super Type
                 case $child instanceof Type\Template\TemplateBoundNode
                     && $child->operator->value === 'super':
                     $lower = $child;
                     break;
 
-                // of Type, as Type
+                    // of Type, as Type
                 case $child instanceof Type\Template\TemplateBoundNode:
                     $upper = $child;
                     break;
