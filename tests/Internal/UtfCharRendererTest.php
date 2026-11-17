@@ -71,6 +71,19 @@ final class UtfCharRendererTest extends TestCase
     }
 
     #[Test]
+    public function codePointIsEncodedAsUtf8WhateverTheInternalEncodingIs(): void
+    {
+        $encoding = \mb_internal_encoding();
+        \mb_internal_encoding('Windows-1251');
+
+        try {
+            self::assertSame("\u{416}", UtfCharRenderer::render(0x416));
+        } finally {
+            \mb_internal_encoding($encoding);
+        }
+    }
+
+    #[Test]
     public function everyEncodedCharIsAValidUtf8Sequence(): void
     {
         foreach ([0x00, 0x41, 0x7F, 0x80, 0x7FF, 0x800, 0xFFFF, 0x10000, 0x10FFFF] as $code) {

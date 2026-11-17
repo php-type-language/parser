@@ -65,6 +65,14 @@ final class StringSequencesFetcher
                 continue;
             }
 
+            // A unicode sequence beyond 6 significant digits, like a
+            // "\u{FFFFFFFFFFFFFFFF}", is out of the unicode range
+            if (\strlen(\ltrim($match[1], '0')) > 6) {
+                $result[$match[0]] = UtfCharRenderer::REPLACEMENT_CHAR;
+
+                continue;
+            }
+
             // A unicode sequence, like a "\u{FFFF}"
             if ($match[1] !== '') {
                 /** @var int<0, max> $code */

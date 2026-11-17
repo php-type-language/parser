@@ -13,22 +13,24 @@ use TypeLang\Type\NamespaceName\NamespaceKind;
  *
  * For example, for such code:
  * ```
- * use TypeLang\Parser\Node;
+ * use TypeLang\Type\Name;
  * use TypeLang\Parser\Exception as Error;
  * ```
  *
  * You need to create a rule like this:
  * ```
  * $transformer = new PhpUseStatementsTransformer([
- *     'TypeLang\Parser\Node',                     // for `use TypeLang\Parser\Node;`
- *     'Error' => 'TypeLang\Parser\Exception',     // for `use TypeLang\Parser\Exception as Error;`
+ *     // use TypeLang\Type\Name;
+ *     'TypeLang\Type\Name',
+ *     // use TypeLang\Parser\Exception as Error;
+ *     'Error' => 'TypeLang\Parser\Exception',
  * ]);
  * ```
  *
  * Then, if you apply it to a name, you will get normalized substitutions:
  * ```
- * // Error\SemanticException => TypeLang\Parser\Exception\SemanticException
- * // Node                    => TypeLang\Parser\Node
+ * // Error\ParsingException => TypeLang\Parser\Exception\ParsingException
+ * // Name                   => TypeLang\Type\Name
  * ```
  */
 final class PhpUseStatementsTransformer

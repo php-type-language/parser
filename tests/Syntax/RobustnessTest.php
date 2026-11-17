@@ -139,12 +139,23 @@ final class RobustnessTest extends SyntaxTestCase
         yield 'returns' => ['callable(): ', 'A', ''];
         yield 'offsets of offsets' => ['T[T[', 'K', ']]'];
         yield 'lists of nullable groups' => ['?(', 'A', ')[]'];
+        yield 'arguments after arguments' => ['Foo<A, ', 'B', '>'];
+        yield 'arguments in parameters' => ['callable(Foo<', 'A', '>)'];
+        yield 'parameters in arguments' => ['Foo<callable(', 'A', ')>'];
+        yield 'arguments in shapes' => ['array{a: Foo<', 'A', '>}'];
+        yield 'constants of arguments' => ['Foo<', 'A', '>::X'];
+        yield 'fields of arguments' => ['Foo<', 'A', '>{a: int}'];
+        yield 'callables of arguments' => ['Foo<', 'A', '>(X)'];
+        yield 'lists of arguments' => ['Foo<', 'A', '>[]'];
     }
 
     /**
      * Twice the depth is twice the time. A source that is read by trying one
      * way and then another doubles the work at every level, so the depths go
      * up until the first of them that takes too long and the test stops there.
+     *
+     * Each depth is read as is, with junk after it, with junk inside, without
+     * the closing parts and with nothing inside.
      *
      * @param non-empty-string $open
      * @param non-empty-string $inside
@@ -156,9 +167,20 @@ final class RobustnessTest extends SyntaxTestCase
         $limit = 0.25;
 
         foreach ([4, 8, 12, 16, 20, 24, 28, 32, 40, 60] as $depth) {
-            $source = \str_repeat($open, $depth) . $inside . \str_repeat($close, $depth);
+            $opening = \str_repeat($open, $depth);
+            $closing = \str_repeat($close, $depth);
+            $source = $opening . $inside . $closing;
 
-            foreach ([$source, $source . ' junk', $source . ')'] as $variant) {
+            $variants = [
+                $source,
+                $source . ' junk',
+                $source . ')',
+                $opening . ': ' . $closing,
+                $opening . $inside,
+                $opening . $closing,
+            ];
+
+            foreach ($variants as $variant) {
                 $start = \hrtime(true);
 
                 try {

@@ -17,7 +17,7 @@ namespace TypeLang\Parser;
  * ));
  *
  * $parser->parse('T is 42 ? U : V');
- * // => Error: Conditional expressions not allowed in ...
+ * // => FeatureNotEnabledException: Conditions feature is not allowed
  * ```
  */
 final class TypeParserFeatures

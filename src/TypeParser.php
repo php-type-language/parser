@@ -61,7 +61,7 @@ final class TypeParser implements TypeParserInterface
     /**
      * Returns template parameter recognition context:
      * ```
-     * $result = $parser->forType()
+     * $result = $parser->forTemplateParameter()
      *     ->parse('T of U<V> = Default<Z>');
      * ```
      *
@@ -76,10 +76,25 @@ final class TypeParser implements TypeParserInterface
     }
 
     /**
+     * @param int<0, max> $rule
+     * @return self<Node, TSource>
+     */
+    private function for(int $rule): self
+    {
+        $executor = $this->getExecutor();
+
+        $self = clone $this;
+        /** @phpstan-ignore-next-line : Allow executor type change */
+        $self->executor = $executor->for($rule);
+
+        return $self;
+    }
+
+    /**
      * Returns a new parser with an overridden parser feature flag.
      *
      * ```
-     * $parser = $parser->withFeatures(
+     * $parser = $parser->with(
      *     conditions: true,
      *     hints: false,
      * );
@@ -87,10 +102,11 @@ final class TypeParser implements TypeParserInterface
      */
     public function with(bool ...$features): self
     {
-        return new self(
-            features: $this->features->with(...$features),
-            sources: $this->sources,
-        );
+        $self = new self($this->features->with(...$features), $this->sources);
+        // Copy current executor context
+        $self->executor = $this->executor;
+
+        return $self;
     }
 
     public function parse(#[Language('PHP')] mixed $source): Node
@@ -132,20 +148,5 @@ final class TypeParser implements TypeParserInterface
     private function toSource(mixed $source): ReadableInterface
     {
         return $this->sources->create($source);
-    }
-
-    /**
-     * @param int<0, max> $rule
-     * @return self<Node, TSource>
-     */
-    private function for(int $rule): self
-    {
-        $executor = $this->getExecutor();
-
-        $self = clone $this;
-        /** @phpstan-ignore-next-line : Allow executor type change */
-        $self->executor = $executor->for($rule);
-
-        return $self;
     }
 }

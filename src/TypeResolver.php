@@ -63,21 +63,21 @@ final class TypeResolver
      *
      * For example, for such code:
      * ```
-     * use TypeLang\Parser\Node;
+     * use TypeLang\Type\Shape;
      * ```
      *
      * You need to add an import like this:
      * ```
      * $resolver = new TypeResolver()
-     *     ->withTypeImport('TypeLang\Parser\Node');
+     *     ->withTypeImport('TypeLang\Type\Shape');
      *
      * $ast = new TypeParser()
-     *     ->parse('Node\SemanticException');
+     *     ->parse('Shape\FieldListNode');
      *
      * $resolver->resolve($ast);
      *
      * // Expected Output:
-     * // > TypeLang\Parser\Node\SemanticException
+     * // > TypeLang\Type\Shape\FieldListNode
      * echo $ast->name->toString();
      * ```
      *
@@ -103,12 +103,12 @@ final class TypeResolver
      *     ->withTypeImportAs('TypeLang\Parser\Exception', 'Error');
      *
      * $ast = new TypeParser()
-     *     ->parse('Error\SemanticException');
+     *     ->parse('Error\ParsingException');
      *
      * $resolver->resolve($ast);
      *
      * // Expected Output:
-     * // > TypeLang\Parser\Exception\SemanticException
+     * // > TypeLang\Parser\Exception\ParsingException
      * echo $ast->name->toString();
      * ```
      *
@@ -122,14 +122,15 @@ final class TypeResolver
 
     /**
      * Registers every `use` import declared in the source file of the given
-     * class, so that type names are resolved exactly as they would be inside
-     * that class.
+     * class. The namespace and `self` of the class are registered separately,
+     * by {@see TypeResolver::withNamespace()} and
+     * {@see TypeResolver::withClasses()}.
      *
      * For a class whose file declares:
      * ```
      * namespace App;
      *
-     * use TypeLang\Parser\Node;
+     * use TypeLang\Type\Name;
      * use TypeLang\Parser\Exception as Error;
      *
      * final class Example {}
@@ -139,15 +140,15 @@ final class TypeResolver
      * ```
      * $ast = new TypeParser()
      *     ->parse(<<<'PHP'
-     *         Error\SemanticException
+     *         Error\ParsingException
      *         PHP);
      *
      * $ast = new TypeResolver()
-     *     ->withTypeImportsOf(new \ReflectionClass(App\Example::class))
+     *     ->withTypeImportsFromClass(new \ReflectionClass(App\Example::class))
      *     ->resolve($ast);
      *
      * // Expected Output:
-     * // > TypeLang\Parser\Exception\SemanticException
+     * // > TypeLang\Parser\Exception\ParsingException
      * echo $ast->name->toString();
      * ```
      *
@@ -163,14 +164,14 @@ final class TypeResolver
 
     /**
      * Registers every `use` import available in the source file of the given
-     * function or method, so that type names are resolved exactly as they
-     * would be inside that function's body.
+     * function or method. The namespace is registered separately, by
+     * {@see TypeResolver::withNamespace()}.
      *
      * For a function whose file declares:
      * ```
      * namespace App;
      *
-     * use TypeLang\Parser\Node;
+     * use TypeLang\Type\Name;
      * use TypeLang\Parser\Exception as Error;
      *
      * function example(): void {}
@@ -180,7 +181,7 @@ final class TypeResolver
      * ```
      * $ast = new TypeParser()
      *     ->parse(<<<'PHP'
-     *         Error\SemanticException
+     *         Error\ParsingException
      *         PHP);
      *
      * $ast = new TypeResolver()
@@ -188,7 +189,7 @@ final class TypeResolver
      *     ->resolve($ast);
      *
      * // Expected Output:
-     * // > TypeLang\Parser\Exception\SemanticException
+     * // > TypeLang\Parser\Exception\ParsingException
      * echo $ast->name->toString();
      * ```
      */
@@ -276,18 +277,18 @@ final class TypeResolver
      * ```
      * $ast = new TypeParser()
      *     ->parse(<<<'PHP'
-     *         array { Node, Error\SemanticException }
+     *         array { Name, Error\ParsingException }
      *         PHP);
      *
      * new TypeResolver()
-     *     ->withTypeImport('TypeLang\Parser\Node')
+     *     ->withTypeImport('TypeLang\Type\Name')
      *     ->withTypeImportAs('TypeLang\Parser\Exception', 'Error')
      *     ->resolve($ast);
      *
      * // Expected Output:
      * // > array{
-     * // >     TypeLang\Parser\Node,
-     * // >     TypeLang\Parser\Exception\SemanticException
+     * // >     TypeLang\Type\Name,
+     * // >     TypeLang\Parser\Exception\ParsingException
      * // > }
      * ```
      *

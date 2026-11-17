@@ -15,7 +15,7 @@ use TypeLang\Parser\TypeParserFeatures;
  * ```
  *  $parser = new TypeParser(new TypeParserFeatures(literals: false));
  *  $parser->parse('42');
- *  // => FeatureNotEnabledException: Literals not allowed
+ *  // => FeatureNotEnabledException: Literals feature is not allowed
  * ```
  */
 final class FeatureNotEnabledException extends ParsingException

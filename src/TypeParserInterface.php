@@ -34,7 +34,7 @@ interface TypeParserInterface
      * // => TypeNode
      *
      * $parser->parse('array{');
-     * // => ParseException
+     * // => MalformedSyntaxException
      * ```
      *
      * @param TSource $source source code to parse

@@ -65,8 +65,6 @@ NamedType -> {
 }
   : Name() (
       ::T_DOUBLE_COLON:: ConstantMask()
-      // Foo<T>, no parameters of a callable follow
-      | TemplateArguments() !<T_PAREN_OPEN>
       | TemplateParameters() CallableSignature()
       | TemplateArguments()
       | ShapeFields()

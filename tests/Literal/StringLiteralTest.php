@@ -61,6 +61,9 @@ final class StringLiteralTest extends TestCase
         yield 'octal overflow is truncated' => ['"\777"', "\xFF"];
         yield 'escaped backslash before octal sequence' => ['"a\\\\101b"', 'a\101b'];
         yield 'code point above the unicode range' => ['"\u{110000}"', "\u{FFFD}"];
+        yield 'code point above the int range' => ['"\u{FFFFFFFFFFFFFFFF}"', "\u{FFFD}"];
+        yield 'code point above the int range is not wrapped' => ['"\u{10000000000000041}"', "\u{FFFD}"];
+        yield 'code point with leading zeros' => ['"\u{00000000000041}"', 'A'];
     }
 
     /**

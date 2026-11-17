@@ -18,13 +18,13 @@ final class UtfCharRenderer
     /**
      * @var non-empty-string
      */
-    private const REPLACEMENT_CHAR = "\u{FFFD}";
+    public const REPLACEMENT_CHAR = "\u{FFFD}";
 
     /**
      * Method for encoding an utf-8 character by its code.
      *
      * Codes above the last Unicode code point are encoded as a replacement
-     * char because such a sequence cannot be expressed in utf-8.
+     * char. The result does not depend on the mbstring settings.
      *
      * @param int<0, max> $code
      */
@@ -32,11 +32,6 @@ final class UtfCharRenderer
     {
         if ($code > self::MAX_CODE_POINT) {
             return self::REPLACEMENT_CHAR;
-        }
-
-        // @phpstan-ignore-next-line : PHPStan false-positive mb_chr evaluation
-        if (\function_exists('\\mb_chr') && ($result = \mb_chr($code)) !== false) {
-            return $result;
         }
 
         if (0x80 > $code) {
