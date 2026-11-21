@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\TypeResolver;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Parser\TypeResolver;
 use TypeLang\Printer\PrettyTypePrinter;
 
@@ -13,7 +12,6 @@ use TypeLang\Printer\PrettyTypePrinter;
  * Tests for {@see TypeResolver} resolving names by the namespace and by the
  * classes of `self`, `static` and `parent`.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class TypeResolverScopeTest extends TypeResolverTestCase
 {
     /**

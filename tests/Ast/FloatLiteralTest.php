@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Literal\FloatLiteralNode;
 
 /**
  * Tests for the float literal grammar (basic and scientific notation).
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class FloatLiteralTest extends AstTestCase
 {
     /**

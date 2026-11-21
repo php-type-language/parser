@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\NamedTypeNode;
 
 /**
  * Tests for the grammar of type names (identifiers) and namespaces.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class NameTest extends AstTestCase
 {
     /**

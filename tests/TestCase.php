@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests;
 
 use JetBrains\PhpStorm\Language;
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Partial\ParsedResult;
@@ -39,7 +38,6 @@ use TypeLang\Type\TypeNode;
  *     literals?: bool,
  * }
  */
-#[Group('unit'), Group('type-lang/parser')]
 abstract class TestCase extends BaseTestCase
 {
     private ?TypeParserInterface $parser = null;

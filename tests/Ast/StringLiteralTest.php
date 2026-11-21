@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Ast;
 
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Literal\StringLiteralNode;
 
 /**
  * Tests for the string literal grammar (single and double quoted strings).
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class StringLiteralTest extends AstTestCase
 {
     public function testDoubleQuotedString(): void

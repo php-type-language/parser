@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Callable\CallableTypeNode;
 use TypeLang\Type\Condition\ConditionalTypeNode;
 use TypeLang\Type\LogicalTypeNode\IntersectionTypeNode;
@@ -20,7 +19,6 @@ use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
  * A type stands in a place of another one as a whole: the place keeps the
  * node of it as it is, whatever kind of a type it is.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class PositionsTest extends AstTestCase
 {
     private const MARK = '%s';

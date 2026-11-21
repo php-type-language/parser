@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver;
 
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TypeLang\Parser\Tests\TypeResolver\Stub\ClassWithMethodStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\SimpleClassStub;
@@ -14,7 +13,6 @@ use TypeLang\Parser\TypeResolver\PhpUseStatementsReader\ReflectionSourcePrefixRe
  * Tests for {@see ReflectionSourcePrefixReader} that reads the source of
  * a file up to the line where the reflected entity is declared.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class ReflectionSourcePrefixReaderTest extends TypeResolverTestCase
 {
     private ReflectionSourcePrefixReader $reader;

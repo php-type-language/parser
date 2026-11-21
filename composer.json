@@ -50,7 +50,7 @@
         "test:unit": ["test", "phpunit", "unit"]
     },
     "scripts": {
-        "test:unit": "phpunit --testdox"
+        "test:unit": "phpunit"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

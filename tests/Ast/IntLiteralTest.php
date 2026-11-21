@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Literal\IntLiteralNode;
 
 /**
  * Tests for the integer literal grammar (decimal, binary, octal, hexadecimal).
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class IntLiteralTest extends AstTestCase
 {
     /**

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Whitespaces and comments between the tokens of a type leave the tree of it
  * as it is.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class TriviaTest extends AstTestCase
 {
     /**

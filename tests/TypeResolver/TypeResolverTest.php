@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\TypeResolver;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Parser\TypeResolver;
 use TypeLang\Type\NamedTypeNode;
 
@@ -13,7 +12,6 @@ use TypeLang\Type\NamedTypeNode;
  * Tests for {@see TypeResolver} that expands short type names into their
  * fully-qualified form using registered `use`-like imports and aliases.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class TypeResolverTest extends TypeResolverTestCase
 {
     /**

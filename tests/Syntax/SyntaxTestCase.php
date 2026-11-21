@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Syntax;
 
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Parser\Tests\TestCase;
 
 /**
  * A base of the tests of the grammar: they tell whether a source is
  * accepted or not, and look at nothing else.
  */
-#[Group('unit'), Group('type-lang/parser'), Group('syntax')]
 abstract class SyntaxTestCase extends TestCase
 {
     private static ?SyntaxChecker $checker = null;

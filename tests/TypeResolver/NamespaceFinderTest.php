@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver;
 
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TypeLang\Parser\TypeResolver\PhpUseStatementsReader\NamespaceFinder;
 
@@ -12,7 +11,6 @@ use TypeLang\Parser\TypeResolver\PhpUseStatementsReader\NamespaceFinder;
  * Tests for {@see NamespaceFinder} that moves a token stream to the beginning
  * of the import section of the requested namespace.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class NamespaceFinderTest extends TypeResolverTestCase
 {
     /**

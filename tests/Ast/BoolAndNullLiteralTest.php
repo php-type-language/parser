@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Literal\BoolLiteralNode;
 use TypeLang\Type\Literal\NullLiteralNode;
 
 /**
  * Tests for the "true", "false" and "null" literal grammar.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class BoolAndNullLiteralTest extends AstTestCase
 {
     /**

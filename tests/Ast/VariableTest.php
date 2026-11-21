@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for the way the `$this` is built in the places a type stands in.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class VariableTest extends AstTestCase
 {
     public function testThisIsATypeOfItsOwn(): void

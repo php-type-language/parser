@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for shape (structural) types.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class ShapeTest extends AstTestCase
 {
     protected function setUp(): void

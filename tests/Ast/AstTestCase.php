@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Ast;
 
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Parser\Exception\FeatureNotEnabledException;
 use TypeLang\Parser\Exception\ParserException;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
 use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Tests\TestCase;
 
-#[Group('unit'), Group('type-lang/parser'), Group('ast')]
 abstract class AstTestCase extends TestCase
 {
     /**

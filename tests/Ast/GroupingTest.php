@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\NamedTypeNode;
 use TypeLang\Type\TypeOffsetAccessTypeNode;
 use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
@@ -14,7 +13,6 @@ use TypeLang\Type\WrappingTypeNode\TypesListTypeNode;
  * Tests for the way the parts of a type bind to one another, that is, what
  * the parentheses group and what a suffix reaches over.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class GroupingTest extends AstTestCase
 {
     /**

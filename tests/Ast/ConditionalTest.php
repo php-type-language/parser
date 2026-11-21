@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use TypeLang\Type\Callable\CallableParameterNode;
 use TypeLang\Type\Callable\CallableTypeNode;
 use TypeLang\Type\Condition\ConditionalTypeNode;
@@ -17,7 +16,6 @@ use TypeLang\Type\VariableNode;
 /**
  * Tests for the conditional (ternary) types.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class ConditionalTest extends AstTestCase
 {
     /**

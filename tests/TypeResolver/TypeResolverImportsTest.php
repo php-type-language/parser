@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\TypeResolver;
 
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TypeLang\Parser\Tests\TypeResolver\Stub\ClassWithMethodStub;
 use TypeLang\Parser\Tests\TypeResolver\Stub\NoImportsStub;
@@ -16,7 +15,6 @@ use TypeLang\Type\NamedTypeNode;
  * Tests for the {@see TypeResolver} imports read out of an existing class
  * or function declaration.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class TypeResolverImportsTest extends TypeResolverTestCase
 {
     /**

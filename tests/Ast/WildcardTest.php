@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\Tests\Ast;
 
-use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for the asterisk written in the place of a template argument that is
  * left unsaid.
  */
-#[Group('unit'), Group('type-lang/parser')]
 final class WildcardTest extends AstTestCase
 {
     protected function setUp(): void
