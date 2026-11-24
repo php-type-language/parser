@@ -95,6 +95,106 @@ final class TypeParserTest extends TestCase
         self::assertInstanceOf(NamedTypeNode::class, $parser->parse('array{a: int}'));
     }
 
+    /**
+     * @return iterable<non-empty-string, array{
+     *     'forType'|'forTemplateParameter'|null,
+     *     non-empty-string,
+     *     non-empty-string,
+     *     non-empty-string
+     * }>
+     */
+    public static function featureAndRuleDataProvider(): iterable
+    {
+        yield 'literals of the default rule' => [null, 'literals', '42', 'int'];
+        yield 'literals of a type' => ['forType', 'literals', '42', 'int'];
+        yield 'generics of a type' => ['forType', 'generics', 'array<int>', 'array'];
+        yield 'literals of a template parameter' => ['forTemplateParameter', 'literals', 'T of 42', 'T of int'];
+        yield 'generics of a template parameter' => ['forTemplateParameter', 'generics', 'T of A<int>', 'T of A'];
+    }
+
+    /**
+     * @param 'forType'|'forTemplateParameter'|null $rule
+     * @param non-empty-string $feature
+     * @param non-empty-string $refused
+     * @param non-empty-string $accepted
+     * @throws \Throwable
+     */
+    #[Test]
+    #[DataProvider('featureAndRuleDataProvider')]
+    public function featureAndRuleAreAppliedInAnyOrder(
+        ?string $rule,
+        string $feature,
+        string $refused,
+        string $accepted,
+    ): void {
+        $orders = [
+            'rule, then feature' => static function (TypeParser $parser) use ($rule, $feature): TypeParser {
+                if ($rule !== null) {
+                    $parser = $parser->$rule();
+                }
+
+                return $parser->with(...[$feature => false]);
+            },
+            'feature, then rule' => static function (TypeParser $parser) use ($rule, $feature): TypeParser {
+                $parser = $parser->with(...[$feature => false]);
+
+                if ($rule !== null) {
+                    $parser = $parser->$rule();
+                }
+
+                return $parser;
+            },
+        ];
+
+        foreach ($orders as $order => $configure) {
+            // The source parser has already read something
+            $source = new TypeParser();
+            $source->parse('1');
+
+            $parser = $configure($source);
+
+            self::assertNotNull($parser->parse($accepted), $order);
+
+            try {
+                $parser->parse($refused);
+
+                self::fail(\sprintf('The source "%s" must be refused (%s)', $refused, $order));
+            } catch (FeatureNotEnabledException) {
+                self::assertTrue(true);
+            }
+        }
+    }
+
+    #[Test]
+    public function templateParameterRuleIsKeptByTheFeatureOverride(): void
+    {
+        $parser = (new TypeParser())
+            ->forTemplateParameter()
+            ->with(literals: false);
+
+        self::assertInstanceOf(TemplateParameterNode::class, $parser->parse('T of int'));
+    }
+
+    #[Test]
+    public function theSameRuleKeepsTheParser(): void
+    {
+        $parser = new TypeParser();
+        $template = $parser->forTemplateParameter();
+
+        self::assertSame($parser, $parser->forType());
+        self::assertSame($template, $template->forTemplateParameter());
+    }
+
+    #[Test]
+    public function theRuleDoesNotLeakIntoTheOriginalParser(): void
+    {
+        $parser = new TypeParser();
+        $parser->parse('int');
+        $parser->forTemplateParameter();
+
+        self::assertNotInstanceOf(TemplateParameterNode::class, $parser->parse('int'));
+    }
+
     #[Test]
     public function theSameParserCanBeUsedSeveralTimes(): void
     {

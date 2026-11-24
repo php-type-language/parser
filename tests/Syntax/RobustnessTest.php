@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Syntax;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Phplrt\Contracts\Parser\Exception\ParserExceptionInterface as PhplrtParserExceptionInterface;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
+use TypeLang\Parser\Exception\UnrecognizedSyntaxException;
+use TypeLang\Parser\Partial\SuccessfulParsedResult;
+use TypeLang\Parser\Validation\SuccessfulCheckResult;
 
 /**
  * Whatever the source is, the parser either reads it or refuses it the way a
@@ -83,20 +85,40 @@ final class RobustnessTest extends SyntaxTestCase
         for ($i = 0; $i < self::MUTATIONS; ++$i) {
             $mutated = self::mutate(self::mutate($source, $state), $state);
 
-            try {
-                $this->parse($mutated);
-            } catch (\Throwable $e) {
-                self::assertTrue(
-                    $e instanceof ParserExceptionInterface || $e instanceof PhplrtParserExceptionInterface,
-                    \sprintf(
-                        'The source %s is refused with %s: %s',
-                        \json_encode($mutated, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES),
-                        $e::class,
-                        $e->getMessage(),
-                    ),
-                );
+            foreach (['parse', 'partial', 'validate'] as $method) {
+                try {
+                    $this->parser()->$method($mutated);
+                } catch (\Throwable $e) {
+                    self::assertInstanceOf(
+                        ParserExceptionInterface::class,
+                        $e,
+                        \sprintf(
+                            '%s of the source %s is refused with %s: %s',
+                            $method,
+                            \json_encode($mutated, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES),
+                            $e::class,
+                            $e->getMessage(),
+                        ),
+                    );
+                }
             }
         }
+    }
+
+    /**
+     * A string that is valid but too long for the lexer to read is refused
+     * with the exceptions and the results of the package in every method.
+     *
+     * @throws \Throwable
+     */
+    public function testTooLongStringIsRefusedWithTheOwnExceptionsOfThePackage(): void
+    {
+        $source = "'" . \str_repeat('\\\\', 9000) . "'";
+        $parser = $this->parser();
+
+        self::assertInstanceOf(UnrecognizedSyntaxException::class, $this->parseFailure($source));
+        self::assertNotInstanceOf(SuccessfulParsedResult::class, $parser->partial($source));
+        self::assertNotInstanceOf(SuccessfulCheckResult::class, $parser->validate($source));
     }
 
     /**

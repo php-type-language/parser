@@ -397,4 +397,98 @@ final class TraverserTest extends TestCase
 
         self::assertSame(1, $visitor->before);
     }
+
+    private function deepUnion(int $depth): UnionTypeNode
+    {
+        $node = new UnionTypeNode([$this->type('A'), $this->type('B')]);
+
+        for ($i = 1; $i < $depth; ++$i) {
+            $node = new UnionTypeNode([$this->type('A'), $node]);
+        }
+
+        return $node;
+    }
+
+    #[Test]
+    public function everyVisitorEntersAndLeavesEveryNodeExactlyOnce(): void
+    {
+        $tree = $this->deepUnion(12);
+
+        $baseline = $this->recorder();
+        Traverser::new([$baseline])->traverse([$tree]);
+
+        $visitors = [$this->recorder('a'), $this->recorder('b'), $this->recorder('c')];
+        Traverser::new($visitors)->traverse([$tree]);
+
+        foreach ($visitors as $visitor) {
+            self::assertSame($baseline->entered, $visitor->entered);
+            self::assertEqualsCanonicalizing($baseline->left, $visitor->left);
+            self::assertCount(\count($baseline->entered), $visitor->left);
+        }
+    }
+
+    #[Test]
+    public function nodeIsEnteredByAllVisitorsThenChildrenThenLeftInReverseOrder(): void
+    {
+        Traverser::new([$this->recorder('a'), $this->recorder('b')])
+            ->traverse([$this->type()]);
+
+        self::assertSame([
+            'a:before',
+            'b:before',
+            'a:enter',
+            'b:enter',
+            'a:enter',
+            'b:enter',
+            'b:leave',
+            'a:leave',
+            'b:leave',
+            'a:leave',
+            'a:after',
+            'b:after',
+        ], $this->log->getArrayCopy());
+    }
+
+    #[Test]
+    public function skipChildrenOfOneVisitorDoesNotHideTheSubtreeFromAnother(): void
+    {
+        $skipping = $this->recorder('a', Command::SkipChildren);
+        $other = $this->recorder('b');
+
+        Traverser::new([$skipping, $other])->traverse([$this->type('Foo\\Bar')]);
+
+        self::assertSame([NamedTypeNode::class], $skipping->entered);
+        self::assertSame([NamedTypeNode::class], $skipping->left);
+        self::assertSame([NamedTypeNode::class, Name::class], $other->entered);
+        self::assertSame([Name::class, NamedTypeNode::class], $other->left);
+    }
+
+    #[Test]
+    public function subtreeIsNotWalkedWhenEveryVisitorSkipsIt(): void
+    {
+        $first = $this->recorder('a', Command::SkipChildren);
+        $second = $this->recorder('b', Command::SkipChildren);
+
+        Traverser::new([$first, $second])->traverse([$this->type('Foo\\Bar')]);
+
+        self::assertSame([NamedTypeNode::class], $first->entered);
+        self::assertSame([NamedTypeNode::class], $second->entered);
+    }
+
+    #[Test]
+    public function typeMapVisitorIsAppliedOnceWithAnotherVisitor(): void
+    {
+        $calls = 0;
+        $mapper = new Traverser\TypeMapVisitor(static function (Name $name) use (&$calls): Name {
+            ++$calls;
+
+            return $name;
+        });
+
+        Traverser::new([$mapper, $this->recorder()])->traverse([
+            new UnionTypeNode([$this->type('A'), $this->type('B')]),
+        ]);
+
+        self::assertSame(2, $calls);
+    }
 }

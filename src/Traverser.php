@@ -82,43 +82,68 @@ final class Traverser implements TraverserInterface
             $visitor->before();
         }
 
-        $this->applyToIterable($nodes);
+        $this->applyToIterable($nodes, $this->visitors);
 
         foreach ($this->visitors as $visitor) {
             $visitor->after();
         }
     }
 
-    private function applyToNode(Node $node): void
+    /**
+     * Enters the node with every active visitor, descends once with the ones
+     * that have not skipped the children, then leaves the node with every
+     * visitor that has entered it, in the reverse order.
+     *
+     * @param list<VisitorInterface> $visitors
+     */
+    private function applyToNode(Node $node, array $visitors): void
     {
-        foreach ($this->visitors as $visitor) {
-            $command = $visitor->enter($node);
+        // The list is copied only when some visitor skips the children
+        $descending = $visitors;
+        $skipped = false;
 
-            if ($command === null) {
-                foreach ($this->propertyAccessor->unwrap($node) as $property) {
-                    if ($property instanceof Node) {
-                        $this->applyToNode($property);
-                    } elseif (\is_iterable($property)) {
-                        $this->applyToIterable($property);
-                    }
+        foreach ($visitors as $index => $visitor) {
+            if ($visitor->enter($node) === null) {
+                if ($skipped) {
+                    $descending[] = $visitor;
                 }
+
+                continue;
             }
 
-            $visitor->leave($node);
+            if (!$skipped) {
+                $skipped = true;
+                $descending = \array_slice($visitors, 0, $index);
+            }
+        }
+
+        if ($descending !== []) {
+            foreach ($this->propertyAccessor->unwrap($node) as $property) {
+                if ($property instanceof Node) {
+                    $this->applyToNode($property, $descending);
+                } elseif (\is_iterable($property)) {
+                    $this->applyToIterable($property, $descending);
+                }
+            }
+        }
+
+        for ($index = \count($visitors) - 1; $index >= 0; --$index) {
+            $visitors[$index]->leave($node);
         }
     }
 
     /**
      * @param iterable<mixed, mixed> $nodes
+     * @param list<VisitorInterface> $visitors
      */
-    private function applyToIterable(iterable $nodes): void
+    private function applyToIterable(iterable $nodes, array $visitors): void
     {
         foreach ($nodes as $node) {
             if (!$node instanceof Node) {
                 break;
             }
 
-            $this->applyToNode($node);
+            $this->applyToNode($node, $visitors);
         }
     }
 }

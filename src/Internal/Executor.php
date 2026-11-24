@@ -54,6 +54,13 @@ final class Executor extends CompiledExecutor
     protected readonly DqStringParser $dqString;
     protected readonly SqStringParser $sqString;
 
+    /**
+     * The grammar rule the reading starts with.
+     *
+     * @var int<0, max>
+     */
+    private int $entrypointId = self::Type;
+
     public function __construct(
         protected readonly TypeParserFeatures $features,
         private readonly PositionFactoryInterface $positions = new PositionFactory(),
@@ -74,15 +81,45 @@ final class Executor extends CompiledExecutor
     }
 
     /**
+     * Tells whether the reading starts with the given grammar rule set by
+     * {@see Executor::for()}.
+     *
+     * @param int<0, max> $rule
+     */
+    public function hasEntrypoint(int $rule): bool
+    {
+        return $this->entrypointId === $rule;
+    }
+
+    /**
      * @param int<0, max> $rule
      * @return self<Node>
      */
     public function for(int $rule): self
     {
+        if ($this->hasEntrypoint($rule)) {
+            return $this;
+        }
+
         $self = clone $this;
+        $self->entrypointId = $rule;
         $self->parser = $self->parser->withInitial($rule);
 
         return $self;
+    }
+
+    /**
+     * Returns an executor of the given features that starts with the same
+     * grammar rule.
+     *
+     * @return self<T>
+     */
+    public function with(TypeParserFeatures $features): self
+    {
+        $self = new self($features, $this->positions);
+
+        /** @var self<T> */
+        return $self->for($this->entrypointId);
     }
 
     /**
@@ -91,11 +128,7 @@ final class Executor extends CompiledExecutor
      */
     public function parse(ReadableInterface $source): mixed
     {
-        try {
-            $result = $this->parser->analyze($source, Mode::Tolerant);
-        } catch (ParserRuntimeException $e) {
-            throw $this->translate($e);
-        }
+        $result = $this->analyze($source, Mode::Tolerant);
 
         if ($result instanceof PartialResult) {
             throw $this->fail($result->error, $result);
@@ -106,6 +139,23 @@ final class Executor extends CompiledExecutor
         }
 
         return $result->value;
+    }
+
+    /**
+     * Runs the analysis, an error of the grammar that is thrown by it is
+     * returned as a failed result.
+     *
+     * @return SuccessfulResult<T>|FailureResult
+     * @throws \Throwable in case of the source cannot be read
+     */
+    private function analyze(ReadableInterface $source, Mode $mode): SuccessfulResult|FailureResult
+    {
+        try {
+            /** @phpstan-ignore-next-line : The value is null only in the syntax check mode */
+            return $this->parser->analyze($source, $mode);
+        } catch (ParserRuntimeException $e) {
+            return new FailureResult($e->token, $e);
+        }
     }
 
     /**
@@ -193,7 +243,7 @@ final class Executor extends CompiledExecutor
      */
     public function validate(ReadableInterface $source): SuccessfulCheckResult|FailureCheckResult
     {
-        $result = $this->parser->analyze($source, Mode::SyntaxCheck);
+        $result = $this->analyze($source, Mode::SyntaxCheck);
 
         return match (true) {
             $result instanceof PartialResult => new PartialCheckResult(
@@ -219,7 +269,7 @@ final class Executor extends CompiledExecutor
      */
     public function partial(ReadableInterface $source): SuccessfulParsedResult|FailureParsedResult
     {
-        $result = $this->parser->analyze($source, Mode::Tolerant);
+        $result = $this->analyze($source, Mode::Tolerant);
 
         return match (true) {
             $result instanceof PartialResult => new PartialParsedResult(

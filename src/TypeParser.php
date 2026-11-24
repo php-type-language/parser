@@ -83,6 +83,10 @@ final class TypeParser implements TypeParserInterface
     {
         $executor = $this->getExecutor();
 
+        if ($executor->hasEntrypoint($rule)) {
+            return $this;
+        }
+
         $self = clone $this;
         /** @phpstan-ignore-next-line : Allow executor type change */
         $self->executor = $executor->for($rule);
@@ -103,8 +107,7 @@ final class TypeParser implements TypeParserInterface
     public function with(bool ...$features): self
     {
         $self = new self($this->features->with(...$features), $this->sources);
-        // Copy current executor context
-        $self->executor = $this->executor;
+        $self->executor = $this->executor?->with($self->features);
 
         return $self;
     }
