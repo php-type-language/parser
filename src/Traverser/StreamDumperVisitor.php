@@ -13,6 +13,10 @@ final class StreamDumperVisitor extends DumperVisitor
      */
     private readonly mixed $stream;
 
+    /**
+     * @throws \InvalidArgumentException in case of the stream cannot be opened
+     *         for writing
+     */
     public function __construct(
         string $simplifyNodeNamespace = self::DEFAULT_SIMPLIFIED_NODE_NAMESPACE,
         string $stream = self::DEFAULT_OUTPUT_STREAM,
@@ -22,7 +26,10 @@ final class StreamDumperVisitor extends DumperVisitor
         $resource = \fopen($stream, 'ab+');
 
         if (!\is_resource($resource)) {
-            throw new \InvalidArgumentException(\sprintf('Could not open "%s" for writing', $stream));
+            throw new \InvalidArgumentException(\sprintf(
+                'Could not open "%s" for writing',
+                \addcslashes($stream, '"'),
+            ));
         }
 
         $this->stream = $resource;

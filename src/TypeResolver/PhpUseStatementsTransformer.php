@@ -9,7 +9,8 @@ use TypeLang\Type\NamespaceName;
 use TypeLang\Type\NamespaceName\NamespaceKind;
 
 /**
- * A set of rules for modifying names defined in the `use` statements of PHP code.
+ * A set of rules for modifying names defined in the `use` statements of PHP
+ * code.
  *
  * For example, for such code:
  * ```
@@ -43,7 +44,9 @@ final class PhpUseStatementsTransformer
     private readonly array $replacements;
 
     /**
-     * @param iterable<non-empty-string|array-key, non-empty-string> $replacements
+     * @param iterable<array-key, non-empty-string> $replacements
+     * @throws \InvalidArgumentException in case of an import has no name
+     *         segment
      */
     public function __construct(
         iterable $replacements,
@@ -53,7 +56,12 @@ final class PhpUseStatementsTransformer
 
     /**
      * @param iterable<array-key, non-empty-string> $replacements
-     * @return array<non-empty-lowercase-string, non-empty-list<non-empty-string>>
+     * @return array<
+     *     non-empty-lowercase-string,
+     *     non-empty-list<non-empty-string>
+     * >
+     * @throws \InvalidArgumentException in case of an import has no name
+     *         segment
      */
     private function format(iterable $replacements): array
     {
@@ -66,7 +74,7 @@ final class PhpUseStatementsTransformer
                 throw new \InvalidArgumentException('Import must contain at least one name segment');
             }
 
-            /** @var non-empty-list<non-empty-string> $words */
+            /** @var non-empty-list<non-empty-string> */
             $words = \explode(NamespaceName::DELIMITER, $import);
 
             // An import without an alias is known by its last word
@@ -82,7 +90,7 @@ final class PhpUseStatementsTransformer
 
     private static function isNonSubstituted(Name $name): bool
     {
-        // Names written from the root, or with the "namespace" keyword, and
+        // Names written from the root, or with the `namespace` keyword, and
         // the special ones (self, parent, static) must not be replaced
         return $name->isFullyQualified()
             || $name->namespace?->kind === NamespaceKind::NamespaceRelative

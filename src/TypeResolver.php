@@ -37,29 +37,41 @@ final class TypeResolver
      */
     private ?TraverserInterface $traverser = null;
 
-    /**
-     * @param array<array-key, non-empty-string> $imports
-     * @param string|null $namespace namespace of the relative names, an empty
-     *        string for the global one, {@see null} in case of the relative
-     *        names are kept as written
-     * @param (\Closure(non-empty-string): bool)|null $exists returns whether
-     *        the relative name in the namespace is a class, the name is kept
-     *        as written otherwise, {@see null} in case of a class, an
-     *        interface or an enum of the name exists
-     * @param class-string|null $self class of `self`
-     * @param class-string|null $static class of `static`
-     */
     public function __construct(
+        /**
+         * @var array<array-key, non-empty-string>
+         */
         private readonly array $imports = [],
+        /**
+         * Namespace of the relative names, an empty string for the global
+         * one, {@see null} in case of the relative names are kept as written.
+         */
         private readonly ?string $namespace = null,
+        /**
+         * Returns whether the relative name in the namespace is a class, a
+         * name it rejects is kept as written. {@see null} in case of a
+         * class, an interface or an enum of the name exists.
+         *
+         * @var (\Closure(non-empty-string): bool)|null
+         */
         private readonly ?\Closure $exists = null,
+        /**
+         * Class of `self`.
+         *
+         * @var class-string|null
+         */
         private readonly ?string $self = null,
+        /**
+         * Class of `static`.
+         *
+         * @var class-string|null
+         */
         private readonly ?string $static = null,
     ) {}
 
     /**
-     * Registers a non-aliased `use Some\Any;` import, so that every relative
-     * name starting with the imported one is expanded to its full form.
+     * Registers a non-aliased `use Some\Any;` import: every relative name
+     * starting with the imported one is expanded to its full form.
      *
      * For example, for such code:
      * ```
@@ -89,8 +101,8 @@ final class TypeResolver
     }
 
     /**
-     * Registers an aliased `use Some\Any as AliasName;` import, so that every
-     * relative name starting with the alias is expanded to the imported type.
+     * Registers an aliased `use Some\Any as AliasName;` import: every relative
+     * name starting with the alias is expanded to the imported type.
      *
      * For example, for such code:
      * ```
@@ -195,10 +207,8 @@ final class TypeResolver
      */
     public function withTypeImportsFromFunction(\ReflectionFunctionAbstract $function): self
     {
+        // A method takes the imports of its declaring class
         if ($function instanceof \ReflectionMethod) {
-            // For methods, we find the class and search by it. This will
-            // allow us to traverse fewer PHP tokens (optimize), since the
-            // class declaration is "higher".
             return $this->withTypeImportsFromClass($function->getDeclaringClass());
         }
 
@@ -294,6 +304,8 @@ final class TypeResolver
      *
      * @throws \UnexpectedValueException in case of `parent` is written in a
      *         class without a parent
+     * @throws \InvalidArgumentException in case of an import has no name
+     *         segment
      */
     public function resolve(TypeNode $type): TypeNode
     {
@@ -317,6 +329,10 @@ final class TypeResolver
         );
     }
 
+    /**
+     * @throws \InvalidArgumentException in case of an import has no name
+     *         segment
+     */
     private function createTraverser(): TraverserInterface
     {
         $imports = new PhpUseStatementsTransformer($this->imports);

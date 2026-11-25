@@ -3138,7 +3138,8 @@ abstract class CompiledExecutor implements \Phplrt\Contracts\Parser\ParserInterf
                 $children[3],
                 $offset,
             ),
-            // T is not U ? A : B, the children have the "is not" in front of the target
+            // T is not U ? A : B, the children have the `is not` in front of the
+            // target
             default => new Type\Condition\ConditionalTypeNode(
                 new Type\Condition\ConditionNode(
                     $children[0],
@@ -3303,9 +3304,21 @@ abstract class CompiledExecutor implements \Phplrt\Contracts\Parser\ParserInterf
             // Foo{...}, Foo{...<K, V>}
             $second instanceof Type\Shape\FieldListNode => new Type\NamedTypeNode($name, $children[2], $second, $offset),
             // Foo(int): void, Foo()
-            $second instanceof Type\Callable\CallableParameterListNode => new Type\Callable\CallableTypeNode($name, $second, $children[2] ?? null, null, $offset),
+            $second instanceof Type\Callable\CallableParameterListNode => new Type\Callable\CallableTypeNode(
+                $name,
+                $second,
+                $children[2] ?? null,
+                null,
+                $offset,
+            ),
             // Foo<T>(T): T
-            $second instanceof Type\Template\TemplateParameterListNode => new Type\Callable\CallableTypeNode($name, $children[2], $children[3] ?? null, $second, $offset),
+            $second instanceof Type\Template\TemplateParameterListNode => new Type\Callable\CallableTypeNode(
+                $name,
+                $children[2],
+                $children[3] ?? null,
+                $second,
+                $offset,
+            ),
             // Foo::BAR
             $second instanceof Type\Identifier => new Type\Constant\ConstTypeNode($name, $second, $offset),
             // Foo::BAR_*, Foo::*

@@ -9,8 +9,7 @@ use Phplrt\Lexer\Token\EndOfInputToken;
 use Phplrt\Lexer\Token\Printer\PrettyTokenPrinter;
 
 /**
- * Tells the tokens of the grammar in the words a user of the library reads,
- * instead of the names the grammar gives them.
+ * Tells the tokens of the grammar in the words a user of the library reads.
  *
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal TypeLang\Parser
@@ -18,8 +17,8 @@ use Phplrt\Lexer\Token\Printer\PrettyTokenPrinter;
 final class TokenDescriber
 {
     /**
-     * The number of the expected tokens an error tells apart, the rest of them
-     * being counted instead.
+     * The number of the expected tokens an error lists, the rest of them
+     * being marked with `and other`.
      */
     private const MAX_LISTED = 4;
 
@@ -101,10 +100,10 @@ final class TokenDescriber
 
     /**
      * Tells what could have been read instead, the first few of the choices
-     * being listed and the rest replaced with an ellipsis.
+     * being listed and the rest marked with `and other`.
      *
      * @param list<non-empty-string> $expected
-     * @return string|null The {@see null} in case of nothing is known
+     * @return string|null {@see null} in case of nothing is known
      */
     public static function describeExpected(array $expected): ?string
     {
@@ -126,7 +125,7 @@ final class TokenDescriber
     {
         $labels = [];
 
-        foreach (self::withoutCoveredWords($expected) as $name) {
+        foreach (self::removeCoveredWords($expected) as $name) {
             $labels[self::LABELS[$name] ?? $name] = true;
         }
 
@@ -139,7 +138,7 @@ final class TokenDescriber
      * @param list<non-empty-string> $expected
      * @return list<non-empty-string>
      */
-    private static function withoutCoveredWords(array $expected): array
+    private static function removeCoveredWords(array $expected): array
     {
         if (!\in_array('T_IDENTIFIER', $expected, true)) {
             return $expected;

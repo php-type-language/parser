@@ -12,12 +12,14 @@ class MatcherVisitor extends Visitor
 
     private bool $shouldContinue = false;
 
-    /**
-     * @param \Closure(Node):bool $matcher
-     * @param (\Closure(Node):bool)|null $break
-     */
     public function __construct(
+        /**
+         * @var \Closure(Node):bool
+         */
         private readonly \Closure $matcher,
+        /**
+         * @var (\Closure(Node):bool)|null
+         */
         private readonly ?\Closure $break = null,
     ) {}
 

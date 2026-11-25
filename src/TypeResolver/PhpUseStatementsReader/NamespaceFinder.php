@@ -66,7 +66,7 @@ final class NamespaceFinder
      */
     private function readNamespace(\Iterator $tokens): string
     {
-        // Skip "namespace" token.
+        // Skip `namespace` token.
         $tokens->next();
 
         $result = null;
@@ -77,7 +77,7 @@ final class NamespaceFinder
             if ($current->id === \T_NAME_QUALIFIED || $current->id === \T_STRING) {
                 $result = $current->text;
             } elseif ($current->text === ';' || $current->text === '{') {
-                // A namespace name is terminated either by ";" or "{"
+                // A namespace name is terminated either by `;` or `{`
                 $tokens->next();
 
                 return $result ?? '';

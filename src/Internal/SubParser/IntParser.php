@@ -80,6 +80,9 @@ abstract class IntParser implements SubParserInterface
         return static::KIND;
     }
 
+    /**
+     * @throws \UnexpectedValueException in case of the literal has no digits
+     */
     public function parse(string $raw, int $offset = 0): IntLiteralNode
     {
         // cleanup
@@ -143,7 +146,7 @@ abstract class IntParser implements SubParserInterface
             $value = -\PHP_INT_MAX;
         }
 
-        // @phpstan-ignore-next-line : Negative numeric-string is a numeric-string too
+        // @phpstan-ignore-next-line a negative numeric-string is numeric too
         return [$value, '-' . $decimal];
     }
 }

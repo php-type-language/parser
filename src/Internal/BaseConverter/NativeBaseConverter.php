@@ -13,7 +13,8 @@ namespace TypeLang\Parser\Internal\BaseConverter;
 final class NativeBaseConverter implements BaseConverterInterface
 {
     /**
-     * Decimal digits in a limb, the most that keeps a limb times base 36 plus a digit in a native integer.
+     * Decimal digits in a limb, the most that keeps a limb times base 36 plus
+     * a digit in a native integer.
      *
      * @var int<1, max>
      */
@@ -34,7 +35,7 @@ final class NativeBaseConverter implements BaseConverterInterface
     public function toDecimal(string $digits, int $base): string
     {
         if ($base === self::OUTPUT_RADIX) {
-            /** @phpstan-ignore-next-line : 10-base digits are numeric-string */
+            // @phpstan-ignore-next-line 10-base digits are numeric-string
             return $digits;
         }
 

@@ -37,11 +37,12 @@ use TypeLang\Type\Node;
 use TypeLang\Type\TypeNode;
 
 /**
+ * @internal this is an internal library class, please do not use it in your code
+ * @psalm-internal TypeLang\Parser
+ *
  * @template T of Node = TypeNode
  *
  * @template-extends CompiledExecutor<T>
- *
- * @see TypeNode
  */
 final class Executor extends CompiledExecutor
 {
@@ -151,7 +152,7 @@ final class Executor extends CompiledExecutor
     private function analyze(ReadableInterface $source, Mode $mode): SuccessfulResult|FailureResult
     {
         try {
-            /** @phpstan-ignore-next-line : The value is null only in the syntax check mode */
+            // @phpstan-ignore-next-line null only in the syntax check mode
             return $this->parser->analyze($source, $mode);
         } catch (ParserRuntimeException $e) {
             return new FailureResult($e->token, $e);
@@ -273,7 +274,7 @@ final class Executor extends CompiledExecutor
 
         return match (true) {
             $result instanceof PartialResult => new PartialParsedResult(
-                /** @phpstan-ignore-next-line : PHPStan "unresolvable type" bug */
+                // @phpstan-ignore-next-line PHPStan "unresolvable type" bug
                 $result->value,
                 $result->token->offset,
             ),

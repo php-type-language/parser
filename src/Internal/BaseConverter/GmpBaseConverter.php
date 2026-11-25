@@ -20,7 +20,7 @@ final class GmpBaseConverter implements BaseConverterInterface
     public function toDecimal(string $digits, int $base): string
     {
         if ($base === self::OUTPUT_RADIX) {
-            /** @phpstan-ignore-next-line : 10-base digits are numeric-string */
+            // @phpstan-ignore-next-line 10-base digits are numeric-string
             return $digits;
         }
 

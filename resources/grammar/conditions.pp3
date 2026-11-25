@@ -30,7 +30,8 @@
             $children[3],
             $offset,
         ),
-        // T is not U ? A : B, the children have the "is not" in front of the target
+        // T is not U ? A : B, the children have the `is not` in front of the
+        // target
         default => new Type\Condition\ConditionalTypeNode(
             new Type\Condition\ConditionNode(
                 $children[0],

@@ -33,7 +33,7 @@ final class ParsingErrorRange
 
     /**
      * @param int<0, max> $offset
-     * @throws SourceExceptionInterface
+     * @throws SourceExceptionInterface in case of the source cannot be read
      */
     private function toPosition(ReadableInterface $source, int $offset): PositionInterface
     {
@@ -44,7 +44,7 @@ final class ParsingErrorRange
     /**
      * @api
      *
-     * @throws SourceExceptionInterface
+     * @throws SourceExceptionInterface in case of the source cannot be read
      */
     public function toStartPosition(ReadableInterface $source): PositionInterface
     {
@@ -54,7 +54,7 @@ final class ParsingErrorRange
     /**
      * @api
      *
-     * @throws SourceExceptionInterface
+     * @throws SourceExceptionInterface in case of the source cannot be read
      */
     public function toEndPosition(ReadableInterface $source): PositionInterface
     {

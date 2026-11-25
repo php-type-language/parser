@@ -19,8 +19,6 @@ final class PhpUseStatementsReader
     }
 
     /**
-     * Return array of use statements from class.
-     *
      * @param \ReflectionClass<object> $class
      * @return array<int|non-empty-string, non-empty-string>
      */
@@ -36,8 +34,6 @@ final class PhpUseStatementsReader
     }
 
     /**
-     * Return array of use statements from function.
-     *
      * @return array<int|non-empty-string, non-empty-string>
      */
     public function getFunctionUseStatements(\ReflectionFunctionAbstract $function): array
@@ -51,9 +47,6 @@ final class PhpUseStatementsReader
         return [...$this->parse($this->getFunctionNamespace($function, $header), $header)];
     }
 
-    /**
-     * Returns the namespace the given function is written in.
-     */
     private function getFunctionNamespace(\ReflectionFunctionAbstract $function, string $header): string
     {
         if (\PHP_VERSION_ID < 80400) {
@@ -111,13 +104,13 @@ final class PhpUseStatementsReader
                 continue;
             }
 
-            // The first token that does not open a "use" statement ends the
+            // The first token that does not open a `use` statement ends the
             // import section of the namespace.
             if ($current->id !== \T_USE) {
                 break;
             }
 
-            // Skip the "use" keyword.
+            // Skip the `use` keyword.
             $tokens->next();
 
             foreach ($this->fetchUseStatement($tokens) as [$namespace, $alias]) {
@@ -131,7 +124,7 @@ final class PhpUseStatementsReader
     }
 
     /**
-     * Reads a single "use" statement and returns the imports it declares.
+     * Reads a single `use` statement and returns the imports it declares.
      *
      * @param \Iterator<array-key, \PhpToken> $tokens
      * @return list<array{non-empty-string, non-empty-string|null}>
@@ -142,7 +135,7 @@ final class PhpUseStatementsReader
 
         $offset = 0;
 
-        // "use function Some\fn;" and "use const Some\CONST;" are imports too
+        // `use function Some\fn;` and `use const Some\CONST;` are imports too
         if (isset($buffer[0]) && ($buffer[0]->id === \T_FUNCTION || $buffer[0]->id === \T_CONST)) {
             $offset = 1;
         }
@@ -150,8 +143,8 @@ final class PhpUseStatementsReader
         $entries = \array_slice($buffer, $offset);
         $prefix = null;
 
-        // A group "use Some\Prefix\{ A, B as C };" shares a common prefix
-        $open = $this->offsetOf($entries, '{');
+        // A group `use Some\Prefix\{ A, B as C };` shares a common prefix
+        $open = $this->findOffset($entries, '{');
 
         if ($open !== null) {
             $prefix = $this->readName(\array_slice($entries, 0, $open));
@@ -160,7 +153,7 @@ final class PhpUseStatementsReader
                 return [];
             }
 
-            $close = $this->offsetOf($entries, '}') ?? \count($entries);
+            $close = $this->findOffset($entries, '}') ?? \count($entries);
             $entries = \array_slice($entries, $open + 1, $close - $open - 1);
         }
 
@@ -169,7 +162,7 @@ final class PhpUseStatementsReader
 
     /**
      * Consumes the tokens of the current statement up to and including the
-     * terminating ";"
+     * terminating `;`
      *
      * @param \Iterator<array-key, \PhpToken> $tokens
      * @return list<\PhpToken>
@@ -240,7 +233,7 @@ final class PhpUseStatementsReader
      * @param list<\PhpToken> $tokens
      * @return int<0, max>|null
      */
-    private function offsetOf(array $tokens, string $text): ?int
+    private function findOffset(array $tokens, string $text): ?int
     {
         foreach ($tokens as $offset => $token) {
             if ($token->text === $text) {
@@ -252,7 +245,7 @@ final class PhpUseStatementsReader
     }
 
     /**
-     * Parses a single "Name (as Alias)?" import entry
+     * Parses a single `Name (as Alias)?` import entry
      *
      * @param list<\PhpToken> $tokens
      * @param non-empty-string|null $prefix

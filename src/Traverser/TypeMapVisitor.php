@@ -18,10 +18,10 @@ use TypeLang\Type\Node;
  */
 final class TypeMapVisitor extends Visitor
 {
-    /**
-     * @param \Closure(Name):(Name|null) $transform
-     */
     public function __construct(
+        /**
+         * @var \Closure(Name):(Name|null)
+         */
         private readonly \Closure $transform,
     ) {}
 

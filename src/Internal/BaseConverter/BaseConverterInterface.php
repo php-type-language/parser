@@ -24,7 +24,8 @@ interface BaseConverterInterface
     public function isAvailable(): bool;
 
     /**
-     * @param non-empty-string $digits `0-9`, then `a-z` in either case, each less than the base
+     * @param non-empty-string $digits `0-9`, then `a-z` in either case, each
+     *        less than the base
      * @param int<2, 36> $base
      * @return numeric-string the decimal number without leading zeros
      */

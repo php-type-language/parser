@@ -27,7 +27,7 @@ final class DqStringParser extends StringParser
             return $value;
         }
 
-        return \strtr($value, StringSequencesFetcher::get($value));
+        return \strtr($value, StringSequencesFetcher::getReplacements($value));
     }
 
     public function parse(string $raw, int $offset = 0): StringLiteralNode

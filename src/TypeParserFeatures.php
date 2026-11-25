@@ -111,7 +111,7 @@ final class TypeParserFeatures
      */
     public function with(bool ...$features): self
     {
-        /** @var array<non-empty-string, bool> $arguments */
+        /** @var array<non-empty-string, bool> */
         $arguments = [...\get_object_vars($this), ...$features];
 
         return new self(...$arguments);

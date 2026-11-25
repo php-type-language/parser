@@ -3,6 +3,8 @@
 
 declare(strict_types=1);
 
+namespace TypeLang\Parser\Bin;
+
 use Phplrt\Compiler\Compiler;
 use Phplrt\Compiler\Generator\ClassModifier;
 use Phplrt\Compiler\Generator\TargetPhpVersion;
@@ -11,27 +13,27 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 
-if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
-    trigger_error('The console should be invoked via the CLI '
-        . 'version of PHP, not the ' . PHP_SAPI . ' SAPI.', E_USER_WARNING);
+if (!\in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    \trigger_error('The console should be invoked via the CLI '
+        . 'version of PHP, not the ' . \PHP_SAPI . ' SAPI.', \E_USER_WARNING);
 }
 
 $directory = __DIR__;
-while (dirname($directory) !== $directory) {
+while (\dirname($directory) !== $directory) {
     foreach ([$directory . '/autoload.php', $directory . '/vendor/autoload.php'] as $pathname) {
-        if (is_file($pathname)) {
+        if (\is_file($pathname)) {
             require $pathname;
             break;
         }
     }
 
-    $directory = dirname($directory);
+    $directory = \dirname($directory);
 }
 
-if (!class_exists(Compiler::class)) {
-    file_put_contents(
+if (!\class_exists(Compiler::class)) {
+    \file_put_contents(
         filename: 'php://stderr',
-        data: 'Composer "phplrt/compiler" dependency required to execute this script.' . PHP_EOL,
+        data: 'Composer "phplrt/compiler" dependency required to execute this script.' . \PHP_EOL,
     );
 
     exit(-1);
@@ -52,8 +54,6 @@ $compiler
         ->withNamespaceName('TypeLang\\Parser\\Internal')
         ->withClassName('CompiledExecutor')
         ->withClassModifier(ClassModifier::Abstract)
-        // The parser carries the features it recognizes a source with, so it
-        // is declared as a mutable class rather than a readonly one.
         ->withReadonly(false)
         ->withTargetPhpVersion(TargetPhpVersion::Php81)
         ->withClassImport('TypeLang\\Parser\\Exception')

@@ -13,7 +13,7 @@ use TypeLang\Type\Literal\FloatLiteralNode;
  *  1.5  -1_5.5e+3  .42  1e400
  * ```
  *
- * A float loses the exact number, so the node gets it in two more ways: the
+ * A float loses the exact number, the node gets it in two more ways: the
  * mantissa and the exponent are read from the text of the literal. A number
  * out of the range of a native float is stored the same way as an integer:
  * the value is the nearest bound of the range, the mantissa and the exponent
@@ -28,7 +28,8 @@ final class FloatParser implements SubParserInterface
 {
     public function parse(string $raw, int $offset = 0): FloatLiteralNode
     {
-        // The separators, the gap behind the sign and the plus are not a part of the number
+        // The separators, the gap behind the sign and the plus are not a part
+        // of the number
         $text = \ltrim(\str_replace(['_', ' ', "\t", "\n", "\r", "\v", "\f"], '', $raw), '+');
 
         $value = (float) $text;

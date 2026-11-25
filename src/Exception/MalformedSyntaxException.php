@@ -13,7 +13,8 @@ use Phplrt\Contracts\Source\ReadableInterface;
  *
  * ```
  *  $parser->parse('(int');
- *  // => MalformedSyntaxException: The group is not closed properly, ")" expected
+ *  // => MalformedSyntaxException:
+ *  //    The group is not closed properly, ")" expected
  * ```
  */
 final class MalformedSyntaxException extends UnexpectedTokenException

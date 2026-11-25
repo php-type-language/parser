@@ -7,13 +7,10 @@ namespace TypeLang\Parser\Partial;
 use Phplrt\Contracts\Position\PositionInterface;
 
 /**
- * A source that opens no type at all, so nothing has been built of it.
+ * A source that opens no type at all: nothing has been built of it.
  */
 final class FailureParsedResult extends ParsedResult
 {
-    /**
-     * @param int<0, max> $offset
-     */
     public function __construct(
         /**
          * What stands in the way of the reading.
@@ -26,6 +23,8 @@ final class FailureParsedResult extends ParsedResult
         /**
          * The offset the reading has stopped at, which is the one the
          * {@see $position} above is made of.
+         *
+         * @var int<0, max>
          */
         public readonly int $offset,
     ) {}

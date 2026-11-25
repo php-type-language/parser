@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace TypeLang\Parser\Tests\Ast;
 
 use TypeLang\Parser\Exception\FeatureNotEnabledException;
-use TypeLang\Parser\Exception\ParserException;
-use TypeLang\Parser\Exception\ParserExceptionInterface;
-use TypeLang\Parser\Exception\SemanticException;
 use TypeLang\Parser\Tests\TestCase;
 
 abstract class AstTestCase extends TestCase
@@ -27,11 +24,6 @@ abstract class AstTestCase extends TestCase
     protected function expectParsingException(?string $message = null): void
     {
         $this->expectParserExceptionOf(\Throwable::class, $message);
-    }
-
-    protected function expectSemanticException(?string $message = null): void
-    {
-        $this->expectParserExceptionOf(SemanticException::class, $message);
     }
 
     protected function expectFeatureException(?string $message = null): void

@@ -43,8 +43,6 @@ final class Traverser implements TraverserInterface
     }
 
     /**
-     * Creates a new traverser instance.
-     *
      * @param list<VisitorInterface> $visitors
      */
     public static function new(iterable $visitors = []): self
@@ -52,9 +50,6 @@ final class Traverser implements TraverserInterface
         return new self($visitors);
     }
 
-    /**
-     * Gets a new {@see Traverser} with the specified property accessor.
-     */
     public function withPropertyAccessor(PropertyAccessorInterface $propertyAccessor): self
     {
         $self = clone $this;

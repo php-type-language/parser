@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Internal\SubParser\StringParser;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal TypeLang\Parser\Internal\Literal\StringParser
+ * @psalm-internal TypeLang\Parser\Internal\SubParser
  */
 final class StringSequencesFetcher
 {
@@ -37,15 +37,15 @@ final class StringSequencesFetcher
     private const NUMERIC_SEQUENCE_PATTERN = '/\\\\(?:u\{([0-9a-fA-F]+)}|[xX]([0-9a-fA-F]{1,2})|([0-7]{1,3}))/';
 
     /**
-     * Returns a "sequence => replacement" map of all constant sequences along
-     * with each hexadecimal (like a "\xFF"), octal (like a "\101") and utf-8
-     * (like a "\u{FFFF}") sequence occurred in the past string.
+     * Returns a `sequence => replacement` map of all constant sequences along
+     * with each hexadecimal (like a `\xFF`), octal (like a `\101`) and utf-8
+     * (like a `\u{FFFF}`) sequence occurred in the passed string.
      *
      * @link https://www.php.net/manual/en/language.types.string.php
      *
      * @return non-empty-array<string, string>
      */
-    public static function get(string $value): array
+    public static function getReplacements(string $value): array
     {
         if (@\preg_match(self::NUMERIC_PREFIX_PATTERN, $value) !== 1) {
             return self::ESCAPED_CHARS;
@@ -59,23 +59,30 @@ final class StringSequencesFetcher
 
         $result = self::ESCAPED_CHARS;
 
-        /** @var list<array{0: non-empty-string, 1: string, 2?: string, 3?: string}> $matches */
+        /**
+         * @var list<array{
+         *     0: non-empty-string,
+         *     1: string,
+         *     2?: string,
+         *     3?: string,
+         * }> $matches
+         */
         foreach ($matches as $match) {
             if (isset($result[$match[0]])) {
                 continue;
             }
 
             // A unicode sequence beyond 6 significant digits, like a
-            // "\u{FFFFFFFFFFFFFFFF}", is out of the unicode range
+            // `\u{FFFFFFFFFFFFFFFF}`, is out of the unicode range
             if (\strlen(\ltrim($match[1], '0')) > 6) {
                 $result[$match[0]] = UtfCharRenderer::REPLACEMENT_CHAR;
 
                 continue;
             }
 
-            // A unicode sequence, like a "\u{FFFF}"
+            // A unicode sequence, like a `\u{FFFF}`
             if ($match[1] !== '') {
-                /** @var int<0, max> $code */
+                /** @var int<0, max> */
                 $code = (int) \hexdec($match[1]);
 
                 $result[$match[0]] = UtfCharRenderer::render($code);
@@ -83,16 +90,16 @@ final class StringSequencesFetcher
                 continue;
             }
 
-            // A hexadecimal sequence, like a "\xFF"
+            // A hexadecimal sequence, like a `\xFF`
             if (($match[2] ?? '') !== '') {
-                // @phpstan-ignore-next-line : A hexdec returns int<0, 255>
+                // @phpstan-ignore-next-line a hexdec returns int<0, 255>
                 $result[$match[0]] = \chr((int) \hexdec($match[2] ?? ''));
 
                 continue;
             }
 
-            // An octal sequence, like a "\101". Overflowed sequences
-            // (greater than a "\377") are truncated, like in PHP itself.
+            // An octal sequence, like a `\101`. Overflowed sequences
+            // (greater than a `\377`) are truncated, like in PHP itself.
             $result[$match[0]] = \chr(((int) \octdec($match[3] ?? '')) & 0xFF);
         }
 

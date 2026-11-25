@@ -54,7 +54,7 @@ abstract class DumperVisitor extends Visitor
     }
 
     /**
-     * Returns a "(prop=value, ...)" suffix built from the writable scalar
+     * Returns a `(prop=value, ...)` suffix built from the writable scalar
      * properties of the node, or an empty string in case of there are none.
      */
     private function printNodePropertiesSuffix(Node $node): string
@@ -64,7 +64,7 @@ abstract class DumperVisitor extends Visitor
         $reflection = new \ReflectionObject($node);
 
         foreach ($reflection->getProperties() as $property) {
-            // Skip readonly + static and builtin "offset" properties
+            // Skip readonly + static and builtin `offset` properties
             if ($property->isStatic() || $property->isReadOnly() || $property->getName() === 'offset') {
                 continue;
             }
@@ -88,7 +88,7 @@ abstract class DumperVisitor extends Visitor
 
     public function leave(Node $node): void
     {
-        // @phpstan-ignore-next-line : $depth is always non-negative
+        // @phpstan-ignore-next-line $depth is always non-negative
         --$this->depth;
     }
 }

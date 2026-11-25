@@ -88,7 +88,7 @@ final class TypeParser implements TypeParserInterface
         }
 
         $self = clone $this;
-        /** @phpstan-ignore-next-line : Allow executor type change */
+        // @phpstan-ignore-next-line the result type changes with the rule
         $self->executor = $executor->for($rule);
 
         return $self;
@@ -114,7 +114,7 @@ final class TypeParser implements TypeParserInterface
 
     public function parse(#[Language('PHP')] mixed $source): Node
     {
-        /** @var Executor<TResult> $executor */
+        /** @var Executor<TResult> */
         $executor = $this->getExecutor();
 
         return $executor->parse($this->toSource($source));
@@ -122,7 +122,7 @@ final class TypeParser implements TypeParserInterface
 
     public function partial(#[Language('PHP')] mixed $source): SuccessfulParsedResult|FailureParsedResult
     {
-        /** @var Executor<TResult> $executor */
+        /** @var Executor<TResult> */
         $executor = $this->getExecutor();
 
         return $executor->partial($this->toSource($source));
@@ -130,7 +130,7 @@ final class TypeParser implements TypeParserInterface
 
     public function validate(#[Language('PHP')] mixed $source): SuccessfulCheckResult|FailureCheckResult
     {
-        /** @var Executor<TResult> $executor */
+        /** @var Executor<TResult> */
         $executor = $this->getExecutor();
 
         return $executor->validate($this->toSource($source));

@@ -7,11 +7,11 @@ namespace TypeLang\Parser\Partial;
 use TypeLang\Type\Node;
 
 /**
- * A source the grammar has read in full, so the reading has stopped at the
- * very end of it.
+ * A source the grammar has read in full: the reading has stopped at the very
+ * end of it.
  *
- * Note that a {@see PartialParsedResult} is a successful one as well, since
- * a type has been built either way.
+ * A {@see PartialParsedResult} is a successful one as well: a type has been
+ * built either way.
  *
  * @template-covariant TResult of Node
  *
@@ -19,9 +19,6 @@ use TypeLang\Type\Node;
  */
 class SuccessfulParsedResult extends ParsedResult
 {
-    /**
-     * @param int<0, max> $offset
-     */
     public function __construct(
         /**
          * The type the source is read into.
@@ -31,6 +28,8 @@ class SuccessfulParsedResult extends ParsedResult
         public readonly Node $type,
         /**
          * The offset the reading has stopped at.
+         *
+         * @var int<0, max>
          */
         public readonly int $offset,
     ) {}

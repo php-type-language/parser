@@ -7,7 +7,7 @@ namespace TypeLang\Parser\Traverser\PropertyAccessor;
 final class SimplePropertyAccessor implements PropertyAccessorInterface
 {
     /**
-     * Skips static and hooked properties
+     * Skips static, readonly and hooked properties
      */
     private function shouldSkip(\ReflectionProperty $property): bool
     {
@@ -15,7 +15,6 @@ final class SimplePropertyAccessor implements PropertyAccessorInterface
             return true;
         }
 
-        // Property hooks are available since PHP 8.4
         return \method_exists($property, 'hasHooks')
             && $property->hasHooks() === true;
     }

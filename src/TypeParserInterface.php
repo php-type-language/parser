@@ -16,8 +16,6 @@ use TypeLang\Type\TypeNode;
 /**
  * @template-covariant TResult of Node = TypeNode
  * @template-contravariant TSource of mixed = mixed
- *
- * @see TypeNode used by default
  */
 interface TypeParserInterface
 {
@@ -67,7 +65,7 @@ interface TypeParserInterface
      * // => 23
      * ```
      *
-     * To get information about the remaining part, just apply `substr` to source:
+     * To get the remaining part, apply `substr` to the source:
      * ```
      * $source = 'array{ field: result } This is an example';
      * $result = $parser->partial($source);
@@ -89,8 +87,8 @@ interface TypeParserInterface
      * Tells whether the provided source code is a type, building nothing
      * of it.
      *
-     * Nothing is built while a source is checked, so this method is the
-     * cheaper one of the three whenever the type itself is of no use.
+     * Nothing is built while a source is checked: this method is the cheaper
+     * one of the three whenever the type itself is of no use.
      *
      * ```
      * $parser->validate('array{ field: result }');

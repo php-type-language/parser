@@ -6,7 +6,7 @@ namespace TypeLang\Parser\Internal\SubParser\StringParser;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal TypeLang\Parser\Internal\Literal\StringParser
+ * @psalm-internal TypeLang\Parser\Internal\SubParser\StringParser
  */
 final class UtfCharRenderer
 {
@@ -35,7 +35,7 @@ final class UtfCharRenderer
         }
 
         if (0x80 > $code) {
-            // @phpstan-ignore-next-line : Code is valid
+            // @phpstan-ignore-next-line the code is in the ASCII range
             return \chr($code);
         }
 
