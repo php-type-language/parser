@@ -45,7 +45,7 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
         $resolver = (new TypeResolver())
             ->withTypeImportsFromClass(new \ReflectionClass(SimpleClassStub::class));
 
-        self::assertSame('Some\\Any', $this->resolveName($resolver, 'Any'));
+        self::assertSame('\\Some\\Any',$this->resolveName($resolver, 'Any'));
     }
 
     #[Test]
@@ -55,7 +55,7 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
             ->withTypeImportsFromClass(new \ReflectionClass(SimpleClassStub::class));
 
         self::assertSame(
-            'Some\\Any\\Test\\Nested',
+            '\\Some\\Any\\Test\\Nested',
             $this->resolveName($resolver, 'Example\\Nested'),
         );
     }
@@ -87,8 +87,8 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
             ->withTypeImport('App\\Node')
             ->withTypeImportsFromClass(new \ReflectionClass(SimpleClassStub::class));
 
-        self::assertSame('App\\Node', $this->resolveName($resolver, 'Node'));
-        self::assertSame('Some\\Any', $this->resolveName($resolver, 'Any'));
+        self::assertSame('\\App\\Node',$this->resolveName($resolver, 'Node'));
+        self::assertSame('\\Some\\Any',$this->resolveName($resolver, 'Any'));
     }
 
     #[Test]
@@ -115,7 +115,7 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
         $resolver = (new TypeResolver())
             ->withTypeImportsFromFunction($this->functionStub());
 
-        self::assertSame('Some\\Any', $this->resolveName($resolver, 'Any'));
+        self::assertSame('\\Some\\Any',$this->resolveName($resolver, 'Any'));
     }
 
     #[Test]
@@ -125,7 +125,7 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
             ->withTypeImportsFromFunction($this->functionStub());
 
         self::assertSame(
-            'Some\\Any\\Test\\Nested',
+            '\\Some\\Any\\Test\\Nested',
             $this->resolveName($resolver, 'Example\\Nested'),
         );
     }
@@ -158,9 +158,9 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
                 new \ReflectionMethod(ClassWithMethodStub::class, 'example'),
             );
 
-        self::assertSame('Some\\Method\\Any', $this->resolveName($resolver, 'Any'));
+        self::assertSame('\\Some\\Method\\Any',$this->resolveName($resolver, 'Any'));
         self::assertSame(
-            'Some\\Method\\Any\\Test',
+            '\\Some\\Method\\Any\\Test',
             $this->resolveName($resolver, 'Example'),
         );
     }
@@ -183,7 +183,7 @@ final class TypeResolverImportsTest extends TypeResolverTestCase
             );
 
         self::assertSame(
-            'TypeLang\\Parser\\TypeResolver',
+            '\\TypeLang\\Parser\\TypeResolver',
             $this->resolveName($resolver, 'TypeResolver'),
         );
     }

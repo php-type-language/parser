@@ -30,8 +30,8 @@ use TypeLang\Type\NamespaceName\NamespaceKind;
  *
  * Then, if you apply it to a name, you will get normalized substitutions:
  * ```
- * // Error\ParsingException => TypeLang\Parser\Exception\ParsingException
- * // Name                   => TypeLang\Type\Name
+ * // Error\ParsingException => \TypeLang\Parser\Exception\ParsingException
+ * // Name                   => \TypeLang\Type\Name
  * ```
  */
 final class PhpUseStatementsTransformer
@@ -114,10 +114,11 @@ final class PhpUseStatementsTransformer
         $words = [...$import, ...\array_slice($name->toArray(), 1)];
         $last = \array_pop($words);
 
-        if ($words === []) {
-            return new Name($last, null, $name->offset);
-        }
+        $namespace = new NamespaceName(
+            value: \implode(NamespaceName::DELIMITER, $words),
+            kind: NamespaceKind::FullyQualified,
+        );
 
-        return new Name($last, new NamespaceName(\implode(NamespaceName::DELIMITER, $words)), $name->offset);
+        return new Name($last, $namespace, $name->offset);
     }
 }

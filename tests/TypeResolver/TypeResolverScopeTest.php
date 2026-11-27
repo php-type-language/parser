@@ -26,25 +26,25 @@ final class TypeResolverScopeTest extends TypeResolverTestCase
         $app = (new TypeResolver())->withNamespace('App', static fn(string $name): bool => true);
         $existing = (new TypeResolver())->withNamespace('TypeLang\Parser');
 
-        yield 'relative name' => [$existing, 'list<TypeParser>', 'list<TypeLang\Parser\TypeParser>'];
-        yield 'qualified name' => [$app, 'Model\Address', 'App\Model\Address'];
-        yield 'relative to namespace' => [$app, 'namespace\Address', 'App\Address'];
+        yield 'relative name' => [$existing, 'list<TypeParser>', 'list<\TypeLang\Parser\TypeParser>'];
+        yield 'qualified name' => [$app, 'Model\Address', '\App\Model\Address'];
+        yield 'relative to namespace' => [$app, 'namespace\Address', '\App\Address'];
         yield 'fully qualified name' => [$app, '\Address', '\Address'];
         yield 'builtin type' => [$app, 'int', 'int'];
-        yield 'import over namespace' => [$app->withTypeImport('Other\Address'), 'Address', 'Other\Address'];
+        yield 'import over namespace' => [$app->withTypeImport('Other\Address'), 'Address', '\Other\Address'];
         yield 'namespace kept by import' => [
             (new TypeResolver())->withTypeImport('Other\Address')->withNamespace('App'),
             'Address',
-            'Other\Address',
+            '\Other\Address',
         ];
-        yield 'existing class of namespace' => [$existing, 'TypeParser', 'TypeLang\Parser\TypeParser'];
+        yield 'existing class of namespace' => [$existing, 'TypeParser', '\TypeLang\Parser\TypeParser'];
         yield 'name that is not a class' => [$existing, 'list<uuid>', 'list<uuid>'];
-        yield 'name of every class' => [$app, 'Address', 'App\Address'];
+        yield 'name of every class' => [$app, 'Address', '\App\Address'];
         yield 'global namespace' => [(new TypeResolver())->withNamespace(''), 'Address', 'Address'];
         yield 'relative to global namespace' => [
             (new TypeResolver())->withNamespace(''),
             'namespace\Address',
-            'Address',
+            '\Address',
         ];
         yield 'no namespace' => [new TypeResolver(), 'namespace\Address', 'namespace\Address'];
     }
@@ -67,10 +67,10 @@ final class TypeResolverScopeTest extends TypeResolverTestCase
      */
     public static function classesDataProvider(): iterable
     {
-        yield 'self' => ['self', 'ArrayIterator'];
-        yield 'static' => ['static', 'RecursiveArrayIterator'];
-        yield 'owner of constant' => ['self::CHILD_*', 'ArrayIterator::CHILD_*'];
-        yield 'self in namespace' => ['list<self>', 'list<ArrayIterator>'];
+        yield 'self' => ['self', '\ArrayIterator'];
+        yield 'static' => ['static', '\RecursiveArrayIterator'];
+        yield 'owner of constant' => ['self::CHILD_*', '\ArrayIterator::CHILD_*'];
+        yield 'self in namespace' => ['list<self>', 'list<\ArrayIterator>'];
     }
 
     /**
@@ -91,8 +91,8 @@ final class TypeResolverScopeTest extends TypeResolverTestCase
     {
         $resolver = (new TypeResolver())->withClasses(\RecursiveArrayIterator::class);
 
-        self::assertSame('ArrayIterator', $this->resolveAndPrint($resolver, 'parent'));
-        self::assertSame('RecursiveArrayIterator', $this->resolveAndPrint($resolver, 'static'));
+        self::assertSame('\ArrayIterator', $this->resolveAndPrint($resolver, 'parent'));
+        self::assertSame('\RecursiveArrayIterator', $this->resolveAndPrint($resolver, 'static'));
     }
 
     public function testParentOfClassWithoutParentIsRejected(): void
@@ -118,7 +118,7 @@ final class TypeResolverScopeTest extends TypeResolverTestCase
             ->withTypeImport('Other\Status');
 
         self::assertSame(
-            'Other\Status|TypeLang\Parser\TypeParser|ArrayIterator',
+            '\Other\Status|\TypeLang\Parser\TypeParser|\ArrayIterator',
             $this->resolveAndPrint($resolver, 'Status|TypeParser|self'),
         );
     }

@@ -297,8 +297,8 @@ final class TypeResolver
      *
      * // Expected Output:
      * // > array{
-     * // >     TypeLang\Type\Name,
-     * // >     TypeLang\Parser\Exception\ParsingException
+     * // >     \TypeLang\Type\Name,
+     * // >     \TypeLang\Parser\Exception\ParsingException
      * // > }
      * ```
      *
@@ -446,10 +446,11 @@ final class TypeResolver
 
         \assert($last !== null);
 
-        if ($words === []) {
-            return new Name($last, null, $written->offset);
-        }
+        $namespace = new NamespaceName(
+            value: \implode(NamespaceName::DELIMITER, $words),
+            kind: NamespaceKind::FullyQualified,
+        );
 
-        return new Name($last, new NamespaceName(\implode('\\', $words)), $written->offset);
+        return new Name($last, $namespace, $written->offset);
     }
 }

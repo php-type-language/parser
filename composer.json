@@ -11,9 +11,16 @@
     "require": {
         "php": "^8.1",
         "type-lang/types": "self.version",
-        "phplrt/parser": "^4.2.3",
+        "phplrt/exception": "^4.2.3",
         "phplrt/lexer": "^4.2.3",
-        "phplrt/exception": "^4.2.3"
+        "phplrt/lexer-contracts": "^4.2.3",
+        "phplrt/parser": "^4.2.3",
+        "phplrt/position": "^4.2.3",
+        "phplrt/position-contracts": "^4.2.3",
+        "phplrt/position-factory-contracts": "^4.2.3",
+        "phplrt/source": "^4.2.3",
+        "phplrt/source-contracts": "^4.2.3",
+        "phplrt/source-factory-contracts": "^4.2.3"
     },
     "autoload": {
         "psr-4": {
