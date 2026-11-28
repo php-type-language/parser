@@ -12,9 +12,11 @@ use Phplrt\Parser\Analysis\Result\FailureResult;
 use Phplrt\Parser\Analysis\Result\PartialResult;
 use Phplrt\Parser\Analysis\Result\SuccessfulResult;
 use Phplrt\Parser\Exception\ParserRuntimeException;
+use Phplrt\Parser\Exception\ParserSourceException;
 use Phplrt\Parser\Exception\UnexpectedTokenException as PhplrtUnexpectedTokenException;
 use Phplrt\Position\PositionFactory;
 use TypeLang\Parser\Exception\MalformedSyntaxException;
+use TypeLang\Parser\Exception\SourceNotReadableException;
 use TypeLang\Parser\Exception\SyntaxErrorException;
 use TypeLang\Parser\Exception\UnexpectedTokenException;
 use TypeLang\Parser\Exception\UnrecognizedSyntaxException;
@@ -125,7 +127,7 @@ final class Executor extends CompiledExecutor
 
     /**
      * @throws SyntaxErrorException in case of the source is not a valid type
-     * @throws \Throwable in case of the source cannot be read
+     * @throws SourceNotReadableException in case of the source cannot be read
      */
     public function parse(ReadableInterface $source): mixed
     {
@@ -147,7 +149,7 @@ final class Executor extends CompiledExecutor
      * returned as a failed result.
      *
      * @return SuccessfulResult<T>|FailureResult
-     * @throws \Throwable in case of the source cannot be read
+     * @throws SourceNotReadableException in case of the source cannot be read
      */
     private function analyze(ReadableInterface $source, Mode $mode): SuccessfulResult|FailureResult
     {
@@ -156,6 +158,8 @@ final class Executor extends CompiledExecutor
             return $this->parser->analyze($source, $mode);
         } catch (ParserRuntimeException $e) {
             return new FailureResult($e->token, $e);
+        } catch (ParserSourceException $e) {
+            throw SourceNotReadableException::becauseSourceIsNotReadable($e->getPrevious() ?? $e);
         }
     }
 
@@ -240,7 +244,7 @@ final class Executor extends CompiledExecutor
      * Reads as much of the source as the grammar describes, a source that is
      * no type is not an error but a failed result.
      *
-     * @throws \Throwable in case of the source cannot be read
+     * @throws SourceNotReadableException in case of the source cannot be read
      */
     public function validate(ReadableInterface $source): SuccessfulCheckResult|FailureCheckResult
     {
@@ -266,7 +270,7 @@ final class Executor extends CompiledExecutor
      * no type is not an error but a failed result.
      *
      * @return SuccessfulParsedResult<T>|FailureParsedResult
-     * @throws \Throwable in case of the source cannot be read
+     * @throws SourceNotReadableException in case of the source cannot be read
      */
     public function partial(ReadableInterface $source): SuccessfulParsedResult|FailureParsedResult
     {

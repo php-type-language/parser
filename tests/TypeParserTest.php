@@ -10,6 +10,8 @@ use Phplrt\Source\SourceFactory;
 use TypeLang\Parser\Exception\FeatureNotEnabledException;
 use TypeLang\Parser\Exception\ParserException;
 use TypeLang\Parser\Exception\ParserExceptionInterface;
+use TypeLang\Parser\Exception\ParserRuntimeExceptionInterface;
+use TypeLang\Parser\Exception\SourceNotReadableException;
 use TypeLang\Parser\Partial\FailureParsedResult;
 use TypeLang\Parser\Partial\PartialParsedResult;
 use TypeLang\Parser\Partial\SuccessfulParsedResult;
@@ -84,6 +86,43 @@ final class TypeParserTest extends TestCase
         $this->expectException(ParserException::class);
 
         $parser->parse('array{a: int}');
+    }
+
+    /**
+     * @return iterable<non-empty-string, array{mixed, non-empty-string}>
+     */
+    public static function unreadableSourceDataProvider(): iterable
+    {
+        yield 'int' => [42, 'Value of type int cannot be a source of a type'];
+        yield 'null' => [null, 'Value of type null cannot be a source of a type'];
+        yield 'array' => [[], 'Value of type array cannot be a source of a type'];
+        yield 'missing file' => [
+            new \SplFileInfo(__DIR__ . '/missing.txt'),
+            'The source of a type cannot be read: File "' . __DIR__ . '/missing.txt" not found',
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('unreadableSourceDataProvider')]
+    public function unreadableSourceIsAnErrorOfTheParser(mixed $source, string $message): void
+    {
+        $parser = new TypeParser();
+
+        foreach (['parse', 'partial', 'validate'] as $method) {
+            $error = null;
+
+            try {
+                $parser->{$method}($source);
+            } catch (\Throwable $e) {
+                $error = $e;
+            }
+
+            self::assertInstanceOf(SourceNotReadableException::class, $error, $method);
+            self::assertInstanceOf(ParserExceptionInterface::class, $error);
+            self::assertNotInstanceOf(ParserRuntimeExceptionInterface::class, $error);
+            self::assertSame($message, $error->getMessage());
+            self::assertNotNull($error->getPrevious());
+        }
     }
 
     #[Test]

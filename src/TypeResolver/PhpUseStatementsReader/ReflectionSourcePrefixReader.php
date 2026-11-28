@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace TypeLang\Parser\TypeResolver\PhpUseStatementsReader;
 
+/**
+ * @internal this is an internal library class, please do not use it in your code
+ * @psalm-internal TypeLang\Parser\TypeResolver
+ */
 final class ReflectionSourcePrefixReader
 {
     /**

@@ -7,6 +7,10 @@ namespace TypeLang\Parser\TypeResolver;
 use TypeLang\Parser\TypeResolver\PhpUseStatementsReader\NamespaceFinder;
 use TypeLang\Parser\TypeResolver\PhpUseStatementsReader\ReflectionSourcePrefixReader;
 
+/**
+ * @internal this is an internal library class, please do not use it in your code
+ * @psalm-internal TypeLang\Parser
+ */
 final class PhpUseStatementsReader
 {
     private readonly ReflectionSourcePrefixReader $reader;

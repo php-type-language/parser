@@ -33,6 +33,9 @@ use TypeLang\Type\NamespaceName\NamespaceKind;
  * // Error\ParsingException => \TypeLang\Parser\Exception\ParsingException
  * // Name                   => \TypeLang\Type\Name
  * ```
+ *
+ * @internal this is an internal library class, please do not use it in your code
+ * @psalm-internal TypeLang\Parser
  */
 final class PhpUseStatementsTransformer
 {

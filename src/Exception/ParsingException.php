@@ -20,17 +20,12 @@ abstract class ParsingException extends ParserException implements
 
     public function __construct(
         public readonly ParsingErrorRange $range,
-        ReadableInterface $source,
+        public readonly ReadableInterface $source,
         string $message,
         int $code = 0,
         ?\Throwable $previous = null,
     ) {
-        parent::__construct(
-            source: $source,
-            message: $message,
-            code: $code,
-            previous: $previous,
-        );
+        parent::__construct($message, $code, $previous);
 
         $this->position = self::createPosition($range, $source);
     }
